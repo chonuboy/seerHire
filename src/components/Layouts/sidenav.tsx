@@ -1,0 +1,50 @@
+import Link from "next/link";
+import NavLinks from "@/components/Layouts/nav-links";
+import { imgHelper } from "@/lib/image-helper";
+import { useDispatch } from "react-redux";
+import { logout } from "@/Features/auth/credentialSlice";
+import { useRouter } from "next/navigation";
+
+export default function SideNav() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  return (
+    <>
+      {/* Sidebar for Desktop View  */}
+      <section className="hidden md:block bg-gray-50 py-4 fixed h-full top-14 cts-sidebar">
+        <nav className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
+          <NavLinks />
+          <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
+
+          <button
+            className="flex h-[48px] grow items-center justify-center gap-4 hover:bg-blue-500 hover:text-white md:flex-none md:justify-start md:p-2 md:px-3"
+            onClick={() => {
+              dispatch(logout());
+              localStorage.clear();
+              setTimeout(() => {
+                router.push("/login");
+              }, 1000);
+            }}
+          >
+            <img src={imgHelper.logout} alt="Logout" className="w-6 h-6" />
+            <div className="hidden md:block">Logout</div>
+          </button>
+        </nav>
+      </section>
+      {/* sidebar for mobile view */}
+      <section
+        id="sidebar"
+        className="fixed left-0 inset-y-10 transform -translate-x-full md:hidden transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10"
+      >
+        <nav className="space-y-4">
+          <NavLinks />
+        </nav>
+        <button className="flex h-[48px] grow items-center justify-center gap-4 hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+          <img src={imgHelper.logout} alt="Logout" className="w-6 h-6" />
+          <div className="">Logout</div>
+        </button>
+      </section>
+    </>
+  );
+}

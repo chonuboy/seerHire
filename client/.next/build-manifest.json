@@ -1,0 +1,40 @@
+{
+  "pages": {
+    "/_app": [
+      "static/chunks/node_modules_next_dist_f1b02b._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_c53a81._.js",
+      "static/chunks/[root of the server]__824d6f._.js",
+      "static/chunks/src_styles_globals_473809.css",
+      "static/chunks/src_pages__app_5771e1._.js",
+      "static/chunks/src_pages__app_eb0f4e._.js"
+    ],
+    "/": [
+      "static/chunks/node_modules_next_4f426e._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_faa02e._.js",
+      "static/chunks/[root of the server]__5dc5bd._.js",
+      "static/chunks/[next]_internal_font_google_902fed._.css",
+      "static/chunks/src_pages_index_5771e1._.js",
+      "static/chunks/src_pages_index_6509a8._.js"
+    ],
+    "/login": [
+      "static/chunks/node_modules_next_2791c6._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
+      "static/chunks/node_modules_92534f._.js",
+      "static/chunks/[root of the server]__eaac39._.js",
+      "static/chunks/src_pages_login_5771e1._.js",
+      "static/chunks/src_pages_login_c7bc7f._.js"
+    ]
+  },
+  "devFiles": [],
+  "ampDevFiles": [],
+  "polyfillFiles": [],
+  "lowPriorityFiles": [
+    "static/development/_ssgManifest.js",
+    "static/development/_buildManifest.js"
+  ],
+  "rootMainFiles": [],
+  "ampFirstPages": []
+}
