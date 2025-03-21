@@ -61,23 +61,6 @@ export default function Candidates() {
     onSubmit: async (values) => {
       setIsSubmitting(true);
       addNewCandidate(values);
-
-      // NOTE: remove this code after testing and updating in edit/update api call.
-      //  const changedData: any = {};
-      //   for (const key in CandidateModel) {
-      //     if (values[key] != CandidateModel[key]) {
-      //       if (key == "currentLocation") {
-      //         if (
-      //           values[key]["locationId"] != CandidateModel[key]["locationId"]
-      //         ) {
-      //           changedData[key] = values[key];
-      //         }
-      //       } else {
-      //         changedData[key] = values[key];
-      //       }
-      //     }
-      //   }
-      //   console.log(changedData);
     },
   });
 
