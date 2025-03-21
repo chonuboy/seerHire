@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import { Interviews } from "@/lib/models/candidate";
 import { createInterviewRound } from "@/api/interviews/InterviewRounds";

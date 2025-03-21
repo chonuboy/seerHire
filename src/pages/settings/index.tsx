@@ -50,10 +50,6 @@ export default function Settings() {
               <p className="text-gray-800">{user?.replace('"', "").replace('"', "").charAt(0).toUpperCase()}{user?.slice(2, user.length - 1)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Last Name</p>
-              <p className="text-gray-800">-</p>
-            </div>
-            <div>
               <p className="text-sm text-gray-500 mb-1">Email address</p>
               <p className="text-gray-800">{user?.replace('"', "").replace('"', "").charAt(0).toUpperCase()}{user?.slice(2, user.length - 1)}@gmail.com</p>
             </div>
