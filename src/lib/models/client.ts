@@ -1,7 +1,5 @@
-import Client from "@/pages/clients/[id]";
 import { Candidate, Columns } from "../definitions";
 import * as yup from 'yup';
-import { access } from "fs";
 
 
 export interface Client {

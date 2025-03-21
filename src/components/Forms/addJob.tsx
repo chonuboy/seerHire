@@ -3,7 +3,9 @@ import { useFormik } from "formik";
 import { jobFormSchema } from "@/lib/models/client";
 import { createJob } from "@/api/client/clientJob";
 import { useState } from "react";
-import JoditEditor from "jodit-react";
+import dynamic from 'next/dynamic';
+// import JoditEditor from "jodit-react";
+const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 export const AddJob = ({
   client,
@@ -19,9 +21,9 @@ export const AddJob = ({
       jobCode: null,
       jobTitle: null,
       salaryInCtc: null,
-      jd:null,
+      jd: null,
       experience: null,
-      jobDescription:null as string | null,
+      jobDescription: null as string | null,
       isJobActive: null,
       jobPostType: null,
       postCreatedOn: null,
@@ -31,10 +33,10 @@ export const AddJob = ({
     validationSchema: jobFormSchema,
     onSubmit: async (values) => {
       console.log(values);
-      if(jd){
+      if (jd) {
         values.jobDescription = jd?.replace(/\s+style="[^"]*"/g, "")
-        .replace(/\s+/g, "")
-        .replace(/&nbsp;/g, "");
+          .replace(/\s+/g, "")
+          .replace(/&nbsp;/g, "");
       }
       const response = await createJob(values).then((res) => console.log(res));
       autoClose();
@@ -59,7 +61,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.jobTitle}
+              value={formik.values.jobTitle ? formik.values.jobTitle : ""}
             />
           </div>
 
@@ -76,7 +78,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.jobCode}
+              value={formik.values.jobCode ? formik.values.jobCode : ""}
             />
           </div>
 
@@ -120,7 +122,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.salaryInCtc}
+              value={formik.values.salaryInCtc ? formik.values.salaryInCtc : ""}
             />
           </div>
 
@@ -137,7 +139,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.experience}
+              value={formik.values.experience ? formik.values.experience : ""}
             />
           </div>
 
@@ -152,7 +154,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.isJobActive}
+              value={formik.values.isJobActive ? formik.values.isJobActive : ""}
             >
               <option value="">Select Status</option>
               <option value="Active">Active</option>
@@ -166,7 +168,7 @@ export const AddJob = ({
             <label htmlFor="jobPostType" className="font-semibold text-blue-500">
               Job Post Type
             </label>
-            <select className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" name="jobPPostType" id="jobPostType" onChange={(e)=> formik.setFieldValue("jobPostType", e.target.value)} onBlur={formik.handleBlur} value={formik.values.jobPostType}>
+            <select className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" name="jobPPostType" id="jobPostType" onChange={(e) => formik.setFieldValue("jobPostType", e.target.value)} onBlur={formik.handleBlur} value={formik.values.jobPostType ? formik.values.jobPostType : ""}>
               <option value="">Select Post Type</option>
               <option value="Replacement">Replacement</option>
               <option value="New">New</option>
@@ -185,7 +187,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.postCreatedOn}
+              value={formik.values.postCreatedOn ? formik.values.postCreatedOn : ""}
             />
           </div>
 
@@ -202,7 +204,7 @@ export const AddJob = ({
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.insertedBy}
+              value={formik.values.insertedBy ? formik.values.insertedBy : ""}
             />
           </div>
         </div>
@@ -211,7 +213,7 @@ export const AddJob = ({
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 mt-6 rounded-md hover:bg-blue-700 transition duration-300"
-         >
+        >
           Submit
         </button>
       </form>

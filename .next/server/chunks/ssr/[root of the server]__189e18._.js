@@ -234,17 +234,17 @@ const apiSlice = (0, __TURBOPACK__imported__module__$5b$externals$5d2f40$reduxjs
         prepareHeaders: (headers)=>{
             headers.set('Content-Type', 'application/json');
             headers.set('X-Requested-With', 'XMLHttpRequest');
-            headers.set('Authorization', 'Basic ' + btoa(`gulshan:1234`));
+            headers.set('Authorization', 'Basic ' + btoa(`gulshan:1234`)); // Ensure this is correct
             return headers;
         }
     }),
     endpoints: (builder)=>({
             getLocations: builder.query({
-                query: ()=>'/api/locations'
+                query: ()=>'/locations'
             }),
             addLocation: builder.mutation({
                 query: (newLocation)=>({
-                        url: '/api/locations',
+                        url: '/locations',
                         method: 'POST',
                         body: newLocation
                     })

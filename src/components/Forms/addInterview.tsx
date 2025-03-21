@@ -13,7 +13,7 @@ export default function AddRound({
   interviewInfo?: Interviews;
   onclose?: () => void;
 }) {
-  const [roundNumber, setRoundNumber] = useState<number | null>(null);
+  const [roundNumber, setRoundNumber] = useState<number | null>(1);
   const [roundDate, setInterviewDate] = useState("");
   const [interviewerName, setInterviewerName] = useState("");
   const [interviewStatus, setInterviewStatus] = useState("Scheduled");

@@ -1,9 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 35, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/knant/Downloads/contacts-tracker%20%281%29/contacts-tracker/client/src/Features/Store.ts"],"sourcesContent":["import { configureStore } from '@reduxjs/toolkit';\r\n\r\n\r\nexport const store = configureStore({\r\n    reducer: {},\r\n});\r\n\r\n\r\nexport type RootState = ReturnType<typeof store.getState>;\r\nexport type AppDispatch = typeof store.dispatch;"],"names":[],"mappings":";;;AAAA;;;;;;AAGO,MAAM,QAAQ,CAAA,GAAA,wIAAA,CAAA,iBAAc,AAAD,EAAE;IAChC,SAAS,CAAC;AACd"}},
-    {"offset": {"line": 47, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
-    {"offset": {"line": 64, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/knant/Downloads/contacts-tracker%20%281%29/contacts-tracker/client/src/pages/_app.tsx"],"sourcesContent":["import \"@/styles/globals.css\";\nimport type { AppProps } from \"next/app\";\nimport { ToastContainer } from \"react-toastify\";\nimport { store } from \"@/Features/Store\";\nimport { Provider } from \"react-redux\";\n\nexport default function App({ Component, pageProps }: AppProps) {\n  return (\n    <div>\n      <Provider store={store}>\n        <Component {...pageProps} />\n        <ToastContainer />\n      </Provider>\n    </div>\n  );\n}\n"],"names":[],"mappings":";;;;AAEA;AACA;AACA;;;;;;;;;;;;AAEe,SAAS,IAAI,EAAE,SAAS,EAAE,SAAS,EAAY;IAC5D,qBACE,qKAAC;kBACC,cAAA,qKAAC,4HAAA,CAAA,WAAQ;YAAC,OAAO,iHAAA,CAAA,QAAK;;8BACpB,qKAAC;oBAAW,GAAG,SAAS;;;;;;8BACxB,qKAAC,kIAAA,CAAA,iBAAc;;;;;;;;;;;;;;;;AAIvB"}},
-    {"offset": {"line": 111, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

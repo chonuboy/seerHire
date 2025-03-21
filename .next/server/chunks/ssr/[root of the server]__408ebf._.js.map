@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 25, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/knant/Downloads/contacts-tracker%20%281%29/contacts-tracker/client/src/pages/_app.tsx"],"sourcesContent":["import \"@/styles/globals.css\";\nimport type { AppProps } from \"next/app\";\nimport { ToastContainer } from 'react-toastify';\n\nexport default function App({ Component, pageProps }: AppProps) {\n  return (\n    <div>\n      <Component {...pageProps} />\n      <ToastContainer />\n    </div>)\n}\n"],"names":[],"mappings":";;;;AAEA;;;;;;;;AAEe,SAAS,IAAI,EAAE,SAAS,EAAE,SAAS,EAAY;IAC5D,qBACE,qKAAC;;0BACC,qKAAC;gBAAW,GAAG,SAAS;;;;;;0BACxB,qKAAC,kIAAA,CAAA,iBAAc;;;;;;;;;;;AAErB"}},
-    {"offset": {"line": 59, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

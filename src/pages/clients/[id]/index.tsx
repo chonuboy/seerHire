@@ -16,25 +16,26 @@ import { AddJob } from "@/components/Forms/addJob";
 import { fetchClient } from "@/api/master/clients";
 export default function Client() {
   const router = useRouter();
-  const id = router.query.id;
   const [allJobs, setAllJobs] = useState([]);
   const [isAddJob, setIsAddJob] = useState(false);
   const [currentClient, setCurrentClient] = useState(null);
 
   useEffect(() => {
-    fetchJobsByClient(Number(id)).then((data) => {
+  
+    fetchJobsByClient(Number(router.query.id)).then((data) => {
       setAllJobs(data);
     });
-    fetchClient(Number(id)).then((data) => {
+  
+    fetchClient(Number(router.query.id)).then((data) => {
       setCurrentClient(data);
     });
   }, []);
-
+  
   return (
     <MainLayout>
       <ContentHeader title="Client Info" />
       <div className="space-y-8">
-        <ClientCard id={Number(id)} />
+        <ClientCard id={Number(router.query.id)} />
 
         <div className="space-y-6">
           <div className="space-y-4">

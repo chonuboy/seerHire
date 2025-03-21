@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_URL } from '@/api/api_URL';
-
+import { Location } from '@/lib/definitions'; // Ensure this import is correct
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -9,17 +9,17 @@ export const apiSlice = createApi({
     prepareHeaders: (headers) => {
       headers.set('Content-Type', 'application/json');
       headers.set('X-Requested-With', 'XMLHttpRequest');
-      headers.set('Authorization', 'Basic ' + btoa(`gulshan:1234`));
+      headers.set('Authorization', 'Basic ' + btoa(`gulshan:1234`)); // Ensure this is correct
       return headers;
     },
   }),
   endpoints: (builder) => ({
     getLocations: builder.query<Location[], void>({
-      query: () => '/api/locations',
+      query: () => '/locations', // Ensure this path is correct
     }),
-    addLocation: builder.mutation<Location, Location>({
+    addLocation: builder.mutation<Location, Partial<Location>>({
       query: (newLocation) => ({
-        url: '/api/locations',
+        url: '/locations', // Ensure this path is correct
         method: 'POST',
         body: newLocation,
       }),

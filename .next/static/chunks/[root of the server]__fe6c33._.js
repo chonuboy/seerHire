@@ -838,12 +838,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$fonts$2e$ts__$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/link.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/navigation.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/clsx/dist/clsx.mjs [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$roboto_845498f1$2e$js__$5b$client$5d$__$28$ecmascript$29$__$3c$export__default__as__roboto$3e$__ = __turbopack_import__("[next]/internal/font/google/roboto_845498f1.js [client] (ecmascript) <export default as roboto>");
 ;
 var _s = __turbopack_refresh__.signature();
-;
-;
 ;
 ;
 ;
@@ -896,24 +893,8 @@ const links = [
 function NavLinks() {
     _s();
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["usePathname"])();
-    const [filteredLinks, setFilteredLinks] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(links);
-    const [recruiter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("Recruiter");
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "NavLinks.useEffect": ()=>{
-            const user = localStorage.getItem("userRole");
-            const filteredLinks = links.filter({
-                "NavLinks.useEffect.filteredLinks": (link)=>{
-                    if (user === `"${recruiter}"`) {
-                        return link.name !== "Client";
-                    }
-                    return true;
-                }
-            }["NavLinks.useEffect.filteredLinks"]);
-            setFilteredLinks(filteredLinks);
-        }
-    }["NavLinks.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["Fragment"], {
-        children: filteredLinks.map((link)=>{
+        children: links.map((link)=>{
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
                 href: link.href,
                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["default"])("flex h-[48px] grow items-center justify-center gap-4 hover:bg-blue-500 hover:text-white md:flex-none md:justify-start md:p-2 md:px-3", {
@@ -926,7 +907,7 @@ function NavLinks() {
                         className: "w-6 h-6"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/nav-links.tsx",
-                        lineNumber: 85,
+                        lineNumber: 69,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -934,19 +915,19 @@ function NavLinks() {
                         children: link.name
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/nav-links.tsx",
-                        lineNumber: 86,
+                        lineNumber: 70,
                         columnNumber: 13
                     }, this)
                 ]
             }, link.name, true, {
                 fileName: "[project]/src/components/Layouts/nav-links.tsx",
-                lineNumber: 75,
+                lineNumber: 59,
                 columnNumber: 11
             }, this);
         })
     }, void 0, false);
 }
-_s(NavLinks, "V2a6jlHgiugoI3Wz3tooDBRbREc=", false, function() {
+_s(NavLinks, "xbyQPtUVMO7MNj7WjJlpdWqRcTo=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["usePathname"]
     ];

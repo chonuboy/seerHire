@@ -10,7 +10,7 @@
     "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
     "static/chunks/node_modules_axios_lib_9a6fdf._.js",
     "static/chunks/node_modules_9b1522._.js",
-    "static/chunks/[root of the server]__667fda._.js",
+    "static/chunks/[root of the server]__e306e2._.js",
     "static/chunks/[next]_internal_font_google_902fed._.css"
   ],
   "source": "entry"

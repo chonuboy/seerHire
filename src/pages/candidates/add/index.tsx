@@ -1,12 +1,8 @@
 import "react-toastify/dist/ReactToastify.css";
 
-import React, { useState, useRef, use, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import { useAppSelector} from "@/Features/hooks";
-import { store } from "@/Features/Store";
-import { selectAllLocations } from "@/Features/locationsSlice";
-//import { useAddLocationMutation } from "@/features/api/apiSlice";
 
 import { toast } from "react-toastify";
 import { CandidateModel, CandidateSchema } from "@/lib/models/candidate";
