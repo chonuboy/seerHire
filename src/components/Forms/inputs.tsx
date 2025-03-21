@@ -118,7 +118,7 @@ interface SingleInputProps {
   title: string;
   placeholder: string;
   name:string;
-  value: string|number|null;
+  value: string|number|null | readonly string[] | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   error?: string | string[] | null;
