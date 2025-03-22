@@ -29,6 +29,8 @@ const CandidateTable = ({
         pathname: `/candidates/${item.contactId}`,
         query: edit ? { mode: "edit" } : {}, // Include mode=edit for edit mode
       })}
+      isPaginated
+      column={candidateTableColumns.length}
       currentPage={currentPage}
       totalPages={totalPages}
       onPageChange={handlePageChange}

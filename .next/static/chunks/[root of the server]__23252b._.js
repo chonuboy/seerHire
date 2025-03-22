@@ -2329,25 +2329,6 @@ function Home() {
                     fileName: "[project]/src/pages/index.tsx",
                     lineNumber: 11,
                     columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-                    className: "bg-blue-500 py-1 px-2 w-full text-white sticky bottom-0 z-10",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-center",
-                        children: [
-                            "© ",
-                            new Date().getFullYear(),
-                            " Seertech. All rights reserved."
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/pages/index.tsx",
-                        lineNumber: 20,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/pages/index.tsx",
-                    lineNumber: 19,
-                    columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {

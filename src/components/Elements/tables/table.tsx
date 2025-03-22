@@ -17,10 +17,12 @@ interface TableProps {
     index: number,
     mode?: string
   ) => string | { pathname: string; query?: any }; // Updated to support mode
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  pageSize: number;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+  pageSize?: number;
+  isPaginated?: boolean;
+  column?:number;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -31,6 +33,8 @@ export const Table: React.FC<TableProps> = ({
   totalPages,
   onPageChange,
   pageSize,
+  isPaginated,
+  column
 }) => {
   const router = useRouter();
 
@@ -62,7 +66,7 @@ export const Table: React.FC<TableProps> = ({
       <div className="flex flex-col">
         {/* Table Header */}
         <div
-          className="grid grid-cols-3 rounded-t-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-5"
+          className={`grid rounded-t-lg bg-gradient-to-r gap-14 from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-${column} grid-cols-3`}
           role="rowheader"
         >
           {columns.map((col, index) => (
@@ -83,7 +87,7 @@ export const Table: React.FC<TableProps> = ({
         {data.map((item, index) => {
           const rowContent = (
             <div
-              className={`grid grid-cols-3 sm:grid-cols-5 transition-all duration-200 ease-in-out ${
+              className={`grid grid-cols-3 sm:grid-cols-${column} gap-14 transition-all duration-200 ease-in-out ${
                 getRowLink
                   ? "hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
                   : ""
@@ -117,9 +121,19 @@ export const Table: React.FC<TableProps> = ({
                       ? "-"
                       : item[col.accessor]}
                   </p>
+                  {col.accessor === "roles[roles.length-1]" && (
+                    item.roles.map((role: any) => (
+                      <p
+                        key={role.roleId}
+                        className="text-md font-light text-gray-700 mb-3"
+                      >
+                        {role.roleName}
+                      </p>
+                    ))
+                  )}
                   {col.Header === "Actions" && (
                     <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
+                      className="bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1"
                       onClick={() => handleDeleteClient(item.clientId)}
                     >
                       Delete
@@ -127,7 +141,7 @@ export const Table: React.FC<TableProps> = ({
                   )}
                   {col.Header === "Action" && (
                     <div>
-                      <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-4 rounded">
+                      <button className="bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-4 rounded">
                         Update
                       </button>
                     </div>
@@ -154,27 +168,33 @@ export const Table: React.FC<TableProps> = ({
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700">
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Previous Page"
-        >
-          Previous
-        </button>
-        <span className="text-sm text-gray-700 dark:text-gray-200">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Next Page"
-        >
-          Next
-        </button>
-      </div>
+      {isPaginated && (
+        <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700">
+          <button
+            onClick={() =>
+              onPageChange && currentPage && onPageChange(currentPage - 1)
+            }
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Previous Page"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-gray-700 dark:text-gray-200">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              onPageChange && currentPage && onPageChange(currentPage + 1)
+            }
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Next Page"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

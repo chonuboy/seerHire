@@ -1502,7 +1502,7 @@ const SingleInput = ({ title, placeholder, value, onChange, onBlur, name, error 
                         type: "text",
                         className: "px-4 py-2 border w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
                         placeholder: placeholder,
-                        value: value,
+                        value: value ?? '',
                         name: name,
                         onChange: onChange,
                         onBlur: onBlur
@@ -1609,35 +1609,35 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$t
 ;
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const CandidateModel = {
-    id: 1,
-    firstName: "Nantha",
-    lastName: "Kumar",
-    dob: "2000-12-19",
-    primaryNumber: "9629978640",
-    secondaryNumber: "8925173395",
-    emailId: "nantha@gmail.com",
-    designation: "full stack",
-    companyName: "SeerTech",
-    totalExperience: 1,
+    id: 0,
+    firstName: "",
+    lastName: "",
+    dob: "",
+    primaryNumber: "",
+    secondaryNumber: "",
+    emailId: "",
+    designation: "",
+    companyName: "",
+    totalExperience: 0,
     isActive: true,
     candidateStatus: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["CandidateStatus"].ACTIVE,
-    currentSalary: 120000,
-    highestEducation: "masters",
-    gender: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["Gender"].FEMALE,
+    currentSalary: 0,
+    highestEducation: "",
+    gender: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["Gender"].MALE,
     hiringType: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["HiringType"].FULL,
     pinCode: 20987,
     maritalStatus: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["MaritalStatus"].MARRIED,
-    techRole: "software developer",
-    noticePeriod: 15,
+    techRole: "",
+    noticePeriod: 0,
     currentLocation: {
-        locationId: 1,
+        locationId: 0,
         locationDetails: "",
         insertedOn: ""
     },
     differentlyAbled: false,
     isDifferentlyAbled: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["DifferentlyAbled"].NO,
-    address: "Chennai",
-    addressLocality: "North Street",
+    address: "",
+    addressLocality: "",
     differentlyAbledType: "",
     preferredJobType: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["PreferredJobType"].REMOTE
 };
@@ -1696,13 +1696,13 @@ const candidateTableColumns = [
         accessor: "techRole"
     },
     {
-        Header: "Primary Number",
-        accessor: "primaryNumber",
+        Header: "Email Id",
+        accessor: "emailId",
         hiddenOnSmall: true
     },
     {
-        Header: "Email Id",
-        accessor: "emailId",
+        Header: "Primary Number",
+        accessor: "primaryNumber",
         hiddenOnSmall: true
     },
     {

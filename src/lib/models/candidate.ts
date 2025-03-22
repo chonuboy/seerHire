@@ -14,35 +14,6 @@ import {
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-// export const CandidateModel: Candidate = {
-// 	firstName: '',
-// 	lastName: '',
-// 	dob: '',
-// 	primaryNumber: '',
-// 	secondaryNumber: '',
-// 	emailId: '',
-// 	designation: '',
-// 	companyName: '',
-// 	totalExperience: 0,
-// 	candidateStatus: '',
-// 	isActive: false,
-// 	currentSalary: 0,
-// 	highestEducation: '',
-// 	gender: '',
-// 	hiringType: '',
-// 	pinCode: 0,
-// 	maritalStatus: '',
-// 	techRole: '',
-// 	noticePeriod: 0,
-// 	currentLocation: { locationId: 0 },
-// 	differentlyAbled: false,
-// 	isDifferentlyAbled: ',
-// 	address: '',
-// 	addressLocality: '',
-// 	differentlyAbledType: '',
-// 	preferredJobType: '',
-// }
-
 export const CandidateModel: Candidate = {
   id: 0,
   firstName: "",
@@ -176,13 +147,13 @@ export const candidateTableColumns: Columns = [
     accessor: "techRole",
   },
   {
-    Header: "Primary Number",
-    accessor: "primaryNumber",
+    Header: "Email Id",
+    accessor: "emailId",
     hiddenOnSmall: true,
   },
   {
-    Header: "Email Id",
-    accessor: "emailId",
+    Header: "Primary Number",
+    accessor: "primaryNumber",
     hiddenOnSmall: true,
   },
   {

@@ -2,6 +2,7 @@ import SeertechLogo from "@/components/Layouts/header";
 import SideNav from "@/components/Layouts/sidenav";
 import Dashboard from "@/components/Elements/dashboard/dashBoard";
 import ProtectedRoute from "@/Features/protectedRoute";
+import UsersTable from "@/components/Elements/tables/usersTable";
 
 export default function Home() {
   return (
@@ -14,13 +15,9 @@ export default function Home() {
           </div>
           <div className="flex-grow p-4 md:overflow-y-auto md:p-6">
             <Dashboard></Dashboard>
+            <UsersTable></UsersTable>
           </div>
         </div>
-        <footer className="bg-blue-500 py-1 px-2 w-full text-white sticky bottom-0 z-10">
-          <p className="text-center">
-            &copy; {new Date().getFullYear()} Seertech. All rights reserved.
-          </p>
-        </footer>
       </main>
     </ProtectedRoute>
   );

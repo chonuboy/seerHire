@@ -2,11 +2,9 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/login": "pages/login.js",
   "/candidates": "pages/candidates.js",
   "/clients": "pages/clients.js",
   "/recruitments": "pages/recruitments.js",
-  "/help": "pages/help.js",
   "/search": "pages/search.js",
-  "/settings": "pages/settings.js"
+  "/login": "pages/login.js"
 }

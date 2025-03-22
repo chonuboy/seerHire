@@ -688,7 +688,7 @@ const LoginPage = ()=>{
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                className: "flex justify-center items-center p-8 bg-gray-50 pb-28",
+                className: "flex justify-center items-center p-8 bg-gray-50 pb-28 h-full",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                     className: "bg-white p-8 rounded-lg shadow-lg w-96 mt-10 m-10 md:m-0",
                     children: [

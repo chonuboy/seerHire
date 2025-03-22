@@ -54,7 +54,7 @@ const LoginPage = () => {
       <header className="bg-slate-50 text-white py-2">
         <img src={imgHelper.seertech} className="object-cover md:h-16 h-10" />
       </header>
-      <div className="flex justify-center items-center p-8 bg-gray-50 pb-28">
+      <div className="flex justify-center items-center p-8 bg-gray-50 pb-28 h-full">
         <div className="bg-white p-8 rounded-lg shadow-lg w-96 mt-10 m-10 md:m-0">
           <h1 className="md:text-2xl text-xl font-bold text-center text-gray-800 mb-6">
             Login

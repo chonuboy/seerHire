@@ -1275,35 +1275,35 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$t
 ;
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const CandidateModel = {
-    id: 1,
-    firstName: "Nantha",
-    lastName: "Kumar",
-    dob: "2000-12-19",
-    primaryNumber: "9629978640",
-    secondaryNumber: "8925173395",
-    emailId: "nantha@gmail.com",
-    designation: "full stack",
-    companyName: "SeerTech",
-    totalExperience: 1,
+    id: 0,
+    firstName: "",
+    lastName: "",
+    dob: "",
+    primaryNumber: "",
+    secondaryNumber: "",
+    emailId: "",
+    designation: "",
+    companyName: "",
+    totalExperience: 0,
     isActive: true,
     candidateStatus: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["CandidateStatus"].ACTIVE,
-    currentSalary: 120000,
-    highestEducation: "masters",
-    gender: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["Gender"].FEMALE,
+    currentSalary: 0,
+    highestEducation: "",
+    gender: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["Gender"].MALE,
     hiringType: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["HiringType"].FULL,
     pinCode: 20987,
     maritalStatus: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["MaritalStatus"].MARRIED,
-    techRole: "software developer",
-    noticePeriod: 15,
+    techRole: "",
+    noticePeriod: 0,
     currentLocation: {
-        locationId: 1,
+        locationId: 0,
         locationDetails: "",
         insertedOn: ""
     },
     differentlyAbled: false,
     isDifferentlyAbled: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["DifferentlyAbled"].NO,
-    address: "Chennai",
-    addressLocality: "North Street",
+    address: "",
+    addressLocality: "",
     differentlyAbledType: "",
     preferredJobType: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$constants$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["PreferredJobType"].REMOTE
 };
@@ -1362,13 +1362,13 @@ const candidateTableColumns = [
         accessor: "techRole"
     },
     {
-        Header: "Primary Number",
-        accessor: "primaryNumber",
+        Header: "Email Id",
+        accessor: "emailId",
         hiddenOnSmall: true
     },
     {
-        Header: "Email Id",
-        accessor: "emailId",
+        Header: "Primary Number",
+        accessor: "primaryNumber",
         hiddenOnSmall: true
     },
     {
@@ -1832,7 +1832,7 @@ var _s = __turbopack_refresh__.signature();
 ;
 ;
 ;
-const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChange, pageSize })=>{
+const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChange, pageSize, isPaginated, column })=>{
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const handleDeleteClient = (id)=>{
@@ -1848,7 +1848,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
             children: "No data available"
         }, void 0, false, {
             fileName: "[project]/src/components/Elements/tables/table.tsx",
-            lineNumber: 46,
+            lineNumber: 50,
             columnNumber: 7
         }, this);
     }
@@ -1858,7 +1858,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
             children: "No columns defined"
         }, void 0, false, {
             fileName: "[project]/src/components/Elements/tables/table.tsx",
-            lineNumber: 54,
+            lineNumber: 58,
             columnNumber: 7
         }, this);
     }
@@ -1869,7 +1869,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                 className: "flex flex-col",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-3 rounded-t-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-5",
+                        className: `grid rounded-t-lg bg-gradient-to-r gap-14 from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-${column} grid-cols-3`,
                         role: "rowheader",
                         children: columns.map((col, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: `p-3 xl:p-4 ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
@@ -1878,22 +1878,22 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                     children: col.Header
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                    lineNumber: 75,
+                                    lineNumber: 79,
                                     columnNumber: 15
                                 }, this)
                             }, index, false, {
                                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                lineNumber: 69,
+                                lineNumber: 73,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 64,
+                        lineNumber: 68,
                         columnNumber: 9
                     }, this),
                     data.map((item, index)=>{
                         const rowContent = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: `grid grid-cols-3 sm:grid-cols-5 transition-all duration-200 ease-in-out ${getRowLink ? "hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" : ""} border-b border-gray-100 dark:border-gray-700`,
+                            className: `grid grid-cols-3 sm:grid-cols-${column} gap-14 transition-all duration-200 ease-in-out ${getRowLink ? "hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" : ""} border-b border-gray-100 dark:border-gray-700`,
                             role: "row",
                             children: columns.map((col, colIndex)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: `p-3 xl:p-4 flex items-center ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
@@ -1903,41 +1903,49 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                             children: col.accessor === "fullName" ? `${item.firstName} ${item.lastName}` : item[col.accessor] === true ? "Active" : item[col.accessor] === false ? "Inactive" : item[col.accessor] === null ? "-" : item[col.accessor]
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 101,
+                                            lineNumber: 105,
                                             columnNumber: 19
                                         }, this),
+                                        col.accessor === "roles[roles.length-1]" && item.roles.map((role)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-md font-light text-gray-700 mb-3",
+                                                children: role.roleName
+                                            }, role.roleId, false, {
+                                                fileName: "[project]/src/components/Elements/tables/table.tsx",
+                                                lineNumber: 126,
+                                                columnNumber: 23
+                                            }, this)),
                                         col.Header === "Actions" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            className: "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded",
+                                            className: "bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1",
                                             onClick: ()=>handleDeleteClient(item.clientId),
                                             children: "Delete"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 121,
+                                            lineNumber: 135,
                                             columnNumber: 21
                                         }, this),
                                         col.Header === "Action" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                className: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-4 rounded",
+                                                className: "bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-4 rounded",
                                                 children: "Update"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                                lineNumber: 130,
+                                                lineNumber: 144,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 129,
+                                            lineNumber: 143,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, colIndex, true, {
                                     fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                    lineNumber: 95,
+                                    lineNumber: 99,
                                     columnNumber: 17
                                 }, this))
                         }, index, false, {
                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                            lineNumber: 85,
+                            lineNumber: 89,
                             columnNumber: 13
                         }, this);
                         // If a link generator is provided, wrap the row in a Link component
@@ -1949,29 +1957,29 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                             children: rowContent
                         }, index, false, {
                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                            lineNumber: 147,
+                            lineNumber: 161,
                             columnNumber: 13
                         }, this) : rowContent;
                     })
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                lineNumber: 62,
+                lineNumber: 66,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            isPaginated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>onPageChange(currentPage - 1),
+                        onClick: ()=>onPageChange && currentPage && onPageChange(currentPage - 1),
                         disabled: currentPage === 1,
                         className: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed",
                         "aria-label": "Previous Page",
                         children: "Previous"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 158,
-                        columnNumber: 9
+                        lineNumber: 173,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         className: "text-sm text-gray-700 dark:text-gray-200",
@@ -1983,30 +1991,30 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 166,
-                        columnNumber: 9
+                        lineNumber: 183,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>onPageChange(currentPage + 1),
+                        onClick: ()=>onPageChange && currentPage && onPageChange(currentPage + 1),
                         disabled: currentPage === totalPages,
                         className: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed",
                         "aria-label": "Next Page",
                         children: "Next"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 169,
-                        columnNumber: 9
+                        lineNumber: 186,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                lineNumber: 157,
-                columnNumber: 7
+                lineNumber: 172,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Elements/tables/table.tsx",
-        lineNumber: 61,
+        lineNumber: 65,
         columnNumber: 5
     }, this);
 };
@@ -2054,6 +2062,8 @@ const CandidateTable = ({ candidateTableData, candidateTableColumns })=>{
                     mode: "edit"
                 } : {}
             }),
+        isPaginated: true,
+        column: candidateTableColumns.length,
         currentPage: currentPage,
         totalPages: totalPages,
         onPageChange: handlePageChange,

@@ -378,6 +378,10 @@ img, video {
   z-index: 20;
 }
 
+.col-span-1 {
+  grid-column: span 1 / span 1;
+}
+
 .m-10 {
   margin: 2.5rem;
 }
@@ -754,6 +758,10 @@ img, video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.gap-14 {
+  gap: 3.5rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -1743,6 +1751,10 @@ body {
 
   .sm\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

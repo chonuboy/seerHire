@@ -1,6 +1,6 @@
+import { access } from "fs";
 import { Candidate, Columns } from "../definitions";
-import * as yup from 'yup';
-
+import * as yup from "yup";
 
 export interface Client {
   jobId: number;
@@ -27,9 +27,8 @@ export interface Client {
     cinnumber: string;
     pannumber: string;
   };
-  clientJob?:any;
+  clientJob?: any;
 }
-
 
 export interface ClientInfo {
   clientId?: number;
@@ -50,9 +49,9 @@ export interface Company {
 }
 
 export interface Companies {
-  contactCompanyId:number;
-  contactDetails:Candidate;
-  company:Company;
+  contactCompanyId: number;
+  contactDetails: Candidate;
+  company: Company;
 }
 
 //   {
@@ -95,8 +94,6 @@ export interface Job {
   insertedBy: string;
 }
 
-
-
 export const ClientTableColumn: Columns = [
   {
     Header: "Name",
@@ -118,8 +115,8 @@ export const ClientTableColumn: Columns = [
   },
   {
     Header: "Actions",
-    accessor:"",
-  }
+    accessor: "",
+  },
 ];
 
 export const RecruitmentColumn = [
@@ -142,45 +139,58 @@ export const RecruitmentColumn = [
     accessor: "role",
   },
   {
-    Header:"Action",
-    accessor:""
-  }
+    Header: "Action",
+    accessor: "",
+  },
 ];
 
+export const usersColumn = [
+  {
+    Header: "Name",
+    accessor: "userName",
+  },
+  {
+    Header: "Email",
+    accessor: "email",
+    hiddenOnSmall: true,
+  },
+  {
+    Header: "Role",
+    accessor: "roles[roles.length-1]",
+  },
+  {
+    Header: "Actions",
+    accessor: "",
+  },
+];
 
 export const jobFormSchema = yup.object().shape({
-  jobCode:yup.string().min(3, "Must be at least 3 characters"),
-  jobTitle: yup.string().min(3, "Must be at least 3 characters"), 
-  jobDescription: yup.string().min(3, "Must be at least 3 characters").nullable(), 
-  salaryInCtc: yup.number(), 
-  experience: yup.string(), 
-  isJobActive: yup.string(), 
-  jobPostType: yup.string().min(3, "Must be at least 3 characters"), 
-  createdOn: yup.date(), 
-  insertedBy: yup.string().min(3, "Must be at least 3 characters"), 
+  jobCode: yup.string().min(3, "Must be at least 3 characters"),
+  jobTitle: yup.string().min(3, "Must be at least 3 characters"),
+  jobDescription: yup
+    .string()
+    .min(3, "Must be at least 3 characters")
+    .nullable(),
+  salaryInCtc: yup.number(),
+  experience: yup.string(),
+  isJobActive: yup.string(),
+  jobPostType: yup.string().min(3, "Must be at least 3 characters"),
+  createdOn: yup.date(),
+  insertedBy: yup.string().min(3, "Must be at least 3 characters"),
 });
-
 
 export const clientFormSchema = yup.object().shape({
   clientHo: yup
     .string()
-    .min(3, 'Client HO must be at least 3 characters').nullable(),
+    .min(3, "Client HO must be at least 3 characters")
+    .nullable(),
   financePocName: yup
     .string()
-    .min(3, 'Finance POC Name must be at least 3 characters').nullable(),
-  financeNumber: yup
-    .string()
+    .min(3, "Finance POC Name must be at least 3 characters")
     .nullable(),
-  financeEmail: yup
-    .string()
-    .email('Finance Email is invalid').nullable(),
-  gstnumber: yup
-    .string()
-    .nullable(),
-  cinnumber: yup
-    .string()
-    .nullable(),
-  pannumber: yup
-    .string()
-    .nullable(),
+  financeNumber: yup.string().nullable(),
+  financeEmail: yup.string().email("Finance Email is invalid").nullable(),
+  gstnumber: yup.string().nullable(),
+  cinnumber: yup.string().nullable(),
+  pannumber: yup.string().nullable(),
 });
