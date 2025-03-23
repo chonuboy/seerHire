@@ -42,7 +42,7 @@ export const TagInput: React.FC<TagInputProps> = ({
   };
 
   return (
-    <Card className="bg-[var(--field-background)] p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg">
+    <Card className="bg-gray-50 p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
@@ -133,14 +133,14 @@ export const SingleInput: React.FC<SingleInputProps> = ({
   name,
   error,
 }) => (
-  <Card className="bg-[var(--field-background)] p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg">
+  <Card className="bg-gray-50 p-4 md:h-full space-y-2 md:space-y-4 rounded-lg">
     <CardHeader>
       <CardTitle>{title}</CardTitle>
     </CardHeader>
     <CardContent className="space-y-4 shadow-none">
       <input
         type="text"
-        className="px-4 py-2 border w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-4 py-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder={placeholder}
         value={value ?? ''}
         name ={name}

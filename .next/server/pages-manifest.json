@@ -3,8 +3,11 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/candidates": "pages/candidates.js",
-  "/clients": "pages/clients.js",
   "/recruitments": "pages/recruitments.js",
+  "/candidates/[id]": "pages/candidates/[id].js",
+  "/clients": "pages/clients.js",
+  "/analytics": "pages/analytics.js",
+  "/help": "pages/help.js",
   "/search": "pages/search.js",
-  "/login": "pages/login.js"
+  "/settings": "pages/settings.js"
 }

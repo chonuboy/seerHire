@@ -1341,7 +1341,7 @@ const TagInput = ({ title, placeholder, tags, onAddTag, name, onRemoveTag, error
         setInput("");
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$Card$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["Card"], {
-        className: "bg-[var(--field-background)] p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg",
+        className: "bg-gray-50 p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$Card$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["CardHeader"], {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$Card$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["CardTitle"], {
@@ -1480,7 +1480,7 @@ const Tag = ({ text, onRemove })=>{
 };
 _c1 = Tag;
 const SingleInput = ({ title, placeholder, value, onChange, onBlur, name, error })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$Card$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["Card"], {
-        className: "bg-[var(--field-background)] p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg",
+        className: "bg-gray-50 p-4 md:h-full space-y-2 md:space-y-4 rounded-lg",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$Card$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["CardHeader"], {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$Card$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["CardTitle"], {
@@ -1500,7 +1500,7 @@ const SingleInput = ({ title, placeholder, value, onChange, onBlur, name, error 
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                         type: "text",
-                        className: "px-4 py-2 border w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+                        className: "px-4 py-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500",
                         placeholder: placeholder,
                         value: value ?? '',
                         name: name,
@@ -1940,7 +1940,7 @@ const SearchForm = ()=>{
                 className: "grid grid-cols-1 md:grid-cols-2 gap-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "bg-gray-100 rounded-lg shadow-lg border-2 border-gray-200 p-2",
+                        className: "bg-gray-50 rounded-lg shadow-lg border-2 border-gray-200 p-2",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                 className: "text-lg font-bold text-gray-900 mb-6",

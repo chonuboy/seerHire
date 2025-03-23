@@ -127,7 +127,7 @@ const SearchForm: React.FC = () => {
     <form onSubmit={formik.handleSubmit} noValidate>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Technologies */}
-        <div className="bg-gray-100 rounded-lg shadow-lg border-2 border-gray-200 p-2">
+        <div className="bg-gray-50 rounded-lg shadow-lg border-2 border-gray-200 p-2">
           <h1 className="text-lg font-bold text-gray-900 mb-6">Technologies</h1>
 
           {/* Input and Buttons */}

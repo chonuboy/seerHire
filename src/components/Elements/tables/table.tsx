@@ -1,6 +1,7 @@
 import Link from "next/link";
-import React, { use } from "react";
+import React from "react";
 import { deleteClient } from "@/api/master/clients";
+import { deleteUser } from "@/api/users/users";
 import { useRouter } from "next/router";
 // Define types for the Table component props
 interface Column {
@@ -22,7 +23,6 @@ interface TableProps {
   onPageChange?: (page: number) => void;
   pageSize?: number;
   isPaginated?: boolean;
-  column?:number;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -34,7 +34,6 @@ export const Table: React.FC<TableProps> = ({
   onPageChange,
   pageSize,
   isPaginated,
-  column
 }) => {
   const router = useRouter();
 
@@ -66,7 +65,7 @@ export const Table: React.FC<TableProps> = ({
       <div className="flex flex-col">
         {/* Table Header */}
         <div
-          className={`grid rounded-t-lg bg-gradient-to-r gap-14 from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-${column} grid-cols-3`}
+          className={`grid grid-cols-3 rounded-t-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-5`}
           role="rowheader"
         >
           {columns.map((col, index) => (
@@ -87,7 +86,7 @@ export const Table: React.FC<TableProps> = ({
         {data.map((item, index) => {
           const rowContent = (
             <div
-              className={`grid grid-cols-3 sm:grid-cols-${column} gap-14 transition-all duration-200 ease-in-out ${
+              className={`grid grid-cols-3 sm:grid-cols-5 transition-all duration-200 ease-in-out ${
                 getRowLink
                   ? "hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
                   : ""
@@ -121,7 +120,7 @@ export const Table: React.FC<TableProps> = ({
                       ? "-"
                       : item[col.accessor]}
                   </p>
-                  {col.accessor === "roles[roles.length-1]" && (
+                  {col.accessor === "roles[roles.length-1]" &&
                     item.roles.map((role: any) => (
                       <p
                         key={role.roleId}
@@ -129,12 +128,13 @@ export const Table: React.FC<TableProps> = ({
                       >
                         {role.roleName}
                       </p>
-                    ))
-                  )}
+                    ))}
                   {col.Header === "Actions" && (
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1"
-                      onClick={() => handleDeleteClient(item.clientId)}
+                      onClick={() => {
+                        handleDeleteClient(item.clientId);
+                      }}
                     >
                       Delete
                     </button>

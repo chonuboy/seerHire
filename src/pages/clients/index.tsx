@@ -196,6 +196,9 @@ export default function Clients() {
                 >
                   Add Client
                 </button>
+                <button className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300" onClick={() => setIsClientAdded(false)}>
+                  Cancel
+                </button>
               </form>
             </div>
           </Popup>

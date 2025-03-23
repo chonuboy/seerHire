@@ -1457,7 +1457,7 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
-const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChange, pageSize, isPaginated, column })=>{
+const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChange, pageSize, isPaginated })=>{
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const handleDeleteClient = (id)=>{
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$master$2f$clients$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["deleteClient"])(id).then((data)=>{
@@ -1472,7 +1472,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
             children: "No data available"
         }, void 0, false, {
             fileName: "[project]/src/components/Elements/tables/table.tsx",
-            lineNumber: 50,
+            lineNumber: 49,
             columnNumber: 7
         }, this);
     }
@@ -1482,7 +1482,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
             children: "No columns defined"
         }, void 0, false, {
             fileName: "[project]/src/components/Elements/tables/table.tsx",
-            lineNumber: 58,
+            lineNumber: 57,
             columnNumber: 7
         }, this);
     }
@@ -1493,7 +1493,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                 className: "flex flex-col",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                        className: `grid rounded-t-lg bg-gradient-to-r gap-14 from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-${column} grid-cols-3`,
+                        className: `grid grid-cols-3 rounded-t-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-5`,
                         role: "rowheader",
                         children: columns.map((col, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                 className: `p-3 xl:p-4 ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
@@ -1502,22 +1502,22 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                     children: col.Header
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 78,
                                     columnNumber: 15
                                 }, this)
                             }, index, false, {
                                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                lineNumber: 73,
+                                lineNumber: 72,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 68,
+                        lineNumber: 67,
                         columnNumber: 9
                     }, this),
                     data.map((item, index)=>{
                         const rowContent = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                            className: `grid grid-cols-3 sm:grid-cols-${column} gap-14 transition-all duration-200 ease-in-out ${getRowLink ? "hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" : ""} border-b border-gray-100 dark:border-gray-700`,
+                            className: `grid grid-cols-3 sm:grid-cols-5 transition-all duration-200 ease-in-out ${getRowLink ? "hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" : ""} border-b border-gray-100 dark:border-gray-700`,
                             role: "row",
                             children: columns.map((col, colIndex)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                     className: `p-3 xl:p-4 flex items-center ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
@@ -1527,7 +1527,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                             children: col.accessor === "fullName" ? `${item.firstName} ${item.lastName}` : item[col.accessor] === true ? "Active" : item[col.accessor] === false ? "Inactive" : item[col.accessor] === null ? "-" : item[col.accessor]
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 105,
+                                            lineNumber: 104,
                                             columnNumber: 19
                                         }, this),
                                         col.accessor === "roles[roles.length-1]" && item.roles.map((role)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -1535,16 +1535,18 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                                 children: role.roleName
                                             }, role.roleId, false, {
                                                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                                lineNumber: 126,
+                                                lineNumber: 125,
                                                 columnNumber: 23
                                             }, this)),
                                         col.Header === "Actions" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                             className: "bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1",
-                                            onClick: ()=>handleDeleteClient(item.clientId),
+                                            onClick: ()=>{
+                                                handleDeleteClient(item.clientId);
+                                            },
                                             children: "Delete"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 135,
+                                            lineNumber: 133,
                                             columnNumber: 21
                                         }, this),
                                         col.Header === "Action" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1564,12 +1566,12 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                     ]
                                 }, colIndex, true, {
                                     fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                    lineNumber: 99,
+                                    lineNumber: 98,
                                     columnNumber: 17
                                 }, this))
                         }, index, false, {
                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                            lineNumber: 89,
+                            lineNumber: 88,
                             columnNumber: 13
                         }, this);
                         // If a link generator is provided, wrap the row in a Link component
@@ -1588,7 +1590,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                lineNumber: 66,
+                lineNumber: 65,
                 columnNumber: 7
             }, this),
             isPaginated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1638,7 +1640,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Elements/tables/table.tsx",
-        lineNumber: 65,
+        lineNumber: 64,
         columnNumber: 5
     }, this);
 };
@@ -1679,7 +1681,6 @@ const CandidateTable = ({ candidateTableData, candidateTableColumns })=>{
                 } : {}
             }),
         isPaginated: true,
-        column: candidateTableColumns.length,
         currentPage: currentPage,
         totalPages: totalPages,
         onPageChange: handlePageChange,
@@ -1710,8 +1711,7 @@ __turbopack_esm__({
     "ClientTableColumn": (()=>ClientTableColumn),
     "RecruitmentColumn": (()=>RecruitmentColumn),
     "clientFormSchema": (()=>clientFormSchema),
-    "jobFormSchema": (()=>jobFormSchema),
-    "usersColumn": (()=>usersColumn)
+    "jobFormSchema": (()=>jobFormSchema)
 });
 var __TURBOPACK__imported__module__$5b$externals$5d2f$yup__$5b$external$5d$__$28$yup$2c$__cjs$29$__ = __turbopack_import__("[externals]/yup [external] (yup, cjs)");
 ;
@@ -1760,25 +1760,6 @@ const RecruitmentColumn = [
     },
     {
         Header: "Action",
-        accessor: ""
-    }
-];
-const usersColumn = [
-    {
-        Header: "Name",
-        accessor: "userName"
-    },
-    {
-        Header: "Email",
-        accessor: "email",
-        hiddenOnSmall: true
-    },
-    {
-        Header: "Role",
-        accessor: "roles[roles.length-1]"
-    },
-    {
-        Header: "Actions",
         accessor: ""
     }
 ];

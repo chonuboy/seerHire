@@ -1,4 +1,3 @@
-import { access } from "fs";
 import { Candidate, Columns } from "../definitions";
 import * as yup from "yup";
 
@@ -54,32 +53,6 @@ export interface Companies {
   company: Company;
 }
 
-//   {
-//     clientId:1,
-//     clientName: jobs[0].client.clientName,
-//     clientHo: jobs[0].client.clientHo,
-//     financePocName: jobs[0].client.financePocName,
-//     financeEmail: jobs[0].client.financeEmail,
-//     financeNumber: jobs[0].client.financeNumber,
-//     insertedOn: jobs[0].client.insertedOn,
-//     gstnumber: jobs[0].client.gstnumber,
-//     cinnumber: jobs[0].client.cinnumber,
-//     pannumber: jobs[0].client.pannumber,
-//   },
-
-//   {
-//     clientId:2,
-//     clientName: jobs[1].client.clientName,
-//     clientHo: jobs[1].client.clientHo,
-//     financePocName: jobs[1].client.financePocName,
-//     financeEmail: jobs[1].client.financeEmail,
-//     financeNumber: jobs[1].client.financeNumber,
-//     insertedOn: jobs[1].client.insertedOn,
-//     gstnumber: jobs[1].client.gstnumber,
-//     cinnumber: jobs[1].client.cinnumber,
-//     pannumber: jobs[1].client.pannumber,
-//   },
-// ];
 
 export interface Job {
   jobId: number;
@@ -140,26 +113,6 @@ export const RecruitmentColumn = [
   },
   {
     Header: "Action",
-    accessor: "",
-  },
-];
-
-export const usersColumn = [
-  {
-    Header: "Name",
-    accessor: "userName",
-  },
-  {
-    Header: "Email",
-    accessor: "email",
-    hiddenOnSmall: true,
-  },
-  {
-    Header: "Role",
-    accessor: "roles[roles.length-1]",
-  },
-  {
-    Header: "Actions",
     accessor: "",
   },
 ];

@@ -945,7 +945,7 @@ export default function Candidates() {
                           {item.technology.technology}
                         </td>
                         <td className="text-left px-2 py-1 md:px-4 md:py-2 border border-gray-200">
-                          {item.experience ? item.experience : "-"}
+                          {item.experience ? item.experience : "-"}{" "}Yrs
                         </td>
                         <td className="text-left px-2 py-1 md:px-4 md:py-2 border border-gray-200">
                           {item.expertiseLevel ? item.expertiseLevel : "-"}
@@ -1010,7 +1010,7 @@ export default function Candidates() {
                       <input
                         id="experience"
                         type="text"
-                        value={selectedTech.experience}
+                        value={selectedTech.experience+" Yrs"}
                         className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                         onChange={(e) =>
                           setSelectedTech({
