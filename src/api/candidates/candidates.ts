@@ -63,10 +63,13 @@ export const updateCandidate = async (reqData: any, id: number) => {
   }
 };
 
-export const fetchCandidates = async () => {
+export const fetchCandidates = async (page: number = 0, size: number = 10) => {
   try {
     const response = await axios.get(`${API_URL}contacts/allContacts`, {
-      method: "GET",
+      params: {
+        page,
+        size,
+      },
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
@@ -79,7 +82,6 @@ export const fetchCandidates = async () => {
     return err.response ? err.response.data : err.message;
   }
 };
-
 // Only Accessible for Super Admin
 export const deleteCandidates = async (candidateId: any) => {
   try {

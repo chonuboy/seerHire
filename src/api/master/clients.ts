@@ -52,16 +52,26 @@ export const deleteClient = async (id: number) => {
 };
 
 // GET /api/clients
-export const fetchAllClients = async () => {
+export const fetchAllClients = async (page: number = 0, size: number = 10) => {
   try {
     const response = await axios.get(`${API_URL}api/clients`, {
-      method: 'GET',
+      params: {
+        page,
+        size,
+      },
       headers: {
         'Authorization': 'Basic ' + btoa(`${Email}:${Password}`),
         'Content-Type': 'application/json',
       },
     });
-    return response.data;
+    const data = response.data;
+    const totalPages = Math.ceil(data.totalElements / size);
+    return {
+      content: data.content,
+      totalPages,
+      currentPage: page,
+      totalElements: data.totalElements,
+    };
   } catch (err: any) {
     return err.response ? err.response.data : err.message;
   }

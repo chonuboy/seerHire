@@ -1406,16 +1406,26 @@ const deleteClient = async (id)=>{
         return err.response ? err.response.data : err.message;
     }
 };
-const fetchAllClients = async ()=>{
+const fetchAllClients = async (page = 0, size = 10)=>{
     try {
         const response = await __TURBOPACK__imported__module__$5b$externals$5d2f$axios__$5b$external$5d$__$28$axios$2c$__esm_import$29$__["default"].get(`${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api_URL$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["API_URL"]}api/clients`, {
-            method: 'GET',
+            params: {
+                page,
+                size
+            },
             headers: {
                 'Authorization': 'Basic ' + btoa(`${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$creds$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["Email"]}:${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$creds$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["Password"]}`),
                 'Content-Type': 'application/json'
             }
         });
-        return response.data;
+        const data = response.data;
+        const totalPages = Math.ceil(data.totalElements / size);
+        return {
+            content: data.content,
+            totalPages,
+            currentPage: page,
+            totalElements: data.totalElements
+        };
     } catch (err) {
         return err.response ? err.response.data : err.message;
     }
@@ -1538,29 +1548,18 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                                 lineNumber: 125,
                                                 columnNumber: 23
                                             }, this)),
-                                        col.Header === "Actions" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
-                                            className: "bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1",
-                                            onClick: ()=>{
-                                                handleDeleteClient(item.clientId);
-                                            },
-                                            children: "Delete"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 133,
-                                            columnNumber: 21
-                                        }, this),
                                         col.Header === "Action" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                                                 className: "bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-4 rounded",
                                                 children: "Update"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                                lineNumber: 144,
+                                                lineNumber: 134,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 143,
+                                            lineNumber: 133,
                                             columnNumber: 21
                                         }, this)
                                     ]
@@ -1583,7 +1582,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                             children: rowContent
                         }, index, false, {
                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                            lineNumber: 161,
+                            lineNumber: 151,
                             columnNumber: 13
                         }, this) : rowContent;
                     })
@@ -1593,7 +1592,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                 lineNumber: 65,
                 columnNumber: 7
             }, this),
-            isPaginated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 className: "flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -1604,8 +1603,8 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         children: "Previous"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 173,
-                        columnNumber: 11
+                        lineNumber: 162,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("span", {
                         className: "text-sm text-gray-700 dark:text-gray-200",
@@ -1617,8 +1616,8 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 183,
-                        columnNumber: 11
+                        lineNumber: 172,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                         onClick: ()=>onPageChange && currentPage && onPageChange(currentPage + 1),
@@ -1628,14 +1627,14 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         children: "Next"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 186,
-                        columnNumber: 11
+                        lineNumber: 175,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                lineNumber: 172,
-                columnNumber: 9
+                lineNumber: 161,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
@@ -1664,15 +1663,12 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
-const CandidateTable = ({ candidateTableData, candidateTableColumns })=>{
-    const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useState"])(1);
-    const totalPages = Math.ceil(candidateTableData.content.length / 10); // Assuming 10 items per page
-    const handlePageChange = (newPage)=>{
-        setCurrentPage(newPage);
-    };
-    const paginatedData = candidateTableData?.content.slice((currentPage - 1) * 10, currentPage * 10);
+const CandidateTable = ({ candidateTableData, candidateTableColumns, currentPage, onPageChange })=>{
+    (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["useEffect"])(()=>{
+        console.log(candidateTableData);
+    });
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$tables$2f$table$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["Table"], {
-        data: paginatedData,
+        data: candidateTableData.content,
         columns: candidateTableColumns,
         getRowLink: (item, index, edit)=>({
                 pathname: `/candidates/${item.contactId}`,
@@ -1682,12 +1678,11 @@ const CandidateTable = ({ candidateTableData, candidateTableColumns })=>{
             }),
         isPaginated: true,
         currentPage: currentPage,
-        totalPages: totalPages,
-        onPageChange: handlePageChange,
-        pageSize: 10
+        totalPages: candidateTableData.totalPages,
+        onPageChange: onPageChange
     }, void 0, false, {
         fileName: "[project]/src/components/Elements/tables/candidateTable.tsx",
-        lineNumber: 25,
+        lineNumber: 22,
         columnNumber: 5
     }, this);
 };
@@ -1733,10 +1728,6 @@ const ClientTableColumn = [
     {
         Header: "Finance Number",
         accessor: "financeNumber"
-    },
-    {
-        Header: "Actions",
-        accessor: ""
     }
 ];
 const RecruitmentColumn = [
@@ -1841,8 +1832,9 @@ function Recruitments() {
                 fileName: "[project]/src/pages/recruitments/index.tsx",
                 lineNumber: 25,
                 columnNumber: 23
-            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h1", {
-                children: "Loading...Data"
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
+                className: "p-4",
+                children: "Loading Data..."
             }, void 0, false, {
                 fileName: "[project]/src/pages/recruitments/index.tsx",
                 lineNumber: 25,

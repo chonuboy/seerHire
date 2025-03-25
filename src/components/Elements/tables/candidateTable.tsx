@@ -1,29 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "./table";
 import { Columns } from "@/lib/definitions";
 
 const CandidateTable = ({
   candidateTableData,
   candidateTableColumns,
+  currentPage,
+  onPageChange,
 }: {
   candidateTableData: any;
   candidateTableColumns: Columns;
+  currentPage?: number;
+  onPageChange?: (page: number) => void;
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(candidateTableData.content.length / 10); // Assuming 10 items per page
+  useEffect(() => {
+    console.log(candidateTableData);
+  })
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
-  const paginatedData = candidateTableData?.content.slice(
-    (currentPage - 1) * 10,
-    currentPage * 10
-  );
 
   return (
     <Table
-      data={paginatedData}
+      data={candidateTableData.content}
       columns={candidateTableColumns}
       getRowLink={(item, index, edit) => ({
         pathname: `/candidates/${item.contactId}`,
@@ -31,9 +28,8 @@ const CandidateTable = ({
       })}
       isPaginated
       currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={handlePageChange}
-      pageSize={10}
+      totalPages={candidateTableData.totalPages}
+      onPageChange={onPageChange}
     />
   );
 };

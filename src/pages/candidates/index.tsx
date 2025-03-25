@@ -7,16 +7,20 @@ import { useEffect, useState } from "react";
 import { fetchCandidates } from "@/api/candidates/candidates";
 import { contactSearchByKeyword } from "@/api/candidates/candidates";
 import { toast } from "react-toastify";
+
 export default function Candidates() {
   const [allCandidates, setAllCandidates] = useState();
   const [candidateFound, setCandidateFound] = useState(false);
   const [candidateResponse, setCandidateResponse] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchCandidates().then((data) => {
+    fetchCandidates(currentPage-1, 10).then((data: any) => {
       setAllCandidates(data);
+      console.log(data);
     });
-  }, []);
+  }, [currentPage]);
+
   const [searchKeyword, setSearchKeyword] = useState("");
   const handleSearch = () => {
     if (!searchKeyword) {
@@ -37,6 +41,11 @@ export default function Candidates() {
       }
     });
   };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <MainLayout>
       <div className="min-h-screen">
@@ -44,19 +53,19 @@ export default function Candidates() {
         <div className="flex justify-between mb-4">
           <AddButton title="Add New Candidate" url="add" />
           <div className="flex items-center gap-4">
-                <input
-                  type="text"
-                  className="text-sm p-2 border w-full  border-gray-300 rounded focus:outline-blue-600 focus:ring-blue-600"
-                  placeholder="Search Candidates"
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                />
-                <button
-                  className="px-4 py-1 bg-blue-600 text-white rounded-md"
-                  onClick={handleSearch}
-                >
-                  Search
-                </button>
-              </div>
+            <input
+              type="text"
+              className="text-sm p-2 border w-full  border-gray-300 rounded focus:outline-blue-600 focus:ring-blue-600"
+              placeholder="Search Candidates"
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
+            <button
+              className="px-4 py-1 bg-blue-600 text-white rounded-md"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+          </div>
         </div>
 
         {/* Childrens go here. Initially it will be empty, ensure that an id or path is entered after candidates */}
@@ -68,9 +77,11 @@ export default function Candidates() {
             <CandidateTable
               candidateTableData={allCandidates}
               candidateTableColumns={candidateTableColumns}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
             />
           ) : (
-            "Loading Candidates..."
+            <p className="p-2">Loading Candidates...</p>
           )}
         </div>
       </div>

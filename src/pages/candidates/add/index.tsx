@@ -22,35 +22,33 @@ import ContentHeader from "@/components/Layouts/content-header";
 import LocationAutocomplete from "@/components/Forms/location-autocomplete";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 
-
 export default function Candidates() {
   // This will be used to show a spinner if the form isSubmitting }]
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [updatedFileName,setUpdatedFileName] = useState<string | undefined>(undefined);
+  const [updatedFileName, setUpdatedFileName] = useState<string | undefined>(
+    undefined
+  );
   const router = useRouter();
-  const [locations,setLocations] = useState<Location[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchAllLocations().then((data) => {
       const allLocatoins = data;
       setLocations(allLocatoins);
-      console.log(allLocatoins);
-    })
+    });
   }, []);
 
   const onChangeLocation = (location: Location) => {
-    console.log("on change location", location);
     formik.setFieldValue("currentLocation", location);
     console.log(formik.values.currentLocation);
-  }
+  };
 
   const addNewLocation = async (location: Location) => {
     formik.setFieldValue("currentLocation", location);
-  }
-
+  };
 
   // Pass the useFormik() hook initial form values, a validate function that will be called when
   // form values change or fields are blurred, and a submit function that will
@@ -74,10 +72,8 @@ export default function Candidates() {
       reqData.isDifferentlyAbled == "yes" ? true : false;
     console.log(JSON.stringify(reqData, null, 2));
     const response = await createCandidate(reqData);
-    console.log(response);
-    setTimeout(() => {
-      router.push("/candidates");
-    }, 1000);
+    setError(response.message);
+    
 
     if (response.status == 200) {
       setError(null);
@@ -87,12 +83,15 @@ export default function Candidates() {
       setIsSubmitting(false);
       router.push("/candidates");
     } else {
-      setError(response.message);
-      toast.error(response.message, {
+      setError(response);
+      toast.error(response, {
         position: "top-center",
       });
       setIsSubmitting(false);
     }
+    setTimeout(() => {
+      router.push("/candidates");
+    }, 1000);
   };
 
   //---------------------------------------------------------
@@ -100,12 +99,11 @@ export default function Candidates() {
   //------------------------------------------------------------
   const handleFileClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-  }
+  };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     event.stopPropagation();
     const target = event.target;
-    if (target && target.type === 'file') {
+    if (target && target.type === "file") {
       setFile(target?.files?.[0]);
       setUpdatedFileName(target?.files?.[0]?.name);
       console.log(target?.files?.[0]);
@@ -114,7 +112,7 @@ export default function Candidates() {
   const handleChooseFile = (event: React.MouseEvent) => {
     event.stopPropagation();
     fileInputRef?.current?.click();
-  }
+  };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -122,7 +120,7 @@ export default function Candidates() {
     setFile(droppedFile);
   };
 
-  const handleUpload = async (event:any) => {
+  const handleUpload = async (event: any) => {
     event.stopPropagation();
     const fileName = file?.name;
     if (!file) return;
@@ -130,27 +128,28 @@ export default function Candidates() {
     const formData = new FormData();
     console.log(formData);
     console.log(file);
-    formData.append('file', file);
+    formData.append("file", file);
     // formData.append('file_name', fileName);
     toast.warning("Uploading Resume...", {
       position: "bottom-right",
     });
-    try{
-      uploadResume(formData).then((data)=>{
-        console.log(data);
-        setUpdatedFileName(data);
-        formik.setFieldValue("resume", data);
-      }).catch((err)=>{
-        toast.error(err.message, {
-          position: "top-center",
+    try {
+      uploadResume(formData)
+        .then((data) => {
+          console.log(data);
+          setUpdatedFileName(data);
+          formik.setFieldValue("resume", data);
         })
-      })
+        .catch((err) => {
+          toast.error(err.message, {
+            position: "top-center",
+          });
+        });
       toast.dismiss();
-    }catch(err){
+    } catch (err) {
       toast.dismiss();
     }
   };
-
 
   return (
     <MainLayout>
@@ -163,12 +162,14 @@ export default function Candidates() {
           className=" relative text-xs md:text-base mx-auto max-w-3xl"
           onSubmit={formik.handleSubmit}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               e.preventDefault();
             }
           }}
         >
-          <div className="text-base md:text-lg font-semibold mb-4">Personal Information</div>
+          <div className="text-base md:text-lg font-semibold mb-4">
+            Personal Information
+          </div>
           {/* bg-[var(--field-background)] border border-gray-200 */}
           <div className="p-2 md:p-4 grid grid-cols-1 md:grid-cols-2 md: gap-8  text-gray-900  text-sm md:text-base">
             <div className="p-2 space-y-2 md:space-y-2 rounded-lg">
@@ -380,7 +381,8 @@ export default function Candidates() {
                     id="unmarried"
                     value={MaritalStatus.UNMARRIED}
                     checked={
-                      formik.values.maritalStatus === `${MaritalStatus.UNMARRIED}`
+                      formik.values.maritalStatus ===
+                      `${MaritalStatus.UNMARRIED}`
                     }
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -397,9 +399,7 @@ export default function Candidates() {
 
             <div className="p-2 h-auto space-y-2 md:space-y-2 rounded-lg">
               <label htmlFor="address" className="flex">
-                <span className="  font-semibold text-gray-600 ">
-                  Address
-                </span>
+                <span className="  font-semibold text-gray-600 ">Address</span>
               </label>
               <textarea
                 name="address"
@@ -419,9 +419,7 @@ export default function Candidates() {
             </div>
             <div className="p-2 h-auto space-y-2 md:space-y-2 rounded-lg">
               <label htmlFor="addressLocality" className="flex">
-                <span className="  font-semibold text-gray-600 ">
-                  Address
-                </span>
+                <span className="  font-semibold text-gray-600 ">Address</span>
               </label>
               <textarea
                 name="addressLocality"
@@ -459,9 +457,7 @@ export default function Candidates() {
                 onChange={onChangeLocation}
                 options={locations}
                 onAdd={addNewLocation}
-              >
-
-              </LocationAutocomplete>
+              ></LocationAutocomplete>
               {formik.errors.currentLocation?.locationId ? (
                 <div className="text-red-500 text-sm border-red-500">
                   {formik.errors.currentLocation.locationId}
@@ -470,9 +466,7 @@ export default function Candidates() {
             </div>
             <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
               <label htmlFor="pinCode" className="flex">
-                <span className="  font-semibold text-gray-600 ">
-                  Pincode
-                </span>
+                <span className="  font-semibold text-gray-600 ">Pincode</span>
               </label>
               <input
                 type="text"
@@ -489,50 +483,76 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-
           </div>
 
           <hr className="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
 
           {/* ================================= */}
-          <div className="text-base md:text-lg font-semibold mb-4">Upload Resume</div>
+          <div className="text-base md:text-lg font-semibold mb-4">
+            Upload Resume
+          </div>
           <div className="text-sm md:text-base">
-
             <div className="h-auto space-y-2 md:space-y-2 rounded-lg">
               {/* <label htmlFor="resume" className="flex">
                 <span className="  font-semibold text-gray-600 ">Upload Resume</span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label> */}
-              <div className="mt-2 flex flex-col items-center justify-center w-full h-64 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
+              <div
+                className="mt-2 flex flex-col items-center justify-center w-full h-64 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
                 onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault()}>
-                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                onDragOver={(e) => e.preventDefault()}
+              >
+                <svg
+                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
                 </svg>
                 <div className="mb-4 flex text-sm/6 text-gray-500">
-                  <button className='border border-dashed  border-gray-900 px-2 font-semibold' type="button" onClick={handleChooseFile}>Choose a File</button>
+                  <button
+                    className="border border-dashed  border-gray-900 px-2 font-semibold"
+                    type="button"
+                    onClick={handleChooseFile}
+                  >
+                    Choose a File
+                  </button>
                   <input
                     type="file"
                     name="resume"
                     ref={fileInputRef}
                     accept=".pdf, .doc, .docx"
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                     onClick={handleFileClick}
                     onChange={handleFileChange}
                   />
                   <p className="pl-2">or drag and drop</p>
                 </div>
-                <p className="text-xs/4 text-gray-500">PDF, DOC, DOCX up to 5MB</p>
-                {file && <p className='mt-4'><b>Selected file : </b>{updatedFileName}</p>}
-                <button className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
-                  type="button" onClick={handleUpload}>Upload</button>
-
-
-
+                <p className="text-xs/4 text-gray-500">
+                  PDF, DOC, DOCX up to 5MB
+                </p>
+                {file && (
+                  <p className="mt-4">
+                    <b>Selected file : </b>
+                    {updatedFileName}
+                  </p>
+                )}
+                <button
+                  className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
+                  type="button"
+                  onClick={handleUpload}
+                >
+                  Upload
+                </button>
               </div>
-
-
-
             </div>
 
             {/* <div className="p-2 h-auto space-y-2 py-2 md:space-y-2 rounded-lg">
@@ -546,27 +566,27 @@ export default function Candidates() {
               />
               <button className="text-[var(--content-background)] bg-[var(--theme-background)] p-2 rounded-lg w-fit hover:bg-[var(--content-background)] hover:text-[var(--theme-background)] hover:shadow-md hover:shadow-[var(--theme-background)] text-xs md:text-base" type="button">Change</button>
             </div> */}
-
-
           </div>
           <hr className="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
 
           {/* ================================= */}
-          <div className="text-base md:text-lg font-semibold mb-4">Professional Summary</div>
+          <div className="text-base md:text-lg font-semibold mb-4">
+            Professional Summary
+          </div>
 
           <div className="p-2 md:p-4  grid grid-cols-1 md:grid-cols-2 md: gap-8  text-gray-900   text-sm md:text-base">
             <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
               <label htmlFor="companyName" className="flex">
-                <span className="  font-semibold text-gray-600 ">
-                  Company
-                </span>
+                <span className="  font-semibold text-gray-600 ">Company</span>
               </label>
               <input
                 type="text"
                 name="companyName"
                 placeholder="Enter Current or Previous Company"
                 className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-                value={formik.values.companyName ? formik.values.companyName : ""}
+                value={
+                  formik.values.companyName ? formik.values.companyName : ""
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -871,7 +891,6 @@ export default function Candidates() {
               ) : null}
             </div>
 
-
             <div className="p-2 h-auto md:h-full space-y-2 rounded-lg">
               <label htmlFor="isDifferentlyAbled" className="flex">
                 <span className="  font-semibold text-gray-600 ">
@@ -954,7 +973,7 @@ export default function Candidates() {
             </button>
           </footer>
         </form>
-      </div >
-    </MainLayout >
+      </div>
+    </MainLayout>
   );
 }

@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { Candidate } from "@/lib/definitions";
 import { CandidateCard } from "./candidateCard";
 import Link from "next/link";
-import { fetchAllContactTechnologies } from "@/api/candidates/candidateTech";
-import { useRouter } from "next/router";
 
 export const ResultCard = ({
   candidateData,
@@ -22,7 +20,8 @@ export const ResultCard = ({
 
   return (
     <div className="grid md:grid-cols-2 gap-8 grid-cols-1">
-      {currentCandidate?.map((candidate, index) => (
+      
+      {currentCandidate ? currentCandidate?.map((candidate, index) => (
         <div className="space-y-4">
           <CandidateCard candidateData={candidate}>
             <div className="space-y-4 mt-8">
@@ -32,7 +31,7 @@ export const ResultCard = ({
                   <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                     View Resume
                   </button>
-                  <Link href={`/candidates/${index + 1}`}>
+                  <Link href={`/candidates/${candidate.contactId}`}>
                     <button className="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-700">
                       View Profile
                     </button>
@@ -45,7 +44,7 @@ export const ResultCard = ({
             </div>
           </CandidateCard>
         </div>
-      ))}
+      )): <p className="p-4">No Relevant candidates Found</p> }
     </div>
   );
 };

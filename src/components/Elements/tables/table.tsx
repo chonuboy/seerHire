@@ -129,16 +129,6 @@ export const Table: React.FC<TableProps> = ({
                         {role.roleName}
                       </p>
                     ))}
-                  {col.Header === "Actions" && (
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1"
-                      onClick={() => {
-                        handleDeleteClient(item.clientId);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  )}
                   {col.Header === "Action" && (
                     <div>
                       <button className="bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-4 rounded">
@@ -168,33 +158,31 @@ export const Table: React.FC<TableProps> = ({
       </div>
 
       {/* Pagination Controls */}
-      {isPaginated && (
-        <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700">
-          <button
-            onClick={() =>
-              onPageChange && currentPage && onPageChange(currentPage - 1)
-            }
-            disabled={currentPage === 1}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Previous Page"
-          >
-            Previous
-          </button>
-          <span className="text-sm text-gray-700 dark:text-gray-200">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() =>
-              onPageChange && currentPage && onPageChange(currentPage + 1)
-            }
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Next Page"
-          >
-            Next
-          </button>
-        </div>
-      )}
+      <div className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700">
+        <button
+          onClick={() =>
+            onPageChange && currentPage && onPageChange(currentPage - 1)
+          }
+          disabled={currentPage === 1}
+          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Previous Page"
+        >
+          Previous
+        </button>
+        <span className="text-sm text-gray-700 dark:text-gray-200">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            onPageChange && currentPage && onPageChange(currentPage + 1)
+          }
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Next Page"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

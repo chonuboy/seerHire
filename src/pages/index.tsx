@@ -3,8 +3,20 @@ import SideNav from "@/components/Layouts/sidenav";
 import Dashboard from "@/components/Elements/dashboard/dashBoard";
 import ProtectedRoute from "@/Features/protectedRoute";
 import UserCard from "@/components/Elements/cards/userCard";
+import { useEffect,useState } from "react";
 
 export default function Home() {
+
+  const [userRole,setUserRole] = useState<string | null>(null);
+  useEffect(() => {
+    const userRole = localStorage.getItem("userRole")
+    const truncatedUserRole = userRole?.replace('"', "").replace('"', "");
+    setUserRole(truncatedUserRole ?? "");
+    return () => {
+      userRole;
+    };
+  }, []);
+
   return (
     <ProtectedRoute>
       <main className="min-h-screen">
@@ -15,7 +27,7 @@ export default function Home() {
           </div>
           <div className="flex-grow p-4 md:overflow-y-auto md:p-6">
             <Dashboard></Dashboard>
-            <UserCard></UserCard>
+            {userRole === "SuperAdmin" && <UserCard></UserCard>}
           </div>
         </div>
       </main>

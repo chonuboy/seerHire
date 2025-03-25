@@ -2,30 +2,17 @@ import { Columns } from "@/lib/definitions";
 import { useState } from "react";
 import { Table } from "./table";
 
-const ClientTable = ({ clientTableData, clientTableColumns} :{clientTableData:any,clientTableColumns:Columns}) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(clientTableData.content.length / 10); // Assuming 10 items per page
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
-  const paginatedData = clientTableData.content.
-  slice(
-    (currentPage - 1) * 10,
-    currentPage * 10
-  );
-
+const ClientTable = ({ clientTableData, clientTableColumns,onPageChange} :{clientTableData:any,clientTableColumns:Columns,onPageChange:(page: number) => void}) => {
+ 
   return (
     <Table
-      data={paginatedData}
+      data={clientTableData.content}
       columns={clientTableColumns}
       getRowLink={(item, index) => `/clients/${item.clientId}`}
-      currentPage={currentPage}
+      currentPage={clientTableData.currentPage+1}
       isPaginated
-      totalPages={totalPages}
-      onPageChange={handlePageChange}
-      pageSize={10}
+      totalPages={clientTableData.totalPages}
+      onPageChange={onPageChange}
     />
   );
 };

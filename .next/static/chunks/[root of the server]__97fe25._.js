@@ -1514,16 +1514,26 @@ const deleteClient = async (id)=>{
         return err.response ? err.response.data : err.message;
     }
 };
-const fetchAllClients = async ()=>{
+const fetchAllClients = async (page = 0, size = 10)=>{
     try {
         const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].get(`${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api_URL$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["API_URL"]}api/clients`, {
-            method: 'GET',
+            params: {
+                page,
+                size
+            },
             headers: {
                 'Authorization': 'Basic ' + btoa(`${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$creds$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["Email"]}:${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$creds$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["Password"]}`),
                 'Content-Type': 'application/json'
             }
         });
-        return response.data;
+        const data = response.data;
+        const totalPages = Math.ceil(data.totalElements / size);
+        return {
+            content: data.content,
+            totalPages,
+            currentPage: page,
+            totalElements: data.totalElements
+        };
     } catch (err) {
         return err.response ? err.response.data : err.message;
     }
@@ -1646,29 +1656,18 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                                                 lineNumber: 125,
                                                 columnNumber: 23
                                             }, this)),
-                                        col.Header === "Actions" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            className: "bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-4 rounded col-span-1",
-                                            onClick: ()=>{
-                                                handleDeleteClient(item.clientId);
-                                            },
-                                            children: "Delete"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 133,
-                                            columnNumber: 21
-                                        }, this),
                                         col.Header === "Action" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 className: "bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-4 rounded",
                                                 children: "Update"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                                lineNumber: 144,
+                                                lineNumber: 134,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                                            lineNumber: 143,
+                                            lineNumber: 133,
                                             columnNumber: 21
                                         }, this)
                                     ]
@@ -1691,7 +1690,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                             children: rowContent
                         }, index, false, {
                             fileName: "[project]/src/components/Elements/tables/table.tsx",
-                            lineNumber: 161,
+                            lineNumber: 151,
                             columnNumber: 13
                         }, this) : rowContent;
                     })
@@ -1701,7 +1700,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                 lineNumber: 65,
                 columnNumber: 7
             }, this),
-            isPaginated && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1712,8 +1711,8 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         children: "Previous"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 173,
-                        columnNumber: 11
+                        lineNumber: 162,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         className: "text-sm text-gray-700 dark:text-gray-200",
@@ -1725,8 +1724,8 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 183,
-                        columnNumber: 11
+                        lineNumber: 172,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: ()=>onPageChange && currentPage && onPageChange(currentPage + 1),
@@ -1736,14 +1735,14 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         children: "Next"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Elements/tables/table.tsx",
-                        lineNumber: 186,
-                        columnNumber: 11
+                        lineNumber: 175,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Elements/tables/table.tsx",
-                lineNumber: 172,
-                columnNumber: 9
+                lineNumber: 161,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
@@ -1773,36 +1772,24 @@ __turbopack_esm__({
     "default": (()=>__TURBOPACK__default__export__)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$tables$2f$table$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/Elements/tables/table.tsx [client] (ecmascript)");
 ;
-var _s = __turbopack_refresh__.signature();
 ;
-;
-const ClientTable = ({ clientTableData, clientTableColumns })=>{
-    _s();
-    const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(1);
-    const totalPages = Math.ceil(clientTableData.content.length / 10); // Assuming 10 items per page
-    const handlePageChange = (newPage)=>{
-        setCurrentPage(newPage);
-    };
-    const paginatedData = clientTableData.content.slice((currentPage - 1) * 10, currentPage * 10);
+const ClientTable = ({ clientTableData, clientTableColumns, onPageChange })=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$tables$2f$table$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["Table"], {
-        data: paginatedData,
+        data: clientTableData.content,
         columns: clientTableColumns,
         getRowLink: (item, index)=>`/clients/${item.clientId}`,
-        currentPage: currentPage,
+        currentPage: clientTableData.currentPage + 1,
         isPaginated: true,
-        totalPages: totalPages,
-        onPageChange: handlePageChange,
-        pageSize: 10
+        totalPages: clientTableData.totalPages,
+        onPageChange: onPageChange
     }, void 0, false, {
         fileName: "[project]/src/components/Elements/tables/clientTable.tsx",
-        lineNumber: 20,
+        lineNumber: 8,
         columnNumber: 5
     }, this);
 };
-_s(ClientTable, "6xAUoJ2motYJ38x4zeUWisA+X/4=");
 _c = ClientTable;
 const __TURBOPACK__default__export__ = ClientTable;
 var _c;
@@ -1842,10 +1829,6 @@ const ClientTableColumn = [
     {
         Header: "Finance Number",
         accessor: "financeNumber"
-    },
-    {
-        Header: "Actions",
-        accessor: ""
     }
 ];
 const RecruitmentColumn = [
@@ -1962,6 +1945,7 @@ function Clients() {
     _s();
     const [allClients, setClients] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])();
     const [isClientAdded, setIsClientAdded] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])(1);
     // Form Fields
     const [clientName, setClientName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [clientHo, setClientHo] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -1973,13 +1957,19 @@ function Clients() {
     const [pannumber, setPanNumber] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useState"])("");
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Clients.useEffect": ()=>{
-            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$master$2f$clients$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["fetchAllClients"])().then({
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$master$2f$clients$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["fetchAllClients"])(currentPage - 1, 10).then({
                 "Clients.useEffect": (data)=>{
                     setClients(data);
+                    console.log(data);
                 }
             }["Clients.useEffect"]);
         }
-    }["Clients.useEffect"], []);
+    }["Clients.useEffect"], [
+        currentPage
+    ]);
+    const handlePageChange = (newPage)=>{
+        setCurrentPage(newPage);
+    };
     const handleAddClient = async (e)=>{
         e.preventDefault();
         try {
@@ -2026,7 +2016,7 @@ function Clients() {
                 title: "Clients"
             }, void 0, false, {
                 fileName: "[project]/src/pages/clients/index.tsx",
-                lineNumber: 76,
+                lineNumber: 82,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2038,7 +2028,7 @@ function Clients() {
                         children: "Add New Client"
                     }, void 0, false, {
                         fileName: "[project]/src/pages/clients/index.tsx",
-                        lineNumber: 78,
+                        lineNumber: 84,
                         columnNumber: 9
                     }, this),
                     isClientAdded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$cards$2f$popup$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["Popup"], {
@@ -2061,7 +2051,7 @@ function Clients() {
                                                         children: "Client Name"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 90,
+                                                        lineNumber: 96,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2072,13 +2062,13 @@ function Clients() {
                                                         onChange: (e)=>setClientName(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 93,
+                                                        lineNumber: 99,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 89,
+                                                lineNumber: 95,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2090,7 +2080,7 @@ function Clients() {
                                                         children: "Client HO"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 102,
+                                                        lineNumber: 108,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2101,13 +2091,13 @@ function Clients() {
                                                         onChange: (e)=>setClientHo(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 105,
+                                                        lineNumber: 111,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 101,
+                                                lineNumber: 107,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2119,7 +2109,7 @@ function Clients() {
                                                         children: "Finance POC"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 115,
+                                                        lineNumber: 121,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2130,13 +2120,13 @@ function Clients() {
                                                         onChange: (e)=>setFinancePocName(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 118,
+                                                        lineNumber: 124,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 114,
+                                                lineNumber: 120,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2148,7 +2138,7 @@ function Clients() {
                                                         children: "Finance Number"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 128,
+                                                        lineNumber: 134,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2159,13 +2149,13 @@ function Clients() {
                                                         onChange: (e)=>setFinanceNumber(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 131,
+                                                        lineNumber: 137,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 127,
+                                                lineNumber: 133,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2177,7 +2167,7 @@ function Clients() {
                                                         children: "Finance Email"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 141,
+                                                        lineNumber: 147,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2188,13 +2178,13 @@ function Clients() {
                                                         onChange: (e)=>setFinanceEmail(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 144,
+                                                        lineNumber: 150,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 140,
+                                                lineNumber: 146,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2206,7 +2196,7 @@ function Clients() {
                                                         children: "GST"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 154,
+                                                        lineNumber: 160,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2217,13 +2207,13 @@ function Clients() {
                                                         onChange: (e)=>setGstNumber(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 157,
+                                                        lineNumber: 163,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 153,
+                                                lineNumber: 159,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2235,7 +2225,7 @@ function Clients() {
                                                         children: "CIN"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 167,
+                                                        lineNumber: 173,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2246,13 +2236,13 @@ function Clients() {
                                                         onChange: (e)=>setCinNumber(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 170,
+                                                        lineNumber: 176,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 166,
+                                                lineNumber: 172,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2264,7 +2254,7 @@ function Clients() {
                                                         children: "PAN"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 180,
+                                                        lineNumber: 186,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2275,19 +2265,19 @@ function Clients() {
                                                         onChange: (e)=>setPanNumber(e.target.value)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                                        lineNumber: 183,
+                                                        lineNumber: 189,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                                lineNumber: 179,
+                                                lineNumber: 185,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                        lineNumber: 88,
+                                        lineNumber: 94,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2296,7 +2286,7 @@ function Clients() {
                                         children: "Add Client"
                                     }, void 0, false, {
                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                        lineNumber: 193,
+                                        lineNumber: 199,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2305,47 +2295,55 @@ function Clients() {
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/src/pages/clients/index.tsx",
-                                        lineNumber: 199,
+                                        lineNumber: 205,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/pages/clients/index.tsx",
-                                lineNumber: 87,
+                                lineNumber: 93,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/pages/clients/index.tsx",
-                            lineNumber: 86,
+                            lineNumber: 92,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/pages/clients/index.tsx",
-                        lineNumber: 85,
+                        lineNumber: 91,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/pages/clients/index.tsx",
-                lineNumber: 77,
+                lineNumber: 83,
                 columnNumber: 7
             }, this),
             allClients ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$tables$2f$clientTable$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {
                 clientTableData: allClients,
-                clientTableColumns: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$models$2f$client$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["ClientTableColumn"]
+                clientTableColumns: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$models$2f$client$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["ClientTableColumn"],
+                onPageChange: handlePageChange
             }, void 0, false, {
                 fileName: "[project]/src/pages/clients/index.tsx",
-                lineNumber: 209,
+                lineNumber: 218,
                 columnNumber: 9
-            }, this) : "Loading Clients..."
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "p-2",
+                children: "Loading Clients..."
+            }, void 0, false, {
+                fileName: "[project]/src/pages/clients/index.tsx",
+                lineNumber: 224,
+                columnNumber: 9
+            }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/pages/clients/index.tsx",
-        lineNumber: 75,
+        lineNumber: 81,
         columnNumber: 5
     }, this);
 }
-_s(Clients, "rHJ6tIhyRD1gEOKtE9GGZEN9GMo=");
+_s(Clients, "pYnZ8OnBI1hwn6WriAGGausajmU=");
 _c = Clients;
 var _c;
 __turbopack_refresh__.register(_c, "Clients");

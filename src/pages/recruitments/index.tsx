@@ -22,7 +22,7 @@ export default function Recruitments() {
 	return (
 		<MainLayout>
 			<ContentHeader title="Recruitments" />
-			{recruitmentData ? <CandidateTable candidateTableData={recruitmentData} candidateTableColumns={RecruitmentColumn}></CandidateTable>  : <h1>Loading...Data</h1>}
+			{recruitmentData ? <CandidateTable candidateTableData={recruitmentData} candidateTableColumns={RecruitmentColumn}></CandidateTable>  : <p className='p-4'>Loading Data...</p> }
 			
 		</MainLayout>
 	);

@@ -44,7 +44,6 @@ export default function UserCard() {
             <th className="py-3 px-4 font-semibold text-gray-800 border-b">Username</th>
             <th className="py-3 px-4 font-semibold text-gray-800 border-b">Email</th>
             <th className="py-3 px-4 font-semibold text-gray-800 border-b">Role</th>
-            <th className="py-3 px-4 font-semibold text-gray-800 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -53,14 +52,6 @@ export default function UserCard() {
               <td className="py-4 px-4">{user.userName}</td>
               <td className="py-4 px-4">{user.email}</td>
               <td className="py-4 px-4">{user.roles[0].roleName}</td>
-              <td className="py-4 px-4">
-                <button
-                  onClick={() => handleDeleteUser(user.userId)}
-                  className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1 px-3 rounded text-sm transition-colors"
-                >
-                  Delete
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>

@@ -3,7 +3,7 @@ import ContentHeader from "@/components/Layouts/content-header";
 import ClientTable from "@/components/Elements/tables/clientTable";
 import { ClientTableColumn } from "@/lib/models/client";
 import { useEffect, useState } from "react";
-import { fetchAllClients } from "@/api/master/clients";
+import { fetchAllClients, fetchClient } from "@/api/master/clients";
 import { createClient } from "@/api/master/clients";
 import { Popup } from "@/components/Elements/cards/popup";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 export default function Clients() {
   const [allClients, setClients] = useState();
   const [isClientAdded, setIsClientAdded] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Form Fields
   const [clientName, setClientName] = useState("");
@@ -23,10 +24,15 @@ export default function Clients() {
   const [pannumber, setPanNumber] = useState("");
 
   useEffect(() => {
-    fetchAllClients().then((data) => {
+    fetchAllClients(currentPage - 1, 10).then((data: any) => {
       setClients(data);
+      console.log(data);
     });
-  }, []);
+  }, [currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   const handleAddClient = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +40,7 @@ export default function Clients() {
       createClient({
         clientName: clientName,
         clientHo: clientHo,
-        isClientBillingStateTamilNadu:true,
+        isClientBillingStateTamilNadu: true,
         financePocName: financePocName,
         financeNumber: financeNumber,
         financeEmail: financeEmail,
@@ -45,12 +51,12 @@ export default function Clients() {
         .then((data) => {
           toast.error(data, {
             position: "top-right",
-          })
+          });
           if (data.status === "success") {
             toast.success(data.message, {
               position: "top-right",
             });
-            setTimeout(async() => {
+            setTimeout(async () => {
               const updatedClients = await fetchAllClients();
               setClients(updatedClients);
             }, 1000);
@@ -196,7 +202,10 @@ export default function Clients() {
                 >
                   Add Client
                 </button>
-                <button className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300" onClick={() => setIsClientAdded(false)}>
+                <button
+                  className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300"
+                  onClick={() => setIsClientAdded(false)}
+                >
                   Cancel
                 </button>
               </form>
@@ -209,9 +218,10 @@ export default function Clients() {
         <ClientTable
           clientTableData={allClients}
           clientTableColumns={ClientTableColumn}
+          onPageChange={handlePageChange}
         />
       ) : (
-        "Loading Clients..."
+        <p className="p-2">Loading Clients...</p>
       )}
     </MainLayout>
   );
