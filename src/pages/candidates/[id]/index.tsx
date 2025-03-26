@@ -1231,9 +1231,6 @@ export default function Candidates() {
             )}
             {candidateCertificates && candidateCertificates?.length > 0 ? (
               <div className="p-2 bg-white rounded-lg shadow-sm space-y-4">
-                <h3 className="md:text-xl text-sm font-semibold">
-                  Certificates
-                </h3>
                 <div className="flex flex-wrap items-center gap-2">
                   {candidateCertificates?.map((certificate, index) => (
                     <div className="relative">
