@@ -4,8 +4,5 @@
   "/": "pages/index.js",
   "/login": "pages/login.js",
   "/candidates": "pages/candidates.js",
-  "/clients": "pages/clients.js",
-  "/recruitments": "pages/recruitments.js",
-  "/candidates/[id]": "pages/candidates/[id].js",
-  "/candidates/add": "pages/candidates/add.js"
+  "/candidates/[id]": "pages/candidates/[id].js"
 }

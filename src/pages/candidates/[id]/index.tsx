@@ -1229,11 +1229,7 @@ export default function Candidates() {
             ) : (
               ""
             )}
-            {candidateCertificates?.length === 0 ? (
-              <div className="mt-6">
-                <p>No Certificates Found</p>
-              </div>
-            ) : (
+            {candidateCertificates && candidateCertificates?.length > 0 ? (
               <div className="p-2 bg-white rounded-lg shadow-sm space-y-4">
                 <h3 className="md:text-xl text-sm font-semibold">
                   Certificates
@@ -1268,6 +1264,8 @@ export default function Candidates() {
                   ))}
                 </div>
               </div>
+            ):(
+              <p>No Certificates Found</p>
             )}
           </div>
         </section>

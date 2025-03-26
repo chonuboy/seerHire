@@ -43,28 +43,6 @@
       "static/chunks/src_pages_candidates_index_tsx_5771e1._.js",
       "static/chunks/src_pages_candidates_index_tsx_13aab9._.js"
     ],
-    "/clients": [
-      "static/chunks/[root of the server]__97fe25._.js",
-      "static/chunks/node_modules_next_f0965f._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_70ffd0._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_clients_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_clients_index_tsx_8db501._.js"
-    ],
-    "/recruitments": [
-      "static/chunks/node_modules_next_f0965f._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_9b1522._.js",
-      "static/chunks/[root of the server]__e306e2._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_recruitments_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_recruitments_index_tsx_b3b2a9._.js"
-    ],
     "/candidates/[id]": [
       "static/chunks/[root of the server]__2ac3a2._.js",
       "static/chunks/node_modules_next_f0965f._.js",
@@ -76,18 +54,6 @@
       "static/chunks/[next]_internal_font_google_902fed._.css",
       "static/chunks/src_pages_candidates_[id]_index_tsx_5771e1._.js",
       "static/chunks/src_pages_candidates_[id]_index_tsx_371e19._.js"
-    ],
-    "/candidates/add": [
-      "static/chunks/[root of the server]__a5d6c0._.js",
-      "static/chunks/node_modules_next_a5007d._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_lodash-es_ff7e50._.js",
-      "static/chunks/node_modules_1a9374._.js",
-      "static/chunks/[root of the server]__bbefe7._.css",
-      "static/chunks/src_pages_candidates_add_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_candidates_add_index_tsx_04636f._.js"
     ]
   },
   "devFiles": [],
