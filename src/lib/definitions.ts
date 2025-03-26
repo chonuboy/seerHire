@@ -3,7 +3,7 @@
 // For simplicity of teaching, we're manually defining these types.
 
 export type Candidate = {
-	contactId:number,
+	contactId?:number,
 	firstName: string;
 	lastName: string;
 	dob: string;
