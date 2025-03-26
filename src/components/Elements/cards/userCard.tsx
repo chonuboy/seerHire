@@ -9,7 +9,7 @@ interface User {
   email: string;
   isActive: boolean;
   password: string;
-  roles: { roleId: number | null; roleName?: string }[];
+  roles: { roleId: number | undefined; roleName?: string }[];
   userName: string;
 }
 
@@ -30,7 +30,7 @@ export default function UserCard() {
     email: "",
     roles: [
       {
-        roleId: null,
+        roleId: undefined,
       },
     ],
     isActive: true,

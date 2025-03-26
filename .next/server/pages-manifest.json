@@ -1,12 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/candidates": "pages/candidates.js",
-  "/clients": "pages/clients.js",
-  "/recruitments": "pages/recruitments.js",
-  "/search": "pages/search.js",
-  "/settings": "pages/settings.js",
-  "/candidates/[id]": "pages/candidates/[id].js",
-  "/login": "pages/login.js"
-}
+{"/_app":"pages/_app.js","/_document":"pages/_document.js","/candidates/[id]/interviews/[interviewid]":"pages/candidates/[id]/interviews/[interviewid].html","/analytics":"pages/analytics.html","/candidates/[id]":"pages/candidates/[id].html","/clients/[id]":"pages/clients/[id].html","/candidates":"pages/candidates.html","/help":"pages/help.html","/candidates/add":"pages/candidates/add.html","/clients":"pages/clients.html","/googleAuth/[...nextAuth]":"pages/googleAuth/[...nextAuth].html","/":"pages/index.html","/jobs/[id]":"pages/jobs/[id].html","/recruitments":"pages/recruitments.html","/jobs/[id]/candidates":"pages/jobs/[id]/candidates.html","/jobs/[id]/interviews":"pages/jobs/[id]/interviews.html","/search":"pages/search.html","/login":"pages/login.html","/search/results":"pages/search/results.html","/settings":"pages/settings.html","/_error":"pages/_error.js","/404":"pages/404.html"}
