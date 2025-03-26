@@ -15,12 +15,8 @@ const ProfileUpdateForm = ({ initialValues,id,autoClose }: { initialValues: any,
     initialValues: initialValues, // Pass initialValues from props
     validationSchema: profileUpdateSchema,
     onSubmit: (values) => {
-      // Compute updated fields
       const updatedFields = getUpdatedFields(initialValues, values);
 
-      // Send only updated fields to the backend
-      console.log("Updated fields:", updatedFields);
-      // Call your API here with updatedFields
       try {
         updateCandidate(updatedFields, id);
         toast.success("Profile updated successfully", {
@@ -167,7 +163,6 @@ const ProfileUpdateForm = ({ initialValues,id,autoClose }: { initialValues: any,
             </div>
           ) : null}
         </div>
-
         {/* Highest Qualification */}
         <div className="space-y-2">
           <label

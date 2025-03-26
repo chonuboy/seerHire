@@ -61,7 +61,7 @@ export const Table: React.FC<TableProps> = ({
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
+    <div className="rounded-lg border text-xs md:text-base border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
       <div className="flex flex-col">
         {/* Table Header */}
         <div
@@ -71,11 +71,11 @@ export const Table: React.FC<TableProps> = ({
           {columns.map((col, index) => (
             <div
               key={index}
-              className={`p-3 xl:p-4 ${
-                col.hiddenOnSmall ? "hidden sm:block" : ""
-              }`}
+              className={`p-3 xl:p-4 overflow-scroll text-wrap ${
+                col.hiddenOnSmall ? "hidden sm:block" : "" 
+              }` }
             >
-              <h5 className="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
+              <h5 className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
                 {col.Header}
               </h5>
             </div>

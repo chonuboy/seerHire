@@ -13,10 +13,6 @@ const CandidateTable = ({
   currentPage?: number;
   onPageChange?: (page: number) => void;
 }) => {
-  useEffect(() => {
-    console.log(candidateTableData);
-  })
-
 
   return (
     <Table

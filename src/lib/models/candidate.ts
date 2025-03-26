@@ -15,7 +15,7 @@ const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 export const CandidateModel: Candidate = {
-  id: 0,
+  contactId: 0,
   firstName: "",
   lastName: "",
   dob: "",
@@ -165,8 +165,14 @@ export const candidateTableColumns: Columns = [
 //   Contact Details for Profile Page Demo Data
 
 export interface Certificates {
-  id?: number;
+  certificationId?: number;
   certificationName: string;
+}
+
+export interface contactCertificate{
+  contactCertificationId?:number,
+  contactDetails?:Candidate|null,
+  certification?:Certificates|null
 }
 
 export interface Interview {

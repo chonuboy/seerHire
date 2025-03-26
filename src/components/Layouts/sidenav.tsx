@@ -1,4 +1,3 @@
-import Link from "next/link";
 import NavLinks from "@/components/Layouts/nav-links";
 import { imgHelper } from "@/lib/image-helper";
 import { useDispatch } from "react-redux";
@@ -35,14 +34,22 @@ export default function SideNav() {
       {/* sidebar for mobile view */}
       <section
         id="sidebar"
-        className="fixed left-0 inset-y-10 transform -translate-x-full md:hidden transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10"
+        className="fixed left-0 inset-y-0 transform -translate-x-full md:hidden transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10 w-10 mt-8"
       >
         <nav className="space-y-4">
           <NavLinks />
         </nav>
-        <button className="flex h-[48px] grow items-center justify-center gap-4 hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-          <img src={imgHelper.logout} alt="Logout" className="w-6 h-6" />
-          <div className="">Logout</div>
+        <button
+          className="flex h-[48px] grow items-center justify-center ml-3 mt-1 gap-4 hover:bg-blue-500 hover:text-white md:flex-none md:justify-start md:p-2 md:px-3"
+          onClick={() => {
+            dispatch(logout());
+            localStorage.clear();
+            setTimeout(() => {
+              router.push("/login");
+            }, 1000);
+          }}
+        >
+          <img src={imgHelper.logout} alt="Logout" className="w-5 h-5" />
         </button>
       </section>
     </>

@@ -661,6 +661,7 @@ function SeerTechLogo() {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
                 id: "menu-toggle",
                 className: "md:hidden text-gray-700",
+                onClick: ()=>document.getElementById('sidebar')?.classList.toggle('md:hidden'),
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("svg", {
                     xmlns: "http://www.w3.org/2000/svg",
                     fill: "none",
@@ -930,14 +931,14 @@ function SideNav() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Layouts$2f$nav$2d$links$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 17,
+                            lineNumber: 16,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                             className: "hidden h-auto w-full grow rounded-md bg-gray-50 md:block"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 18,
+                            lineNumber: 17,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -956,7 +957,7 @@ function SideNav() {
                                     className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                    lineNumber: 30,
+                                    lineNumber: 29,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -964,40 +965,40 @@ function SideNav() {
                                     children: "Logout"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                    lineNumber: 31,
+                                    lineNumber: 30,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 20,
+                            lineNumber: 19,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                    lineNumber: 16,
+                    lineNumber: 15,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                lineNumber: 15,
+                lineNumber: 14,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("section", {
                 id: "sidebar",
-                className: "fixed left-0 inset-y-10 transform -translate-x-full md:hidden transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10",
+                className: "fixed left-0 inset-y-10 transform -translate-x-full transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("nav", {
                         className: "space-y-4",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Layouts$2f$nav$2d$links$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 41,
+                            lineNumber: 40,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                        lineNumber: 40,
+                        lineNumber: 39,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("button", {
@@ -1009,7 +1010,7 @@ function SideNav() {
                                 className: "w-6 h-6"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                lineNumber: 44,
+                                lineNumber: 43,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -1017,19 +1018,19 @@ function SideNav() {
                                 children: "Logout"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                lineNumber: 45,
+                                lineNumber: 44,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                        lineNumber: 43,
+                        lineNumber: 42,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                lineNumber: 36,
+                lineNumber: 35,
                 columnNumber: 7
             }, this)
         ]
@@ -1320,7 +1321,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-        className: "rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden",
+        className: "rounded-lg border text-xs md:text-base border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                 className: "flex flex-col",
@@ -1329,9 +1330,9 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         className: `grid grid-cols-3 rounded-t-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-5`,
                         role: "rowheader",
                         children: columns.map((col, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                className: `p-3 xl:p-4 ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
+                                className: `p-3 xl:p-4 overflow-scroll text-wrap ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("h5", {
-                                    className: "text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200",
+                                    className: "text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200",
                                     children: col.Header
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Elements/tables/table.tsx",
@@ -1541,6 +1542,10 @@ const ClientTableColumn = [
     {
         Header: "Finance Number",
         accessor: "financeNumber"
+    },
+    {
+        Header: "FinancePocName",
+        accessor: "financePocName"
     }
 ];
 const RecruitmentColumn = [

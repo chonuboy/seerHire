@@ -86,6 +86,10 @@ export const ClientTableColumn: Columns = [
     Header: "Finance Number",
     accessor: "financeNumber",
   },
+  {
+    Header: "FinancePocName",
+    accessor: "financePocName",
+  }
 ];
 
 export const RecruitmentColumn = [

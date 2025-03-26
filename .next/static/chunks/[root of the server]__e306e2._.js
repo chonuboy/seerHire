@@ -713,7 +713,7 @@ function SeerTechLogo() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SeerTechLogo.useEffect": ()=>{
-            const user = localStorage.getItem('user');
+            const user = localStorage.getItem("user");
             setUser(user);
         }
     }["SeerTechLogo.useEffect"], []);
@@ -722,7 +722,8 @@ function SeerTechLogo() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 id: "menu-toggle",
-                className: "md:hidden text-gray-700",
+                className: "md:hidden text-white",
+                onClick: ()=>document.getElementById("sidebar")?.classList.toggle("-translate-x-full"),
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
                     xmlns: "http://www.w3.org/2000/svg",
                     fill: "none",
@@ -736,18 +737,18 @@ function SeerTechLogo() {
                         d: "M3.75 7.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/header.tsx",
-                        lineNumber: 27,
-                        columnNumber: 6
+                        lineNumber: 35,
+                        columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/Layouts/header.tsx",
-                    lineNumber: 19,
-                    columnNumber: 5
+                    lineNumber: 27,
+                    columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Layouts/header.tsx",
                 lineNumber: 18,
-                columnNumber: 4
+                columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center gap-2",
@@ -758,37 +759,37 @@ function SeerTechLogo() {
                         className: "w-6 h-6 object-cover rounded-full"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/header.tsx",
-                        lineNumber: 36,
-                        columnNumber: 5
+                        lineNumber: 44,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                         className: "text-white font-semibold",
                         children: "SeerTech Systems"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/header.tsx",
-                        lineNumber: 41,
-                        columnNumber: 5
+                        lineNumber: 49,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Layouts/header.tsx",
-                lineNumber: 35,
-                columnNumber: 4
+                lineNumber: 43,
+                columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center gap-2",
-                onClick: ()=>setTimeout(()=>router.push('/settings'), 1000),
+                onClick: ()=>setTimeout(()=>router.push("/settings"), 1000),
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                         className: "text-white font-semibold",
                         children: [
-                            user?.replace('"', '').replace('"', '').charAt(0).toUpperCase(),
+                            user?.replace('"', "").replace('"', "").charAt(0).toUpperCase(),
                             user?.slice(2, user.length - 1)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Layouts/header.tsx",
-                        lineNumber: 44,
-                        columnNumber: 5
+                        lineNumber: 56,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                         src: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$helper$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["imgHelper"].userProfile,
@@ -796,23 +797,23 @@ function SeerTechLogo() {
                         className: "w-5 h-5 md:w-10 md:h-10 rounded-full"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/header.tsx",
-                        lineNumber: 45,
-                        columnNumber: 5
+                        lineNumber: 61,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Layouts/header.tsx",
-                lineNumber: 43,
-                columnNumber: 4
+                lineNumber: 51,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Layouts/header.tsx",
         lineNumber: 15,
-        columnNumber: 3
+        columnNumber: 5
     }, this);
 }
-_s(SeerTechLogo, "tFHNQfLmA23vdbmzS7H9B7xSBSc=", false, function() {
+_s(SeerTechLogo, "ocZTZ8m72GkfgAfkTHk7sW+OJyw=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];
@@ -1022,14 +1023,14 @@ function SideNav() {
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Layouts$2f$nav$2d$links$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 17,
+                            lineNumber: 16,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "hidden h-auto w-full grow rounded-md bg-gray-50 md:block"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 18,
+                            lineNumber: 17,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1048,7 +1049,7 @@ function SideNav() {
                                     className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                    lineNumber: 30,
+                                    lineNumber: 29,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1056,72 +1057,69 @@ function SideNav() {
                                     children: "Logout"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                    lineNumber: 31,
+                                    lineNumber: 30,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 20,
+                            lineNumber: 19,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                    lineNumber: 16,
+                    lineNumber: 15,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                lineNumber: 15,
+                lineNumber: 14,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 id: "sidebar",
-                className: "fixed left-0 inset-y-10 transform -translate-x-full md:hidden transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10",
+                className: "fixed left-0 inset-y-0 transform -translate-x-full md:hidden transition-transform duration-200 ease-in-out bg-gray-50 py-4 h-full z-10 w-10 mt-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
                         className: "space-y-4",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Layouts$2f$nav$2d$links$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                            lineNumber: 41,
+                            lineNumber: 40,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                        lineNumber: 40,
+                        lineNumber: 39,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        className: "flex h-[48px] grow items-center justify-center gap-4 hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                src: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$helper$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["imgHelper"].logout,
-                                alt: "Logout",
-                                className: "w-6 h-6"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                lineNumber: 44,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "",
-                                children: "Logout"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                                lineNumber: 45,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
+                        className: "flex h-[48px] grow items-center justify-center ml-3 mt-1 gap-4 hover:bg-blue-500 hover:text-white md:flex-none md:justify-start md:p-2 md:px-3",
+                        onClick: ()=>{
+                            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$Features$2f$auth$2f$credentialSlice$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["logout"])());
+                            localStorage.clear();
+                            setTimeout(()=>{
+                                router.push("/login");
+                            }, 1000);
+                        },
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                            src: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$helper$2e$ts__$5b$client$5d$__$28$ecmascript$29$__["imgHelper"].logout,
+                            alt: "Logout",
+                            className: "w-5 h-5"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/Layouts/sidenav.tsx",
+                            lineNumber: 52,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
                         fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                        lineNumber: 43,
+                        lineNumber: 42,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Layouts/sidenav.tsx",
-                lineNumber: 36,
+                lineNumber: 35,
                 columnNumber: 7
             }, this)
         ]
@@ -1779,7 +1777,7 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden",
+        className: "rounded-lg border text-xs md:text-base border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex flex-col",
@@ -1788,9 +1786,9 @@ const Table = ({ columns, data, getRowLink, currentPage, totalPages, onPageChang
                         className: `grid grid-cols-3 rounded-t-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-700 dark:to-blue-700 sm:grid-cols-5`,
                         role: "rowheader",
                         children: columns.map((col, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: `p-3 xl:p-4 ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
+                                className: `p-3 xl:p-4 overflow-scroll text-wrap ${col.hiddenOnSmall ? "hidden sm:block" : ""}`,
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h5", {
-                                    className: "text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200",
+                                    className: "text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200",
                                     children: col.Header
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Elements/tables/table.tsx",
@@ -1946,19 +1944,10 @@ __turbopack_esm__({
     "default": (()=>__TURBOPACK__default__export__)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react/index.js [client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$tables$2f$table$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/Elements/tables/table.tsx [client] (ecmascript)");
-;
-var _s = __turbopack_refresh__.signature();
 ;
 ;
 const CandidateTable = ({ candidateTableData, candidateTableColumns, currentPage, onPageChange })=>{
-    _s();
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "CandidateTable.useEffect": ()=>{
-            console.log(candidateTableData);
-        }
-    }["CandidateTable.useEffect"]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Elements$2f$tables$2f$table$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["Table"], {
         data: candidateTableData.content,
         columns: candidateTableColumns,
@@ -1974,11 +1963,10 @@ const CandidateTable = ({ candidateTableData, candidateTableColumns, currentPage
         onPageChange: onPageChange
     }, void 0, false, {
         fileName: "[project]/src/components/Elements/tables/candidateTable.tsx",
-        lineNumber: 22,
+        lineNumber: 18,
         columnNumber: 5
     }, this);
 };
-_s(CandidateTable, "OD7bBpZva5O2jO+Puf00hKivP7c=");
 _c = CandidateTable;
 const __TURBOPACK__default__export__ = CandidateTable;
 var _c;
@@ -2018,6 +2006,10 @@ const ClientTableColumn = [
     {
         Header: "Finance Number",
         accessor: "financeNumber"
+    },
+    {
+        Header: "FinancePocName",
+        accessor: "financePocName"
     }
 ];
 const RecruitmentColumn = [

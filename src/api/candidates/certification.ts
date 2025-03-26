@@ -3,7 +3,7 @@ import { API_URL } from "../api_URL";
 import { Email,Password } from "../creds";
 
 // GET /api/contact-certification/{contactCertificationId}
-export const fetchContactCertification = async (contactCertificationId: string) => {
+export const fetchContactCertification = async (contactCertificationId: number) => {
   try {
     const response = await axios.get(`${API_URL}api/contact-certification/${contactCertificationId}`, {
       method: "GET",
@@ -88,7 +88,7 @@ export const createContactCertification = async (reqData: any) => {
 };
 
 // GET /api/contact-certification/contact/{contactId}
-export const fetchContactCertificationsByContact = async (contactId: string) => {
+export const fetchContactCertificationsByContact = async (contactId: number) => {
   try {
     const response = await axios.get(`${API_URL}api/contact-certification/contact/${contactId}`, {
       method: "GET",

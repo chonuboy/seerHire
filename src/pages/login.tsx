@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { login} from "@/Features/auth/authSlice";
 import { setEmail, setPassword as Pass } from "@/Features/auth/credentialSlice";
 import { useRouter } from "next/router";
-import { imgHelper as helper }  from "@/lib/image-helper";
+import { imgHelper }  from "@/lib/image-helper";
 import GoogleButton from "@/components/Elements/googleButton";
 
 const LoginPage = () => {
@@ -15,6 +15,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
+  const seerTechLogo = imgHelper.seertech;
 
   async function handleLogin({
     username,
@@ -52,7 +53,7 @@ const LoginPage = () => {
   return (
     <main className="text-xs md:text-base">
       <header className="bg-slate-50 text-white py-2">
-        <img src={helper.seertech} className="object-cover md:h-16 h-10" />
+        <img src={seerTechLogo} className="object-cover md:h-16 h-10" />
       </header>
       <div className="flex justify-center items-center p-8 bg-gray-50 pb-28 h-full">
         <div className="bg-white p-8 rounded-lg shadow-lg w-96 mt-10 m-10 md:m-0">

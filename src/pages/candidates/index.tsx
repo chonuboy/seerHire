@@ -17,7 +17,6 @@ export default function Candidates() {
   useEffect(() => {
     fetchCandidates(currentPage-1, 10).then((data: any) => {
       setAllCandidates(data);
-      console.log(data);
     });
   }, [currentPage]);
 

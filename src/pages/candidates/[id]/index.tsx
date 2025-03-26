@@ -25,14 +25,17 @@ import { Candidate } from "@/lib/definitions";
 import { ReqData } from "@/lib/models/candidate";
 
 // API Calls
-import { fetchCandidate } from "@/api/candidates/candidates";
+import {
+  fetchCandidate,
+  fetchCandidateResume,
+} from "@/api/candidates/candidates";
 import {
   deleteContactDomain,
   fetchAllContactDomains,
 } from "@/api/candidates/domains";
 import { deleteContactCompany } from "@/api/candidates/companies";
 import { fetchAllContactCompanies } from "@/api/candidates/companies";
-import { fetchAllContactCertifications } from "@/api/candidates/certification";
+import { fetchContactCertificationsByContact } from "@/api/candidates/certification";
 import {
   fetchAllCertifications,
   createCertification,
@@ -46,7 +49,7 @@ import {
   createContactTechnology,
   fetchAllContactTechnologies,
 } from "@/api/candidates/candidateTech";
-import { fetchInterviewsByContact } from "@/api/candidates/interviews";
+import { contactCertificate } from "@/lib/models/candidate";
 import {
   fetchAllTechnologies,
   createTechnology,
@@ -62,6 +65,7 @@ export default function Candidates() {
   const [currentCandidate, setCurrentCandidate] = useState<Candidate | null>(
     null
   );
+  const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility
   // candidate Interviews
   const [candidateInterviews, setCandidateInterviews] = useState<
     Interview[] | null
@@ -101,8 +105,9 @@ export default function Candidates() {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [selectedCertificate, setSelectedCertificate] = useState("");
   const [candidateCertificates, setCandidateCertificates] = useState<
-    Certificates[] | null
+    contactCertificate[] | null
   >(null);
+  const [pdfResponse, setPdfResponse] = useState<string | null>(null);
   const router = useRouter();
 
   const { mode } = router.query;
@@ -121,9 +126,11 @@ export default function Candidates() {
       })
       .catch((error) => console.log(error));
 
-    fetchInterviewsByContact(Number(router.query.id)).then((data) => {
-      setCandidateInterviews(data);
-    });
+    fetchCandidateResume(Number(router.query.id))
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
 
     fetchAllContactTechnologies()
       .then((data) => {
@@ -175,17 +182,10 @@ export default function Candidates() {
       console.log(companies);
     });
 
-    fetchAllContactCertifications().then((data) => {
-      const contactIdToMatch = Number(router.query.id); // Replace this with the desired contactId
-      // Step 1: Filter objects with the matching contactId
-      const filteredData = data.filter(
-        (item: any) => item.contactDetails.contactId === contactIdToMatch
-      );
-      const certifications = filteredData.map(
-        (item: any) => item.certification
-      );
-      setCandidateCertificates(certifications);
-    });
+    fetchContactCertificationsByContact(Number(router.query.id)).then((data) => {
+      setCandidateCertificates(data);
+      console.log(data);
+    })
 
     fetchAllCompanies()
       .then((data) => {
@@ -197,8 +197,9 @@ export default function Candidates() {
 
     fetchAllCertifications().then((data) => {
       setMasterCertificates(data);
+      console.log(data);
     });
-  }, []);
+  }, [isFormVisible]);
 
   // Post Operations
 
@@ -399,7 +400,8 @@ export default function Candidates() {
     }
   };
 
-  const postCertification = async () => {
+  const postCertification = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       // Check if a certification is selected
       if (selectedCertificate.length === 0) {
@@ -409,61 +411,53 @@ export default function Candidates() {
         return;
       }
 
-      if (masterCertificates?.length === 0) {
-        await createCertification({
-          certificationName: selectedCertificate,
-        });
-      }
-
-      // Check if the certification exists in masterCertifications
+      // Check if the certification exists in masterCertificates
       const certificationExists = masterCertificates?.some(
         (certification) =>
           certification.certificationName.toLowerCase() ===
           selectedCertificate.toLowerCase()
       );
-
-      // If the certification doesn't exist in masterCertifications, add it
       if (!certificationExists) {
         const newCertification = {
           certificationName: selectedCertificate,
           //  fields for the createCertification API
         };
-
-        const createdCertification = await createCertification(
-          newCertification
-        );
-        console.log(
-          "New certification added to masterCertifications:",
-          createdCertification
-        );
-
-        // Update masterCertifications state with the new certification
-        setMasterCertificates((prev) =>
-          prev ? [...prev, createdCertification] : [createdCertification]
-        );
+        createCertification(newCertification).then((data) => {
+          setMasterCertificates((prev) =>
+            prev ? [...prev, data.certificationName] : [data.certificationName]
+          );
+        });
       }
 
-      // Add the certification to candidateCertifications
-      createContactCertification({
-        contactDetails: currentCandidate,
-        certification: {
-          certificationName: selectedCertificate,
-        },
-      }).then((data) => {
-        console.log(data);
-        setSelectedCertificate("");
-        toast.success("Certification added successfully", {
-          position: "top-center",
+      const tempId = masterCertificates?.find(
+        (certification) =>
+          certification.certificationName.toLowerCase() ===
+          selectedCertificate.toLowerCase()
+      );
+      if (tempId) {
+        await createContactCertification({
+          contactDetails: {
+            contactId: Number(router.query.id),
+          },
+          certification: {
+            certificationId: tempId.certificationId,
+            certificationName: selectedCertificate,
+          },
+        }).then((data) => {
+          setSelectedCertificate("");
+          console.log(data);
+          setCandidateCertificates((prev) => (prev ? [...prev, data.certification] : [data.certification]));
         });
+      }
+    } catch (error) {
+      console.error("Error adding certification:", error);
+      toast.error("Failed to add certification. Please try again.", {
+        position: "top-center",
       });
-    } catch (err) {
-      console.log(err);
     }
   };
-  const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility
 
-  // Put Operations
-
+  // Put Operation
   const handleUpdateSkill = async (id: number) => {
     setIsSkillUpdated(true);
     const tech = technologies?.[id];
@@ -639,14 +633,6 @@ export default function Candidates() {
                   </p>
                 </div>
               )}
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Relavant Experience</p>
-                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {currentCandidate?.relavantExperience
-                    ? currentCandidate.relavantExperience
-                    : "-"}
-                </p>
-              </div>
 
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
                 <p className="text-gray-500 break-words">Date of Birth</p>
@@ -945,7 +931,7 @@ export default function Candidates() {
                           {item.technology.technology}
                         </td>
                         <td className="text-left px-2 py-1 md:px-4 md:py-2 border border-gray-200">
-                          {item.experience ? item.experience : "-"}{" "}Yrs
+                          {item.experience ? item.experience : "-"} Yrs
                         </td>
                         <td className="text-left px-2 py-1 md:px-4 md:py-2 border border-gray-200">
                           {item.expertiseLevel ? item.expertiseLevel : "-"}
@@ -1010,7 +996,7 @@ export default function Candidates() {
                       <input
                         id="experience"
                         type="text"
-                        value={selectedTech.experience+" Yrs"}
+                        value={selectedTech.experience}
                         className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                         onChange={(e) =>
                           setSelectedTech({
@@ -1227,7 +1213,7 @@ export default function Candidates() {
                 />
                 <button
                   className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
-                  onClick={() => postCertification}
+                  onClick={postCertification}
                 >
                   Add Certificate
                 </button>
@@ -1256,18 +1242,20 @@ export default function Candidates() {
                   {candidateCertificates?.map((certificate, index) => (
                     <div className="relative">
                       <p className="px-4 py-1 bg-gray-200 rounded-lg text-xs md:text-base">
-                        {certificate.certificationName}
+                        {certificate.certification?.certificationName}
                       </p>
                       {isEdit ? (
                         <X
                           className="w-4 h-4 cursor-pointer bg-red-500 rounded-lg text-white hover:bg-red-600 transition duration-200 absolute -top-1 -right-1"
                           onClick={() => {
                             deleteContactCertification(
-                              Number(certificate.id)
-                            ).then(() => {
+                              Number(certificate.contactCertificationId)
+                            ).then((data) => {
+                              console.log(certificate.contactCertificationId);
+                              console.log(data);
                               setCandidateCertificates(
                                 candidateCertificates.filter(
-                                  (item) => item.id !== certificate.id
+                                  (item) => item.contactCertificationId !== certificate.contactCertificationId
                                 )
                               );
                             });
@@ -1285,7 +1273,7 @@ export default function Candidates() {
         </section>
 
         {/* Resume Section */}
-        <section
+        {/* <section
           id="resume"
           className="bg-white p-2 rounded-lg shadow-sm border space-y-6 border-gray-200"
         >
@@ -1303,27 +1291,17 @@ export default function Candidates() {
               ""
             )}
           </div>
-          <object
-            data={Doc.resume}
-            type="application/pdf"
-            className="w-full h-[500px] md:h-[650px]"
-          >
-            <p>
-              Your browser does not support PDFs.
-              <a href="Assets/Harish's Resume.pdf">Download the PDF</a>.
-            </p>
-          </object>
-        </section>
+        </section> */}
 
         {/* Footer Buttons */}
-        <div className="flex justify-end gap-4">
+        {/* <div className="flex justify-end gap-4">
           <button className="bg-gray-500 text-white px-4 py-1 rounded-md border-2 border-black hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
             Back To Results
           </button>
           <button className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
             select Candidate
           </button>
-        </div>
+        </div> */}
       </section>
     </MainLayout>
   );
