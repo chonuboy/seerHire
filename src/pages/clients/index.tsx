@@ -46,7 +46,7 @@ export default function Clients() {
       gstnumber: '',
       cinnumber: '',
       pannumber: '',
-      // isClientBillingStateTamilNadu: true,
+      isClientBillingStateTamilNadu: true,
     },
     validationSchema: clientValidationSchema,
     validateOnMount: false,
