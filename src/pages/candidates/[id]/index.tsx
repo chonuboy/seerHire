@@ -411,8 +411,11 @@ export default function Candidates() {
         return;
       }
   
+      // Ensure masterCertificates is always treated as an array
+      const currentMasterCerts = masterCertificates || [];
+  
       // Find or create the certification
-      const existingCert = masterCertificates?.find(
+      const existingCert = currentMasterCerts.find(
         (cert) => cert.certificationName.toLowerCase() === selectedCertificate.toLowerCase()
       );
   
@@ -424,7 +427,7 @@ export default function Candidates() {
           certificationName: selectedCertificate,
         });
         certificationId = newCert.certificationId;
-        setMasterCertificates((prev) => [...(prev || []), newCert]);
+        setMasterCertificates(prev => [...(prev || []), newCert]);
       } else {
         certificationId = existingCert.certificationId;
       }
@@ -438,17 +441,22 @@ export default function Candidates() {
         },
       });
   
-      // Update UI state
-      setCandidateCertificates((prev) => [
-        ...(prev || []),
-        {
-          contactCertificationId: response.contactCertificationId,
-          certification: {
-            certificationId,
-            certificationName: selectedCertificate,
+      // Ensure we're working with an array for candidateCertificates
+      setCandidateCertificates(prev => {
+        // Always treat prev as an array (handle undefined/null cases)
+        const previousCertificates = Array.isArray(prev) ? prev : [];
+        
+        return [
+          ...previousCertificates,
+          {
+            contactCertificationId: response.contactCertificationId,
+            certification: {
+              certificationId: certificationId as number, // Add type assertion if needed
+              certificationName: selectedCertificate,
+            },
           },
-        },
-      ]);
+        ];
+      });
   
       setSelectedCertificate(""); // Reset input
     } catch (error) {
