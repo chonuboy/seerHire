@@ -156,7 +156,10 @@ export const clientValidationSchema = yup.object().shape({
   financeNumber: yup.string()
     .required('Finance Number is required')
     .matches(/^[0-9]{10}$/, 'Must be a valid 10-digit number'),
-  financeEmail: yup.string()
+  financeEmail: yup.string().matches(
+    /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+.[a-zA-Z]{2,4}$/i,
+    "Invalid email format"
+  )
     .email('Invalid email format')
     .required('Finance Email is required'),
   gstnumber: yup.string()

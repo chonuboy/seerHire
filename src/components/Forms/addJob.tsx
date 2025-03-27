@@ -216,6 +216,7 @@ export const AddJob = ({
         >
           Submit
         </button>
+        <button className="w-full bg-red-600 text-white py-2 mt-6 rounded-md hover:bg-red-700 transition duration-300" onClick={autoClose}>Cancel</button>
       </form>
     </div>
   );
