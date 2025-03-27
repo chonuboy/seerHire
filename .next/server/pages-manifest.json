@@ -2,10 +2,5 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/login": "pages/login.js",
-  "/candidates": "pages/candidates.js",
-  "/candidates/add": "pages/candidates/add.js",
-  "/candidates/[id]": "pages/candidates/[id].js",
-  "/clients": "pages/clients.js",
-  "/recruitments": "pages/recruitments.js"
+  "/clients": "pages/clients.js"
 }

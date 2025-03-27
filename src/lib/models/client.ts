@@ -147,3 +147,22 @@ export const clientFormSchema = yup.object().shape({
   cinnumber: yup.string().nullable(),
   pannumber: yup.string().nullable(),
 });
+
+
+export const clientValidationSchema = yup.object().shape({
+  clientName: yup.string().required('Client Name is required'),
+  clientHo: yup.string().required('Client HO is required'),
+  financePocName: yup.string().required('Finance POC is required'),
+  financeNumber: yup.string()
+    .required('Finance Number is required')
+    .matches(/^[0-9]{10}$/, 'Must be a valid 10-digit number'),
+  financeEmail: yup.string()
+    .email('Invalid email format')
+    .required('Finance Email is required'),
+  gstnumber: yup.string()
+    .required('GST is required'),
+  cinnumber: yup.string()
+    .required('CIN is required'),
+  pannumber: yup.string()
+    .required('PAN is required'),
+});
