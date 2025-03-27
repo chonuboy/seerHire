@@ -71,8 +71,8 @@ export default function UserCard() {
         </div>
       ) : (
         <div>
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold mb-4">Users List</h1>
+          <div className="flex justify-between my-4 items-center">
+            <h1 className="text-xl font-bold">Users List</h1>
             <button
               className="bg-blue-500 text-white rounded-md px-4 py-2"
               onClick={() => setIsUserAdded(true)}

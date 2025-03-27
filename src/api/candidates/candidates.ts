@@ -12,7 +12,7 @@ export const createCandidate = async (reqData: any) => {
         Authorization: "Basic " + btoa(`${Email}:${Password}`),
       },
     });
-    return response.data; // Axios automatically parses the JSON response
+    return response; // Axios automatically parses the JSON response
   } catch (err: any) {
     // Axios throws an error for non-2xx status codes, you can access `err.response`
     return err.response ? err.response.data : err.message;

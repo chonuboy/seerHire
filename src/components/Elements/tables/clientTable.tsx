@@ -10,7 +10,6 @@ const ClientTable = ({ clientTableData, clientTableColumns,onPageChange} :{clien
       columns={clientTableColumns}
       getRowLink={(item, index) => `/clients/${item.clientId}`}
       currentPage={clientTableData.currentPage+1}
-      isPaginated
       totalPages={clientTableData.totalPages}
       onPageChange={onPageChange}
     />

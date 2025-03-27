@@ -1,13 +1,16 @@
+"use client";
+
 import "react-toastify/dist/ReactToastify.css";
 
-import React, { useState, useRef, useEffect } from "react";
+import type React from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 
 import { toast } from "react-toastify";
 import { CandidateModel, CandidateSchema } from "@/lib/models/candidate";
 import { createCandidate, uploadResume } from "@/api/candidates/candidates";
-import { Candidate, Location } from "@/lib/definitions";
+import type { Candidate, Location } from "@/lib/definitions";
 import {
   CandidateStatus,
   Gender,
@@ -43,7 +46,6 @@ export default function Candidates() {
 
   const onChangeLocation = (location: Location) => {
     formik.setFieldValue("currentLocation", location);
-    console.log(formik.values.currentLocation);
   };
 
   const addNewLocation = async (location: Location) => {
@@ -56,6 +58,9 @@ export default function Candidates() {
   const formik = useFormik({
     initialValues: CandidateModel,
     validationSchema: CandidateSchema,
+    validateOnMount: false,
+    validateOnBlur: false, // Add this line to prevent validation on blur
+    validateOnChange: false, // Add this line to prevent validation while typing
     onSubmit: async (values) => {
       setIsSubmitting(true);
       addNewCandidate(values);
@@ -71,27 +76,31 @@ export default function Candidates() {
     reqData.differentlyAbled =
       reqData.isDifferentlyAbled == "yes" ? true : false;
     console.log(JSON.stringify(reqData, null, 2));
-    const response = await createCandidate(reqData);
-    setError(response.message);
-    
 
-    if (response.status == 200) {
-      setError(null);
-      toast.success("New candidate added successfully!", {
-        position: "top-center",
+    try {
+      createCandidate(reqData).then((data) => {
+        console.log(data);
+        if(data.status === 201) {
+          toast.success("Candidate added successfully", {
+            position: "top-center",
+          });
+          setTimeout(() => {
+            router.push("/candidates");
+          },1000);
+          
+        }
+        else{
+          toast.error(data.message, {
+            position: "top-center",
+          })
+        }
+      })
+      
+    } catch (err: any) {
+      toast.error(err.message, {
+        position: "bottom-right",
       });
-      setIsSubmitting(false);
-      router.push("/candidates");
-    } else {
-      setError(response);
-      toast.error(response, {
-        position: "top-center",
-      });
-      setIsSubmitting(false);
     }
-    setTimeout(() => {
-      router.push("/candidates");
-    }, 1000);
   };
 
   //---------------------------------------------------------
@@ -129,7 +138,6 @@ export default function Candidates() {
     console.log(formData);
     console.log(file);
     formData.append("file", file);
-    // formData.append('file_name', fileName);
     toast.warning("Uploading Resume...", {
       position: "bottom-right",
     });
@@ -155,11 +163,8 @@ export default function Candidates() {
     <MainLayout>
       <div className="min-h-screen">
         <ContentHeader title="Add New Candidate" />
-        {/* <div hidden={!submitted} className="alert alert-primary" role="alert">
-					{message}
-				</div> */}
         <form
-          className=" relative text-xs md:text-base mx-auto max-w-3xl"
+          className=" relative text-xs md:text-base mx-auto max-w-7xl"
           onSubmit={formik.handleSubmit}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -167,12 +172,11 @@ export default function Candidates() {
             }
           }}
         >
-          <div className="text-base md:text-lg font-semibold mb-4">
+          <div className="text-base md:text-lg font-semibold text-blue-500 mb-4">
             Personal Information
           </div>
-          {/* bg-[var(--field-background)] border border-gray-200 */}
-          <div className="p-2 md:p-4 grid grid-cols-1 md:grid-cols-2 md: gap-8  text-gray-900  text-sm md:text-base">
-            <div className="p-2 space-y-2 md:space-y-2 rounded-lg">
+          <div className="p-2 md:p-4 grid grid-cols-1 md:grid-cols-2 md:gap-8 gap-4 text-gray-900  text-sm md:text-base">
+            <div className="space-y-3 rounded-lg">
               <label htmlFor="firstName" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   First Name
@@ -183,10 +187,9 @@ export default function Candidates() {
                 type="text"
                 name="firstName"
                 placeholder="Enter First Name"
-                className="py-2 px-2 w-full focus:outline-[var(--theme-background)] border rounded-lg"
+                className="py-2 px-1 w-full focus:outline-[var(--theme-background)] border rounded-lg"
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.firstName ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -194,7 +197,7 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 space-y-2 md:space-y-2 rounded-lg">
+            <div className="space-y-3 rounded-lg">
               <label htmlFor="lastName" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Last Name
@@ -205,10 +208,9 @@ export default function Candidates() {
                 type="text"
                 name="lastName"
                 placeholder="Enter Last Name"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.lastName ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -217,19 +219,20 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 space-y-2 md:space-y-2 h-auto rounded-lg">
+            <div className="space-y-3 rounded-lg">
               <label htmlFor="dob" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="font-semibold text-gray-600 ">
                   Date of Birth
                 </span>
+                <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="date"
                 name="dob"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                placeholder="Enter Date of Birth"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.dob}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.dob ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -237,19 +240,18 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 space-y-2 md:space-y-2 h-auto rounded-lg">
+            <div className="space-y-3 h-auto rounded-lg">
               <label htmlFor="emailId" className="flex">
-                <span className="  font-semibold text-gray-600 ">Email</span>
+                <span className="  font-semibold text-gray-600">Email</span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="emailId"
                 placeholder="Enter Email"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.emailId}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.emailId ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -258,7 +260,7 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 space-y-2 md:space-y-2 h-auto  rounded-lg">
+            <div className="space-y-3 h-auto  rounded-lg">
               <label htmlFor="primaryNumber" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Mobile number
@@ -269,10 +271,9 @@ export default function Candidates() {
                 type="text"
                 name="primaryNumber"
                 placeholder="Enter 10 digit mobile number"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.primaryNumber}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.primaryNumber ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -280,21 +281,19 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 space-y-2 md:space-y-2 h-auto  rounded-lg">
+            <div className="space-y-3 h-auto rounded-lg">
               <label htmlFor="secondaryNumber" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Alternate Mobile number
                 </span>
-                <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="secondaryNumber"
                 placeholder="Enter 10 digit mobile number"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.secondaryNumber}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.secondaryNumber ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -303,7 +302,7 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto md:h-full space-y-3 rounded-lg">
               <label htmlFor="gender" className="flex">
                 <span className="  font-semibold text-gray-600 ">Gender</span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -317,7 +316,6 @@ export default function Candidates() {
                     value={Gender.MALE}
                     checked={formik.values.gender === `${Gender.MALE}`}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="male">{Gender.MALE}</label>
                 </div>
@@ -329,7 +327,6 @@ export default function Candidates() {
                     value={Gender.FEMALE}
                     checked={formik.values.gender === `${Gender.FEMALE}`}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="female">{Gender.FEMALE}</label>
                 </div>
@@ -341,7 +338,6 @@ export default function Candidates() {
                     value={Gender.OTHERS}
                     checked={formik.values.gender === `${Gender.OTHERS}`}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="others">{Gender.OTHERS}</label>
                 </div>
@@ -352,7 +348,7 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto md:h-full space-y-3 rounded-lg">
               <label htmlFor="maritalStatus" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Marital Status
@@ -370,7 +366,6 @@ export default function Candidates() {
                       formik.values.maritalStatus === `${MaritalStatus.MARRIED}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="married">{MaritalStatus.MARRIED}</label>
                 </div>
@@ -385,7 +380,6 @@ export default function Candidates() {
                       `${MaritalStatus.UNMARRIED}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="unmarried">{MaritalStatus.UNMARRIED}</label>
                 </div>
@@ -397,19 +391,18 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="address" className="flex">
                 <span className="  font-semibold text-gray-600 ">Address</span>
               </label>
               <textarea
                 name="address"
-                className="py-2 px-2 border rounded-lg w-full focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 border rounded-lg w-full focus:outline-[var(--theme-background)]"
                 placeholder="Enter address"
                 rows={4}
                 cols={50}
                 value={formik.values.address ? formik.values.address : ""}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               ></textarea>
               {formik.errors.address ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -417,13 +410,15 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="addressLocality" className="flex">
-                <span className="  font-semibold text-gray-600 ">Address</span>
+                <span className="  font-semibold text-gray-600 ">
+                  Address Locality
+                </span>
               </label>
               <textarea
                 name="addressLocality"
-                className="py-2 px-2 border rounded-lg w-full focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 border rounded-lg w-full focus:outline-[var(--theme-background)]"
                 placeholder="Enter address"
                 rows={4}
                 cols={50}
@@ -433,7 +428,6 @@ export default function Candidates() {
                     : ""
                 }
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               ></textarea>
               {formik.errors.addressLocality ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -442,9 +436,9 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="currentLocation" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="font-semibold text-gray-600">
                   Current Location
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -464,7 +458,7 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="pinCode" className="flex">
                 <span className="  font-semibold text-gray-600 ">Pincode</span>
               </label>
@@ -472,10 +466,9 @@ export default function Candidates() {
                 type="text"
                 name="pinCode"
                 placeholder="Enter Pincode"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.pinCode}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.pinCode ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -488,15 +481,11 @@ export default function Candidates() {
           <hr className="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
 
           {/* ================================= */}
-          <div className="text-base md:text-lg font-semibold mb-4">
+          <div className="text-base md:text-lg font-semibold mb-4 text-blue-500">
             Upload Resume
           </div>
           <div className="text-sm md:text-base">
-            <div className="h-auto space-y-2 md:space-y-2 rounded-lg">
-              {/* <label htmlFor="resume" className="flex">
-                <span className="  font-semibold text-gray-600 ">Upload Resume</span>
-                <span className="px-1 font-bold text-red-500">*</span>
-              </label> */}
+            <div className="h-auto space-y-3 rounded-lg">
               <div
                 className="mt-2 flex flex-col items-center justify-center w-full h-64 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
                 onDrop={handleDrop}
@@ -570,12 +559,12 @@ export default function Candidates() {
           <hr className="my-12 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
 
           {/* ================================= */}
-          <div className="text-base md:text-lg font-semibold mb-4">
+          <div className="text-base md:text-lg font-semibold mb-4 text-blue-500">
             Professional Summary
           </div>
 
           <div className="p-2 md:p-4  grid grid-cols-1 md:grid-cols-2 md: gap-8  text-gray-900   text-sm md:text-base">
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="companyName" className="flex">
                 <span className="  font-semibold text-gray-600 ">Company</span>
               </label>
@@ -583,12 +572,11 @@ export default function Candidates() {
                 type="text"
                 name="companyName"
                 placeholder="Enter Current or Previous Company"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={
                   formik.values.companyName ? formik.values.companyName : ""
                 }
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.companyName ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -596,7 +584,7 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="designation" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Designation
@@ -607,10 +595,9 @@ export default function Candidates() {
                 type="text"
                 name="designation"
                 placeholder="Enter Designation"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.designation}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.designation ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -619,10 +606,10 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="totalExperience" className="flex">
                 <span className="  font-semibold text-gray-600 ">
-                  Experience
+                  Experience (In Years)
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
@@ -630,10 +617,9 @@ export default function Candidates() {
                 type="text"
                 name="totalExperience"
                 placeholder="Enter Minimum Work Experience"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.totalExperience}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.totalExperience ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -641,19 +627,20 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="currentSalary" className="flex">
-                <span className="  font-semibold text-gray-600 ">Salary</span>
+                <span className="  font-semibold text-gray-600 ">
+                  Salary (In CTC)
+                </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="currentSalary"
                 placeholder="Enter Minimum to Maximum Salary"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.currentSalary}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.currentSalary ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -662,7 +649,27 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            {/* <div className="h-auto space-y-3 rounded-lg">
+              <label htmlFor="expectedSalary" className="flex">
+                <span className="font-semibold text-gray-600">Expected Salary (In CTC)</span>
+                <span className="px-1 font-bold text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="expectedSalary"
+                placeholder="Enter Minimum to Maximum Salary"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                value={formik.values.expectedSalary}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.expectedSalary ? (
+                <div className="text-red-500 text-sm border-red-500">
+                  {formik.errors.expectedSalary}
+                </div>
+              ) : null}
+            </div> */}
+
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="highestEducation" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Education
@@ -673,10 +680,9 @@ export default function Candidates() {
                 type="text"
                 name="highestEducation"
                 placeholder="Enter Highest Education"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.highestEducation}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.highestEducation ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -684,7 +690,7 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="techRole" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Tech Role
@@ -696,10 +702,9 @@ export default function Candidates() {
                 type="text"
                 name="techRole"
                 placeholder="Enter Tech Role"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
                 value={formik.values.techRole}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
               />
               {formik.errors.techRole ? (
                 <div className="text-red-500 text-sm border-red-500">
@@ -708,7 +713,69 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
+              <label htmlFor="noticePeriod" className="flex">
+                <span className="  font-semibold text-gray-600 ">
+                  Notice Period (In Days)
+                </span>
+                <span className="px-1 font-bold text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="noticePeriod"
+                placeholder="Enter Minimum days"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                value={formik.values.noticePeriod}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.noticePeriod ? (
+                <div className="text-red-500 text-sm border-red-500">
+                  {formik.errors.noticePeriod}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="h-auto space-y-3 rounded-lg">
+              <label htmlFor="differentlyAbledType" className="flex">
+                <span className="font-semibold text-gray-600">
+                  Differently Abled Type
+                </span>
+              </label>
+              <select
+                name="differentlyAbledType"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                value={formik.values.differentlyAbledType || ""}
+                onChange={formik.handleChange}
+              >
+                <option value="">None</option>
+                <option value="Physical (e.g., mobility impairments, limb differences)">
+                  Physical
+                </option>
+                <option value="Sensory (e.g., blindness, deafness)">
+                  Sensory
+                </option>
+                <option value="Intellectual/Developmental (e.g., Down syndrome, Autism)">
+                  Intellectual/Developmental
+                </option>
+                <option value="Mental Health (e.g., depression, anxiety)">
+                  Mental Health
+                </option>
+                <option value="Neurological (e.g., epilepsy, TBI)">
+                  Neurological
+                </option>
+                <option value="Chronic Illness (e.g., diabetes, MS)">
+                  Chronic Illness
+                </option>
+                <option value="Other/Not Listed">Other/Not Listed</option>
+              </select>
+              {formik.errors.differentlyAbledType && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.differentlyAbledType}
+                </div>
+              )}
+            </div>
+
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="hiringType" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Hiring Type
@@ -723,7 +790,6 @@ export default function Candidates() {
                     value={HiringType.FULL}
                     checked={formik.values.hiringType === `${HiringType.FULL}`}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="full">Full Time</label>
                 </div>
@@ -735,7 +801,6 @@ export default function Candidates() {
                     value={HiringType.PART}
                     checked={formik.values.hiringType === `${HiringType.PART}`}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="part">Part Time</label>
                 </div>
@@ -749,7 +814,6 @@ export default function Candidates() {
                       formik.values.hiringType === `${HiringType.CONTRACT}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="contract">Contract</label>
                 </div>
@@ -760,7 +824,7 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="preferredJobType" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Preferred Job Type
@@ -780,7 +844,6 @@ export default function Candidates() {
                       `${PreferredJobType.REMOTE}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="fulljob">{PreferredJobType.REMOTE}</label>
                 </div>
@@ -795,7 +858,6 @@ export default function Candidates() {
                       `${PreferredJobType.HYBRID}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="partjob">{PreferredJobType.HYBRID}</label>
                 </div>
@@ -810,7 +872,6 @@ export default function Candidates() {
                       `${PreferredJobType.ONSITE}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="contractjob">{PreferredJobType.ONSITE}</label>
                 </div>
@@ -822,9 +883,9 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="candidateStatus" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="font-semibold text-gray-600">
                   Candidate Status
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -841,7 +902,6 @@ export default function Candidates() {
                       `${CandidateStatus.ACTIVE}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="active">{CandidateStatus.ACTIVE}</label>
                 </div>
@@ -857,7 +917,6 @@ export default function Candidates() {
                       `${CandidateStatus.INACTIVE}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="inactive">{CandidateStatus.INACTIVE}</label>
                 </div>
@@ -868,32 +927,10 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
-              <label htmlFor="noticePeriod" className="flex">
-                <span className="  font-semibold text-gray-600 ">
-                  Notice Period
-                </span>
-                <span className="px-1 font-bold text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="noticePeriod"
-                placeholder="Enter Minimum days"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-                value={formik.values.noticePeriod}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.errors.noticePeriod ? (
-                <div className="text-red-500 text-sm border-red-500">
-                  {formik.errors.noticePeriod}
-                </div>
-              ) : null}
-            </div>
 
-            <div className="p-2 h-auto md:h-full space-y-2 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="isDifferentlyAbled" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="font-semibold text-gray-600">
                   Differently Abled
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -910,7 +947,6 @@ export default function Candidates() {
                       `${DifferentlyAbled.YES}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="yes">{DifferentlyAbled.YES}</label>
                 </div>
@@ -925,7 +961,6 @@ export default function Candidates() {
                       `${DifferentlyAbled.NO}`
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                   />
                   <label htmlFor="no">{DifferentlyAbled.NO}</label>
                 </div>
@@ -936,38 +971,14 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            <div className="p-2 h-auto md:h-full space-y-2 md:space-y-2 rounded-lg">
-              <label htmlFor="differentlyAbledType" className="flex">
-                <span className="  font-semibold text-gray-600 ">
-                  Differently Abled Type
-                </span>
-              </label>
-              <input
-                type="text"
-                name="differentlyAbledType"
-                placeholder="Enter Differently Abled Type"
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-                value={
-                  formik.values.differentlyAbledType
-                    ? formik.values.differentlyAbledType
-                    : ""
-                }
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.errors.differentlyAbledType ? (
-                <div className="text-red-500 text-sm border-red-500">
-                  {formik.errors.differentlyAbledType}
-                </div>
-              ) : null}
-            </div>
+
+            
           </div>
 
           <footer className="absolute -bottom-16 right-4 pb-4">
             <button
               className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
               type="submit"
-              disabled={isSubmitting}
             >
               Add Candidate
             </button>

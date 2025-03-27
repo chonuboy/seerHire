@@ -16,13 +16,13 @@ interface TableProps {
   getRowLink?: (
     item: any,
     index: number,
-    mode?: string
-  ) => string | { pathname: string; query?: any }; // Updated to support mode
+    mode?: string,
+  ) => string | { pathname: string; query?: any };
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
   pageSize?: number;
-  isPaginated?: boolean;
+  isRecruitment?: boolean;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -33,16 +33,10 @@ export const Table: React.FC<TableProps> = ({
   totalPages,
   onPageChange,
   pageSize,
-  isPaginated,
+  isRecruitment,
 }) => {
   const router = useRouter();
 
-  const handleDeleteClient = (id: number) => {
-    deleteClient(id).then((data) => {
-      console.log(data);
-      router.push("/clients");
-    });
-  };
   // Handle empty data or columns
   if (!data || data.length === 0) {
     return (
@@ -142,7 +136,7 @@ export const Table: React.FC<TableProps> = ({
           );
 
           // If a link generator is provided, wrap the row in a Link component
-          const rowLink = getRowLink
+          const rowLink = !isRecruitment && getRowLink
             ? getRowLink(item, index, "edit") // Pass 'edit' for edit mode
             : null;
 

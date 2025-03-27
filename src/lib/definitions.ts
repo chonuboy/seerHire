@@ -16,6 +16,7 @@ export type Candidate = {
 	isActive: boolean;
 	candidateStatus: string;
 	currentSalary: number;
+	expectedSalary?: number;
 	highestEducation: string;
 	gender: string;
 	hiringType: string;

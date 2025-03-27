@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "@/api/api_URL";
 import { useDispatch } from "react-redux";
-import { login} from "@/Features/auth/authSlice";
+import { login } from "@/Features/auth/authSlice";
 import { setEmail, setPassword as Pass } from "@/Features/auth/credentialSlice";
 import { useRouter } from "next/router";
-import { imgHelper }  from "@/lib/image-helper";
+import { imgHelper } from "@/lib/image-helper";
 import GoogleButton from "@/components/Elements/googleButton";
 
 const LoginPage = () => {
@@ -39,7 +39,14 @@ const LoginPage = () => {
         dispatch(setEmail(username));
         dispatch(Pass(password));
         setError("");
-        dispatch(login({ user: {username:response.data.username,role:response.data.roles[0].roleName} }));
+        dispatch(
+          login({
+            user: {
+              username: response.data.username,
+              role: response.data.roles[0].roleName,
+            },
+          })
+        );
         setTimeout(() => {
           router.push("/");
         }, 1000);
@@ -55,15 +62,27 @@ const LoginPage = () => {
       <header className="bg-slate-50 text-white py-2">
         <img src={seerTechLogo} className="object-cover md:h-16 h-10" />
       </header>
-      <div className="flex justify-center items-center p-8 bg-gray-50 pb-28 h-full">
-        <div className="bg-white p-8 rounded-lg shadow-lg w-96 mt-10 m-10 md:m-0">
-          <h1 className="md:text-2xl text-xl font-bold text-center text-gray-800 mb-6">
+      <div className="flex justify-center items-center p-8 bg-gray-50 pb-28 w-full h-full">
+        <div className="bg-white md:p-8 p-4 rounded-lg shadow-lg w-max md:w-1/4 space-y-6 mt-10 m-10 md:m-0">
+          <h1 className="md:text-xl text-lg font-bold text-center text-gray-800 mb-6">
             Login
           </h1>
 
+          {/* Messages and Errors */}
+          {message && (
+            <p className="text-green-500  font-sans mt-4 text-center">
+              {message}
+            </p>
+          )}
+          {error && (
+            <p className="text-red-500 md:text-lg text-xs mt-4 font-sans text-center">
+              {error}
+            </p>
+          )}
+
           {/* Username Input */}
-          <div className="mb-4">
-            <label className="block text-sm md:text-lg font-medium  text-gray-700 mb-1">
+          <div className="mb-4 space-y-2">
+            <label className="block text-sm md:text-lg font-sans  text-blue-700 mb-1">
               Username
             </label>
             <input
@@ -76,8 +95,8 @@ const LoginPage = () => {
           </div>
 
           {/* Password Input */}
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-1">
+          <div className="mb-4 space-y-2">
+            <label className="block text-sm md:text-lg font-sans text-blue-700 mb-1">
               Password
             </label>
             <input
@@ -93,7 +112,7 @@ const LoginPage = () => {
           <div className="mb-6 flex items-center">
             <input
               type="checkbox"
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded" checked
             />
             <label className="ml-2 text-sm text-gray-700">Remember me</label>
           </div>
@@ -115,18 +134,6 @@ const LoginPage = () => {
 
           {/* Sign in with Google Button */}
           <GoogleButton />
-
-          {/* Messages and Errors */}
-          {message && (
-            <p className="text-green-500 text-lg font-sans mt-4 text-center">
-              {message}
-            </p>
-          )}
-          {error && (
-            <p className="text-red-500 text-lg mt-4 font-sans text-center">
-              {error}
-            </p>
-          )}
         </div>
       </div>
       <footer className="bg-blue-500 py-2 px-2 w-full text-white fixed bottom-0 z-10">

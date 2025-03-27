@@ -27,10 +27,11 @@ export const CandidateModel: Candidate = {
   isActive: true,
   candidateStatus: CandidateStatus.ACTIVE,
   currentSalary: 0,
+  // expectedSalary: 0,
   highestEducation: "",
   gender: Gender.MALE,
   hiringType: HiringType.FULL,
-  pinCode: 20987,
+  pinCode: 0,
   maritalStatus: MaritalStatus.MARRIED,
   techRole: "",
   noticePeriod: 0,
@@ -54,12 +55,15 @@ export const CandidateSchema = yup.object({
     .min(3, "Must be at least 3 characters")
     .max(20, "Must be 20 characters or less")
     .required("Last name is required"),
-  dob: yup
+    dob: yup
     .date()
-    .required("Date of birth is required")
-    .test("isPastDate", "Date of birth must be in the past", function (value) {
+    .test("isPastDate", "Enter a valid date", function (value) {
+      const dateValue = value?.getTime();
+      if (dateValue === undefined) {
+        return false; // or throw an error, depending on your requirements
+      }
       const today = new Date();
-      return new Date(value) < today;
+      return new Date(dateValue) < today;
     }),
   primaryNumber: yup
     .string()
@@ -67,8 +71,7 @@ export const CandidateSchema = yup.object({
     .required("Mobile no. is required"),
   secondaryNumber: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("Alternate mobile no. is required"),
+    .matches(phoneRegExp, "Phone number is not valid"),
   emailId: yup
     .string()
     .matches(
@@ -86,6 +89,7 @@ export const CandidateSchema = yup.object({
   totalExperience: yup.number().required("Experience is required"),
   candidateStatus: yup.string().required("Select status"),
   currentSalary: yup.number().required("Current salary is required"),
+  expectedSalary: yup.number(),
   highestEducation: yup
     .string()
     .min(3, "Must be at least 3 characters")

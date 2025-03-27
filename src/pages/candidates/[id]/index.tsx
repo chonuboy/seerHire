@@ -126,11 +126,11 @@ export default function Candidates() {
       })
       .catch((error) => console.log(error));
 
-    fetchCandidateResume(Number(router.query.id))
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
+    // fetchCandidateResume(Number(router.query.id))
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((error) => console.log(error));
 
     fetchAllContactTechnologies()
       .then((data) => {
@@ -182,10 +182,12 @@ export default function Candidates() {
       console.log(companies);
     });
 
-    fetchContactCertificationsByContact(Number(router.query.id)).then((data) => {
-      setCandidateCertificates(data);
-      console.log(data);
-    })
+    fetchContactCertificationsByContact(Number(router.query.id)).then(
+      (data) => {
+        setCandidateCertificates(data);
+        console.log(data);
+      }
+    );
 
     fetchAllCompanies()
       .then((data) => {
@@ -403,52 +405,52 @@ export default function Candidates() {
   const postCertification = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Check if a certification is selected
-      if (selectedCertificate.length === 0) {
-        toast.error("Please select a certification", {
-          position: "top-center",
-        });
+      // Validate input
+      if (!selectedCertificate.trim()) {
+        toast.error("Please select a certification", { position: "top-center" });
         return;
       }
-
-      // Check if the certification exists in masterCertificates
-      const certificationExists = masterCertificates?.some(
-        (certification) =>
-          certification.certificationName.toLowerCase() ===
-          selectedCertificate.toLowerCase()
+  
+      // Find or create the certification
+      const existingCert = masterCertificates?.find(
+        (cert) => cert.certificationName.toLowerCase() === selectedCertificate.toLowerCase()
       );
-      if (!certificationExists) {
-        const newCertification = {
+  
+      let certificationId: number | undefined;
+  
+      if (!existingCert) {
+        // Create new certification if it doesn't exist
+        const newCert = await createCertification({
           certificationName: selectedCertificate,
-          //  fields for the createCertification API
-        };
-        createCertification(newCertification).then((data) => {
-          setMasterCertificates((prev) =>
-            prev ? [...prev, data.certificationName] : [data.certificationName]
-          );
         });
+        certificationId = newCert.certificationId;
+        setMasterCertificates((prev) => [...(prev || []), newCert]);
+      } else {
+        certificationId = existingCert.certificationId;
       }
-
-      const tempId = masterCertificates?.find(
-        (certification) =>
-          certification.certificationName.toLowerCase() ===
-          selectedCertificate.toLowerCase()
-      );
-      if (tempId) {
-        await createContactCertification({
-          contactDetails: {
-            contactId: Number(router.query.id),
-          },
+  
+      // Link certification to the contact
+      const response = await createContactCertification({
+        contactDetails: { contactId: Number(router.query.id) },
+        certification: {
+          certificationId,
+          certificationName: selectedCertificate,
+        },
+      });
+  
+      // Update UI state
+      setCandidateCertificates((prev) => [
+        ...(prev || []),
+        {
+          contactCertificationId: response.contactCertificationId,
           certification: {
-            certificationId: tempId.certificationId,
+            certificationId,
             certificationName: selectedCertificate,
           },
-        }).then((data) => {
-          setSelectedCertificate("");
-          console.log(data);
-          setCandidateCertificates((prev) => (prev ? [...prev, data.certification] : [data.certification]));
-        });
-      }
+        },
+      ]);
+  
+      setSelectedCertificate(""); // Reset input
     } catch (error) {
       console.error("Error adding certification:", error);
       toast.error("Failed to add certification. Please try again.", {
@@ -1211,29 +1213,27 @@ export default function Candidates() {
                   className="bg-white px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                   onChange={(e) => setSelectedCertificate(e.target.value)}
                 />
+                <datalist id="certificate-list">
+                  {masterCertificates?.map((certificate, index) => (
+                    <option key={index} value={certificate.certificationName}>
+                      {certificate.certificationName}
+                    </option>
+                  ))}
+                </datalist>
                 <button
                   className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
                   onClick={postCertification}
                 >
                   Add Certificate
                 </button>
-                <datalist>
-                  {masterCertificates?.length &&
-                    masterCertificates?.map((certificate, index) => (
-                      <option key={index} value={certificate.certificationName}>
-                        {certificate.certificationName}
-                      </option>
-                    ))}
-                </datalist>
               </div>
-            ) : (
-              ""
-            )}
+            ) : null}
+
             {candidateCertificates && candidateCertificates?.length > 0 ? (
               <div className="p-2 bg-white rounded-lg shadow-sm space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
-                  {candidateCertificates?.map((certificate, index) => (
-                    <div className="relative">
+                  {candidateCertificates.map((certificate, index) => (
+                    <div key={index} className="relative">
                       <p className="px-4 py-1 bg-gray-200 rounded-lg text-xs md:text-base">
                         {certificate.certification?.certificationName}
                       </p>
@@ -1243,25 +1243,23 @@ export default function Candidates() {
                           onClick={() => {
                             deleteContactCertification(
                               Number(certificate.contactCertificationId)
-                            ).then((data) => {
-                              console.log(certificate.contactCertificationId);
-                              console.log(data);
+                            ).then(() => {
                               setCandidateCertificates(
                                 candidateCertificates.filter(
-                                  (item) => item.contactCertificationId !== certificate.contactCertificationId
+                                  (item) =>
+                                    item.contactCertificationId !==
+                                    certificate.contactCertificationId
                                 )
                               );
                             });
                           }}
                         />
-                      ) : (
-                        ""
-                      )}
+                      ) : null}
                     </div>
                   ))}
                 </div>
               </div>
-            ):(
+            ) : (
               <p>No Certificates Found</p>
             )}
           </div>
