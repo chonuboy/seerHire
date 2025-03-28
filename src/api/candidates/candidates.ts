@@ -15,7 +15,7 @@ export const createCandidate = async (reqData: any) => {
     return response; // Axios automatically parses the JSON response
   } catch (err: any) {
     // Axios throws an error for non-2xx status codes, you can access `err.response`
-    return err.response ? err.response.data : err.message;
+    return err.response.data;
   }
 };
 

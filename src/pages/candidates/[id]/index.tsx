@@ -179,13 +179,11 @@ export default function Candidates() {
       );
       const companies = filteredData.map((item: any) => item);
       setCandidateCompanies(companies);
-      console.log(companies);
     });
 
     fetchContactCertificationsByContact(Number(router.query.id)).then(
       (data) => {
         setCandidateCertificates(data);
-        console.log(data);
       }
     );
 
@@ -199,9 +197,8 @@ export default function Candidates() {
 
     fetchAllCertifications().then((data) => {
       setMasterCertificates(data);
-      console.log(data);
     });
-  }, [isFormVisible]);
+  }, [isFormVisible, isSkillUpdated]);
 
   // Post Operations
 
@@ -212,6 +209,21 @@ export default function Candidates() {
         toast.error("Please select a skill", {
           position: "top-center",
         });
+        return;
+      }
+
+      // Check if if the selected skill exist in the candidate's technologies array
+      if (
+        technologies?.some(
+          (tech) => tech.technology.technology === selectedSkill
+        )
+      ) {
+        toast.error("Skill already added", {
+          position: "top-center",
+        });
+        setSelectedSkill("");
+        setExpLevel("");
+        setTechExp("");
         return;
       }
 
@@ -300,6 +312,18 @@ export default function Candidates() {
         });
         return;
       }
+      // Check if if the selected domain exist in the candidate's domain array
+      if (
+        candidateDomains?.some(
+          (domain) => domain.domain.domainDetails === selectedDomain
+        )
+      ) {
+        toast.error("Domain already added", {
+          position: "top-center",
+        });
+        setSelectedDomain("");
+        return;
+      }
 
       // Check if the domain exists in masterDomains
       const domainExists = masterDomains?.some(
@@ -334,6 +358,9 @@ export default function Candidates() {
       }).then((data) => {
         setSelectedDomain("");
         setCandidateDomains((prev) => (prev ? [...prev, data] : [data]));
+        toast.success("Domain added successfully", {
+          position: "top-center",
+        });
       });
     } catch (error) {
       console.error("Error adding domain:", error);
@@ -350,6 +377,19 @@ export default function Candidates() {
         toast.error("Please select a company", {
           position: "top-center",
         });
+        return;
+      }
+
+      // Check if if the selected company exist in the candidate's company array
+      if (
+        candidateCompanies?.some(
+          (company) => company.company.companyName === selectedCompany
+        )
+      ) {
+        toast.error("Company already added", {
+          position: "top-center",
+        });
+        setSelectedCompany("");
         return;
       }
 
@@ -407,31 +447,49 @@ export default function Candidates() {
     try {
       // Validate input
       if (!selectedCertificate.trim()) {
-        toast.error("Please select a certification", { position: "top-center" });
+        toast.error("Please select a certification", {
+          position: "top-center",
+        });
         return;
       }
-  
+
+      // Check if if the selected certificate exist in the candidate's certificates array
+      if (
+        candidateCertificates?.some(
+          (cert) =>
+            cert.certification?.certificationName === selectedCertificate
+        )
+      ) {
+        toast.error("Certification already added", {
+          position: "top-center",
+        });
+        setSelectedCertificate("");
+        return;
+      }
+
       // Ensure masterCertificates is always treated as an array
       const currentMasterCerts = masterCertificates || [];
-  
+
       // Find or create the certification
       const existingCert = currentMasterCerts.find(
-        (cert) => cert.certificationName.toLowerCase() === selectedCertificate.toLowerCase()
+        (cert) =>
+          cert.certificationName.toLowerCase() ===
+          selectedCertificate.toLowerCase()
       );
-  
+
       let certificationId: number | undefined;
-  
+
       if (!existingCert) {
         // Create new certification if it doesn't exist
         const newCert = await createCertification({
           certificationName: selectedCertificate,
         });
         certificationId = newCert.certificationId;
-        setMasterCertificates(prev => [...(prev || []), newCert]);
+        setMasterCertificates((prev) => [...(prev || []), newCert]);
       } else {
         certificationId = existingCert.certificationId;
       }
-  
+
       // Link certification to the contact
       const response = await createContactCertification({
         contactDetails: { contactId: Number(router.query.id) },
@@ -440,12 +498,12 @@ export default function Candidates() {
           certificationName: selectedCertificate,
         },
       });
-  
+
       // Ensure we're working with an array for candidateCertificates
-      setCandidateCertificates(prev => {
+      setCandidateCertificates((prev) => {
         // Always treat prev as an array (handle undefined/null cases)
         const previousCertificates = Array.isArray(prev) ? prev : [];
-        
+
         return [
           ...previousCertificates,
           {
@@ -457,7 +515,7 @@ export default function Candidates() {
           },
         ];
       });
-  
+
       setSelectedCertificate(""); // Reset input
     } catch (error) {
       console.error("Error adding certification:", error);
@@ -603,14 +661,14 @@ export default function Candidates() {
 
         {/* Personal Info Section */}
         <div className="bg-white p-4 rounded-lg space-y-4 shadow-lg">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mb-4">
             <h3 className="md:text-xl text-sm font-semibold">Personal Info</h3>
             {isEdit ? (
               <button
                 className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
                 onClick={() => {
                   setIsFormVisible(true);
-                }} //Show form on the button click
+                }}
               >
                 Update
               </button>
@@ -982,6 +1040,7 @@ export default function Candidates() {
                       >
                         Skill
                       </label>
+
                       <input
                         id="skill"
                         disabled
@@ -1001,7 +1060,7 @@ export default function Candidates() {
                         htmlFor="experience"
                         className="text-gray-400 font-medium"
                       >
-                        Experience
+                        Experience (In Years)
                       </label>
                       <input
                         id="experience"
@@ -1023,7 +1082,23 @@ export default function Candidates() {
                       >
                         Expertise Level
                       </label>
-                      <input
+                      <select
+                        name="skill"
+                        id="skill"
+                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                        value={selectedTech.expertiseLevel} // Controlled component
+                        onChange={(e) => {
+                          setSelectedTech({
+                            ...selectedTech,
+                            expertiseLevel: e.target.value,
+                          });
+                        }}
+                      >
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                      </select>
+                      {/* <input
                         id="expertiseLevel"
                         type="text"
                         value={selectedTech.expertiseLevel}
@@ -1034,7 +1109,7 @@ export default function Candidates() {
                             expertiseLevel: e.target.value,
                           })
                         }
-                      />
+                      /> */}
                     </div>
                   </div>
                   <button
@@ -1174,7 +1249,7 @@ export default function Candidates() {
                 <p>No Companies Found</p>
               ) : (
                 candidateCompanies?.map((company, index) => (
-                  <div className="relative">
+                  <div className="relative" key={index}>
                     <p className="px-4 py-1 bg-gray-200 rounded-lg text-xs md:text-base">
                       {company.company.companyName}
                     </p>
@@ -1211,7 +1286,7 @@ export default function Candidates() {
           <div className="p-2 bg-white rounded-lg shadow-sm space-y-4">
             <h3 className="md:text-xl text-sm font-semibold">Certificates</h3>
             {isEdit ? (
-              <div className="flex gap-4 items-center flex-wrap">
+              <div className="flex md:flex-row flex-col gap-4 md:items-center">
                 <input
                   type="text"
                   value={selectedCertificate}

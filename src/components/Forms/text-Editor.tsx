@@ -12,15 +12,20 @@ export const TextEditor = React.memo(() => {
     showWordsCounter: false,
     showXPathInStatusbar: false,
     placeholder: "Type your content here...",
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
     readonly: false,
     buttons:
       "bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
-    buttonsMD:"bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
-    buttonsXS:"bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
-    buttonsSM:"bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
+    buttonsMD:
+      "bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
+    buttonsXS:
+      "bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
+    buttonsSM:
+      "bold,ul,ol,superscript,subscript,spellcheck,speechRecognize,paste,indent,preview",
   };
 
-  const handleButtonClick = () => { 
+  const handleButtonClick = () => {
     console.log(content.replace(/style="[^"]*"/g, ""));
     setShowContent(true);
   };

@@ -18,6 +18,47 @@ export const fetchClient = async (id: number) => {
   }
 };
 
+
+export const searchCandidates = async (query: any) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}api/search/candidates`,
+      query,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Basic " + btoa(`${Email}:${Password}`),
+        },
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    return err.response ? err.response.data : err.message;
+  }
+};
+
+export const searchClient = async (query: any) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}api/clients/search?keyword=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Basic " + btoa(`${Email}:${Password}`),
+        },
+      }
+    );
+    return response.data;
+  } catch (err: any) {
+    return err.response ? err.response.data : err.message;
+  }
+}
+
+
 // PUT /api/clients/{id}
 export const updateClient = async (id: number, reqData: any) => {
   try {

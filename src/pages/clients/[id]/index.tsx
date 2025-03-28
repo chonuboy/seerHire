@@ -21,16 +21,15 @@ export default function Client() {
   const [currentClient, setCurrentClient] = useState(null);
 
   useEffect(() => {
-  
     fetchJobsByClient(Number(router.query.id)).then((data) => {
       setAllJobs(data);
     });
-  
+
     fetchClient(Number(router.query.id)).then((data) => {
       setCurrentClient(data);
     });
   }, []);
-  
+
   return (
     <MainLayout>
       <ContentHeader title="Client Info" />
@@ -190,9 +189,17 @@ export default function Client() {
             )}
           </div>
 
-          <div className={allJobs?.length > 0 ? "mx-10 md:mx-20 grid grid-cols-1 md:grid-cols-2 gap-6 mt-4": "py-2"}>
+          <div
+            className={
+              allJobs?.length > 0
+                ? "mx-10 md:mx-20 grid grid-cols-1 md:grid-cols-2 gap-6 mt-4"
+                : "py-2"
+            }
+          >
             {allJobs?.length > 0 ? (
-              allJobs.map((job, index) => <JobCard jobData={job} isClient />)
+              allJobs.map((job, index) => (
+                <JobCard jobData={job} key={index} isClient />
+              ))
             ) : (
               <div>
                 <p>No Active Jobs</p>

@@ -23,18 +23,18 @@ export const CandidateModel: Candidate = {
   emailId: "",
   designation: "",
   companyName: "",
-  totalExperience: 0,
+  totalExperience: null,
   isActive: true,
   candidateStatus: CandidateStatus.ACTIVE,
-  currentSalary: 0,
+  currentSalary: null,
   // expectedSalary: 0,
   highestEducation: "",
   gender: Gender.MALE,
   hiringType: HiringType.FULL,
-  pinCode: 0,
+  pinCode: null,
   maritalStatus: MaritalStatus.MARRIED,
   techRole: "",
-  noticePeriod: 0,
+  noticePeriod: null,
   currentLocation: { locationId: 0, locationDetails: "", insertedOn: "" },
   differentlyAbled: false,
   isDifferentlyAbled: DifferentlyAbled.NO,
@@ -68,10 +68,10 @@ export const CandidateSchema = yup.object({
   primaryNumber: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
-    .required("Mobile no. is required"),
+    .required("Mobile no. is required").max(15, "Must be 15 characters or less").min(10, "Must be at least 10 characters"),
   secondaryNumber: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid"),
+    .matches(phoneRegExp, "Phone number is not valid").max(15, "Must be 15 characters or less").min(10, "Must be at least 10 characters"),
   emailId: yup
     .string()
     .matches(

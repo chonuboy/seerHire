@@ -3,7 +3,6 @@ import { API_URL } from '@/api/api_URL';
 import { Location } from '@/lib/definitions'; // Ensure this import is correct
 
 export const apiSlice = createApi({
-  reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers) => {
@@ -15,11 +14,11 @@ export const apiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getLocations: builder.query<Location[], void>({
-      query: () => '/locations', // Ensure this path is correct
+      query: () => 'api/locations', // Ensure this path is correct
     }),
     addLocation: builder.mutation<Location, Partial<Location>>({
       query: (newLocation) => ({
-        url: '/locations', // Ensure this path is correct
+        url: 'api/locations', // Ensure this path is correct
         method: 'POST',
         body: newLocation,
       }),

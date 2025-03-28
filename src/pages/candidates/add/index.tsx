@@ -79,7 +79,6 @@ export default function Candidates() {
 
     try {
       createCandidate(reqData).then((data) => {
-        console.log(data);
         if(data.status === 201) {
           toast.success("Candidate added successfully", {
             position: "top-center",
@@ -90,16 +89,28 @@ export default function Candidates() {
           
         }
         else{
-          toast.error(data.message, {
+          if(data.message === "Location not found with id: 0"){
+            toast.error("Current Location is required", {
+              position: "top-center",
+            })
+            return;
+          }
+          toast.warn(data.message, {
             position: "top-center",
           })
+          if(!data.message){
+            Object.entries(data).forEach(([fieldName, errorMessage]) => {
+              toast.warn(`${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}: ${errorMessage}`, {
+                position: "top-center",
+                autoClose: 5000,
+              });
+            });
+          }
         }
       })
       
     } catch (err: any) {
-      toast.error(err.message, {
-        position: "bottom-right",
-      });
+      console.log(err);
     }
   };
 
@@ -135,8 +146,6 @@ export default function Candidates() {
     if (!file) return;
 
     const formData = new FormData();
-    console.log(formData);
-    console.log(file);
     formData.append("file", file);
     toast.warning("Uploading Resume...", {
       position: "bottom-right",
@@ -144,7 +153,6 @@ export default function Candidates() {
     try {
       uploadResume(formData)
         .then((data) => {
-          console.log(data);
           setUpdatedFileName(data);
           formik.setFieldValue("resume", data);
         })
@@ -286,6 +294,7 @@ export default function Candidates() {
                 <span className="  font-semibold text-gray-600 ">
                   Alternate Mobile number
                 </span>
+                <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -977,7 +986,7 @@ export default function Candidates() {
 
           <footer className="absolute -bottom-16 right-4 pb-4">
             <button
-              className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
+              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
               type="submit"
             >
               Add Candidate

@@ -7,12 +7,14 @@ import { setEmail, setPassword as Pass } from "@/Features/auth/credentialSlice";
 import { useRouter } from "next/router";
 import { imgHelper } from "@/lib/image-helper";
 import GoogleButton from "@/components/Elements/googleButton";
+import { Dialog } from "@headlessui/react";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [remember,setRemember] = useState(true);
   const dispatch = useDispatch();
   const router = useRouter();
   const seerTechLogo = imgHelper.seertech;
@@ -24,6 +26,10 @@ const LoginPage = () => {
     username: string;
     password: string;
   }) {
+    if(username === "" || password === "") {
+      setError("Please Enter Username and Password");
+      return
+    }
     try {
       const response = await axios.get(API_URL + "users/login", {
         method: "GET",
@@ -52,8 +58,8 @@ const LoginPage = () => {
         }, 1000);
       }
     } catch (err: any) {
-      console.log(err);
-      setError("An error occured while logging in please login again");
+      console.log(err.message);
+      setError(err.message);
     }
   }
 
@@ -112,7 +118,7 @@ const LoginPage = () => {
           <div className="mb-6 flex items-center">
             <input
               type="checkbox"
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded" checked
+              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded" checked = {remember} onChange={(e) => setRemember(e.target.checked)}
             />
             <label className="ml-2 text-sm text-gray-700">Remember me</label>
           </div>
@@ -138,7 +144,7 @@ const LoginPage = () => {
       </div>
       <footer className="bg-blue-500 py-2 px-2 w-full text-white fixed bottom-0 z-10">
         <p className="text-center">
-          &copy; {new Date().getFullYear()} Seertech. All rights reserved.
+          &copy; Copyright {new Date().getFullYear()} SeerTech Systems. All rights reserved.
         </p>
       </footer>
     </main>

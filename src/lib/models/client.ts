@@ -87,7 +87,7 @@ export const ClientTableColumn: Columns = [
     accessor: "financeNumber",
   },
   {
-    Header: "FinancePocName",
+    Header: "Finance Poc",
     accessor: "financePocName",
   }
 ];

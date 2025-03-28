@@ -1,4 +1,3 @@
-import { on } from 'events';
 import React, { useState } from 'react';
 import { Location } from "@/lib/definitions";
 import { useAddLocationMutation } from '@/Features/apiSlice';
@@ -33,7 +32,6 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 	};
 
 	const handleSelectSuggestion = (suggestion: Location) => {
-		console.log(suggestion)
 		setInputValue(suggestion.locationDetails);
 		onChange(suggestion);
 
@@ -54,6 +52,7 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 				onAdd(response);
 				setDisabled(false);
 				setInputValue(inputValue.trim());
+				toast.success("Location added to the list successfully");
 			} catch (error) {
 				setDisabled(false);
 				console.log(error);
@@ -77,7 +76,6 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 				value={inputValue}
 				onChange={handleInputChange}
 				disabled={isDisabled}
-				onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
 			/>
 			{showSuggestions && (
 				<div className="z-10  bg-white divide-y divide-gray-100 rounded-lg shadow-lg border w-full dark:bg-gray-700">

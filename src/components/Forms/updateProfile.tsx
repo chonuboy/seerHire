@@ -1,8 +1,38 @@
 import { useFormik } from "formik";
 import { profileUpdateSchema } from "@/lib/models/candidate";
 import { toast } from "react-toastify";
+import { Dialog } from '@headlessui/react'; // or any other modal library
 import { updateCandidate } from "@/api/candidates/candidates";
-const ProfileUpdateForm = ({ initialValues,id,autoClose }: { initialValues: any,id:number,autoClose: () => void }) => {
+import { useState } from "react";
+const ProfileUpdateForm = ({
+  initialValues,
+  id,
+  autoClose,
+}: {
+  initialValues: any;
+  id: number;
+  autoClose: () => void;
+}) => {
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [pendingValue, setPendingValue] = useState<boolean | null>(null);
+
+  const handleStatusChange = (value:boolean) => {
+    if (value === false) {
+      // For inactive, show confirmation
+      setPendingValue(false);
+      setShowConfirmation(true);
+    } else {
+      // For active, update directly
+      formik.setFieldValue("isActive", true);
+    }
+  };
+
+  const confirmInactive = () => {
+    formik.setFieldValue("isActive", false);
+    setShowConfirmation(false);
+  };
+
   const getUpdatedFields = (initialValues: any, values: any) => {
     return Object.keys(values).reduce((acc: Record<string, any>, key) => {
       if (values[key] !== initialValues[key]) {
@@ -31,8 +61,6 @@ const ProfileUpdateForm = ({ initialValues,id,autoClose }: { initialValues: any,
       }
     },
   });
-
-  
 
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-8">
@@ -83,39 +111,72 @@ const ProfileUpdateForm = ({ initialValues,id,autoClose }: { initialValues: any,
 
         {/* Candidate Status */}
         <div className="space-y-2">
-          <label htmlFor="isActive" className="text-gray-400 font-medium">
-            Candidate Status
-          </label>
-          <div>
-            <div className="flex items-center gap-2">
-              <input
-                id="status_active"
-                name="isActive"
-                type="radio"
-                value="true"
-                onChange={formik.handleChange}
-                checked={formik.values.isActive === true}
-              />
-              <label htmlFor="status_active">Active</label>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                id="status_inactive"
-                name="isActive"
-                type="radio"
-                value="false"
-                onChange={formik.handleChange}
-                checked={formik.values.isActive === false}
-              />
-              <label htmlFor="status_inactive">Inactive</label>
-            </div>
-          </div>
-          {formik.touched.isActive && formik.errors.isActive ? (
-            <div className="text-red-500 text-sm">
-              {formik.errors.isActive.toString()}
-            </div>
-          ) : null}
+      <label htmlFor="isActive" className="text-gray-400 font-medium">
+        Candidate Status
+      </label>
+      <div>
+        <div className="flex items-center gap-2">
+          <input
+            id="status_active"
+            name="isActive"
+            type="radio"
+            onChange={() => handleStatusChange(true)}
+            checked={formik.values.isActive === true}
+          />
+          <label htmlFor="status_active">Active</label>
         </div>
+        <div className="flex items-center gap-2">
+          <input
+            id="status_inactive"
+            name="isActive"
+            type="radio"
+            onChange={() => handleStatusChange(false)}
+            checked={formik.values.isActive === false}
+          />
+          <label htmlFor="status_inactive">Inactive</label>
+        </div>
+      </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="w-full max-w-sm rounded bg-white p-6">
+            <Dialog.Title className="font-bold text-lg">
+              Confirm Status Change
+            </Dialog.Title>
+            <Dialog.Description className="mt-2">
+              Are you sure you want to make this candidate inactive?
+            </Dialog.Description>
+
+            <div className="mt-4 flex gap-3 justify-end">
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="px-4 py-2 border border-gray-300 rounded  hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmInactive}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Confirm
+              </button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+
+      {formik.touched.isActive && formik.errors.isActive ? (
+        <div className="text-red-500 text-sm">
+          {formik.errors.isActive.toString()}
+        </div>
+      ) : null}
+    </div>
 
         {/* Tech Role */}
         <div className="space-y-2">
@@ -450,7 +511,10 @@ const ProfileUpdateForm = ({ initialValues,id,autoClose }: { initialValues: any,
       >
         Submit
       </button>
-      <button onClick={autoClose} className="w-full bg-red-600 hover:bg-red-700 transition duration-300 text-white py-2 rounded-md">
+      <button
+        onClick={autoClose}
+        className="w-full bg-red-600 hover:bg-red-700 transition duration-300 text-white py-2 rounded-md"
+      >
         Cancel
       </button>
     </form>

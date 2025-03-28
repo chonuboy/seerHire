@@ -13,14 +13,15 @@ export default function Candidates() {
   const [candidateFound, setCandidateFound] = useState(false);
   const [candidateResponse, setCandidateResponse] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     fetchCandidates(currentPage-1, 10).then((data: any) => {
       setAllCandidates(data);
     });
-  }, [currentPage]);
+  }, [currentPage,searchKeyword]);
 
-  const [searchKeyword, setSearchKeyword] = useState("");
+ 
   const handleSearch = () => {
     if (!searchKeyword) {
       toast.error("Please Enter a Keyword", {

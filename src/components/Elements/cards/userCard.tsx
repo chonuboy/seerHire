@@ -21,7 +21,6 @@ export default function UserCard() {
     fetchAllUsers().then((data) => {
       setAllusers(data);
     });
-    console.log(allUsers);
   }, [isUserAdded]);
 
   const [formData, setFormData] = useState<User>({
