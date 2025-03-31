@@ -38,7 +38,7 @@ export const AddJob = ({
           .replace(/\s+/g, "")
           .replace(/&nbsp;/g, "");
       }
-      const response = await createJob(values).then((res) => console.log(res));
+      createJob(values).then((res) => console.log(res)).catch((err) => console.log(err));
       autoClose();
     },
   });
@@ -112,7 +112,7 @@ export const AddJob = ({
           {/* Salary */}
           <div className="space-y-2">
             <label htmlFor="salaryInCtc" className="font-semibold text-blue-500">
-              Salary
+              Salary (In CTC)
             </label>
             <input
               id="salaryInCtc"
@@ -129,7 +129,7 @@ export const AddJob = ({
           {/* Experience */}
           <div className="space-y-2">
             <label htmlFor="experience" className="font-semibold text-blue-500">
-              Experience
+              Experience (In Years)
             </label>
             <input
               id="experience"
@@ -159,7 +159,6 @@ export const AddJob = ({
               <option value="">Select Status</option>
               <option value="Active">Active</option>
               <option value="Closed">Inactive</option>
-              <option value="OnHold">Hold</option>
             </select>
           </div>
 

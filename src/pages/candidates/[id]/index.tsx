@@ -453,13 +453,17 @@ export default function Candidates() {
         return;
       }
 
-      // Check if if the selected certificate exist in the candidate's certificates array
-      if (
-        candidateCertificates?.some(
-          (cert) =>
-            cert.certification?.certificationName === selectedCertificate
-        )
-      ) {
+      let hasExistingCert: boolean = false;
+
+      // Safely check if the selected certificate exists (handles undefined/null)
+      if(candidateCertificates && candidateCertificates?.length>0){
+        hasExistingCert = candidateCertificates?.some(
+          (cert) => cert.certification?.certificationName === selectedCertificate
+        );
+      }
+      
+
+      if (hasExistingCert) {
         toast.error("Certification already added", {
           position: "top-center",
         });
@@ -501,15 +505,13 @@ export default function Candidates() {
 
       // Ensure we're working with an array for candidateCertificates
       setCandidateCertificates((prev) => {
-        // Always treat prev as an array (handle undefined/null cases)
         const previousCertificates = Array.isArray(prev) ? prev : [];
-
         return [
           ...previousCertificates,
           {
             contactCertificationId: response.contactCertificationId,
             certification: {
-              certificationId: certificationId as number, // Add type assertion if needed
+              certificationId: certificationId as number,
               certificationName: selectedCertificate,
             },
           },

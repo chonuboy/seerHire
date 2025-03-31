@@ -119,17 +119,17 @@ export const RecruitmentColumn = [
 
 export const jobFormSchema = yup.object().shape({
   jobCode: yup.string().min(3, "Must be at least 3 characters"),
-  jobTitle: yup.string().min(3, "Must be at least 3 characters"),
+  jobTitle: yup.string().min(3, "Must be at least 3 characters").required(),
   jobDescription: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .nullable(),
-  salaryInCtc: yup.number(),
-  experience: yup.string(),
-  isJobActive: yup.string(),
-  jobPostType: yup.string().min(3, "Must be at least 3 characters"),
-  createdOn: yup.date(),
-  insertedBy: yup.string().min(3, "Must be at least 3 characters"),
+    .required(),
+  salaryInCtc: yup.number().required(),
+  experience: yup.string().required(),
+  isJobActive: yup.string().required(),
+  jobPostType: yup.string().min(3, "Must be at least 3 characters").required(),
+  createdOn: yup.date().required(),
+  insertedBy: yup.string().min(3, "Must be at least 3 characters").required(),
 });
 
 export const clientFormSchema = yup.object().shape({

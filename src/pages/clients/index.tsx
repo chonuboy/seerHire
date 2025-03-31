@@ -116,7 +116,7 @@ export default function Clients() {
           <input
             type="text"
             className="text-sm p-1 md:p-2 border w-full  border-gray-300 rounded focus:outline-blue-600 focus:ring-blue-600"
-            placeholder="Search Candidates"
+            placeholder="Search Clients"
             onChange={(e) => setSearchKeyword(e.target.value)}
           />
           <button
