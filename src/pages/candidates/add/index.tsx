@@ -1,29 +1,34 @@
-"use client";
-
-import "react-toastify/dist/ReactToastify.css";
-
 import type React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 
 import { toast } from "react-toastify";
 import { CandidateModel, CandidateSchema } from "@/lib/models/candidate";
-import { createCandidate, uploadResume } from "@/api/candidates/candidates";
+import {
+  createCandidate,
+  fetchCandidates,
+  uploadResume,
+} from "@/api/candidates/candidates";
 import type { Candidate, Location } from "@/lib/definitions";
 import {
   CandidateStatus,
   Gender,
-  HiringType,
   MaritalStatus,
   DifferentlyAbled,
-  PreferredJobType,
 } from "@/lib/constants";
 
 import MainLayout from "@/components/Layouts/layout";
 import ContentHeader from "@/components/Layouts/content-header";
 import LocationAutocomplete from "@/components/Forms/location-autocomplete";
 import { fetchAllLocations } from "@/api/master/masterLocation";
+import { Popup } from "@/components/Elements/cards/popup";
+import ProfessionalForm from "@/components/Forms/addCandidateInfo";
+import { fetchAllDomains } from "@/api/master/domain";
+import { Technology } from "@/lib/models/candidate";
+import { fetchAllTechnologies } from "@/api/master/masterTech";
+import { fetchAllCertifications } from "@/api/master/certification";
+import { fetchAllCompanies } from "@/api/master/masterCompany";
 
 export default function Candidates() {
   // This will be used to show a spinner if the form isSubmitting }]
@@ -36,13 +41,40 @@ export default function Candidates() {
   const router = useRouter();
   const [locations, setLocations] = useState<Location[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [skills, setSkills] = useState<Technology[] | null>(null);
+  const [domains, setDomains] = useState<any>();
+  const [certifications, setCertifications] = useState<any>();
+  const [previousCompanies, setPreviousCompanies] = useState<any>();
+  const [candidateId, setCandidateId] = useState(0);
 
   useEffect(() => {
     fetchAllLocations().then((data) => {
       const allLocatoins = data;
       setLocations(allLocatoins);
     });
+    fetchAllTechnologies().then((data) => {
+      setSkills(data);
+    });
+    fetchCandidates().then((data) => {
+      data.totalElements++;
+      setCandidateId(data.totalElements);
+      console.log(data.totalElements);
+    });
+    fetchAllDomains().then((data) => {
+      setDomains(data);
+    });
+    fetchAllCertifications().then((data) => {
+      setCertifications(data);
+    });
+    fetchAllCompanies().then((data) => {
+      setPreviousCompanies(data);
+    });
   }, []);
+
+  const handleSkip = () => {
+    router.push("/candidates");
+  };
 
   const onChangeLocation = (location: Location) => {
     formik.setFieldValue("currentLocation", location);
@@ -60,12 +92,16 @@ export default function Candidates() {
     validationSchema: CandidateSchema,
     validateOnMount: false,
     validateOnBlur: false, // Add this line to prevent validation on blur
-    validateOnChange: false, // Add this line to prevent validation while typing
     onSubmit: async (values) => {
       setIsSubmitting(true);
       addNewCandidate(values);
     },
   });
+
+  const handleFormSubmit = (data: any) => {
+    console.log(data);
+    router.push("/candidates");
+  };
 
   //---------------------------------------------------------
   // Add New Candidate
@@ -75,40 +111,43 @@ export default function Candidates() {
       reqData.candidateStatus == CandidateStatus.ACTIVE ? true : false;
     reqData.differentlyAbled =
       reqData.isDifferentlyAbled == "yes" ? true : false;
+    reqData.isExpectedCtcNegotiable = true;
     console.log(JSON.stringify(reqData, null, 2));
 
     try {
       createCandidate(reqData).then((data) => {
-        if(data.status === 201) {
+        if (data.status === 201) {
           toast.success("Candidate added successfully", {
             position: "top-center",
           });
-          setTimeout(() => {
-            router.push("/candidates");
-          },1000);
-          
-        }
-        else{
-          if(data.message === "Location not found with id: 0"){
+          // setTimeout(() => {
+          //   router.push("/candidates");
+          // },1000);
+        } else {
+          if (data.message === "Location not found with id: 0") {
             toast.error("Current Location is required", {
               position: "top-center",
-            })
+            });
             return;
           }
           toast.warn(data.message, {
             position: "top-center",
-          })
-          if(!data.message){
+          });
+          if (!data.message) {
             Object.entries(data).forEach(([fieldName, errorMessage]) => {
-              toast.warn(`${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}: ${errorMessage}`, {
-                position: "top-center",
-                autoClose: 5000,
-              });
+              toast.warn(
+                `${
+                  fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+                }: ${errorMessage}`,
+                {
+                  position: "top-center",
+                  autoClose: 5000,
+                }
+              );
             });
           }
         }
-      })
-      
+      });
     } catch (err: any) {
       console.log(err);
     }
@@ -294,7 +333,7 @@ export default function Candidates() {
                 <span className="  font-semibold text-gray-600 ">
                   Alternate Mobile number
                 </span>
-                <span className="px-1 font-bold text-red-500">*</span>
+                {/* <span className="px-1 font-bold text-red-500">*</span> */}
               </label>
               <input
                 type="text"
@@ -456,7 +495,7 @@ export default function Candidates() {
               <LocationAutocomplete
                 name="currentLocation"
                 placeholder="Enter Current Location"
-                value={formik.values.currentLocation.locationDetails}
+                value={formik.values.currentLocation.locationDetails ?? ""}
                 onChange={onChangeLocation}
                 options={locations}
                 onAdd={addNewLocation}
@@ -639,7 +678,7 @@ export default function Candidates() {
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="currentSalary" className="flex">
                 <span className="  font-semibold text-gray-600 ">
-                  Salary (In CTC)
+                  Current Salary (In CTC)
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
@@ -658,9 +697,11 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            {/* <div className="h-auto space-y-3 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="expectedSalary" className="flex">
-                <span className="font-semibold text-gray-600">Expected Salary (In CTC)</span>
+                <span className="font-semibold text-gray-600">
+                  Expected Salary (In CTC)
+                </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
@@ -676,7 +717,7 @@ export default function Candidates() {
                   {formik.errors.expectedSalary}
                 </div>
               ) : null}
-            </div> */}
+            </div>
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="highestEducation" className="flex">
@@ -743,48 +784,49 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
+            {DifferentlyAbled.YES === formik.values.isDifferentlyAbled && (
+              <div className="h-auto space-y-3 rounded-lg">
+                <label htmlFor="differentlyAbledType" className="flex">
+                  <span className="font-semibold text-gray-600">
+                    Differently Abled Type
+                  </span>
+                </label>
+                <select
+                  name="differentlyAbledType"
+                  className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                  value={formik.values.differentlyAbledType || ""}
+                  onChange={formik.handleChange}
+                >
+                  <option value="">None</option>
+                  <option value="Physical (e.g., mobility impairments, limb differences)">
+                    Physical
+                  </option>
+                  <option value="Sensory (e.g., blindness, deafness)">
+                    Sensory
+                  </option>
+                  <option value="Intellectual/Developmental (e.g., Down syndrome, Autism)">
+                    Intellectual/Developmental
+                  </option>
+                  <option value="Mental Health (e.g., depression, anxiety)">
+                    Mental Health
+                  </option>
+                  <option value="Neurological (e.g., epilepsy, TBI)">
+                    Neurological
+                  </option>
+                  <option value="Chronic Illness (e.g., diabetes, MS)">
+                    Chronic Illness
+                  </option>
+                  <option value="Other/Not Listed">Other/Not Listed</option>
+                </select>
+                {formik.errors.differentlyAbledType && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.differentlyAbledType}
+                  </div>
+                )}
+              </div>
+            )}
 
-            <div className="h-auto space-y-3 rounded-lg">
-              <label htmlFor="differentlyAbledType" className="flex">
-                <span className="font-semibold text-gray-600">
-                  Differently Abled Type
-                </span>
-              </label>
-              <select
-                name="differentlyAbledType"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-                value={formik.values.differentlyAbledType || ""}
-                onChange={formik.handleChange}
-              >
-                <option value="">None</option>
-                <option value="Physical (e.g., mobility impairments, limb differences)">
-                  Physical
-                </option>
-                <option value="Sensory (e.g., blindness, deafness)">
-                  Sensory
-                </option>
-                <option value="Intellectual/Developmental (e.g., Down syndrome, Autism)">
-                  Intellectual/Developmental
-                </option>
-                <option value="Mental Health (e.g., depression, anxiety)">
-                  Mental Health
-                </option>
-                <option value="Neurological (e.g., epilepsy, TBI)">
-                  Neurological
-                </option>
-                <option value="Chronic Illness (e.g., diabetes, MS)">
-                  Chronic Illness
-                </option>
-                <option value="Other/Not Listed">Other/Not Listed</option>
-              </select>
-              {formik.errors.differentlyAbledType && (
-                <div className="text-red-500 text-sm">
-                  {formik.errors.differentlyAbledType}
-                </div>
-              )}
-            </div>
-
-            <div className="h-auto space-y-3 rounded-lg">
+            {/* <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="hiringType" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Hiring Type
@@ -832,8 +874,8 @@ export default function Candidates() {
                   {formik.errors.hiringType}
                 </div>
               ) : null}
-            </div>
-            <div className="h-auto space-y-3 rounded-lg">
+            </div> */}
+            {/* <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="preferredJobType" className="flex">
                 <span className="  font-semibold text-gray-600 ">
                   Preferred Job Type
@@ -890,7 +932,7 @@ export default function Candidates() {
                   {formik.errors.preferredJobType}
                 </div>
               ) : null}
-            </div>
+            </div> */}
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="candidateStatus" className="flex">
@@ -980,19 +1022,37 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-
-            
           </div>
 
           <footer className="absolute -bottom-16 right-4 pb-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
               type="submit"
+              onClick={() => {
+                if (formik.errors) {
+                  setShowForm(true);
+                }
+              }}
             >
-              Add Candidate
+              Continue to Next Step
             </button>
           </footer>
         </form>
+        {showForm && (
+          <Popup onClose={() => setShowForm(false)}>
+            <ProfessionalForm
+              onClose={() => setShowForm(false)}
+              masterlocations={locations}
+              masterSkills={skills ? skills : []}
+              masterCertifications={certifications}
+              masterCompanies={previousCompanies}
+              masterDomains={domains}
+              onSubmit={handleFormSubmit}
+              onSkip={handleSkip}
+              candidateId={candidateId}
+            ></ProfessionalForm>
+          </Popup>
+        )}
       </div>
     </MainLayout>
   );

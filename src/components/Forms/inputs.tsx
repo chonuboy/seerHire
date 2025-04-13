@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../Elements/cards/Card";
 
 
 interface TagInputProps {
@@ -42,12 +36,10 @@ export const TagInput: React.FC<TagInputProps> = ({
   };
 
   return (
-    <Card className="bg-gray-50 p-4 h-auto md:h-full space-y-2 md:space-y-4 rounded-lg">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="shadow-none space-y-4">
-        {/* Input Field */}
+    <div className="space-y-4">
+      <label className="font-semibold text-gray-600">{title}</label>
+      
+      <div className="flex md:flex-row flex-col md:items-center gap-2 relative">
         <input
           type="text"
           name={name}
@@ -59,42 +51,36 @@ export const TagInput: React.FC<TagInputProps> = ({
               handleAddTag();
             }
           }}
-          className="px-4 py-2 border w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 min-w-0 block w-full px-2 py-3 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         />
+        
+        <button
+          type="button"
+          onClick={handleAddTag}
+          className="inline-flex items-center px-4 py-2 justify-center border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm bg-gray-200 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 md:absolute right-1 top-1.5"
+        >
+          Add
+        </button>
+      </div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="text-red-500 text-sm mt-1">{error}</div>
-        )}
+      {error && (
+        <p className="mt-1 text-sm text-red-600">{error}</p>
+      )}
 
-        {/* Add Button */}
-        <div className="space-x-6">
-          <button
-            type="button"
-            onClick={handleAddTag}
-            className="px-4 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
-            Add
-          </button>
-        </div>
-
-        {/* Display Added Tags */}
-        {tags && tags.length > 0 && (
-          <div>
-            <p className="text-sm mb-2 font-medium">Added {title}:</p>
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag, index) => (
-                <Tag key={index} text={tag} onRemove={() => onRemoveTag(tag)} />
-              ))}
-            </div>
+      {tags && tags.length > 0 && (
+        <div className="mt-2 space-y-2">
+          <p className="text-gray-500 mb-1">Added {name.charAt(0).toUpperCase() + name.slice(1)}:</p>
+          <div className="flex flex-wrap items-center gap-6">
+            {tags.map((tag, index) => (
+              <Tag key={index} text={tag} onRemove={() => onRemoveTag(tag)} />
+            ))}
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      )}
+    </div>
   );
 };
 
-// Tag Component (Example)
 interface TagProps {
   text: string;
   onRemove: () => void;
@@ -102,23 +88,24 @@ interface TagProps {
 
 const Tag: React.FC<TagProps> = ({ text, onRemove }) => {
   return (
-    <div className="flex items-center bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
-      <span>{text}</span>
+    <span className="bg-gray-300 py-1 px-3 rounded-full relative mt-2">
+      {text}
       <button
+        type="button"
         onClick={onRemove}
-        className="ml-2 text-blue-800 hover:text-blue-900 focus:outline-none"
+        className="bg-red-500 text-white rounded-full ml-2 p-1 hover:bg-red-600 absolute -top-2 -right-3"
       >
-        &times;
+        <X className="h-3 w-3" />
       </button>
-    </div>
+    </span>
   );
 };
 
 interface SingleInputProps {
   title: string;
   placeholder: string;
-  name:string;
-  value: string|number|null | readonly string[] | undefined;
+  name: string;
+  value: string | number | null | readonly string[] | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   error?: string | string[] | null;
@@ -133,21 +120,17 @@ export const SingleInput: React.FC<SingleInputProps> = ({
   name,
   error,
 }) => (
-  <Card className="bg-gray-50 p-4 md:h-full space-y-2 md:space-y-4 rounded-lg">
-    <CardHeader>
-      <CardTitle>{title}</CardTitle>
-    </CardHeader>
-    <CardContent className="space-y-4 shadow-none">
-      <input
-        type="text"
-        className="px-4 py-2 border w-full border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder={placeholder}
-        value={value ?? ''}
-        name ={name}
-        onChange={onChange}
-        onBlur={onBlur}
-      />
-      {error && <div className="text-red-500 text-sm border-red-500">{error}</div>}
-    </CardContent>
-  </Card>
+  <div className="space-y-4">
+    <label className="font-semibold text-gray-600">{title}</label>
+    <input
+      type="text"
+      className="block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      placeholder={placeholder}
+      value={value ?? ''}
+      name={name}
+      onChange={onChange}
+      onBlur={onBlur}
+    />
+    {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+  </div>
 );

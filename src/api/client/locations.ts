@@ -19,7 +19,7 @@ export const fetchClientLocation = async (locationId: string) => {
 };
 
 // PUT /api/client-locations/{locationId}
-export const updateClientLocation = async (locationId: string, reqData: any) => {
+export const updateClientLocation = async (locationId: number, reqData: any) => {
   try {
     const response = await axios.put(`${API_URL}api/client-locations/${locationId}`, reqData, {
       method: 'PUT',
@@ -80,6 +80,6 @@ export const createClientLocation = async (reqData: any) => {
     });
     return response.data;
   } catch (err: any) {
-    return err.response ? err.response.data : err.message;
+    return err.response;
   }
 };

@@ -4,7 +4,7 @@ import { TagInput } from "./inputs";
 import { SingleInput } from "./inputs";
 import { candidateSearchSchema } from "@/lib/models/candidate";
 import { SearchQueries } from "@/lib/models/candidate";
-import { searchCandidates } from "@/api/candidates/candidates";
+import { X } from "lucide-react";
 import { setSearchQuery } from "@/Features/candidateSearchSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ const SearchForm: React.FC = () => {
       noticePeriod: null,
       preferredJobType: null,
       highestEducation: null,
-      preferredLocation:[],
+      preferredLocation: [],
       domain: [],
       mustHaveTechnologies: null,
       goodToHaveTechnologies: null,
@@ -33,25 +33,39 @@ const SearchForm: React.FC = () => {
     },
     validationSchema: candidateSearchSchema,
     onSubmit: (values) => {
-      if(values.companies?.length === 0) {
+      if (values.companies?.length === 0) {
         values.companies = null;
       }
-      if(values.preferredLocation?.length === 0) {
+      if (values.preferredLocation?.length === 0) {
         values.preferredLocation = null;
       }
-      if(values.domain?.length === 0) {
+      if (values.domain?.length === 0) {
         values.domain = null;
       }
-      const allFieldsNull = Object.values(values).every(
-        (value) => value === null
+
+      const payload = Object.entries(values).reduce(
+        (acc: any, [key, value]) => {
+          // Only include fields that are not null, not empty string, and not empty array
+          if (
+            value !== null &&
+            value !== "" &&
+            !(Array.isArray(value) && value.length === 0)
+          ) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {}
       );
 
-      if (allFieldsNull) {  
+      console.log(payload);
+
+      if (Object.keys(payload).length === 0) {
         toast.error("Please enter at least one search criteria.", {
           position: "top-center",
         });
       } else {
-        dispatch(setSearchQuery(values));
+        dispatch(setSearchQuery(payload));
         setTimeout(() => {
           router.push("/search/results");
         }, 2000);
@@ -66,6 +80,10 @@ const SearchForm: React.FC = () => {
 
   // Add a technology to the good-to-have list
   const handleAddGoodToHave = () => {
+    if(formik.values.goodToHaveTechnologies?.includes(inputValue.trim()) || formik.values.mustHaveTechnologies?.includes(inputValue.trim())) {
+      toast.error("Technology already added", {position: "top-center"})
+      return
+    }
     if (inputValue.trim()) {
       formik.setFieldValue("goodToHaveTechnologies", [
         ...(formik.values.goodToHaveTechnologies?.length
@@ -79,6 +97,10 @@ const SearchForm: React.FC = () => {
 
   // Add a technology to the must-have list
   const handleAddMustHave = () => {
+    if(formik.values.goodToHaveTechnologies?.includes(inputValue.trim()) || formik.values.mustHaveTechnologies?.includes(inputValue.trim())) {
+      toast.error("Technology already added", {position: "top-center"})
+      return
+    }
     if (inputValue.trim()) {
       formik.setFieldValue("mustHaveTechnologies", [
         ...(formik.values.mustHaveTechnologies?.length
@@ -103,6 +125,10 @@ const SearchForm: React.FC = () => {
   };
 
   const handleAddTag = (field: keyof SearchQueries, tag: string) => {
+    if(Array.isArray(formik.values[field]) && formik.values[field].includes(tag)) {
+      toast.error(`${tag} already added`, {position: "top-center"})
+      return
+    }
     if (
       Array.isArray(formik.values[field]) &&
       formik.values[field].includes(tag)
@@ -125,234 +151,230 @@ const SearchForm: React.FC = () => {
 
   return (
     <form onSubmit={formik.handleSubmit} noValidate>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Technologies */}
-        <div className="bg-gray-50 rounded-lg shadow-lg border-2 border-gray-200 p-2">
-          <h1 className="text-lg font-bold text-gray-900 mb-6">Technologies</h1>
-
-          {/* Input and Buttons */}
-          <div className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Enter Single or Multiple Technologies"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={handleAddGoodToHave}
-                className="px-4 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Add
-              </button>
-              <button
-                type="button"
-                onClick={handleAddMustHave}
-                className="px-4 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Add as Mandatory
-              </button>
-            </div>
-          </div>
-
-          {/* Display Added Technologies */}
-          {(Array.isArray(formik.values.goodToHaveTechnologies) &&
-            formik.values.goodToHaveTechnologies.length > 0) ||
-          (Array.isArray(formik.values.mustHaveTechnologies) &&
-            formik.values.mustHaveTechnologies.length > 0) ? (
-            <h2 className="text-lg font-semibold text-gray-900">
-              Technologies Added
-            </h2>
-          ) : (
-            ""
-          )}
-          <div className="mt-2 space-y-2">
-            <div className="flex flex-wrap gap-2">
-              {formik.values.goodToHaveTechnologies?.map((tech, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-700"
+      <div className="grid grid-cols-1 gap-6 md:mx-36 mx-10">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {/* Technologies */}
+          <div className="space-y-3">
+            <h2 className="font-semibold text-gray-600">Technologies</h2>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Enter technologies..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                className="flex-1 min-w-0 block w-full px-2 py-3 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"  
+              />
+              <div className="md:absolute inset-y-0 right-0 flex items-center gap-2 pr-2 mt-2 md:mt-0">
+                <button
+                  type="button"
+                  onClick={handleAddGoodToHave}
+                  className="px-4 py-1.5 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-200"
                 >
-                  <span>{tech}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTechnology(tech)}
-                    className="text-xs text-gray-700"
-                  >
-                    ×
-                  </button>
+                  Add
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddMustHave}
+                  className="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Mandatory
+                </button>
+              </div>
+            </div>
+
+            {/* Technology Tags */}
+            <div className="flex flex-wrap  gap-6 mt-3">
+              {formik.values.goodToHaveTechnologies?.map((tech, index) => (
+                <div key={index} className="relative mt-1">
+                  <span className="bg-gray-300 py-1 px-3 rounded-full relative mt-2">
+                    {tech}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTechnology(tech)}
+                      className="bg-red-500 text-white rounded-full ml-2 p-1 hover:bg-red-600 absolute -top-2 -right-3"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </span>
                 </div>
               ))}
               {formik.values.mustHaveTechnologies?.map((tech, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-blue-500 text-white"
-                >
-                  <span>{tech}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTechnology(tech)}
-                    className="text-xs text-white"
-                  >
-                    ×
-                  </button>
+                <div key={index} className="relative mt-1">
+                  <span className="bg-blue-500 py-1 px-3 rounded-full relative mt-2 text-white">
+                    {tech}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTechnology(tech)}
+                      className="bg-red-500 text-white rounded-full ml-2 p-1 hover:bg-red-600 absolute -top-2 -right-3"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </span>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Companies */}
+          <TagInput
+            name="companies"
+            title="Previous Companies"
+            placeholder="Enter companies..."
+            tags={formik.values.companies ?? []}
+            onAddTag={(tag) => handleAddTag("companies", tag)}
+            onRemoveTag={(tag) => handleRemoveTag("companies", tag)}
+          />
+
+          {/* Domain */}
+          <TagInput
+            name="domains"
+            title="Domain Expertise"
+            placeholder="Enter domains..."
+            tags={formik.values.domain ?? []}
+            onAddTag={(tag) => handleAddTag("domain", tag)}
+            onRemoveTag={(tag) => handleRemoveTag("domain", tag)}
+            error={formik.touched.domain ? formik.errors.domain : null}
+          />
+          <TagInput
+              name="preferredLocations"
+              title="Preferred Locations"
+              placeholder="Enter locations..."
+              tags={formik.values.preferredLocation ?? []}
+              onAddTag={(tag) => handleAddTag("preferredLocation", tag)}
+              onRemoveTag={(tag) => handleRemoveTag("preferredLocation", tag)}
+            />
+
+          {/* Locations */}
         </div>
 
-        {/* Companies */}
-        <TagInput
-          name="companies"
-          title="Companies"
-          placeholder="Enter Single or Multiple Previous Companies"
-          tags={formik.values.companies}
-          onAddTag={(tag) => handleAddTag("companies", tag)}
-          onRemoveTag={(tag) => handleRemoveTag("companies", tag)}
-        />
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Role and Experience */}
+          <div className="grid grid-cols-1 gap-4">
+          <SingleInput
+              name="currentLocation"
+              title="Current Location"
+              placeholder="Enter location..."
+              value={formik.values.currentLocation}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <SingleInput
+              name="techRole"
+              title="Tech Role"
+              placeholder="Enter role..."
+              value={formik.values.techRole}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <SingleInput
+              name="highestEducation"
+              title="Qualification"
+              placeholder="Enter qualification..."
+              value={formik.values.highestEducation}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.highestEducation
+                  ? formik.errors.highestEducation
+                  : null
+              }
+            />
+          </div>
 
-        {/* Tech Role */}
-        <SingleInput
-          name="techRole"
-          title="Tech Role"
-          placeholder="Enter Tech Role"
-          value={formik.values.techRole}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+          {/* Experience Range */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SingleInput
+              name="minExperience"
+              title="Min Experience (years)"
+              placeholder="0"
+              value={formik.values.minExperience}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.minExperience
+                  ? formik.errors.minExperience
+                  : null
+              }
+            />
+            <SingleInput
+              name="maxExperience"
+              title="Max Experience (years)"
+              placeholder="10"
+              value={formik.values.maxExperience}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.maxExperience
+                  ? formik.errors.maxExperience
+                  : null
+              }
+            />
+          </div>
 
-        {/* Current Location */}
-        <SingleInput
-          name="currentLocation"
-          title="Current Location"
-          placeholder="Enter Current Location"
-          value={formik.values.currentLocation}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+          {/* Salary Range */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SingleInput
+              name="minSalary"
+              title="Min Salary (LPA)"
+              placeholder="0"
+              value={formik.values.minSalary}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.minSalary ? formik.errors.minSalary : null}
+            />
+            <SingleInput
+              name="maxSalary"
+              title="Max Salary (LPA)"
+              placeholder="50"
+              value={formik.values.maxSalary}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.maxSalary ? formik.errors.maxSalary : null}
+            />
+          </div>
 
-        {/* Domain */}
-        <TagInput
-          name="domain"
-          title="Domain"
-          placeholder="Enter Single or Multiple Domains"
-          tags={formik.values.domain}
-          onAddTag={(tag) => handleAddTag("domain", tag)}
-          onRemoveTag={(tag) => handleRemoveTag("domain", tag)}
-          error={formik.touched.domain ? formik.errors.domain : null}
-        />
-
-        {/* Preferred Location */}
-        <TagInput
-          name="preferredLocation"
-          title="Preferred Location"
-          placeholder="Enter Single or Multiple Locations"
-          tags={formik.values.preferredLocation}
-          onAddTag={(tag) => handleAddTag("preferredLocation", tag)}
-          onRemoveTag={(tag) => handleRemoveTag("preferredLocation", tag)}
-        />
-
-        {/* Qualification */}
-        <SingleInput
-          name="highestEducation"
-          title="Qualification"
-          placeholder="Enter Qualification Details"
-          value={formik.values.highestEducation}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.highestEducation
-              ? formik.errors.highestEducation
-              : null
-          }
-        />
-
-        {/* Experience */}
-        <SingleInput
-          name="minExperience"
-          title="Minimum Experience"
-          placeholder="Enter Minimum Experience"
-          value={formik.values.minExperience}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.minExperience ? formik.errors.minExperience : null
-          }
-        />
-
-        <SingleInput
-          name="maxExperience"
-          title="Maximum Experience"
-          placeholder="Enter Maximum Experience"
-          value={formik.values.maxExperience}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.maxExperience ? formik.errors.maxExperience : null
-          }
-        />
-        {/* Preferred Job Type */}
-        <SingleInput
-          name="preferredJobType"
-          title="Preferred Job Type"
-          placeholder="Enter Preferred Job Type"
-          value={formik.values.preferredJobType}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.preferredJobType
-              ? formik.errors.preferredJobType
-              : null
-          }
-        />
-
-        {/* Salary */}
-        <SingleInput
-          name="minSalary"
-          title="Minimum Salary"
-          placeholder="Enter Minimum Salary"
-          value={formik.values.minSalary}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.minSalary ? formik.errors.minSalary : null}
-        />
-        <SingleInput
-          name="maxSalary"
-          title="Maximum Salary"
-          placeholder="Enter Maximum Salary"
-          value={formik.values.maxSalary}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.maxSalary ? formik.errors.maxSalary : null}
-        />
-
-        {/* Notice Period */}
-        <SingleInput
-          name="noticePeriod"
-          title="Notice Period"
-          placeholder="Enter Minimum Days"
-          value={formik.values.noticePeriod}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.noticePeriod ? formik.errors.noticePeriod : null
-          }
-        />
-      </div>
-
-      {/* Submit Button */}
-      <div className="flex justify-end mt-6">
+          {/* Job Type and Notice Period */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SingleInput
+              name="preferredJobType"
+              title="Job Type"
+              placeholder="Full-time, Contract, etc."
+              value={formik.values.preferredJobType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.preferredJobType
+                  ? formik.errors.preferredJobType
+                  : null
+              }
+            />
+            <SingleInput
+              name="noticePeriod"
+              title="Notice Period (days)"
+              placeholder="30"
+              value={formik.values.noticePeriod}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.noticePeriod ? formik.errors.noticePeriod : null
+              }
+            />
+          </div>
+        </div>
+        <div className="mt-8 flex justify-end">
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
         >
           Search Candidates
         </button>
       </div>
+      </div>
+
+      {/* Submit Button */}
+      
     </form>
   );
 };

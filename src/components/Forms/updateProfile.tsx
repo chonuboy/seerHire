@@ -1,23 +1,39 @@
 import { useFormik } from "formik";
 import { profileUpdateSchema } from "@/lib/models/candidate";
 import { toast } from "react-toastify";
-import { Dialog } from '@headlessui/react'; // or any other modal library
+import { Dialog } from "@headlessui/react"; // or any other modal library
 import { updateCandidate } from "@/api/candidates/candidates";
 import { useState } from "react";
+import LocationAutocomplete from "./location-autocomplete";
+import { Location } from "@/lib/definitions";
+import { fetchAllLocations } from "@/api/master/masterLocation";
 const ProfileUpdateForm = ({
   initialValues,
   id,
   autoClose,
+  masterLocations
 }: {
   initialValues: any;
   id: number;
   autoClose: () => void;
+  masterLocations: any;
 }) => {
-
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingValue, setPendingValue] = useState<boolean | null>(null);
+  const onChangeLocation = (location: Location) => {
+    formik.setFieldValue("currentLocation", location.locationId);
+  };
 
-  const handleStatusChange = (value:boolean) => {
+  const addNewLocation = async (location: Location) => {
+    if(masterLocations.includes(location)){
+      toast.error("Location already exists");
+      return
+    }
+    formik.setFieldValue("currentLocation", location);
+    autoClose();
+  };
+
+  const handleStatusChange = (value: boolean) => {
     if (value === false) {
       // For inactive, show confirmation
       setPendingValue(false);
@@ -34,25 +50,41 @@ const ProfileUpdateForm = ({
   };
 
   const getUpdatedFields = (initialValues: any, values: any) => {
-    return Object.keys(values).reduce((acc: Record<string, any>, key) => {
-      if (values[key] !== initialValues[key]) {
-        acc[key] = values[key];
-      }
-      return acc;
-    }, {});
+    const updatedFields = Object.keys(values).reduce(
+      (acc: Record<string, any>, key) => {
+        // Skip fields that haven't changed
+        if (values[key] !== initialValues[key]) {
+          // Special handling for currentLocation
+          if (key === "currentLocation") {
+            acc[key] = {
+              locationId: values.currentLocation,
+            };
+          }
+          // Handle all other fields normally
+          else {
+            acc[key] = values[key];
+          }
+        }
+        return acc;
+      },
+      {}
+    );
+
+    return updatedFields;
   };
   const formik = useFormik({
     initialValues: initialValues, // Pass initialValues from props
     validationSchema: profileUpdateSchema,
     onSubmit: (values) => {
       const updatedFields = getUpdatedFields(initialValues, values);
-
       try {
-        updateCandidate(updatedFields, id);
+        updateCandidate(updatedFields, id).then((data) => {
+          autoClose();
+        });
+
         toast.success("Profile updated successfully", {
           position: "top-right",
         });
-        autoClose();
       } catch (error) {
         console.error("Error updating profile:", error);
         toast.error("Failed to update profile. Please try again.", {
@@ -111,72 +143,72 @@ const ProfileUpdateForm = ({
 
         {/* Candidate Status */}
         <div className="space-y-2">
-      <label htmlFor="isActive" className="text-gray-400 font-medium">
-        Candidate Status
-      </label>
-      <div>
-        <div className="flex items-center gap-2">
-          <input
-            id="status_active"
-            name="isActive"
-            type="radio"
-            onChange={() => handleStatusChange(true)}
-            checked={formik.values.isActive === true}
-          />
-          <label htmlFor="status_active">Active</label>
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            id="status_inactive"
-            name="isActive"
-            type="radio"
-            onChange={() => handleStatusChange(false)}
-            checked={formik.values.isActive === false}
-          />
-          <label htmlFor="status_inactive">Inactive</label>
-        </div>
-      </div>
-
-      {/* Confirmation Dialog */}
-      <Dialog
-        open={showConfirmation}
-        onClose={() => setShowConfirmation(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-sm rounded bg-white p-6">
-            <Dialog.Title className="font-bold text-lg">
-              Confirm Status Change
-            </Dialog.Title>
-            <Dialog.Description className="mt-2">
-              Are you sure you want to make this candidate inactive?
-            </Dialog.Description>
-
-            <div className="mt-4 flex gap-3 justify-end">
-              <button
-                onClick={() => setShowConfirmation(false)}
-                className="px-4 py-2 border border-gray-300 rounded  hover:bg-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmInactive}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Confirm
-              </button>
+          <label htmlFor="isActive" className="text-gray-400 font-medium">
+            Candidate Status
+          </label>
+          <div>
+            <div className="flex items-center gap-2">
+              <input
+                id="status_active"
+                name="isActive"
+                type="radio"
+                onChange={() => handleStatusChange(true)}
+                checked={formik.values.isActive === true}
+              />
+              <label htmlFor="status_active">Active</label>
             </div>
-          </Dialog.Panel>
-        </div>
-      </Dialog>
+            <div className="flex items-center gap-2">
+              <input
+                id="status_inactive"
+                name="isActive"
+                type="radio"
+                onChange={() => handleStatusChange(false)}
+                checked={formik.values.isActive === false}
+              />
+              <label htmlFor="status_inactive">Inactive</label>
+            </div>
+          </div>
 
-      {formik.touched.isActive && formik.errors.isActive ? (
-        <div className="text-red-500 text-sm">
-          {formik.errors.isActive.toString()}
+          {/* Confirmation Dialog */}
+          <Dialog
+            open={showConfirmation}
+            onClose={() => setShowConfirmation(false)}
+            className="relative z-50"
+          >
+            <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              <Dialog.Panel className="w-full max-w-sm rounded bg-white p-6">
+                <Dialog.Title className="font-bold text-lg">
+                  Confirm Status Change
+                </Dialog.Title>
+                <Dialog.Description className="mt-2">
+                  Are you sure you want to make this candidate inactive?
+                </Dialog.Description>
+
+                <div className="mt-4 flex gap-3 justify-end">
+                  <button
+                    onClick={() => setShowConfirmation(false)}
+                    className="px-4 py-2 border border-gray-300 rounded  hover:bg-gray-500"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmInactive}
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </div>
+          </Dialog>
+
+          {formik.touched.isActive && formik.errors.isActive ? (
+            <div className="text-red-500 text-sm">
+              {formik.errors.isActive.toString()}
+            </div>
+          ) : null}
         </div>
-      ) : null}
-    </div>
 
         {/* Tech Role */}
         <div className="space-y-2">
@@ -411,27 +443,23 @@ const ProfileUpdateForm = ({
         </div>
 
         {/* Current Location */}
-        <div className="space-y-2">
-          <label
-            htmlFor="currentLocation"
-            className="text-gray-400 font-medium"
-          >
-            Current Location
+
+        <div className="h-auto space-y-3 rounded-lg">
+          <label htmlFor="currentLocation" className="flex">
+            <span className="font-semibold text-gray-600">
+              Current Location
+            </span>
+            <span className="px-1 font-bold text-red-500">*</span>
           </label>
-          <input
-            id="currentLocation"
+
+          <LocationAutocomplete
             name="currentLocation"
-            placeholder="e.g. Los Angeles"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            placeholder="Enter Current Location"
             value={formik.values.currentLocation.locationDetails}
-          />
-          {formik.touched.currentLocation && formik.errors.currentLocation ? (
-            <div className="text-red-500 text-sm">
-              {formik.errors.currentLocation.toString()}
-            </div>
-          ) : null}
+            onChange={onChangeLocation}
+            options={masterLocations}
+            onAdd={addNewLocation}
+          ></LocationAutocomplete>
         </div>
 
         {/* Address */}

@@ -30,7 +30,7 @@ export const CandidateModel: Candidate = {
   // expectedSalary: 0,
   highestEducation: "",
   gender: Gender.MALE,
-  hiringType: HiringType.FULL,
+  // hiringType: HiringType.FULL,
   pinCode: null,
   maritalStatus: MaritalStatus.MARRIED,
   techRole: "",
@@ -41,7 +41,7 @@ export const CandidateModel: Candidate = {
   address: "",
   addressLocality: "",
   differentlyAbledType: "",
-  preferredJobType: PreferredJobType.REMOTE,
+  // preferredJobType: PreferredJobType.REMOTE,
 };
 
 export const CandidateSchema = yup.object({
@@ -75,7 +75,7 @@ export const CandidateSchema = yup.object({
   emailId: yup
     .string()
     .matches(
-      /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+.[a-zA-Z]{2,4}$/i,
+      /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/i,
       "Invalid email format"
     )
     .email("Invalid email address")
@@ -89,15 +89,15 @@ export const CandidateSchema = yup.object({
   totalExperience: yup.number().required("Experience is required"),
   candidateStatus: yup.string().required("Select status"),
   currentSalary: yup.number().required("Current salary is required"),
-  expectedSalary: yup.number(),
+  expectedSalary: yup.number().required("Expected salary is required"),
   highestEducation: yup
     .string()
     .min(3, "Must be at least 3 characters")
     .max(30, "Must be 50 characters or less")
     .required("Highest education is required"),
   gender: yup.string().required("Select gender"),
-  hiringType: yup.string(),
-  pinCode: yup.number(),
+  // hiringType: yup.string(),
+  pinCode: yup.number().nullable(),
   maritalStatus: yup.string().required("Select marital status"),
   techRole: yup
     .string()
@@ -109,7 +109,7 @@ export const CandidateSchema = yup.object({
   address: yup.string(),
   addressLocality: yup.string(),
   differentlyAbledType: yup.string(),
-  preferredJobType: yup.string().required("Select preferred job type"),
+  // preferredJobType: yup.string().required("Select preferred job type"),
 });
 
 
@@ -236,20 +236,20 @@ export interface Domains{
 }
 
 export interface SearchQueries {
-  techRole: string|null;
-  minExperience: number|null;
-  maxExperience: number|null;
-  currentLocation: string|null;
-  minSalary: number|null;
-  maxSalary: number|null;
-  noticePeriod: number|null;
-  preferredJobType: string|null;
-  highestEducation: string|null;
-  preferredLocation: string[]|null;
-  domain: string[]|null;
-  mustHaveTechnologies: string[] |null;
-  goodToHaveTechnologies: string[] |null;
-  companies: string[]|null;
+  techRole?: string|null;
+  minExperience?: number|null;
+  maxExperience?: number|null;
+  currentLocation?: string|null;
+  minSalary?: number|null;
+  maxSalary?: number|null;
+  noticePeriod?: number|null;
+  preferredJobType?: string|null;
+  highestEducation?: string|null;
+  preferredLocation?: string[]|null;
+  domain?: string[]|null;
+  mustHaveTechnologies?: string[] |null;
+  goodToHaveTechnologies?: string[] |null;
+  companies?: string[]|null;
 }
 
 
@@ -320,7 +320,8 @@ export const profileUpdateSchema = yup.object().shape({
   maritalStatus: yup
     .string()
     .nullable(),
-  address1: yup.string().nullable(), 
+  address1: yup.string().nullable(),
+  currentLocation: yup.number().nullable(),
   addressLocality: yup.string().nullable(), 
   differentlyAbledType: yup.string().nullable(), 
 });

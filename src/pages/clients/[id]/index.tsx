@@ -1,34 +1,65 @@
 import MainLayout from "@/components/Layouts/layout";
 import ContentHeader from "@/components/Layouts/content-header";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/Elements/cards/collapsible";
 import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/router";
-import { JobCard } from "@/components/Elements/cards/jobCard";
+import JobCard from "@/components/Elements/cards/jobCard";
 import ClientCard from "@/components/Elements/cards/clientCard";
 import { fetchJobsByClient } from "@/api/client/clientJob";
 import { Popup } from "@/components/Elements/cards/popup";
 import { AddJob } from "@/components/Forms/addJob";
 import { fetchClient } from "@/api/master/clients";
+import { fetchAllClientLocations } from "@/api/client/locations";
+import AddClientLocation from "@/components/Forms/addClientLocation";
+import UpdateClientLocation from "@/components/Forms/updateClientBranch";
+import { fetchAllLocations } from "@/api/master/masterLocation";
+import { Location } from "@/lib/definitions";
+
 export default function Client() {
   const router = useRouter();
   const [allJobs, setAllJobs] = useState([]);
   const [isAddJob, setIsAddJob] = useState(false);
   const [currentClient, setCurrentClient] = useState(null);
+  const [newJobId, setNewJobId] = useState(0);
+  const [currentClientLocations, setCurrentClientLocations] = useState<any[]>(
+    []
+  );
+  const [isJobUpdated, setIsJobUpdated] = useState(false);
+  const [isBranchUpdated, setIsBranchUpdated] = useState(false);
+  const [masterLocations, setMasterLocations] = useState<Location[]>([]);
+  const [expandedLocation, setExpandedLocation] = useState<number | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+  const [isBranch, setIsBranch] = useState(false);
 
   useEffect(() => {
-    fetchJobsByClient(Number(router.query.id)).then((data) => {
-      setAllJobs(data);
-    });
+    if (router.query.id) {
+      fetchJobsByClient(Number(router.query.id)).then((data) => {
+        setAllJobs(data);
+        if (data.length > 0) {
+          setNewJobId(data[data.length - 1].jobId + 1);
+        }
+      });
+      const user = localStorage.getItem("user");
+      setUser(user);
 
-    fetchClient(Number(router.query.id)).then((data) => {
-      setCurrentClient(data);
-    });
-  }, []);
+      fetchClient(Number(router.query.id)).then((data) => {
+        setCurrentClient(data);
+      });
+
+      fetchAllClientLocations().then((data) => {
+        if (data.length > 0 && data[0].client.clientId) {
+          const filteredLocations = data.filter(
+            (location: any) =>
+              location.client.clientId === Number(router.query.id)
+          );
+          setCurrentClientLocations(filteredLocations);
+        }
+      });
+      fetchAllLocations().then((data) => {
+        setMasterLocations(data);
+      });
+    }
+  }, [router.query.id, isBranch, isJobUpdated]);
 
   return (
     <MainLayout>
@@ -38,141 +69,118 @@ export default function Client() {
 
         <div className="space-y-6">
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">All Branch</h2>
+            <div className="flex justify-between">
+              <h2 className="text-lg font-semibold">All Branch</h2>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded"
+                onClick={() => setIsBranch(true)}
+              >
+                Add New Branch
+              </button>
+            </div>
+            {isBranch && (
+              <AddClientLocation
+                masterLocations={masterLocations}
+                autoClose={() => setIsBranch(false)}
+                clientId={Number(router.query.id)}
+              ></AddClientLocation>
+            )}
+            <div className="space-y-2 text-xs md:text-base">
+              {currentClientLocations && currentClientLocations.length > 0 ? (
+                currentClientLocations.map((city: any, index: number) => (
+                  <div
+                    key={index}
+                    className="border rounded-lg overflow-hidden"
+                  >
+                    {/* Custom expandable card header */}
+                    <div
+                      className="flex items-center justify-between w-full p-4 hover:bg-accent cursor-pointer"
+                      onMouseEnter={() =>
+                        setExpandedLocation(city.clientLocationId)
+                      }
+                      onMouseLeave={() => setExpandedLocation(null)}
+                    >
+                      <span>{city.cityId.locationDetails}</span>
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform duration-200 ${
+                          expandedLocation === city.clientLocationId
+                            ? "rotate-180"
+                            : ""
+                        }`}
+                      />
+                    </div>
 
-            <div className="space-y-2">
-              {["Chennai", "Delhi", "Hyderabad", "Mumbai"].map(
-                (city, index) => (
-                  <Collapsible key={city}>
-                    <CollapsibleTrigger className="flex items-center justify-between w-full p-4 border rounded-lg hover:bg-accent">
-                      <span>{city}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2">
-                      {index === 0 && ( // Only render content for Chennai (index 0)
-                        <div className="p-6 bg-muted rounded-lg space-y-4 bg-gray-200">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <p className="text-sm">State</p>
-                              <p>Chennai</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">Pin Code</p>
-                              <p>811302</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Contact No</p>
-                              <p>8292782487</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Email</p>
-                              <p>abc@gmail.com</p>
-                            </div>
+                    {/* Custom expandable card content */}
+                    <div
+                      onMouseEnter={() =>
+                        setExpandedLocation(city.clientLocationId)
+                      }
+                      onMouseLeave={() => setExpandedLocation(null)}
+                      className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                        expandedLocation === city.clientLocationId
+                          ? "max-h-96 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <div className="p-6 bg-muted bg-gray-200 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <p className="text-sm">State</p>
+                            <p>{city.state.locationDetails}</p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">Company Land Line</p>
-                            <p>8292782487</p>
-                          </div>
-                        </div>
-                      )}
-                    </CollapsibleContent>
-
-                    <CollapsibleContent className="mt-2">
-                      {index === 1 && ( // Only render content for Delhi (index 1)
-                        <div className="p-6 bg-muted rounded-lg space-y-4 bg-gray-200">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <p className="text-sm">State</p>
-                              <p>Delhi</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">Pin Code</p>
-                              <p>110001</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Contact No</p>
-                              <p>9876543210</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Email</p>
-                              <p>def@gmail.com</p>
-                            </div>
+                            <p className="text-sm">Pin Code</p>
+                            <p>{city.pincode}</p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">Company Land Line</p>
-                            <p>9876543210</p>
-                          </div>
-                        </div>
-                      )}
-                    </CollapsibleContent>
-
-                    <CollapsibleContent className="mt-2">
-                      {index === 2 && ( // Only render content for Hyderabad (index 2)
-                        <div className="p-6 bg-muted rounded-lg space-y-4 bg-gray-200">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <p className="text-sm">State</p>
-                              <p>Hyderabad</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">Pin Code</p>
-                              <p>500001</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Contact No</p>
-                              <p>8765432109</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Email</p>
-                              <p>ghi@gmail.com</p>
-                            </div>
+                            <p className="text-sm">HR Contact No</p>
+                            <p>{city.hrMobileNumber}</p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">Company Land Line</p>
-                            <p>8765432109</p>
+                            <p className="text-sm">HR Email</p>
+                            <p>
+                              {city.hrContactPersonEmail
+                                ? city.hrContactPersonEmail
+                                : "-"}
+                            </p>
                           </div>
                         </div>
-                      )}
-                    </CollapsibleContent>
-
-                    <CollapsibleContent className="mt-2">
-                      {index === 3 && ( // Only render content for Mumbai (index 3)
-                        <div className="p-6 bg-muted rounded-lg space-y-4 bg-gray-200">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <p className="text-sm">State</p>
-                              <p>Mumbai</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">Pin Code</p>
-                              <p>400001</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Contact No</p>
-                              <p>7654321098</p>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">HR Email</p>
-                              <p>jkl@gmail.com</p>
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <p className="text-sm">Company Land Line</p>
-                            <p>7654321098</p>
-                          </div>
+                        <div className="space-y-2">
+                          <p className="text-sm">Company Land Line</p>
+                          <p>{city.companyLandline}</p>
                         </div>
-                      )}
-                    </CollapsibleContent>
-                  </Collapsible>
-                )
+                        <div className="flex justify-end">
+                          <button
+                            onClick={() => setIsBranchUpdated(true)}
+                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                          >
+                            Update
+                          </button>
+                          {isBranchUpdated && (
+                            <Popup onClose={() => setIsBranchUpdated(false)}>
+                              <UpdateClientLocation
+                                currentClientLocation={city}
+                                masterLocations={masterLocations}
+                                autoClose={() => setIsBranchUpdated(false)}
+                                locationId={city.clientLocationId}
+                              ></UpdateClientLocation>
+                            </Popup>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div>No Branch Found</div>
               )}
             </div>
           </div>
         </div>
 
         <div>
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Active Jobs</h3>
+          <div className="flex items-center justify-between text-xs md:text-base">
+            <h3 className="text-lg font-semibold">Active Jobs</h3>
             <button
               className="bg-blue-500 text-white py-2 px-4 rounded-lg"
               onClick={() => setIsAddJob(true)}
@@ -183,7 +191,9 @@ export default function Client() {
               <Popup onClose={() => setIsAddJob(false)}>
                 <AddJob
                   client={currentClient}
+                  newjobId={newJobId}
                   autoClose={() => setIsAddJob(false)}
+                  User={user ? user : ""}
                 />
               </Popup>
             )}
@@ -192,13 +202,17 @@ export default function Client() {
           <div
             className={
               allJobs?.length > 0
-                ? "mx-10 md:mx-20 grid grid-cols-1 md:grid-cols-2 gap-6 mt-4"
+                ? "mx-10 md:mx-20 grid grid-cols-1 text-xs md:text-base md:grid-cols-2 gap-6 mt-4"
                 : "py-2"
             }
           >
             {allJobs?.length > 0 ? (
               allJobs.map((job, index) => (
-                <JobCard jobData={job} key={index} isClient />
+                <JobCard
+                  autoClose={() => setIsJobUpdated(!isJobUpdated)}
+                  job={job}
+                  key={index}
+                />
               ))
             ) : (
               <div>

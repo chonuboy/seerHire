@@ -1,221 +1,458 @@
-import { ClientInfo } from "@/lib/models/client";
+import type React from "react";
+
+import { useState, useRef } from "react";
 import { useFormik } from "formik";
 import { jobFormSchema } from "@/lib/models/client";
 import { createJob } from "@/api/client/clientJob";
-import { useState } from "react";
-import dynamic from 'next/dynamic';
-// import JoditEditor from "jodit-react";
-const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
+import type { ClientInfo } from "@/lib/models/client";
+import { FileText, Upload, X } from "lucide-react";
+import dynamic from "next/dynamic";
+import { uploadJobDescription } from "@/api/client/clientJob";
+import { fetchAllJobs } from "@/api/client/clientJob";
+import { toast } from "react-toastify";
+
+// Dynamic import of JoditEditor to avoid SSR issues
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 export const AddJob = ({
   client,
   autoClose,
+  newjobId,
+  User
 }: {
   client?: ClientInfo | null;
   autoClose: () => void;
+  newjobId?: number;
+  User?: string;
 }) => {
   const [jd, setJobDescription] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [jobId, setJobId] = useState(0);
 
   const formik = useFormik({
     initialValues: {
       jobCode: null,
       jobTitle: null,
       salaryInCtc: null,
-      jd: null,
-      experience: null,
-      jobDescription: null as string | null,
-      isJobActive: null,
-      jobPostType: null,
-      postCreatedOn: null,
-      insertedBy: null,
-      client: client,
+      jd: "",
+      experience: "",
+      jobDescription: "",
+      isJobActive: "",
+      jobPostType: "",
+      insertedBy: User?.replace('"', "")
+        .replace('"', "")
+        .charAt(0)
+        .toUpperCase() +""+ User?.slice(2, User.length - 1),
+      client:{
+        clientId: client?.clientId
+      }
     },
     validationSchema: jobFormSchema,
-    onSubmit: async (values) => {
-      console.log(values);
-      if (jd) {
-        values.jobDescription = jd?.replace(/\s+style="[^"]*"/g, "")
-          .replace(/\s+/g, "")
-          .replace(/&nbsp;/g, "");
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      setIsSubmitting(true);
+
+      try {
+        // Process rich text editor content
+        if (jd) {
+          values.jobDescription = jd
+            ?.replace(/\s+style="[^"]*"/g, "")
+            .replace(/\s+/g, "")
+            .replace(/&nbsp;/g, "");
+        }
+
+        // Handle file upload if needed
+        if (uploadedFile) {
+          // In a real application, you would upload the file to a server
+          // and get back a URL or file identifier
+          console.log("File to upload:", uploadedFile);
+
+          // For this example, we'll just set the filename
+          values.jd = uploadedFile.name;
+        }
+
+        // Submit the form
+        createJob(values).then((data) => {
+          console.log(data);
+          if(data.status === 201){
+            toast.success("Job added successfully", {
+              position: "top-right",
+            })
+          }
+        });
+        autoClose();
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      } finally {
+        setIsSubmitting(false);
       }
-      createJob(values).then((res) => console.log(res)).catch((err) => console.log(err));
-      autoClose();
     },
   });
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setUploadedFile(files[0]);
+      if (uploadedFile && newjobId) {
+        uploadJobDescription(newjobId, uploadedFile).then((res) => {
+          console.log(res);
+        });
+      }
+    }
+  };
+
+  const clearFile = () => {
+    setUploadedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
-    <div className="mt-16 p-2 bg-white rounded-md space-y-4">
-      <p className="text-xl font-semibold">Add New Job</p>
-      <form onSubmit={formik.handleSubmit}>
-        <div className="grid gap-4 grid-cols-1">
+    <div className="bg-white mt-12 rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-xl font-bold text-gray-800">Add New Job</h2>
+      </div>
+
+      <form onSubmit={formik.handleSubmit} className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Job Title */}
           <div className="space-y-2">
-            <label htmlFor="jobTitle" className="font-semibold text-blue-500">
-              Job Title
+            <label
+              htmlFor="jobTitle"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Job Title <span className="text-red-500">*</span>
             </label>
             <input
               id="jobTitle"
               name="jobTitle"
               type="text"
-              placeholder="Job Title"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter job title"
+              className={`w-full px-3 py-2 border  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.jobTitle ? formik.values.jobTitle : ""}
+              value={formik.values.jobTitle || ""}
             />
+            {formik.errors.jobTitle && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.jobTitle.toString()}
+              </p>
+            )}
           </div>
 
           {/* Job Code */}
           <div className="space-y-2">
-            <label htmlFor="jobCode" className="font-semibold text-blue-500">
-              Job Code
+            <label
+              htmlFor="jobCode"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Job Code <span className="text-red-500">*</span>
             </label>
             <input
               id="jobCode"
               name="jobCode"
               type="text"
-              placeholder="Job Code"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter job code"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.jobCode ? formik.values.jobCode : ""}
+              value={formik.values.jobCode || ""}
             />
-          </div>
-
-          {/* Job Description (Editor) */}
-          <div className="space-y-2">
-            <label className="font-semibold text-blue-500">Job Description</label>
-            <JoditEditor
-              value={jd || ""}
-              config={{
-                height: 300,
-                placeholder: "Type job description here...",
-                readonly: false,
-                showCharsCounter: false,
-                showWordsCounter: false,
-                showXPathInStatusbar: false,
-                buttons:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-                buttonsMD:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-                buttonsSM:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-                buttonsXS:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-              }}
-              onBlur={(content) => {
-                setJobDescription(content);
-              }}
-            />
+            {formik.errors.jobCode && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.jobCode.toString()}
+              </p>
+            )}
           </div>
 
           {/* Salary */}
           <div className="space-y-2">
-            <label htmlFor="salaryInCtc" className="font-semibold text-blue-500">
-              Salary (In CTC)
+            <label
+              htmlFor="salaryInCtc"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Salary (In CTC) <span className="text-red-500">*</span>
             </label>
             <input
               id="salaryInCtc"
               name="salaryInCtc"
-              type="text"
-              placeholder="Salary"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              type="number"
+              placeholder="Enter salary"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.salaryInCtc ? formik.values.salaryInCtc : ""}
+              value={formik.values.salaryInCtc || ""}
             />
+            {formik.errors.salaryInCtc && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.salaryInCtc?.toString()}
+              </p>
+            )}
           </div>
 
           {/* Experience */}
           <div className="space-y-2">
-            <label htmlFor="experience" className="font-semibold text-blue-500">
-              Experience (In Years)
+            <label
+              htmlFor="experience"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Experience (In Years) <span className="text-red-500">*</span>
             </label>
             <input
               id="experience"
               name="experience"
-              type="text"
-              placeholder="Experience"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              type="number"
+              placeholder="Enter experience"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.experience ? formik.values.experience : ""}
+              value={formik.values.experience || ""}
             />
+            {formik.errors.experience && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.experience?.toString()}
+              </p>
+            )}
           </div>
 
           {/* Job Status */}
           <div className="space-y-2">
-            <label htmlFor="isJobActive" className="font-semibold text-blue-500">
-              Job Status
+            <label
+              htmlFor="isJobActive"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Job Status <span className="text-red-500">*</span>
             </label>
             <select
               id="isJobActive"
               name="isJobActive"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.isJobActive ? formik.values.isJobActive : ""}
+              value={formik.values.isJobActive || ""}
             >
               <option value="">Select Status</option>
               <option value="Active">Active</option>
-              <option value="Closed">Inactive</option>
+              <option value="OnHold">On Hold</option>
+              <option value="Closed">Closed</option>
             </select>
+            {formik.errors.isJobActive && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.isJobActive?.toString()}
+              </p>
+            )}
           </div>
 
           {/* Job Post Type */}
           <div className="space-y-2">
-            <label htmlFor="jobPostType" className="font-semibold text-blue-500">
-              Job Post Type
+            <label
+              htmlFor="jobPostType"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Job Post Type <span className="text-red-500">*</span>
             </label>
-            <select className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500" name="jobPPostType" id="jobPostType" onChange={(e) => formik.setFieldValue("jobPostType", e.target.value)} onBlur={formik.handleBlur} value={formik.values.jobPostType ? formik.values.jobPostType : ""}>
+            <select
+              id="jobPostType"
+              name="jobPostType"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.jobPostType || ""}
+            >
               <option value="">Select Post Type</option>
               <option value="Replacement">Replacement</option>
               <option value="New">New</option>
+              <option value="Temporary">Temporary</option>
             </select>
-          </div>
-
-          {/* Created On */}
-          <div className="space-y-2">
-            <label htmlFor="postCreatedOn" className="font-semibold text-blue-500">
-              Created On
-            </label>
-            <input
-              id="postCreatedOn"
-              name="postCreatedOn"
-              type="date"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.postCreatedOn ? formik.values.postCreatedOn : ""}
-            />
+            {formik.errors.jobPostType && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.jobPostType?.toString()}
+              </p>
+            )}
           </div>
 
           {/* Inserted By */}
           <div className="space-y-2">
-            <label htmlFor="insertedBy" className="font-semibold text-blue-500">
+            <label
+              htmlFor="insertedBy"
+              className="block text-sm font-medium text-gray-700"
+            >
               Inserted By
             </label>
             <input
               id="insertedBy"
               name="insertedBy"
               type="text"
-              placeholder="Inserted By"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter name"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.insertedBy ? formik.values.insertedBy : ""}
+              value={formik.values.insertedBy || ""}
             />
+            {formik.errors.insertedBy && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.insertedBy?.toString()}
+              </p>
+            )}
           </div>
+
+          {/* JD File Upload */}
+          <div className="space-y-2 md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Upload JD File
+            </label>
+            <div className="mt-1 flex items-center">
+              <div
+                className={`flex-1 ${
+                  uploadedFile
+                    ? "border-green-300 bg-green-50"
+                    : "border-gray-300"
+                } border-dashed border-2 rounded-md px-6 pt-5 pb-6`}
+              >
+                <div className="space-y-1 text-center">
+                  {!uploadedFile ? (
+                    <>
+                      <div className="flex text-sm text-gray-600 justify-center">
+                        <label
+                          htmlFor="file-upload"
+                          className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                        >
+                          <span>Upload a file</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="sr-only"
+                            accept=".pdf,.doc,.docx"
+                            onChange={handleFileChange}
+                            ref={fileInputRef}
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        PDF, DOC, DOCX up to 5MB
+                      </p>
+                      <div className="flex justify-center">
+                        <Upload className="h-10 w-10 text-gray-400" />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <FileText className="h-8 w-8 text-green-500 mr-2" />
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-gray-900">
+                            {uploadedFile.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {(uploadedFile.size / 1024).toFixed(2)} KB
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={clearFile}
+                        className="ml-2 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      >
+                        <span className="sr-only">Remove file</span>
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          {formik.errors.jd && (
+            <p className="mt-1 text-sm text-red-600">
+              {formik.errors.jd?.toString()}
+            </p>
+          )}
         </div>
 
-        {/* Submit Button (Only Show if Job Description is Filled) */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 mt-6 rounded-md hover:bg-blue-700 transition duration-300"
-        >
-          Submit
-        </button>
-        <button className="w-full bg-red-600 text-white py-2 mt-6 rounded-md hover:bg-red-700 transition duration-300" onClick={autoClose}>Cancel</button>
+        {/* Job Description (Editor) */}
+        <div className="space-y-2 mt-4">
+          <label className="font-semibold text-gray-600">Job Description</label>
+          <JoditEditor
+            value={jd || ""}
+            config={{
+              height: 300,
+              placeholder: "Type job description here...",
+              readonly: false,
+              showCharsCounter: false,
+              showWordsCounter: false,
+              showXPathInStatusbar: false,
+              buttons:
+                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+              buttonsMD:
+                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+              buttonsSM:
+                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+              buttonsXS:
+                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+            }}
+            onBlur={(content) => {
+              setJobDescription(content);
+            }}
+            onChange={(content) => {
+              formik.values.jobDescription = content;
+            }}
+          />
+          {formik.touched.jobDescription && formik.errors.jobDescription && (
+            <div className="text-red-500 text-sm mt-1">
+              {formik.errors.jobDescription}
+            </div>
+          )}
+        </div>
+
+        {/* Form Actions */}
+        <div className="mt-8 flex flex-col sm:flex-row-reverse gap-3">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto px-4 py-1 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Processing...
+              </div>
+            ) : (
+              "Submit Job"
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={autoClose}
+            className="w-full sm:w-auto px-4 py-1 bg-red-500 text-white font-medium rounded-md hover:bg-red-600 focus:outline-none transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

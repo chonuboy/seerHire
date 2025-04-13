@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 export default function Candidates() {
   const [allCandidates, setAllCandidates] = useState();
   const [candidateFound, setCandidateFound] = useState(false);
-  const [candidateResponse, setCandidateResponse] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -31,7 +30,9 @@ export default function Candidates() {
     contactSearchByKeyword(searchKeyword).then((data) => {
       if (data.status === "NOT_FOUND") {
         setCandidateFound(true);
-        setCandidateResponse(data.message);
+        toast.error(data.message, {
+          position: "top-center",
+        })
         return;
       } else {
         setCandidateFound(false);
@@ -58,6 +59,10 @@ export default function Candidates() {
               className="text-sm p-2 border w-full  border-gray-300 rounded focus:outline-blue-600 focus:ring-blue-600"
               placeholder="Search Candidates"
               onChange={(e) => setSearchKeyword(e.target.value)}
+              value={searchKeyword}
+              onKeyDown={(e) => {
+                e.key === "Enter" && handleSearch();
+              }}
             />
             <button
               className="px-4 py-1 bg-blue-600 text-white rounded-md"
@@ -70,9 +75,6 @@ export default function Candidates() {
 
         {/* Childrens go here. Initially it will be empty, ensure that an id or path is entered after candidates */}
         <div>
-          {candidateFound && (
-            <div className="text-red-500">{candidateResponse}</div>
-          )}
           {allCandidates ? (
             <CandidateTable
               candidateTableData={allCandidates}

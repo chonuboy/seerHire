@@ -8,7 +8,7 @@ export type Candidate = {
 	lastName: string;
 	dob: string;
 	primaryNumber: string;
-	secondaryNumber: string;
+	secondaryNumber?: string;
 	emailId: string;
 	designation: string;
 	companyName: string;
@@ -19,7 +19,7 @@ export type Candidate = {
 	expectedSalary?: number;
 	highestEducation: string;
 	gender: string;
-	hiringType: string;
+	hiringType?: string;
 	pinCode: number|null;
 	maritalStatus: string;
 	techRole: string;
@@ -30,15 +30,16 @@ export type Candidate = {
 	address: string;
 	addressLocality: string;
 	differentlyAbledType: string;
-	preferredJobType: string;
+	preferredJobType?: string;
 	image?:string
 	resume?:string
 	relavantExperience?: string;
+	isExpectedCtcNegotiable?:boolean;
 };
 
 export type Location = {
 	locationId?: number
-	locationDetails: string
+	locationDetails?: string
 	insertedOn?: string
 }
 

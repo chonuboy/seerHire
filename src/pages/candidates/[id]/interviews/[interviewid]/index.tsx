@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { CandidateCard } from "@/components/Elements/cards/candidateCard";
 import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
-import { JobCard } from "@/components/Elements/cards/jobCard";
+import JobCard from "@/components/Elements/cards/jobCard";
 import { Round } from "@/lib/models/candidate";
 import InterviewForm from "@/components/Forms/updateInterview";
 import AddRound from "@/components/Forms/addInterview";
@@ -67,10 +67,10 @@ export default function CandidateInterviews() {
         </section>
 
         {/* Job Info Section */}
-        <section className="space-y-4">
+        {/* <section className="space-y-4">
           <h3 className="text-xl font-semibold">Job Info</h3>
           <JobCard jobData={currentJobData?.clientJob ?? null} isClient={false} />
-        </section>
+        </section> */}
 
         {/* Interviews Section */}
         <section className="space-y-8">

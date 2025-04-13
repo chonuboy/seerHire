@@ -18,7 +18,7 @@ const links = [
     icon: imgHelper.candidates,
   },
   {
-    name: "Client",
+    name: "Clients",
     href: "/clients",
     icon: imgHelper.client,
   },

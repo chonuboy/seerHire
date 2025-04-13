@@ -2,6 +2,7 @@
 import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
 import ProfileUpdateForm from "@/components/Forms/updateProfile";
+import PdfViewer from "@/components/Elements/pdfViewer";
 
 // Next.js and React Imports
 import { useRouter } from "next/router";
@@ -59,6 +60,8 @@ import { fetchAllDomains, createDomain } from "@/api/master/domain";
 import { createContactDomain } from "@/api/candidates/domains";
 import { createContactCompany } from "@/api/candidates/companies";
 import { fetchAllCompanies, createCompany } from "@/api/master/masterCompany";
+import { fetchAllLocations } from "@/api/master/masterLocation";
+import { getContactPreferredJobType } from "@/api/candidates/preferredJob";
 
 export default function Candidates() {
   // candidate state
@@ -72,8 +75,10 @@ export default function Candidates() {
   >(null);
   // Candidate Technologies
   const [technologies, setTechnologies] = useState<allTechs[] | null>(null);
+  // const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [techExp, setTechExp] = useState("");
   const [expLevel, setExpLevel] = useState("");
+  const [isSkillAdded, setIsSkillAdded] = useState(false);
   const [isSkillUpdated, setIsSkillUpdated] = useState(false);
   const [selectedTech, setSelectedTech] = useState<allTechs | null>(null);
   const [originalTech, setoriginalTech] = useState<allTechs | null>(null);
@@ -96,6 +101,7 @@ export default function Candidates() {
   const [masterCompanies, setMasterCompanies] = useState<Company[] | null>(
     null
   );
+  const [locations, setLocations] = useState<Location[]>([]);
   const [candidateCompanies, setCandidateCompanies] = useState<
     Companies[] | null
   >(null);
@@ -107,30 +113,28 @@ export default function Candidates() {
   const [candidateCertificates, setCandidateCertificates] = useState<
     contactCertificate[] | null
   >(null);
-  const [pdfResponse, setPdfResponse] = useState<string | null>(null);
   const router = useRouter();
-
-  const { mode } = router.query;
-  const isEdit = mode ? true : false;
+  const [isEdit, setIsEdit] = useState(false);
 
   const [initialData, setInitialData] = useState<ReqData | null>(null);
   const [formData, setFormData] = useState<ReqData | null>(null);
+  const [preferredJobType, setPreferredJobType] = useState("");
 
   // Get Operations
   useEffect(() => {
     fetchCandidate(Number(router.query.id))
       .then((data) => {
+        console.log(data);
         setCurrentCandidate(data);
         setInitialData(data);
         setFormData(data);
       })
       .catch((error) => console.log(error));
 
-    // fetchCandidateResume(Number(router.query.id))
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error) => console.log(error));
+    fetchAllLocations().then((data) => {
+      const allLocatoins = data;
+      setLocations(allLocatoins);
+    });
 
     fetchAllContactTechnologies()
       .then((data) => {
@@ -198,7 +202,16 @@ export default function Candidates() {
     fetchAllCertifications().then((data) => {
       setMasterCertificates(data);
     });
-  }, [isFormVisible, isSkillUpdated]);
+
+    getContactPreferredJobType(Number(router.query.id)).then((data) => {
+      setPreferredJobType(data);
+      console.log(data);
+    })
+
+    const { mode } = router.query;
+    const isEdit = mode ? true : false;
+    setIsEdit(isEdit);
+  }, [isFormVisible, isSkillUpdated, isSkillAdded]);
 
   // Post Operations
 
@@ -276,19 +289,29 @@ export default function Candidates() {
       setTechnologies(updatedTechnologies);
 
       // Associate the skill with the candidate
-      const result = await createContactTechnology({
-        contactDetails: currentCandidate,
-        technology: tempId,
-        experience: techExp,
-        expertiseLevel: expLevel,
-      });
-
-      console.log("Skill added to candidate:", result.technology);
+      if (tempId && techExp && expLevel) {
+        const result = await createContactTechnology({
+          contactDetails: currentCandidate,
+          technology: tempId,
+          experience: techExp,
+          expertiseLevel: expLevel,
+        });
+        console.log("Skill added to candidate:", result.technology);
+      } else if (tempId) {
+        const result = await createContactTechnology({
+          contactDetails: currentCandidate,
+          technology: tempId,
+        });
+        console.log("Skill added to candidate:", result.technology);
+      }
 
       // Reset form fields
       setSelectedSkill("");
       setExpLevel("");
       setTechExp("");
+      setTimeout(() => {
+        setIsSkillAdded(true);
+      }, 3000);
 
       // Show success message
       toast.success("Skill added successfully", {
@@ -456,12 +479,12 @@ export default function Candidates() {
       let hasExistingCert: boolean = false;
 
       // Safely check if the selected certificate exists (handles undefined/null)
-      if(candidateCertificates && candidateCertificates?.length>0){
+      if (candidateCertificates && candidateCertificates?.length > 0) {
         hasExistingCert = candidateCertificates?.some(
-          (cert) => cert.certification?.certificationName === selectedCertificate
+          (cert) =>
+            cert.certification?.certificationName === selectedCertificate
         );
       }
-      
 
       if (hasExistingCert) {
         toast.error("Certification already added", {
@@ -743,14 +766,14 @@ export default function Candidates() {
                     : currentCandidate?.currentSalary}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
+              {/* <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
                 <p className="text-gray-500 break-words">Preferred Job Type</p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.preferredJobType === null || undefined
                     ? "-"
                     : currentCandidate?.preferredJobType}
                 </p>
-              </div>
+              </div> */}
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
                 <p className="text-gray-500 break-words">Gender</p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
@@ -805,7 +828,10 @@ export default function Candidates() {
                 <ProfileUpdateForm
                   id={Number(router.query.id)}
                   initialValues={currentCandidate ? currentCandidate : null}
-                  autoClose={() => setIsFormVisible(false)}
+                  masterLocations={locations}
+                  autoClose={() => {
+                    setIsFormVisible(false);
+                  }}
                 />
               </div>
             </Popup>
@@ -1315,7 +1341,7 @@ export default function Candidates() {
             ) : null}
 
             {candidateCertificates && candidateCertificates?.length > 0 ? (
-              <div className="p-2 bg-white rounded-lg shadow-sm space-y-4">
+              <div className="bg-white rounded-lg space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   {candidateCertificates.map((certificate, index) => (
                     <div key={index} className="relative">
@@ -1351,12 +1377,13 @@ export default function Candidates() {
         </section>
 
         {/* Resume Section */}
-        {/* <section
+        <section
           id="resume"
           className="bg-white p-2 rounded-lg shadow-sm border space-y-6 border-gray-200"
         >
-          <div className="flex justify-between items-center">
+          {/* <div className="flex justify-between items-center">
             <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
+            <iframe src={pdfUrl?pdfUrl:""}></iframe>
             <input type="file" className="hidden" id="resume_input" />
             {isEdit ? (
               <button
@@ -1368,8 +1395,9 @@ export default function Candidates() {
             ) : (
               ""
             )}
-          </div>
-        </section> */}
+          </div> */}
+          <PdfViewer candidateId={Number(router.query.id)}></PdfViewer>
+        </section>
 
         {/* Footer Buttons */}
         {/* <div className="flex justify-end gap-4">

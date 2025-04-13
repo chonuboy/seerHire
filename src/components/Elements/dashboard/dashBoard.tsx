@@ -20,7 +20,6 @@ export default function Dashboard() {
 
   // Mock data
   const users = [
-    "All Clients",
     "John Doe",
     "Jane Smith",
     "Robert Johnson",
@@ -93,8 +92,8 @@ export default function Dashboard() {
 
   const handleUserSelect = (user: string) => {
     setSelectedUser(user);
-    setSelectedJob("All Jobs");
     setIsUserDropdownOpen(false);
+    setSelectedJob("All Jobs");
   };
 
   const handleJobSelect = (job: string) => {

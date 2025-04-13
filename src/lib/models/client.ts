@@ -1,5 +1,6 @@
 import { Candidate, Columns } from "../definitions";
 import * as yup from "yup";
+import { Location as location } from "../definitions";
 
 export interface Client {
   jobId: number;
@@ -32,7 +33,8 @@ export interface Client {
 export interface ClientInfo {
   clientId?: number;
   clientName: string;
-  clientHo: string;
+  clientHeadQuarterCountry: location;
+  clientHeadQuarterState: location;
   financePocName?: string;
   financeEmail?: string;
   financeNumber?: string;
@@ -52,7 +54,6 @@ export interface Companies {
   contactDetails: Candidate;
   company: Company;
 }
-
 
 export interface Job {
   jobId: number;
@@ -89,7 +90,7 @@ export const ClientTableColumn: Columns = [
   {
     Header: "Finance Poc",
     accessor: "financePocName",
-  }
+  },
 ];
 
 export const RecruitmentColumn = [
@@ -118,54 +119,127 @@ export const RecruitmentColumn = [
 ];
 
 export const jobFormSchema = yup.object().shape({
-  jobCode: yup.string().min(3, "Must be at least 3 characters"),
-  jobTitle: yup.string().min(3, "Must be at least 3 characters").required(),
+  jobCode: yup.string().min(3, "Must be at least 3 characters").required("Job code is required").nullable(),
+  jobTitle: yup
+    .string()
+    .min(3, "Must be at least 3 characters")
+    .required("Job title is required"),
   jobDescription: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .required(),
-  salaryInCtc: yup.number().required(),
-  experience: yup.string().required(),
-  isJobActive: yup.string().required(),
-  jobPostType: yup.string().min(3, "Must be at least 3 characters").required(),
-  createdOn: yup.date().required(),
-  insertedBy: yup.string().min(3, "Must be at least 3 characters").required(),
+    .required("Job description is required"),
+  salaryInCtc: yup.number().required("Salary is required"),
+  // jd: yup.string().required("Job description is required"),
+  experience: yup.string().required("Experience is required"),
+  isJobActive: yup.string().required("Select status"),
+  jobPostType: yup
+    .string()
+    .min(3, "Must be at least 3 characters")
+    .required("Job type is required"),
+  insertedBy: yup
+    .string()
+    .min(3, "Must be at least 3 characters")
+    .required("Inserted by is required"),
+  client: yup.object().shape({
+    clientId: yup.number(),
+  })
 });
 
 export const clientFormSchema = yup.object().shape({
-  clientHo: yup
-    .string()
-    .min(3, "Client HO must be at least 3 characters")
-    .nullable(),
   financePocName: yup
     .string()
     .min(3, "Finance POC Name must be at least 3 characters")
     .nullable(),
-  financeNumber: yup.string().nullable(),
+  financeNumber: yup.string().nullable().min(10,"Must be at least 10 characters").max(15,"Must be less than 14 characters"),
   financeEmail: yup.string().email("Finance Email is invalid").nullable(),
+  gstnumber: yup.string().nullable().min(3, "GST must be at least 3 characters"),
+  cinnumber: yup.string().nullable().min(3, "CIN must be at least 3 characters"),
+  pannumber: yup.string().nullable().min(3, "PAN must be at least 3 characters"),
+});
+
+export const clientValidationSchema = yup.object().shape({
+  clientName: yup.string().required("Client Name is required"),
+  clientHeadQuarterCountry: yup
+    .object()
+    .required("Client HQ Country is required"),
+  clientHeadQuarterState: yup.object().required("Client HQ State is required"),
+  financePocName: yup.string().required("Finance POC is required"),
+  financeNumber: yup
+    .string()
+    .required("Finance Number is required")
+    .matches(
+      /^\+[0-9]{1,3}[0-9]{4,14}$/,
+      "Must be a valid phone number with country code"
+    ),
+  financeEmail: yup
+    .string()
+    .matches(
+      /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/i,
+      "Invalid email format"
+    )
+    .email("Invalid email format")
+    .required("Finance Email is required"),
   gstnumber: yup.string().nullable(),
   cinnumber: yup.string().nullable(),
   pannumber: yup.string().nullable(),
 });
 
+export const clientLocationSchema = yup.object().shape({
+  pincode: yup
+    .string()
+    .required("Pincode is required")
+    .matches(/^\d+$/, "Pincode must be numeric"),
+  address1: yup.string().required("Address is required"),
+  hrContactPerson: yup.string()
+  .required("HR Contact Person is required")
+  .matches(/^[a-zA-Z]+$/, "HR Contact Person must contain only alphabets"),
 
-export const clientValidationSchema = yup.object().shape({
-  clientName: yup.string().required('Client Name is required'),
-  clientHo: yup.string().required('Client HO is required'),
-  financePocName: yup.string().required('Finance POC is required'),
-  financeNumber: yup.string()
-    .required('Finance Number is required')
-    .matches(/^[0-9]{10}$/, 'Must be a valid 10-digit number'),
-  financeEmail: yup.string().matches(
-    /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+.[a-zA-Z]{2,4}$/i,
-    "Invalid email format"
-  )
-    .email('Invalid email format')
-    .required('Finance Email is required'),
-  gstnumber: yup.string()
-    .required('GST is required'),
-  cinnumber: yup.string()
-    .required('CIN is required'),
-  pannumber: yup.string()
-    .required('PAN is required'),
+technicalPerson: yup.string()
+  .required("Technical Person is required")
+  .matches(/^[a-zA-Z]+$/, "Technical Person must contain only alphabets"),
+  hrMobileNumber: yup
+    .string()
+    .required("HR Mobile Number is required")
+    .max(14, "Must be 14 Numbers or less"),
+  companyLandline: yup
+    .string()
+    .required("Company Landline is required")
+    .matches(/^\d+$/, "Landline must be numeric"),
+  hrContactPersonEmail: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  state: yup.object().shape({
+    locationId: yup
+      .number()
+      .required("State is required")
+      .min(1, "Select a state"),
+  }),
+  client: yup.object().shape({
+    clientId: yup
+      .number()
+      .required("Client is required")
+      .min(1, "Select a client"),
+  }),
+  cityId: yup.object().shape({
+    locationId: yup
+      .number()
+      .required("City is required")
+      .min(1, "Select a city"),
+  }),
 });
+
+export interface clientLocationFormValues {
+  pincode: string;
+  address1: string;
+  hrContactPerson: string;
+  technicalPerson: string;
+  hrMobileNumber: string;
+  companyLandline: string;
+  hrContactPersonEmail: string;
+  state: location;
+  client: {
+    clientId: number;
+  };
+  cityId: location;
+}

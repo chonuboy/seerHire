@@ -21,7 +21,7 @@ const CandidateTable = ({
       data={candidateTableData.content}
       columns={candidateTableColumns}
       getRowLink={(item, index, edit) => ({
-        pathname: `/candidates/${item.contactId}`,
+        pathname: isRecruitment ? `/recruitments/${item.id}` : `/candidates/${item.contactId}`,
         query: edit ? { mode: "edit" } : {}, // Include mode=edit for edit mode
       })}
       isRecruitment={isRecruitment}

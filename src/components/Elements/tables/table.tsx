@@ -3,6 +3,7 @@ import React from "react";
 import { deleteClient } from "@/api/master/clients";
 import { deleteUser } from "@/api/users/users";
 import { useRouter } from "next/router";
+import { get } from "http";
 // Define types for the Table component props
 interface Column {
   Header: string;
@@ -91,17 +92,17 @@ export const Table: React.FC<TableProps> = ({
               {columns.map((col, colIndex) => (
                 <div
                   key={colIndex}
-                  className={`p-3 xl:p-4 flex items-center ${
+                  className={`p-3 xl:p-4 flex items-center overflow-scroll text-ellipsis ${
                     col.hiddenOnSmall ? "hidden sm:block" : ""
                   }`}
                 >
                   <p
-                    className={`text-md font-light ${
+                    className={`text-xs md:text-base font-light ${
                       item[col.accessor] === false
-                        ? "bg-red-800  text-white px-2 py-1 rounded-lg font-semibold text-base w-fit  dark:border-white"
+                        ? "bg-red-800  text-white px-2 py-1 rounded-lg font-semibold text-xs w-fit  dark:border-white"
                         : item[col.accessor] === true
-                        ? "bg-green-500 text-white px-4 py-1 rounded-lg font-semibold text-sm w-fit  dark:border-white"
-                        : "text-gray-700 dark:text-gray-200"
+                        ? "bg-green-500 text-white px-4 py-1 rounded-lg font-semibold text-xs w-fit  dark:border-white"
+                        : "text-gray-700 dark:text-gray-200 text-xs"
                     }`}
                   >
                     {col.accessor === "fullName"
@@ -136,9 +137,10 @@ export const Table: React.FC<TableProps> = ({
           );
 
           // If a link generator is provided, wrap the row in a Link component
-          const rowLink = !isRecruitment && getRowLink
+          const rowLink = getRowLink && !isRecruitment
             ? getRowLink(item, index, "edit") // Pass 'edit' for edit mode
-            : null;
+            : getRowLink && isRecruitment
+            ? getRowLink(item, index):null // Pass 'edit' for edit mode;
 
           // If a link generator is provided, wrap the row in a Link component
           return rowLink ? (

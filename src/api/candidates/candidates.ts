@@ -157,15 +157,15 @@ export const contactSearchByKeyword = async (keyword: string) => {
 export const fetchCandidateResume = async (candidateId: number) => {
   try {
     const response = await axios.get(`${API_URL}contacts/resume/${candidateId}`, {
-      method: "GET",
+      responseType: 'arraybuffer', // This is crucial for PDF files
       headers: {
-        "content-type": "application/pdf",
+        "Accept": "application/pdf",
         "X-Requested-With": "XMLHttpRequest",
         Authorization: "Basic " + btoa(`${Email}:${Password}`),
       },
     });
     return response.data;
   } catch (err: any) {
-    return err.response ? err.response.data : err.message;
+    throw err; // Consider throwing the error to handle it in the component
   }
 };
