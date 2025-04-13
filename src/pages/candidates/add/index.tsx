@@ -1038,7 +1038,7 @@ export default function Candidates() {
             </button>
           </footer>
         </form>
-        {showForm && (
+        {showForm && !formik.errors && (
           <Popup onClose={() => setShowForm(false)}>
             <ProfessionalForm
               onClose={() => setShowForm(false)}
