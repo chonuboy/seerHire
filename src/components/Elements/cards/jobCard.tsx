@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import JobInfoUpdateForm from "@/components/Forms/updateJobInfo";
 import { Popup } from "./popup";
+import { useRouter } from "next/router";
+
 
 interface JobData {
   createdOn: string;
@@ -31,12 +33,13 @@ export default function JobCard({
   autoClose,
 }: {
   job: JobData;
-  autoClose: () => void;
+  autoClose?: () => void;
 }) {
   
   const [showJdModal, setShowJdModal] = useState(false);
   const [isJobUpdated, setIsJobUpdated] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     let objectUrl: string | null = null;
@@ -68,7 +71,7 @@ export default function JobCard({
     }[job.isJobActive] || "bg-gray-100 text-gray-800";
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200" onClick={() => {router.push(`/jobs/${job.jobId}`)}}>
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
           <div>
@@ -154,7 +157,9 @@ export default function JobCard({
               id={job.jobId}
               autoClose={() => {
                 setIsJobUpdated(false);
-                autoClose();
+                if(autoClose){
+                  autoClose();
+                }
               }}
             />
           </Popup>

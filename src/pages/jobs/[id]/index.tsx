@@ -1,7 +1,7 @@
 import MainLayout from "@/components/Layouts/layout";
 import ContentHeader from "@/components/Layouts/content-header";
 import { useRouter } from "next/router";
-import { JobCard } from "@/components/Elements/cards/jobCard";
+import JobCard from "@/components/Elements/cards/jobCard";
 import { fetchJob } from "@/api/client/clientJob";
 import { Client } from "@/lib/models/client";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ import JobDescriptionUploader from "@/components/Forms/jdUploader";
 export default function Job() {
   const router = useRouter();
   const jobId = Number(router.query.id);
-  const [currentJob, setCurrentJob] = useState<Client | null>(null);
+  const [currentJob, setCurrentJob] = useState<any | null>(null);
 
   useEffect(() => {
     if (jobId) {
@@ -39,7 +39,11 @@ export default function Job() {
         )}
 
         <h3 className="text-xl font-semibold">Job Info</h3>
-        <JobCard jobData={currentJob} onClient isClient />
+        {currentJob ? (
+          <JobCard job={currentJob} />
+        ):(
+          "No Job"
+        )}
 
         <div className="w-full">
         {/* <TextEditor /> */}

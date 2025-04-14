@@ -28,8 +28,7 @@ export default function AllInterviews() {
     <MainLayout>
       <ContentHeader title="All Interviews"></ContentHeader>
       <div>
-        <section className="rounded-lg shadow-sm p-2">
-          <h3 className="md:text-xl text-sm font-semibold">Interviews</h3>
+        <section className="rounded-lg shadow-sm p-4">
           <div
             id="interviews"
             className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white py-4"

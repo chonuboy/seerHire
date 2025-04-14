@@ -21,7 +21,7 @@ export default function InterviewCandidates() {
       },[])
     return (
         <MainLayout>
-            <ContentHeader title="Candidates" />
+            <ContentHeader title="Applied Candidates" />
             {Candidates && Candidates.length > 0 ? <ResultCard candidateData={Candidates}></ResultCard> : <h1 className="p-4">No Candidates Found</h1>}
         </MainLayout>
     );

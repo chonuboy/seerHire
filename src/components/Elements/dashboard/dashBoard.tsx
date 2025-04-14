@@ -1,5 +1,5 @@
 import Piechart from "../pieChart";
-import React from "react";
+import React, { useEffect } from "react";
 import ContentHeader from "@/components/Layouts/content-header";
 import { useState } from "react";
 import {
@@ -11,98 +11,103 @@ import {
   TrendingDown,
   UserX
 } from "lucide-react";
+import { fetchAllClients } from "@/api/master/clients";
+import { fetchAllJobs } from "@/api/client/clientJob";
+import { fetchCandidates } from "@/api/candidates/candidates";
 
 export default function Dashboard() {
   const [selectedUser, setSelectedUser] = useState("All Users");
   const [selectedJob, setSelectedJob] = useState("All Jobs");
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isJobDropdownOpen, setIsJobDropdownOpen] = useState(false);
+  const [allClients,setAllClients] = useState(0);
+  const [clients,setClients] = useState<any>([]);
+  const [allJobs,setAllJobs] = useState<any>([]);
+  const [allCandidates,setAllCandidates] = useState(0);
+
+  useEffect(() => {
+    fetchAllClients().then((data: any) => {
+      setAllClients(data.totalElements);
+      setClients(data.content);
+    });
+    fetchAllJobs().then((data: any) => {
+      setAllJobs(data);
+    })
+    fetchCandidates().then((data: any) => {
+      setAllCandidates(data.totalElements);
+    })
+  }, []);
 
   // Mock data
-  const users = [
-    "John Doe",
-    "Jane Smith",
-    "Robert Johnson",
-    "Emily Davis",
-  ];
-  const jobs = {
-    "All Users": [
-      "All Jobs",
-      "Frontend Developer",
-      "Backend Engineer",
-      "UX Designer",
-      "Product Manager",
-    ],
-    "John Doe": ["All Jobs", "Frontend Developer", "UX Designer"],
-    "Jane Smith": ["All Jobs", "Backend Engineer", "DevOps Engineer"],
-    "Robert Johnson": ["All Jobs", "Product Manager", "Project Manager"],
-    "Emily Davis": ["All Jobs", "UX Designer", "UI Designer"],
-  };
+  const users = clients.map((client: any) => client.clientName);
+  const clientJobs = allJobs.map((job: any) => job.jobTitle);
+  const [jobs,setAllClientJobs] = useState<any>([clientJobs]);
 
-  const stats = {
-    "All Jobs": {
-      applied: { count: 245, growth: 12.5 },
-      shortlisted: { count: 120, growth: 8.3 },
-      selected: { count: 45, growth: -3.2 },
-      total: { count: 245 },
-    },
-    "Frontend Developer": {
-      applied: { count: 78, growth: 15.2 },
-      shortlisted: { count: 42, growth: 10.5 },
-      selected: { count: 12, growth: 5.8 },
-      total: { count: 78 },
-    },
-    "Backend Engineer": {
-      applied: { count: 65, growth: 8.7 },
-      shortlisted: { count: 30, growth: -2.1 },
-      selected: { count: 10, growth: 12.3 },
-      total: { count: 65 },
-    },
-    "UX Designer": {
-      applied: { count: 52, growth: 6.3 },
-      shortlisted: { count: 28, growth: 9.5 },
-      selected: { count: 8, growth: -5.2 },
-      total: { count: 52 },
-    },
-    "Product Manager": {
-      applied: { count: 50, growth: 3.8 },
-      shortlisted: { count: 20, growth: 7.2 },
-      selected: { count: 15, growth: 10.5 },
-      total: { count: 50 },
-    },
-    "DevOps Engineer": {
-      applied: { count: 35, growth: 5.6 },
-      shortlisted: { count: 18, growth: -1.8 },
-      selected: { count: 7, growth: 3.2 },
-      total: { count: 35 },
-    },
-    "Project Manager": {
-      applied: { count: 40, growth: 2.5 },
-      shortlisted: { count: 22, growth: 6.7 },
-      selected: { count: 8, growth: -2.3 },
-      total: { count: 40 },
-    },
-    "UI Designer": {
-      applied: { count: 45, growth: 9.2 },
-      shortlisted: { count: 25, growth: 4.5 },
-      selected: { count: 10, growth: 8.1 },
-      total: { count: 45 },
-    },
-  };
+  // const stats = {
+  //   "All Jobs": {
+  //     applied: { count: 245, growth: 12.5 },
+  //     shortlisted: { count: 120, growth: 8.3 },
+  //     selected: { count: 45, growth: -3.2 },
+  //     total: { count: 245 },
+  //   },
+  //   "Frontend Developer": {
+  //     applied: { count: 78, growth: 15.2 },
+  //     shortlisted: { count: 42, growth: 10.5 },
+  //     selected: { count: 12, growth: 5.8 },
+  //     total: { count: 78 },
+  //   },
+  //   "Backend Engineer": {
+  //     applied: { count: 65, growth: 8.7 },
+  //     shortlisted: { count: 30, growth: -2.1 },
+  //     selected: { count: 10, growth: 12.3 },
+  //     total: { count: 65 },
+  //   },
+  //   "UX Designer": {
+  //     applied: { count: 52, growth: 6.3 },
+  //     shortlisted: { count: 28, growth: 9.5 },
+  //     selected: { count: 8, growth: -5.2 },
+  //     total: { count: 52 },
+  //   },
+  //   "Product Manager": {
+  //     applied: { count: 50, growth: 3.8 },
+  //     shortlisted: { count: 20, growth: 7.2 },
+  //     selected: { count: 15, growth: 10.5 },
+  //     total: { count: 50 },
+  //   },
+  //   "DevOps Engineer": {
+  //     applied: { count: 35, growth: 5.6 },
+  //     shortlisted: { count: 18, growth: -1.8 },
+  //     selected: { count: 7, growth: 3.2 },
+  //     total: { count: 35 },
+  //   },
+  //   "Project Manager": {
+  //     applied: { count: 40, growth: 2.5 },
+  //     shortlisted: { count: 22, growth: 6.7 },
+  //     selected: { count: 8, growth: -2.3 },
+  //     total: { count: 40 },
+  //   },
+  //   "UI Designer": {
+  //     applied: { count: 45, growth: 9.2 },
+  //     shortlisted: { count: 25, growth: 4.5 },
+  //     selected: { count: 10, growth: 8.1 },
+  //     total: { count: 45 },
+  //   },
+  // };
 
   const handleUserSelect = (user: string) => {
     setSelectedUser(user);
+    setAllClientJobs(allJobs.filter((job:any)=>job.client.clientName === user));
     setIsUserDropdownOpen(false);
-    setSelectedJob("All Jobs");
-  };
-
-  const handleJobSelect = (job: string) => {
-    setSelectedJob(job);
     setIsJobDropdownOpen(false);
   };
 
-  const currentStats =
-    stats[selectedJob as keyof typeof stats] || stats["All Jobs"];
+  const handleJobSelect = (job: any) => {
+    setSelectedJob(job?.jobTitle);
+    setIsJobDropdownOpen(false);
+  };
+
+  // const currentStats =
+  //   stats[selectedJob as keyof typeof stats] || stats["All Jobs"];
   return (
     <>
       <ContentHeader title="Dashboard" />
@@ -124,7 +129,7 @@ export default function Dashboard() {
                 <Users className="h-6 w-6 text-blue-500" />
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-gray-800">200</span>
+                <span className="text-2xl font-bold text-gray-800">{allClients}</span>
                 <span className="bg-green-200 text-green-800 px-3 py-1 font-semibold rounded-full flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
@@ -149,7 +154,7 @@ export default function Dashboard() {
                 <UserX className="h-6 w-6 text-gray-500" />
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-gray-800">50</span>
+                <span className="text-2xl font-bold text-gray-800">0</span>
                 <span className="bg-red-200 text-red-800 font-semibold px-3 py-1 rounded-full flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
@@ -160,7 +165,7 @@ export default function Dashboard() {
                   >
                     <path d="M5 9l7 7 7-7" />
                   </svg>
-                  5%
+                  0%
                 </span>
               </div>
             </div>
@@ -187,7 +192,7 @@ export default function Dashboard() {
               {isUserDropdownOpen && (
                 <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
                   <ul className="py-1 max-h-60 overflow-auto">
-                    {users.map((user) => (
+                    {users.map((user:any) => (
                       <li
                         key={user}
                         onClick={() => handleUserSelect(user)}
@@ -214,15 +219,15 @@ export default function Dashboard() {
               {isJobDropdownOpen && (
                 <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
                   <ul className="py-1 max-h-60 overflow-auto">
-                    {jobs[selectedUser as keyof typeof jobs]?.map((job) => (
+                    {jobs.length > 0 ? jobs?.map((job:any, index:number) => (
                       <li
-                        key={job}
+                        key={index}
                         onClick={() => handleJobSelect(job)}
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
                       >
-                        {job}
+                        {job.jobTitle}
                       </li>
-                    ))}
+                    )):<li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700">No Jobs</li>}
                   </ul>
                 </div>
               )}
@@ -240,13 +245,13 @@ export default function Dashboard() {
                 <Users className="h-6 w-6 text-blue-500" />
               </div>
               <p className="text-3xl font-bold text-gray-800">
-                {currentStats.total.count}
+                {allCandidates}
               </p>
               <p className="text-sm text-gray-500 mt-2">For {selectedJob}</p>
             </div>
 
             {/* Applied Candidates Card */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+            {/* <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-700">Applied</h2>
                 <Users className="h-6 w-6 text-indigo-500" />
@@ -271,10 +276,10 @@ export default function Dashboard() {
                   </>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Shortlisted Candidates Card */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+            {/* <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-700">
                   Shortlisted
@@ -301,10 +306,10 @@ export default function Dashboard() {
                   </>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Selected Candidates Card */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+            {/* <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-700">
                   Selected
@@ -331,7 +336,7 @@ export default function Dashboard() {
                   </>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

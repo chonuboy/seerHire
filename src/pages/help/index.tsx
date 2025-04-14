@@ -18,7 +18,24 @@ export default function Help() {
             </div>
           </div>
 
-          <form className="space-y-4">
+          <form
+            className="space-y-4"
+            action="https://formsubmit.co/sales@seertechsystems.com"
+            method="POST"
+          >
+            {/* Add this hidden input for FormSubmit features */}
+            <input
+              type="hidden"
+              name="_subject"
+              value="New Contact Form Submission"
+            />
+            <input type="hidden" name="_template" value="table" />
+            <input
+              type="hidden"
+              name="_next"
+              value="http://yourwebsite.com/thank-you"
+            />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label
@@ -30,8 +47,10 @@ export default function Help() {
                 <input
                   type="text"
                   id="firstName"
+                  name="firstName"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your first name"
+                  required
                 />
               </div>
               <div>
@@ -44,8 +63,10 @@ export default function Help() {
                 <input
                   type="text"
                   id="lastName"
+                  name="lastName"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your last name"
+                  required
                 />
               </div>
             </div>
@@ -61,8 +82,10 @@ export default function Help() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your email address"
+                  required
                 />
               </div>
               <div>
@@ -75,6 +98,7 @@ export default function Help() {
                 <input
                   type="tel"
                   id="phone"
+                  name="phone"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your phone number"
                 />
@@ -91,8 +115,10 @@ export default function Help() {
               <input
                 type="text"
                 id="subject"
+                name="subject"
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="What is this regarding?"
+                required
               />
             </div>
 
@@ -105,9 +131,11 @@ export default function Help() {
               </label>
               <textarea
                 id="message"
+                name="message"
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Type your message here..."
+                required
               ></textarea>
             </div>
 
@@ -210,8 +238,8 @@ export default function Help() {
                   />
                 </svg>
                 SeerTech Systems,
-                <br /> Ramaniyam Marvel, Seshadripuram, <br /> 1st Main
-                Road, <br /> Velachery, Chennai – 600042.
+                <br /> Ramaniyam Marvel, Seshadripuram, <br /> 1st Main Road,{" "}
+                <br /> Velachery, Chennai – 600042.
               </p>
             </div>
           </div>
@@ -220,7 +248,7 @@ export default function Help() {
             <p className="text-sm text-gray-500 mb-3">Connect with us</p>
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://x.com/SeertechSystems" target="blank"
                 className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 hover:bg-blue-200 transition-colors"
               >
                 <span className="sr-only">Twitter</span>
@@ -239,7 +267,7 @@ export default function Help() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/seertechsystems" target="blank"
                 className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 hover:bg-blue-200 transition-colors"
               >
                 <span className="sr-only">LinkedIn</span>

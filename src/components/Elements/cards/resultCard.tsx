@@ -19,7 +19,7 @@ export const ResultCard = ({
   });
 
   return (
-    <div className="grid md:grid-cols-2 gap-8 grid-cols-1">
+    <div className="grid md:grid-cols-2 gap-8 grid-cols-1 p-4">
       
       {currentCandidate ? currentCandidate?.map((candidate, index) => (
         <div className="space-y-4">

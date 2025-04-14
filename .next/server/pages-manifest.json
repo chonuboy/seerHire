@@ -1,12 +1,15 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/candidates/[id]": "pages/candidates/[id].js",
   "/": "pages/index.js",
-  "/candidates": "pages/candidates.js",
+  "/recruitments": "pages/recruitments.js",
+  "/recruitments/[id]": "pages/recruitments/[id].js",
+  "/analytics": "pages/analytics.js",
+  "/help": "pages/help.js",
+  "/settings": "pages/settings.js",
   "/clients": "pages/clients.js",
   "/clients/[id]": "pages/clients/[id].js",
-  "/candidates/add": "pages/candidates/add.js",
-  "/search": "pages/search.js",
-  "/search/results": "pages/search/results.js"
+  "/jobs/[id]": "pages/jobs/[id].js",
+  "/jobs/[id]/interviews": "pages/jobs/[id]/interviews.js",
+  "/jobs/[id]/candidates": "pages/jobs/[id]/candidates.js"
 }

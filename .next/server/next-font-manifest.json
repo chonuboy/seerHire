@@ -2,15 +2,23 @@
   "app": {},
   "appUsingSizeAdjust": false,
   "pages": {
-    "/candidates/[id]": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
     "/": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/candidates": [
+    "/recruitments": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/analytics": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/help": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/settings": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
@@ -22,15 +30,15 @@
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/candidates/add": [
+    "/jobs/[id]": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/search": [
+    "/jobs/[id]/interviews": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/search/results": [
+    "/jobs/[id]/candidates": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ]
