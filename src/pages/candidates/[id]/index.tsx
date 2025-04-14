@@ -26,10 +26,7 @@ import { Candidate } from "@/lib/definitions";
 import { ReqData } from "@/lib/models/candidate";
 
 // API Calls
-import {
-  fetchCandidate,
-  fetchCandidateResume,
-} from "@/api/candidates/candidates";
+import { fetchCandidate } from "@/api/candidates/candidates";
 import {
   deleteContactDomain,
   fetchAllContactDomains,
@@ -84,6 +81,7 @@ export default function Candidates() {
   const [originalTech, setoriginalTech] = useState<allTechs | null>(null);
   const [selectedDomain, setSelectedDomain] = useState("");
   const [selectedSkill, setSelectedSkill] = useState("");
+  const [isResumeUpoladed, setIsResumeUpladed] = useState(false);
   const experienceOptions = []; // Start with "Less than a year"
   // Add options from 1 year to 10 years
   for (let i = 1; i <= 10; i++) {
@@ -206,12 +204,12 @@ export default function Candidates() {
     getContactPreferredJobType(Number(router.query.id)).then((data) => {
       setPreferredJobType(data);
       console.log(data);
-    })
+    });
 
     const { mode } = router.query;
     const isEdit = mode ? true : false;
     setIsEdit(isEdit);
-  }, [isFormVisible, isSkillUpdated, isSkillAdded]);
+  }, [isFormVisible, isSkillUpdated, isSkillAdded, isResumeUpoladed]);
 
   // Post Operations
 
@@ -1381,22 +1379,13 @@ export default function Candidates() {
           id="resume"
           className="bg-white p-2 rounded-lg shadow-sm border space-y-6 border-gray-200"
         >
-          {/* <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
-            <iframe src={pdfUrl?pdfUrl:""}></iframe>
-            <input type="file" className="hidden" id="resume_input" />
-            {isEdit ? (
-              <button
-                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
-                type="button"
-              >
-                Update
-              </button>
-            ) : (
-              ""
-            )}
-          </div> */}
-          <PdfViewer candidateId={Number(router.query.id)}></PdfViewer>
+          <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
+          <PdfViewer
+            candidateId={Number(router.query.id)}
+            autoClose={() => {
+              setIsFormVisible(false);
+            }}
+          ></PdfViewer>
         </section>
 
         {/* Footer Buttons */}

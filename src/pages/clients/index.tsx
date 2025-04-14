@@ -32,6 +32,7 @@ export default function Clients() {
   useEffect(() => {
     fetchAllClients(currentPage - 1, 10).then((data: any) => {
       setClients(data);
+      console.log(data);
     });
     fetchAllLocations().then((data: any) => {
       setLocations(data);

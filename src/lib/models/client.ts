@@ -75,7 +75,7 @@ export const ClientTableColumn: Columns = [
   },
   {
     Header: "Head Office",
-    accessor: "clientHo",
+    accessor: "clientHeadQuarterState.locationDetails",
     hiddenOnSmall: true,
   },
   {

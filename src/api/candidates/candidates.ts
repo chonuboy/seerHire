@@ -169,3 +169,26 @@ export const fetchCandidateResume = async (candidateId: number) => {
     throw err; // Consider throwing the error to handle it in the component
   }
 };
+
+export async function uploadCandidateResume(reqData: any, contactId: number) {
+  try {
+    const response = await axios.post(`${API_URL}contacts/resume/${contactId}`, reqData, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: "Basic " + btoa(`${Email}:${Password}`),
+      },
+      onUploadProgress: (progressEvent: any) => {
+        const progress = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        console.log(progress);
+      },
+    });
+    return response.data;
+  } catch (err: any) {
+    console.error("Upload error:", err);
+    return err.response ? err.response.data : err.message;
+  }
+}

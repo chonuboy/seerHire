@@ -17,7 +17,7 @@ interface TableProps {
   getRowLink?: (
     item: any,
     index: number,
-    mode?: string,
+    mode?: string
   ) => string | { pathname: string; query?: any };
   currentPage?: number;
   totalPages?: number;
@@ -67,8 +67,8 @@ export const Table: React.FC<TableProps> = ({
             <div
               key={index}
               className={`p-3 xl:p-4 overflow-scroll text-wrap ${
-                col.hiddenOnSmall ? "hidden sm:block" : "" 
-              }` }
+                col.hiddenOnSmall ? "hidden sm:block" : ""
+              }`}
             >
               <h5 className="text-xs md:text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
                 {col.Header}
@@ -114,6 +114,10 @@ export const Table: React.FC<TableProps> = ({
                       : item[col.accessor] === null
                       ? "-"
                       : item[col.accessor]}
+
+                    {col.accessor === "clientHeadQuarterState.locationDetails"
+                      ? item.clientHeadQuarterState.locationDetails
+                      : ""}
                   </p>
                   {col.accessor === "roles[roles.length-1]" &&
                     item.roles.map((role: any) => (
@@ -137,10 +141,12 @@ export const Table: React.FC<TableProps> = ({
           );
 
           // If a link generator is provided, wrap the row in a Link component
-          const rowLink = getRowLink && !isRecruitment
-            ? getRowLink(item, index, "edit") // Pass 'edit' for edit mode
-            : getRowLink && isRecruitment
-            ? getRowLink(item, index):null // Pass 'edit' for edit mode;
+          const rowLink =
+            getRowLink && !isRecruitment
+              ? getRowLink(item, index, "edit") // Pass 'edit' for edit mode
+              : getRowLink && isRecruitment
+              ? getRowLink(item, index)
+              : null; // Pass 'edit' for edit mode;
 
           // If a link generator is provided, wrap the row in a Link component
           return rowLink ? (

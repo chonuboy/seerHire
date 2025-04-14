@@ -577,9 +577,8 @@ export default function Candidates() {
                   PDF, DOC, DOCX up to 5MB
                 </p>
                 {file && (
-                  <p className="mt-4">
-                    <b>Selected file : </b>
-                    {updatedFileName}
+                  <p className="mt-4 text-green-500">
+                    File Selected
                   </p>
                 )}
                 <button
