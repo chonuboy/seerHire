@@ -1,7 +1,7 @@
 // Components
 import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
-import ProfileUpdateForm from "@/components/Forms/updateProfile";
+import ProfileUpdateForm from "@/components/Forms/candidates/updateProfile";
 import PdfViewer from "@/components/Elements/utils/pdfViewer";
 
 // Next.js and React Imports
@@ -13,7 +13,6 @@ import { X } from "lucide-react";
 import { toast } from "react-toastify";
 
 // Models and Definitions
-import { Doc } from "@/lib/pdf";
 import { Companies, Company } from "@/lib/models/client";
 import {
   Certificates,
@@ -136,7 +135,7 @@ export default function Candidates() {
 
     fetchAllContactTechnologies()
       .then((data) => {
-        const contactIdToMatch = Number(router.query.id); // Replace this with the desired contactId
+        const contactIdToMatch = Number(router.query.id);
         // Step 1: Filter objects with the matching contactId
         const filteredData = data.filter(
           (item: any) => item.contactDetails.contactId === contactIdToMatch
@@ -148,7 +147,7 @@ export default function Candidates() {
       .catch((error) => console.log(error));
 
     fetchAllContactDomains().then((data) => {
-      const contactIdToMatch = Number(router.query.id); // Replace this with the desired contactId
+      const contactIdToMatch = Number(router.query.id);
       // Step 1: Filter objects with the matching contactId
       const filteredData = data.filter(
         (item: any) => item.contactDetails.contactId === contactIdToMatch
@@ -174,7 +173,7 @@ export default function Candidates() {
       });
 
     fetchAllContactCompanies().then((data) => {
-      const contactIdToMatch = Number(router.query.id); // Replace this with the desired contactId
+      const contactIdToMatch = Number(router.query.id);
       // Step 1: Filter objects with the matching contactId
       const filteredData = data.filter(
         (item: any) => item.contactDetails.contactId === contactIdToMatch

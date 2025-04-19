@@ -3,7 +3,6 @@ import ContentHeader from "@/components/Layouts/content-header";
 import { useRouter } from "next/router";
 import JobCard from "@/components/Elements/cards/jobCard";
 import { fetchJob } from "@/api/client/clientJob";
-import { Client } from "@/lib/models/client";
 import { useEffect, useState } from "react";
 import ClientCard from "@/components/Elements/cards/clientCard";
 import { JobDescription } from "@/components/Elements/cards/jobDescription";

@@ -367,9 +367,6 @@ const SearchForm: React.FC = () => {
         </button>
       </div>
       </div>
-
-      {/* Submit Button */}
-      
     </form>
   );
 };

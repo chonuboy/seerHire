@@ -73,7 +73,6 @@ export default function Candidates() {
           </div>
         </div>
 
-        {/* Childrens go here. Initially it will be empty, ensure that an id or path is entered after candidates */}
         <div>
           {allCandidates ? (
             <CandidateTable

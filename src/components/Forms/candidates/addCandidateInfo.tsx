@@ -64,7 +64,6 @@ export default function ProfessionalForm({
   const [isLoading, setIsLoading] = useState(false);
   const [newDomain, setNewDomain] = useState("");
 
-  // Job modes and hiring types options
   const jobModes = ["Remote", "Onsite", "Hybrid"];
   const hiringTypes = ["Full Time", "Part Time", "Contract"];
 
@@ -74,7 +73,6 @@ export default function ProfessionalForm({
     setIsLoading(true);
 
     try {
-      // In a real app, you would send the data to your API
       await new Promise((resolve) => setTimeout(resolve, 1000));
       onSubmit(formData);
     } catch (error) {
@@ -84,7 +82,6 @@ export default function ProfessionalForm({
     }
   };
 
-  // Add item to array fields
   const addItem = (field: keyof FormData, value: string) => {
     if (!value.trim()) return;
 

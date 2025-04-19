@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Dialog } from "@headlessui/react"; // or any other modal library
 import { updateCandidate } from "@/api/candidates/candidates";
 import { useState } from "react";
-import LocationAutocomplete from "../Elements/location-autocomplete";
+import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
 import { Location } from "@/lib/definitions";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 const ProfileUpdateForm = ({

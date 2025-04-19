@@ -2,9 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import { clientLocationFormValues } from "@/lib/models/client";
 import { clientLocationSchema } from "@/lib/models/client";
-import { Popup } from "../Elements/cards/popup";
+import { Popup } from "@/components/Elements/cards/popup";
 import { updateClientLocation } from "@/api/client/locations";
-import LocationAutocomplete from "../Elements/location-autocomplete";
+import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
 import { Location as locations } from "@/lib/definitions";
 import { toast } from "react-toastify";
 
@@ -42,10 +42,8 @@ const UpdateClientLocation = ({
             })
             autoClose();
           })
-          // Handle success (show toast, redirect, etc.)
         } catch (error) {
           console.error("Form submission error", error);
-          // Handle error (show error message)
         }
     },
   });
