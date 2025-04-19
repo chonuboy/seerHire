@@ -13,7 +13,7 @@ import { searchClient } from "@/api/master/clients";
 import { fetchAllLocations, createLocation } from "@/api/master/masterLocation";
 import { countryCodes } from "@/api/countryCodes";
 import { Location } from "@/lib/definitions";
-import LocationAutocomplete from "@/components/Forms/location-autocomplete";
+import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
 
 export default function Clients() {
   const [allClients, setClients] = useState();
@@ -107,11 +107,11 @@ export default function Clients() {
   const handleFinanceNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const rawNumber = e.target.value.replace(/^\+?\d*\s?/, ""); // Remove any existing country code
-    setDisplayedFinanceNumber(`${selectedCountry.dial_code} ${rawNumber}`);
+    const mobilenumberWithoutCode = e.target.value.replace(/^\+?\d*\s?/, ""); // Remove any existing country code
+    setDisplayedFinanceNumber(`${selectedCountry.dial_code} ${mobilenumberWithoutCode}`);
     formik.setFieldValue(
       "financeNumber",
-      `${selectedCountry.dial_code}${rawNumber}`
+      `${selectedCountry.dial_code}${mobilenumberWithoutCode}`
     );
   };
 
@@ -138,16 +138,25 @@ export default function Clients() {
     validateOnMount: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      console.log(values);
-      console.log(formik.errors);
       try {
         createClient(values).then((data) => {
           console.log(data);
-          fetchAllClients(currentPage - 1, 10).then((data: any) => {
-            setClients(data);
-            console.log(data);
-          });
-          formik.resetForm();
+          if (data.status === 200) {
+            toast.success("Client added successfully", {
+              position: "top-center",
+            });
+            setIsClientAdded(false);
+            fetchAllClients(currentPage - 1, 10).then((data: any) => {
+              setClients(data);
+              console.log(data);
+            });
+            formik.resetForm();
+          }
+          if (data.message) {
+            toast.error(data.message, {
+              position: "top-center",
+            });
+          }
         });
       } catch (err) {
         console.log(err);
@@ -295,7 +304,8 @@ export default function Clients() {
                       htmlFor="financePocName"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Finance Point of Contact<span className="px-1 font-bold text-red-500">*</span>
+                      Finance Point of Contact
+                      <span className="px-1 font-bold text-red-500">*</span>
                     </label>
                     <input
                       id="financePocName"
@@ -321,7 +331,8 @@ export default function Clients() {
                       htmlFor="financeNumber"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Finance Contact Number<span className="px-1 font-bold text-red-500">*</span>
+                      Finance Contact Number
+                      <span className="px-1 font-bold text-red-500">*</span>
                     </label>
                     <div className="flex">
                       <span className="inline-flex items-center px-2 py-2 rounded-l-md border border-r-0 text-gray-500 text-sm">
@@ -337,11 +348,11 @@ export default function Clients() {
                           .replace(selectedCountry.dial_code, "")
                           .trim()}
                         onChange={(e) => {
-                          const rawNumber = e.target.value;
-                          setDisplayedFinanceNumber(`${rawNumber}`);
+                          const mobilenumberWithoutCode = e.target.value;
+                          setDisplayedFinanceNumber(`${mobilenumberWithoutCode}`);
                           formik.setFieldValue(
                             "financeNumber",
-                            `${selectedCountry.dial_code}${rawNumber}`
+                            `${selectedCountry.dial_code}${mobilenumberWithoutCode}`
                           );
                         }}
                         onBlur={formik.handleBlur}
@@ -361,7 +372,8 @@ export default function Clients() {
                       htmlFor="financeEmail"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Finance Email Address<span className="px-1 font-bold text-red-500">*</span>
+                      Finance Email Address
+                      <span className="px-1 font-bold text-red-500">*</span>
                     </label>
                     <input
                       id="financeEmail"
@@ -482,7 +494,7 @@ export default function Clients() {
                     <button
                       type="button"
                       className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-all duration-300"
-                      onClick={() => setIsClientAdded(false)}
+                      onClick={() => {setIsClientAdded(false); formik.resetForm();}}
                     >
                       Cancel
                     </button>

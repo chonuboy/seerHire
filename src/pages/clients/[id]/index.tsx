@@ -7,11 +7,11 @@ import JobCard from "@/components/Elements/cards/jobCard";
 import ClientCard from "@/components/Elements/cards/clientCard";
 import { fetchJobsByClient } from "@/api/client/clientJob";
 import { Popup } from "@/components/Elements/cards/popup";
-import { AddJob } from "@/components/Forms/addJob";
+import { AddJob } from "@/components/Forms/jobs/addJob";
 import { fetchClient } from "@/api/master/clients";
 import { fetchAllClientLocations } from "@/api/client/locations";
-import AddClientLocation from "@/components/Forms/addClientLocation";
-import UpdateClientLocation from "@/components/Forms/updateClientBranch";
+import AddClientLocation from "@/components/Forms/clients/addClientLocation";
+import UpdateClientLocation from "@/components/Forms/clients/updateClientBranch";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 import { Location } from "@/lib/definitions";
 

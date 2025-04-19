@@ -1,6 +1,6 @@
 import MainLayout from "@/components/Layouts/layout";
 import { candidateTableColumns } from "@/lib/models/candidate";
-import AddButton from "@/components/Elements/add-button";
+import AddButton from "@/components/Elements/utils/add-button";
 import ContentHeader from "@/components/Layouts/content-header";
 import CandidateTable from "@/components/Elements/tables/candidateTable";
 import { useEffect, useState } from "react";

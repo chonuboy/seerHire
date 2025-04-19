@@ -1,4 +1,4 @@
-import Piechart from "../pieChart";
+import Piechart from "../utils/pieChart";
 import React, { useEffect } from "react";
 import ContentHeader from "@/components/Layouts/content-header";
 import { useState } from "react";

@@ -2,58 +2,69 @@ import React from "react";
 import { useFormik } from "formik";
 import { clientLocationFormValues } from "@/lib/models/client";
 import { clientLocationSchema } from "@/lib/models/client";
-import { Popup } from "../Elements/cards/popup";
-import { updateClientLocation } from "@/api/client/locations";
-import LocationAutocomplete from "./location-autocomplete";
+import { Popup } from "../../Elements/cards/popup";
+import { createClientLocation } from "@/api/client/locations";
+import LocationAutocomplete from "../../Elements/utils/location-autocomplete";
 import { Location as locations } from "@/lib/definitions";
 import { toast } from "react-toastify";
 
-const UpdateClientLocation = ({
-  currentClientLocation,
+const AddClientLocation = ({
   masterLocations,
-  locationId,
+  clientId,
   autoClose,
 }: {
-  locationId: number;
+  clientId: number;
   autoClose: () => void;
   masterLocations: locations[];
-  currentClientLocation: any;
 }) => {
-  const getUpdatedFields = (initialValues: any, values: any) => {
-    return Object.keys(values).reduce((acc: Record<string, any>, key) => {
-      if (values[key] !== initialValues[key]) {
-        acc[key] = values[key];
-      }
-      return acc;
-    }, {});
-  };
   const formik = useFormik<clientLocationFormValues>({
-    initialValues: currentClientLocation,
-    // validationSchema: clientLocationSchema,
+    initialValues: {
+      pincode: "",
+      address1: "",
+      hrContactPerson: "",
+      technicalPerson: "",
+      hrMobileNumber: "",
+      companyLandline: "",
+      hrContactPersonEmail: "",
+      state: { locationId: 0 },
+      client: { clientId: clientId },
+      cityId: { locationId: 0 },
+    },
+    validationSchema: clientLocationSchema,
     onSubmit: async (values) => {
-      console.log(values)
-      console.log(locationId)
-      const updatedFields = getUpdatedFields(currentClientLocation, values);
-      console.log(updatedFields);
-        try {
-          updateClientLocation(locationId, updatedFields).then((data)=>{
-            toast.success("Branch updated successfully", {
-              position: "top-right",
-            })
-            autoClose();
+      
+      try {
+        createClientLocation(values)
+          .then((data) => {
+            console.log(data);
+            if(data.status === 201) {
+              
+              toast.success("Branch added successfully", {
+                position: "top-center",
+              })
+              autoClose();
+            }
+            if(data.message) {
+              toast.error(data.message, {
+                position: "top-right",
+              })
+            }
           })
-          // Handle success (show toast, redirect, etc.)
-        } catch (error) {
-          console.error("Form submission error", error);
-          // Handle error (show error message)
-        }
+          .catch((err) => {
+            console.log(err);
+          });
+        // Handle success (show toast, redirect, etc.)
+      } catch (error) {
+        console.error("Form submission error", error);
+        // Handle error (show error message)
+      }
     },
   });
   const onChangeState = (location: locations) => {
-    formik.setFieldValue("state", { locationId: location.locationId });
+    formik.setFieldValue("state", {locationId: location.locationId});
   };
 
-  const UpdateNewState = async (location: locations) => {
+  const addNewState = async (location: locations) => {
     if (masterLocations.includes(location)) {
       toast.error("Location already exists");
       return;
@@ -63,10 +74,10 @@ const UpdateClientLocation = ({
   };
 
   const onChangeCity = (location: locations) => {
-    formik.setFieldValue("cityId", { locationId: location.locationId });
+    formik.setFieldValue("cityId", {locationId: location.locationId});
   };
 
-  const UpdateNewCity = async (location: locations) => {
+  const addNewCity = async (location: locations) => {
     if (masterLocations.includes(location)) {
       toast.error("Location already exists");
       return;
@@ -83,6 +94,22 @@ const UpdateClientLocation = ({
         </h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
+          {/* Address Section */}
+          <div className="space-y-3">
+            <label htmlFor="address1" className="font-semibold text-gray-600">
+              Address <span className="font-bold text-red-500">*</span>
+            </label>
+            <input
+              id="address1"
+              name="address1"
+              type="text"
+              placeholder="Enter Address"
+              onChange={formik.handleChange}
+              value={formik.values.address1}
+              className="w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="h-auto space-y-4 rounded-lg">
               <label htmlFor="state" className="flex">
@@ -96,7 +123,7 @@ const UpdateClientLocation = ({
                 value={formik.values.state.locationDetails ?? ""}
                 onChange={onChangeState}
                 options={masterLocations}
-                onAdd={UpdateNewState}
+                onAdd={addNewState}
               ></LocationAutocomplete>
             </div>
 
@@ -112,7 +139,7 @@ const UpdateClientLocation = ({
                 value={formik.values.cityId.locationDetails ?? ""}
                 onChange={onChangeCity}
                 options={masterLocations}
-                onAdd={UpdateNewCity}
+                onAdd={addNewCity}
               ></LocationAutocomplete>
             </div>
 
@@ -297,4 +324,4 @@ const UpdateClientLocation = ({
   );
 };
 
-export default UpdateClientLocation;
+export default AddClientLocation;

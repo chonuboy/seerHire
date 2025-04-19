@@ -183,6 +183,7 @@ export default function ProfessionalForm({
                         technology: newSkill,
                       },
                     }).then((data) => {
+                      console.log(data);
                       setNewSkill("");
                     });
                   } catch (error) {

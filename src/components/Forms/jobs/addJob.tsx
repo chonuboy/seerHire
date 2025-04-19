@@ -18,7 +18,7 @@ export const AddJob = ({
   client,
   autoClose,
   newjobId,
-  User
+  User,
 }: {
   client?: ClientInfo | null;
   autoClose: () => void;
@@ -41,13 +41,13 @@ export const AddJob = ({
       jobDescription: "",
       isJobActive: "",
       jobPostType: "",
-      insertedBy: User?.replace('"', "")
-        .replace('"', "")
-        .charAt(0)
-        .toUpperCase() +""+ User?.slice(2, User.length - 1),
-      client:{
-        clientId: client?.clientId
-      }
+      insertedBy:
+        User?.replace('"', "").replace('"', "").charAt(0).toUpperCase() +
+        "" +
+        User?.slice(2, User.length - 1),
+      client: {
+        clientId: client?.clientId,
+      },
     },
     validationSchema: jobFormSchema,
     validateOnBlur: false,
@@ -71,16 +71,19 @@ export const AddJob = ({
           console.log("File to upload:", uploadedFile);
 
           // For this example, we'll just set the filename
-          values.jd = uploadedFile.name;
+          // values.jd = uploadedFile.name;
+          // uploadJobDescription(newjobId, uploadedFile).then((res) => {
+          //   console.log(res);
+          // });
         }
 
         // Submit the form
         createJob(values).then((data) => {
           console.log(data);
-          if(data.status === 201){
+          if (data.status === 201) {
             toast.success("Job added successfully", {
               position: "top-right",
-            })
+            });
           }
         });
         autoClose();
@@ -96,11 +99,6 @@ export const AddJob = ({
     const files = event.target.files;
     if (files && files.length > 0) {
       setUploadedFile(files[0]);
-      if (uploadedFile && newjobId) {
-        uploadJobDescription(newjobId, uploadedFile).then((res) => {
-          console.log(res);
-        });
-      }
     }
   };
 
@@ -354,6 +352,9 @@ export const AddJob = ({
                           </p>
                         </div>
                       </div>
+                      <button className="bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600">
+                        Upload
+                      </button>
                       <button
                         type="button"
                         onClick={clearFile}

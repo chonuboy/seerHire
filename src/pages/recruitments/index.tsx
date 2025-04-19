@@ -6,7 +6,7 @@ import { useState } from "react";
 import CandidateTable from "@/components/Elements/tables/candidateTable";
 import { RecruitmentColumn } from "@/lib/models/client";
 import { Popup } from "@/components/Elements/cards/popup";
-import RecruitmentDataSearch from "@/components/Forms/recruitmentSearch";
+import RecruitmentDataSearch from "@/components/Elements/utils/recruitmentSearch";
 import { toast } from "react-toastify";
 import { searchRecruitmentData } from "@/api/recruitment/recruitmentData";
 export default function Recruitments() {

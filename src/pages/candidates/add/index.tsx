@@ -20,10 +20,10 @@ import {
 
 import MainLayout from "@/components/Layouts/layout";
 import ContentHeader from "@/components/Layouts/content-header";
-import LocationAutocomplete from "@/components/Forms/location-autocomplete";
+import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 import { Popup } from "@/components/Elements/cards/popup";
-import ProfessionalForm from "@/components/Forms/addCandidateInfo";
+import ProfessionalForm from "@/components/Forms/candidates/addCandidateInfo";
 import { fetchAllDomains } from "@/api/master/domain";
 import { Technology } from "@/lib/models/candidate";
 import { fetchAllTechnologies } from "@/api/master/masterTech";
@@ -56,11 +56,6 @@ export default function Candidates() {
     fetchAllTechnologies().then((data) => {
       setSkills(data);
     });
-    fetchCandidates().then((data) => {
-      data.totalElements++;
-      setCandidateId(data.totalElements);
-      console.log(data.totalElements);
-    });
     fetchAllDomains().then((data) => {
       setDomains(data);
     });
@@ -90,6 +85,7 @@ export default function Candidates() {
   const formik = useFormik({
     initialValues: CandidateModel,
     validationSchema: CandidateSchema,
+    validateOnChange: true,
     validateOnMount: false,
     validateOnBlur: false, // Add this line to prevent validation on blur
     onSubmit: async (values) => {
@@ -116,6 +112,7 @@ export default function Candidates() {
 
     try {
       createCandidate(reqData).then((data) => {
+        console.log(data);
         if (data.status === 201) {
           toast.success("Candidate added successfully", {
             position: "top-center",
@@ -123,6 +120,8 @@ export default function Candidates() {
           // setTimeout(() => {
           //   router.push("/candidates");
           // },1000);
+          setCandidateId(data.data.contactId);
+          setShowForm(true);
         } else {
           if (data.message === "Location not found with id: 0") {
             toast.error("Current Location is required", {
@@ -271,7 +270,6 @@ export default function Candidates() {
                 <span className="font-semibold text-gray-600 ">
                   Date of Birth
                 </span>
-                <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="date"
@@ -1027,17 +1025,12 @@ export default function Candidates() {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
               type="submit"
-              onClick={() => {
-                if (formik.errors) {
-                  setShowForm(true);
-                }
-              }}
             >
               Continue to Next Step
             </button>
           </footer>
         </form>
-        {showForm && !formik.errors && (
+        {showForm && (
           <Popup onClose={() => setShowForm(false)}>
             <ProfessionalForm
               onClose={() => setShowForm(false)}

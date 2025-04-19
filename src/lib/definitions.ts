@@ -8,7 +8,7 @@ export type Candidate = {
 	lastName: string;
 	dob: string;
 	primaryNumber: string;
-	secondaryNumber?: string;
+	secondaryNumber?: string|null;
 	emailId: string;
 	designation: string;
 	companyName: string;

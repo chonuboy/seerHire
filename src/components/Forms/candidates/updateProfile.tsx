@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Dialog } from "@headlessui/react"; // or any other modal library
 import { updateCandidate } from "@/api/candidates/candidates";
 import { useState } from "react";
-import LocationAutocomplete from "./location-autocomplete";
+import LocationAutocomplete from "../Elements/location-autocomplete";
 import { Location } from "@/lib/definitions";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 const ProfileUpdateForm = ({
@@ -21,7 +21,9 @@ const ProfileUpdateForm = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingValue, setPendingValue] = useState<boolean | null>(null);
   const onChangeLocation = (location: Location) => {
-    formik.setFieldValue("currentLocation", location.locationId);
+    formik.setFieldValue("currentLocation", {
+      locationId: location.locationId
+    });
   };
 
   const addNewLocation = async (location: Location) => {
@@ -29,7 +31,9 @@ const ProfileUpdateForm = ({
       toast.error("Location already exists");
       return
     }
-    formik.setFieldValue("currentLocation", location);
+    formik.setFieldValue("currentLocation", {
+      locationId: location.locationId
+    });
     autoClose();
   };
 
@@ -52,18 +56,17 @@ const ProfileUpdateForm = ({
   const getUpdatedFields = (initialValues: any, values: any) => {
     const updatedFields = Object.keys(values).reduce(
       (acc: Record<string, any>, key) => {
-        // Skip fields that haven't changed
-        if (values[key] !== initialValues[key]) {
-          // Special handling for currentLocation
-          if (key === "currentLocation") {
-            acc[key] = {
-              locationId: values.currentLocation,
-            };
-          }
-          // Handle all other fields normally
-          else {
+        if(key === "currentLocation"){
+          if(values[key].locationId !== initialValues[key].locationId){
             acc[key] = values[key];
           }
+        }
+
+        if (values[key] !== initialValues[key]) {
+          if(key!=="currentLocation"){
+            acc[key] = values[key];
+          }
+            
         }
         return acc;
       },
@@ -74,11 +77,14 @@ const ProfileUpdateForm = ({
   };
   const formik = useFormik({
     initialValues: initialValues, // Pass initialValues from props
-    validationSchema: profileUpdateSchema,
+    // validationSchema: profileUpdateSchema,
     onSubmit: (values) => {
       const updatedFields = getUpdatedFields(initialValues, values);
+      console.log(updatedFields);
       try {
         updateCandidate(updatedFields, id).then((data) => {
+        console.log(updatedFields)
+        console.log(data);
           autoClose();
         });
 
@@ -347,7 +353,7 @@ const ProfileUpdateForm = ({
         </div>
 
         {/* Preferred Job Type */}
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <label
             htmlFor="preferredJobType"
             className="text-gray-400 font-medium"
@@ -371,7 +377,7 @@ const ProfileUpdateForm = ({
               {formik.errors.preferredJobType.toString()}
             </div>
           ) : null}
-        </div>
+        </div> */}
 
         {/* Gender */}
         <div className="space-y-2">

@@ -45,7 +45,6 @@ const SearchForm: React.FC = () => {
 
       const payload = Object.entries(values).reduce(
         (acc: any, [key, value]) => {
-          // Only include fields that are not null, not empty string, and not empty array
           if (
             value !== null &&
             value !== "" &&
@@ -78,7 +77,6 @@ const SearchForm: React.FC = () => {
     console.log(formik.errors);
   }, [formik.values, formik.errors]);
 
-  // Add a technology to the good-to-have list
   const handleAddGoodToHave = () => {
     if(formik.values.goodToHaveTechnologies?.includes(inputValue.trim()) || formik.values.mustHaveTechnologies?.includes(inputValue.trim())) {
       toast.error("Technology already added", {position: "top-center"})
@@ -91,11 +89,10 @@ const SearchForm: React.FC = () => {
           : []),
         inputValue.trim(),
       ]);
-      setInputValue(""); // Clear input
+      setInputValue("");
     }
   };
 
-  // Add a technology to the must-have list
   const handleAddMustHave = () => {
     if(formik.values.goodToHaveTechnologies?.includes(inputValue.trim()) || formik.values.mustHaveTechnologies?.includes(inputValue.trim())) {
       toast.error("Technology already added", {position: "top-center"})
@@ -108,11 +105,10 @@ const SearchForm: React.FC = () => {
           : []),
         inputValue.trim(),
       ]);
-      setInputValue(""); // Clear input
+      setInputValue("");
     }
   };
 
-  // Remove a technology from both lists
   const handleRemoveTechnology = (tech: string) => {
     formik.setFieldValue(
       "goodToHaveTechnologies",
@@ -152,7 +148,6 @@ const SearchForm: React.FC = () => {
   return (
     <form onSubmit={formik.handleSubmit} noValidate>
       <div className="grid grid-cols-1 gap-6 md:mx-36 mx-10">
-        {/* Left Column */}
         <div className="space-y-6">
           {/* Technologies */}
           <div className="space-y-3">

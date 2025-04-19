@@ -6,7 +6,7 @@ import { login } from "@/Features/auth/authSlice";
 import { setEmail, setPassword as Pass } from "@/Features/auth/credentialSlice";
 import { useRouter } from "next/router";
 import { imgHelper } from "@/lib/image-helper";
-import GoogleButton from "@/components/Elements/googleButton";
+import GoogleButton from "@/components/Elements/utils/googleButton";
 import { Dialog } from "@headlessui/react";
 
 const LoginPage = () => {

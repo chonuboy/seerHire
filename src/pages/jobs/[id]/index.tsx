@@ -7,7 +7,7 @@ import { Client } from "@/lib/models/client";
 import { useEffect, useState } from "react";
 import ClientCard from "@/components/Elements/cards/clientCard";
 import { JobDescription } from "@/components/Elements/cards/jobDescription";
-import JobDescriptionUploader from "@/components/Forms/jdUploader";
+import JobDescriptionUploader from "@/components/Forms/jobs/jdUploader";
 
 export default function Job() {
   const router = useRouter();
@@ -19,18 +19,18 @@ export default function Job() {
       fetchJob(jobId)
         .then((data) => {
           setCurrentJob(data);
-          console.log(data.jobDescription);
+          console.log(data.jd);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  },[]); // Add jobId as a dependency
+  },[]);
 
   return (
     <MainLayout>
       <ContentHeader title="Job" />
-      <div className="space-y-8">
+      <div className="space-y-8 mx-10">
         <h3 className="text-xl font-semibold">Client Info</h3>
         {currentJob ? (
           <ClientCard id={currentJob?.client.clientId} />
@@ -46,14 +46,13 @@ export default function Job() {
         )}
 
         <div className="w-full">
-        {/* <TextEditor /> */}
         <h3 className="text-xl font-semibold">Job Description</h3>
         <JobDescriptionUploader jobId={Number(router.query.id)}/>
         </div>
 
-        {/* <div className="w-full space-y-4 text-lg" dangerouslySetInnerHTML={{ __html: currentJob?.jobDescription || "" }}>
+        <div className="w-full space-y-4 text-lg" dangerouslySetInnerHTML={{ __html: currentJob?.jobDescription || "" }}>
 
-        </div> */}
+        </div>
         <JobDescription currentJob={currentJob}/>
         <div className="flex justify-end items-end gap-4">
           <button className="bg-gray-400 px-4 py-1 rounded-md hover:bg-gray-500 hover:text-white" onClick={()=>router.push(`/jobs/${jobId}/interviews`)}>

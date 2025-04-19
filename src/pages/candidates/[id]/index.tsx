@@ -2,7 +2,7 @@
 import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
 import ProfileUpdateForm from "@/components/Forms/updateProfile";
-import PdfViewer from "@/components/Elements/pdfViewer";
+import PdfViewer from "@/components/Elements/utils/pdfViewer";
 
 // Next.js and React Imports
 import { useRouter } from "next/router";
@@ -58,7 +58,7 @@ import { createContactDomain } from "@/api/candidates/domains";
 import { createContactCompany } from "@/api/candidates/companies";
 import { fetchAllCompanies, createCompany } from "@/api/master/masterCompany";
 import { fetchAllLocations } from "@/api/master/masterLocation";
-import { getContactPreferredJobType } from "@/api/candidates/preferredJob";
+import { getContactPreferredJobTypes } from "@/api/candidates/preferredJob";
 
 export default function Candidates() {
   // candidate state
@@ -201,10 +201,9 @@ export default function Candidates() {
       setMasterCertificates(data);
     });
 
-    getContactPreferredJobType(Number(router.query.id)).then((data) => {
-      setPreferredJobType(data);
-      console.log(data);
-    });
+    // getContactPreferredJobTypes().then((data) => {
+    //   console.log(data);
+    // })
 
     const { mode } = router.query;
     const isEdit = mode ? true : false;

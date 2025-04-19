@@ -19,7 +19,7 @@ export const CandidateModel: Candidate = {
   lastName: "",
   dob: "",
   primaryNumber: "",
-  secondaryNumber: "",
+  secondaryNumber: null,
   emailId: "",
   designation: "",
   companyName: "",
@@ -56,22 +56,22 @@ export const CandidateSchema = yup.object({
     .max(20, "Must be 20 characters or less")
     .required("Last name is required"),
     dob: yup
-    .date()
-    .test("isPastDate", "Enter a valid date", function (value) {
-      const dateValue = value?.getTime();
-      if (dateValue === undefined) {
-        return false; // or throw an error, depending on your requirements
-      }
-      const today = new Date();
-      return new Date(dateValue) < today;
-    }),
+    .date(),
+    // .test("isPastDate", "Enter a valid date", function (value) {
+    //   const dateValue = value?.getTime();
+    //   if (dateValue === undefined) {
+    //     return false; // or throw an error, depending on your requirements
+    //   }
+    //   const today = new Date();
+    //   return new Date(dateValue) < today;
+    // }),
   primaryNumber: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
-    .required("Mobile no. is required").max(15, "Must be 15 characters or less").min(10, "Must be at least 10 characters"),
+    .required("Mobile number is required").max(15, "Must be 15 characters or less").min(10, "Must be at least 10 characters"),
   secondaryNumber: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid").max(15, "Must be 15 characters or less").min(10, "Must be at least 10 characters"),
+    .matches(phoneRegExp, "Phone number is not valid").max(15, "Must be 15 characters or less").min(10, "Must be at least 10 characters").nullable(),
   emailId: yup
     .string()
     .matches(
@@ -83,7 +83,7 @@ export const CandidateSchema = yup.object({
   designation: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .max(20, "Must be 50 characters or less")
+    .max(50, "Must be 50 characters or less")
     .required("Designation is required"),
   companyName: yup.string(),
   totalExperience: yup.number().required("Experience is required"),
@@ -109,7 +109,6 @@ export const CandidateSchema = yup.object({
   address: yup.string(),
   addressLocality: yup.string(),
   differentlyAbledType: yup.string(),
-  // preferredJobType: yup.string().required("Select preferred job type"),
 });
 
 

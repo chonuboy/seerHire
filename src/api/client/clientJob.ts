@@ -85,7 +85,7 @@ export const createJob = async (reqData: any) => {
 };
 
 // GET /api/jobs/jd/{jobId}
-export const fetchJobDescription = async (jobId: string) => {
+export const fetchJobDescription = async (jobId: number) => {
   try {
     const response = await axios.get(`${API_URL}api/jobs/jd/${jobId}`, {
       method: 'GET',

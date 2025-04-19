@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Popup } from "./popup"
 import { fetchClient } from "@/api/master/clients"
-import ClientInfoUpdateForm from "@/components/Forms/updateClientInfo"
+import ClientInfoUpdateForm from "@/components/Forms/clients/updateClientInfo"
 
 export default function ClientCard({ id }: { id: number }) {
   const router = useRouter()

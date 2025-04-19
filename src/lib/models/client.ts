@@ -129,7 +129,7 @@ export const jobFormSchema = yup.object().shape({
     .min(3, "Must be at least 3 characters")
     .required("Job description is required"),
   salaryInCtc: yup.number().required("Salary is required"),
-  // jd: yup.string().required("Job description is required"),
+  jd: yup.string(),
   experience: yup.string().required("Experience is required"),
   isJobActive: yup.string().required("Select status"),
   jobPostType: yup
@@ -204,7 +204,7 @@ technicalPerson: yup.string()
   companyLandline: yup
     .string()
     .required("Company Landline is required")
-    .matches(/^\d+$/, "Landline must be numeric"),
+    .matches(/^\d+$/, "Landline must be numeric").max(20, "Must be 20 Numbers or less"),
   hrContactPersonEmail: yup
     .string()
     .email("Invalid email format")
@@ -212,15 +212,14 @@ technicalPerson: yup.string()
   state: yup.object().shape({
     locationId: yup
       .number()
-      .required("State is required")
       .min(1, "Select a state"),
-  }),
+  }).required("State is required"),
   client: yup.object().shape({
     clientId: yup
       .number()
       .required("Client is required")
       .min(1, "Select a client"),
-  }),
+  }).required("Client is required"),
   cityId: yup.object().shape({
     locationId: yup
       .number()

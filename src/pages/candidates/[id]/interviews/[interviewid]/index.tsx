@@ -3,7 +3,7 @@ import {
   CardHeader,
   CardContent,
 } from "../../../../../components/Elements/cards/Card";
-import { Badge } from "../../../../../components/Elements/Badge";
+import { Badge } from "../../../../../components/Elements/utils/Badge";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CandidateCard } from "@/components/Elements/cards/candidateCard";
@@ -11,8 +11,8 @@ import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
 import JobCard from "@/components/Elements/cards/jobCard";
 import { Round } from "@/lib/models/candidate";
-import InterviewForm from "@/components/Forms/updateInterview";
-import AddRound from "@/components/Forms/addInterview";
+import InterviewForm from "@/components/Forms/jobs/updateInterview";
+import AddRound from "@/components/Forms/jobs/addInterview";
 import { Candidate } from "@/lib/definitions";
 import { fetchCandidate } from "@/api/candidates/candidates";
 import { fetchContactInterview } from "@/api/candidates/interviews";
