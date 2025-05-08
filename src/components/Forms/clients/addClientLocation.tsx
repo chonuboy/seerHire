@@ -31,6 +31,8 @@ const AddClientLocation = ({
       cityId: { locationId: 0 },
     },
     validationSchema: clientLocationSchema,
+    validateOnChange: true,
+    
     onSubmit: async (values) => {
       
       try {

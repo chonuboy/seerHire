@@ -11,7 +11,7 @@ export default function SideNav() {
   return (
     <>
       {/* Sidebar for Desktop View  */}
-      <section className="hidden md:block bg-gray-50 py-4 fixed h-full top-14 cts-sidebar">
+      <section className="hidden md:block bg-(var(--content-background)) py-4 fixed h-full top-14 cts-sidebar border-r-2">
         <nav className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
           <NavLinks />
           <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>

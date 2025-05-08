@@ -5,23 +5,28 @@ import {
 } from "@/api/candidates/candidates";
 import { toast } from "react-toastify";
 import { fetchJobDescription } from "@/api/client/clientJob";
-
+import mammoth from "mammoth";
+import { Popup } from "../cards/popup";
 const PdfViewer = ({
   candidateId,
   autoClose,
   isJd,
+  resume,
 }: {
   candidateId: number;
   autoClose: () => void;
   isJd?: boolean;
+  resume: string;
 }) => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfData, setPdfData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [updatedFileName, setUpdatedFileName] = useState<string | undefined>(
     undefined
   );
+  const [isResumeuploaded, setIsResumeUploaded] = useState(false);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -62,7 +67,7 @@ const PdfViewer = ({
       uploadCandidateResume(formData, candidateId)
         .then((data) => {
           console.log(data);
-          autoClose();
+          setIsResumeUploaded(false);
         })
         .catch((err) => {
           toast.error(err.message, {
@@ -92,13 +97,28 @@ const PdfViewer = ({
             .catch((error) => console.error(error));
         }
 
-        // Create a Blob from the PDF data
-        const blob = new Blob([pdfData], { type: "application/pdf" });
+        if (resume.includes("pdf")) {
+          const blob = new Blob([pdfData], { type: "application/pdf" });
 
-        // Create a URL for the Blob
-        objectUrl = URL.createObjectURL(blob);
-        setPdfUrl(objectUrl);
-        setError(null);
+          // Create a URL for the Blob
+          objectUrl = URL.createObjectURL(blob);
+          setPdfUrl(objectUrl);
+          setError(null);
+        } else if (resume.includes("docx")) {
+          setPdfData(pdfData);
+          mammoth
+            .convertToHtml({ arrayBuffer: pdfData })
+            .then((result) => {
+              // Create HTML from the DOCX content
+              const html = result.value;
+              const blob = new Blob([html], { type: "text/html" });
+              objectUrl = URL.createObjectURL(blob);
+              setPdfUrl(objectUrl);
+            })
+            .catch((err) => {
+              setError("Failed to render DOCX file");
+            });
+        }
       } catch (err) {
         console.error("Failed to load PDF:", err);
         setError("Failed to load resume. Please try again.");
@@ -124,63 +144,97 @@ const PdfViewer = ({
   }
 
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen w-full text-xs md:text-base">
       {!isJd && (
-        <div className="text-sm md:text-base">
-          <div className="h-auto space-y-3 rounded-lg">
-            <div
-              className="mt-2 flex flex-col items-center justify-center w-full h-64 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
-              onDrop={handleDrop}
-              onDragOver={(e) => e.preventDefault()}
-            >
-              <svg
-                className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 16"
+        <div className="flex justify-end my-4">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0.5 px-4 rounded"
+            onClick={() => {
+              setIsResumeUploaded(true);
+            }}
+          >
+            Update
+          </button>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded ml-2"
+            onClick={() => {
+              // Use the original pdfData (ArrayBuffer/Uint8Array) not the pdfUrl
+              const blob = new Blob([pdfData], {
+                type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "resume.docx"; // or use a dynamic filename
+              document.body.appendChild(a); // Required for Firefox
+              a.click();
+              document.body.removeChild(a); // Clean up
+              setTimeout(() => URL.revokeObjectURL(url), 100); // Revoke after download
+            }}
+          >
+            Download
+          </button>
+        </div>
+      )}
+
+      {!isJd && isResumeuploaded && (
+        <Popup onClose={() => setIsResumeUploaded(false)}>
+          <div className="text-sm md:text-base mt-28">
+            <div className="space-y-3 rounded-lg">
+              <div
+                className="mt-2 flex flex-col items-center justify-center w-full p-4 h-30 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
+                onDrop={handleDrop}
+                onDragOver={(e) => e.preventDefault()}
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                />
-              </svg>
-              <div className="mb-4 flex text-sm/6 text-gray-500">
-                <button
-                  className="border border-dashed  border-gray-900 px-2 font-semibold"
-                  type="button"
-                  onClick={handleChooseFile}
+                <svg
+                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
                 >
-                  Choose a File
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <div className="mb-4 flex text-sm/6 text-gray-500">
+                  <button
+                    className="border border-dashed  border-gray-900 px-2 font-semibold"
+                    type="button"
+                    onClick={handleChooseFile}
+                  >
+                    Choose a File
+                  </button>
+                  <input
+                    type="file"
+                    name="resume"
+                    ref={fileInputRef}
+                    accept=".pdf, .doc, .docx"
+                    style={{ display: "none" }}
+                    onClick={handleFileClick}
+                    onChange={handleFileChange}
+                  />
+                  <p className="pl-2">or drag and drop</p>
+                </div>
+                <p className="text-xs/4 text-gray-500">
+                  PDF, DOC, DOCX up to 5MB
+                </p>
+                {file && <p className="mt-4 text-green-500">File Selected</p>}
+                <button
+                  className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
+                  type="button"
+                  onClick={handleUpload}
+                >
+                  Upload
                 </button>
-                <input
-                  type="file"
-                  name="resume"
-                  ref={fileInputRef}
-                  accept=".pdf, .doc, .docx"
-                  style={{ display: "none" }}
-                  onClick={handleFileClick}
-                  onChange={handleFileChange}
-                />
-                <p className="pl-2">or drag and drop</p>
               </div>
-              <p className="text-xs/4 text-gray-500">
-                PDF, DOC, DOCX up to 5MB
-              </p>
-              {file && <p className="mt-4 text-green-500">File Selected</p>}
-              <button
-                className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
-                type="button"
-                onClick={handleUpload}
-              >
-                Upload
-              </button>
             </div>
           </div>
-        </div>
+        </Popup>
       )}
 
       <iframe

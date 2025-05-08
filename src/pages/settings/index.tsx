@@ -34,14 +34,11 @@ export default function Settings() {
         </div>
 
         {/* Personal Information Section */}
-        <div className="border border-gray-200 rounded-xl p-6 mb-6">
+        {/* <div className="border border-gray-200 rounded-xl p-6 mb-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">
               Personal Information
             </h2>
-            <button className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
-              Edit
-            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -54,7 +51,7 @@ export default function Settings() {
               <p className="text-gray-800">{user?.replace('"', "").replace('"', "").charAt(0).toUpperCase()}{user?.slice(2, user.length - 1)}@gmail.com</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </MainLayout>
   );

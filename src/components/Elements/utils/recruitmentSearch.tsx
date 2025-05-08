@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { recruitmentSearchFormValues } from "@/lib/models/recruitmentCandidate";
 import { Search } from "lucide-react";
 import { recruitmentSearchSchema } from "@/lib/models/recruitmentCandidate";
+import { searchRecruitmentData } from "@/api/recruitment/recruitmentData";
 
 // Validation schema using Yup
 
@@ -30,6 +31,14 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
     // Here you would call your API with the search parameters
     console.log(updatedFields);
     // Call your API here
+    try {
+      searchRecruitmentData(updatedFields).then((data) => {
+        console.log(data);
+        autoClose();
+      });
+    } catch (error) {
+      console.error("Form submission error", error);
+    }
   };
 
   const formik = useFormik({

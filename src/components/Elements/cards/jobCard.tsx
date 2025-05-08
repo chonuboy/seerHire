@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import { fetchJobDescription } from "@/api/client/clientJob";
 import PdfViewer from "../utils/pdfViewer";
 
-
 interface JobData {
   createdOn: string;
   experience: number;
@@ -155,10 +154,13 @@ export default function JobCard({
           </div>
         </div>
 
-        {job.jd && (
+        {job.jd.includes("pdf") && (
           <div className="mt-6">
             <button
-              onClick={() => setShowJdModal(true)}
+              onClick={() => {
+                setShowJdModal(true);
+                console.log(job.jd);
+              }}
               className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               <FileText className="h-4 w-4 mr-2" />
@@ -194,7 +196,12 @@ export default function JobCard({
       {showJdModal && (
         <Popup onClose={() => setShowJdModal(false)}>
           <div className="mt-14">
-          <PdfViewer candidateId={job.jobId} isJd autoClose={() => setShowJdModal(false)}></PdfViewer>
+            <PdfViewer
+              resume={job.jd}
+              candidateId={job.jobId}
+              isJd
+              autoClose={() => setShowJdModal(false)}
+            ></PdfViewer>
           </div>
         </Popup>
       )}

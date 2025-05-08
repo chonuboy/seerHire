@@ -26,7 +26,7 @@ export default function Home() {
           <div className="w-full flex-none md:w-64">
             <SideNav />
           </div>
-          <div className="flex-grow p-4 md:overflow-y-auto md:p-6">
+          <div className="flex-grow md:overflow-y-auto py-6">
             <Dashboard></Dashboard>
             {userRole === "SuperAdmin" && <UserCard></UserCard>}
           </div>

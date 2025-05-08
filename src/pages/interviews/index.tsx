@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Interview } from "@/lib/models/candidate";
 import { fetchAllContactInterviews } from "@/api/candidates/interviews";
 import { useRouter } from "next/router";
+import { createContactInterview } from "@/api/candidates/interviews";
 import { toast } from "react-toastify";
-import Link from "next/link";
 import MainLayout from "@/components/Layouts/layout";
 import ContentHeader from "@/components/Layouts/content-header";
 export default function AllInterviews() {
@@ -14,16 +14,33 @@ export default function AllInterviews() {
   useEffect(() => {
     try {
       fetchAllContactInterviews().then((data) => {
-        const filteredInterviews = data.filter(
-          (interview: Interview) => interview.clientJob?.jobId === Number(id)
-        );
-        setAllInterviews(filteredInterviews);
+        setAllInterviews(data);
         console.log(data);
       });
     } catch (err) {
       console.log(err);
     }
   }, []);
+
+  const handleAssignInterview = async (interview:any) => {
+    const id = localStorage.getItem("interviewCandidateId");
+    try {
+      createContactInterview({
+        interviewStatus:"Active",
+        interviewDate:interview.interviewDate,
+        clientJob:{
+          jobId:interview.clientJob?.jobId
+        },
+        contactDetails:{
+          contactId:id
+        }
+      }).then((data) => {
+        toast.success("Interview assigned successfully");
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <MainLayout>
@@ -67,15 +84,14 @@ export default function AllInterviews() {
                     <p className="text-xs md:text-base">
                       Date : {item.interviewDate}
                     </p>
-                    <Link
-                      href={`/candidates/${Number(
-                        router.query.id
-                      )}/interviews/${index + 1}`}
+                    <button
+                      className="bg-[var(--theme-background)] border-black-200 border-2 py-1 px-2 absolute right-4 bottom-4 bg-blue-500 text-white rounded-md border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
+                      onClick={() => {
+                        handleAssignInterview(item);
+                      }}
                     >
-                      <button className="bg-[var(--theme-background)] border-black-200 border-2 py-1 px-2 absolute right-4 bottom-4 bg-blue-500 text-white rounded-md border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
-                        View Results
-                      </button>
-                    </Link>
+                      Assign
+                    </button>
                   </div>
                 ))
               : "No Interviews Found"}

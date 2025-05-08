@@ -56,7 +56,7 @@ export default function Candidates() {
           <div className="flex items-center gap-4">
             <input
               type="text"
-              className="text-sm p-2 border w-full  border-gray-300 rounded focus:outline-blue-600 focus:ring-blue-600"
+              className="text-sm py-1 border w-full rounded-md dark:text-black px-2"
               placeholder="Search Candidates"
               onChange={(e) => setSearchKeyword(e.target.value)}
               value={searchKeyword}
@@ -65,7 +65,7 @@ export default function Candidates() {
               }}
             />
             <button
-              className="px-4 py-1 bg-blue-600 text-white rounded-md"
+              className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
               onClick={handleSearch}
             >
               Search

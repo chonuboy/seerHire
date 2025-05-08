@@ -85,9 +85,9 @@ export default function Candidates() {
   const formik = useFormik({
     initialValues: CandidateModel,
     validationSchema: CandidateSchema,
-    validateOnChange: true,
+    validateOnChange: false,
     validateOnMount: false,
-    validateOnBlur: false, // Add this line to prevent validation on blur
+    validateOnBlur: true, // Add this line to prevent validation on blur
     onSubmit: async (values) => {
       setIsSubmitting(true);
       addNewCandidate(values);
@@ -781,47 +781,50 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-            {DifferentlyAbled.YES === formik.values.isDifferentlyAbled && (
-              <div className="h-auto space-y-3 rounded-lg">
-                <label htmlFor="differentlyAbledType" className="flex">
-                  <span className="font-semibold text-gray-600">
-                    Differently Abled Type
-                  </span>
-                </label>
-                <select
-                  name="differentlyAbledType"
-                  className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-                  value={formik.values.differentlyAbledType || ""}
-                  onChange={formik.handleChange}
-                >
-                  <option value="">None</option>
-                  <option value="Physical (e.g., mobility impairments, limb differences)">
-                    Physical
-                  </option>
-                  <option value="Sensory (e.g., blindness, deafness)">
-                    Sensory
-                  </option>
-                  <option value="Intellectual/Developmental (e.g., Down syndrome, Autism)">
-                    Intellectual/Developmental
-                  </option>
-                  <option value="Mental Health (e.g., depression, anxiety)">
-                    Mental Health
-                  </option>
-                  <option value="Neurological (e.g., epilepsy, TBI)">
-                    Neurological
-                  </option>
-                  <option value="Chronic Illness (e.g., diabetes, MS)">
-                    Chronic Illness
-                  </option>
-                  <option value="Other/Not Listed">Other/Not Listed</option>
-                </select>
-                {formik.errors.differentlyAbledType && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.differentlyAbledType}
-                  </div>
-                )}
-              </div>
-            )}
+
+            <div className="h-auto space-y-3 rounded-lg">
+              <label htmlFor="isDifferentlyAbled" className="flex">
+                <span className="font-semibold text-gray-600">
+                  Differently Abled
+                </span>
+                <span className="px-1 font-bold text-red-500">*</span>
+              </label>
+              <fieldset>
+                <div className="flex items-center gap-2 py-1">
+                  <input
+                    type="radio"
+                    name="isDifferentlyAbled"
+                    id="yes"
+                    value={DifferentlyAbled.YES}
+                    checked={
+                      formik.values.isDifferentlyAbled ===
+                      `${DifferentlyAbled.YES}`
+                    }
+                    onChange={formik.handleChange}
+                  />
+                  <label htmlFor="yes">{DifferentlyAbled.YES}</label>
+                </div>
+                <div className="flex items-center gap-2 py-1">
+                  <input
+                    type="radio"
+                    name="isDifferentlyAbled"
+                    id="no"
+                    value={DifferentlyAbled.NO}
+                    checked={
+                      formik.values.isDifferentlyAbled ===
+                      `${DifferentlyAbled.NO}`
+                    }
+                    onChange={formik.handleChange}
+                  />
+                  <label htmlFor="no">{DifferentlyAbled.NO}</label>
+                </div>
+              </fieldset>
+              {formik.errors.isDifferentlyAbled ? (
+                <div className="text-red-500 text-sm border-red-500">
+                  {formik.errors.isDifferentlyAbled}
+                </div>
+              ) : null}
+            </div>
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="candidateStatus" className="flex">
@@ -867,50 +870,49 @@ export default function Candidates() {
                 </div>
               ) : null}
             </div>
-
-            <div className="h-auto space-y-3 rounded-lg">
-              <label htmlFor="isDifferentlyAbled" className="flex">
-                <span className="font-semibold text-gray-600">
-                  Differently Abled
-                </span>
-                <span className="px-1 font-bold text-red-500">*</span>
-              </label>
-              <fieldset>
-                <div className="flex items-center gap-2 py-1">
-                  <input
-                    type="radio"
-                    name="isDifferentlyAbled"
-                    id="yes"
-                    value={DifferentlyAbled.YES}
-                    checked={
-                      formik.values.isDifferentlyAbled ===
-                      `${DifferentlyAbled.YES}`
-                    }
-                    onChange={formik.handleChange}
-                  />
-                  <label htmlFor="yes">{DifferentlyAbled.YES}</label>
-                </div>
-                <div className="flex items-center gap-2 py-1">
-                  <input
-                    type="radio"
-                    name="isDifferentlyAbled"
-                    id="no"
-                    value={DifferentlyAbled.NO}
-                    checked={
-                      formik.values.isDifferentlyAbled ===
-                      `${DifferentlyAbled.NO}`
-                    }
-                    onChange={formik.handleChange}
-                  />
-                  <label htmlFor="no">{DifferentlyAbled.NO}</label>
-                </div>
-              </fieldset>
-              {formik.errors.isDifferentlyAbled ? (
-                <div className="text-red-500 text-sm border-red-500">
-                  {formik.errors.isDifferentlyAbled}
-                </div>
-              ) : null}
-            </div>
+            
+            {DifferentlyAbled.YES === formik.values.isDifferentlyAbled && (
+              <div className="h-auto space-y-3 rounded-lg">
+                <label htmlFor="differentlyAbledType" className="flex">
+                  <span className="font-semibold text-gray-600">
+                    Differently Abled Type
+                  </span>
+                </label>
+                <select
+                  name="differentlyAbledType"
+                  className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                  value={formik.values.differentlyAbledType || ""}
+                  onChange={formik.handleChange}
+                >
+                  <option value="">None</option>
+                  <option value="Physical (e.g., mobility impairments, limb differences)">
+                    Physical
+                  </option>
+                  <option value="Sensory (e.g., blindness, deafness)">
+                    Sensory
+                  </option>
+                  <option value="Intellectual/Developmental (e.g., Down syndrome, Autism)">
+                    Intellectual/Developmental
+                  </option>
+                  <option value="Mental Health (e.g., depression, anxiety)">
+                    Mental Health
+                  </option>
+                  <option value="Neurological (e.g., epilepsy, TBI)">
+                    Neurological
+                  </option>
+                  <option value="Chronic Illness (e.g., diabetes, MS)">
+                    Chronic Illness
+                  </option>
+                  <option value="Other/Not Listed">Other/Not Listed</option>
+                </select>
+                {formik.errors.differentlyAbledType && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.differentlyAbledType}
+                  </div>
+                )}
+              </div>
+            )}
+            
           </div>
 
           <footer className="absolute -bottom-16 right-4 pb-4">

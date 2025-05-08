@@ -2,7 +2,7 @@ import type React from "react"
 
 interface BadgeProps {
   children: React.ReactNode
-  variant?: "default" | "success" | "secondary"
+  variant?: "default" | "success" | "secondary" | "rejected"
   className?: string
 }
 

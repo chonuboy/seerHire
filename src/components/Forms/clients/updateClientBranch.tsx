@@ -29,14 +29,21 @@ const UpdateClientLocation = ({
   };
   const formik = useFormik<clientLocationFormValues>({
     initialValues: currentClientLocation,
-    // validationSchema: clientLocationSchema,
+    validationSchema: clientLocationSchema,
+    validateOnChange:true,
+    validateOnBlur: true,
+
     onSubmit: async (values) => {
       console.log(values)
       console.log(locationId)
       const updatedFields = getUpdatedFields(currentClientLocation, values);
+      delete updatedFields.client;
+      delete updatedFields.cityId;
+      delete updatedFields.state;
       console.log(updatedFields);
         try {
           updateClientLocation(locationId, updatedFields).then((data)=>{
+            console.log(data);
             toast.success("Branch updated successfully", {
               position: "top-right",
             })

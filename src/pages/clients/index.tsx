@@ -177,14 +177,14 @@ export default function Clients() {
         <div className="flex items-center gap-4">
           <input
             type="text"
-            className="text-sm p-1 md:p-2 border w-full  border-gray-300 rounded focus:outline-blue-600 focus:ring-blue-600"
+            className="text-sm py-1 px-2 rounded-md border w-full dark:text-black"
             placeholder="Search Clients"
             onChange={(e) => setSearchKeyword(e.target.value)}
             value={searchKeyword}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
           <button
-            className="px-4 py-1 bg-blue-600 text-white rounded-md"
+            className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
             onClick={handleSearch}
           >
             Search
@@ -207,7 +207,7 @@ export default function Clients() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Country
+                      Country Code
                     </label>
                     <select
                       id="country"

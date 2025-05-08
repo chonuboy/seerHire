@@ -32,7 +32,7 @@ export type Candidate = {
 	differentlyAbledType: string;
 	preferredJobType?: string;
 	image?:string
-	resume?:string
+	resume?:string | undefined;
 	relavantExperience?: string;
 	isExpectedCtcNegotiable?:boolean;
 };

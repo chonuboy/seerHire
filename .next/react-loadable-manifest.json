@@ -1,6 +1,6 @@
 {
-  "src/components/Forms/addJob.tsx -> jodit-react": {
-    "id": "src/components/Forms/addJob.tsx -> jodit-react",
+  "src/components/Forms/jobs/addJob.tsx -> jodit-react": {
+    "id": "src/components/Forms/jobs/addJob.tsx -> jodit-react",
     "files": [
       "static/chunks/node_modules_jodit-react_build_jodit-react_63c642.js",
       "static/chunks/node_modules_787fdc._.js",

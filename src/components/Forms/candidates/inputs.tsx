@@ -37,7 +37,7 @@ export const TagInput: React.FC<TagInputProps> = ({
 
   return (
     <div className="space-y-4">
-      <label className="font-semibold text-gray-600">{title}</label>
+      <label className="font-semibold dark:text-white text-lg text-blue-800">{title}</label>
       
       <div className="flex md:flex-row flex-col md:items-center gap-2 relative">
         <input
@@ -51,13 +51,13 @@ export const TagInput: React.FC<TagInputProps> = ({
               handleAddTag();
             }
           }}
-          className="flex-1 min-w-0 block w-full px-2 py-3 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="w-full px-4 py-3 rounded-lg border border-blue-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300 bg-white dark:bg-black dark:text-white text-blue-700 placeholder-gray-300"
         />
         
         <button
           type="button"
           onClick={handleAddTag}
-          className="inline-flex items-center px-4 py-2 justify-center border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm bg-gray-200 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 md:absolute right-1 top-1.5"
+          className="px-4 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors duration-300 shadow-sm font-medium md:absolute right-1 top-1.5"
         >
           Add
         </button>
@@ -68,8 +68,7 @@ export const TagInput: React.FC<TagInputProps> = ({
       )}
 
       {tags && tags.length > 0 && (
-        <div className="mt-2 space-y-2">
-          <p className="text-gray-500 mb-1">Added {name.charAt(0).toUpperCase() + name.slice(1)}:</p>
+        <div className="mt-2 space-y-2 animate-fadeIn">
           <div className="flex flex-wrap items-center gap-6">
             {tags.map((tag, index) => (
               <Tag key={index} text={tag} onRemove={() => onRemoveTag(tag)} />
@@ -88,7 +87,7 @@ interface TagProps {
 
 const Tag: React.FC<TagProps> = ({ text, onRemove }) => {
   return (
-    <span className="bg-gray-300 py-1 px-3 rounded-full relative mt-2">
+    <span className="bg-blue-100 py-1.5 px-4 rounded-full relative mt-2 text-blue-800 font-medium shadow-sm inline-flex items-center">
       {text}
       <button
         type="button"
@@ -121,10 +120,10 @@ export const SingleInput: React.FC<SingleInputProps> = ({
   error,
 }) => (
   <div className="space-y-4">
-    <label className="font-semibold text-gray-600">{title}</label>
+    <label className="font-semibold dark:text-white text-lg text-blue-800">{title}</label>
     <input
       type="text"
-      className="block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      className="block w-full px-3 py-2 rounded-md border border-gray-300 dark:bg-black dark:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm placeholder:gray-300"
       placeholder={placeholder}
       value={value ?? ''}
       name={name}

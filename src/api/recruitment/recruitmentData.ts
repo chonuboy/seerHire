@@ -96,7 +96,7 @@ export const searchRecruitmentData = async (query: any) => {
         },
       }
     );
-    return response.data;
+    return response;
   } catch (err: any) {
     return err.response ? err.response.data : err.message;
   }

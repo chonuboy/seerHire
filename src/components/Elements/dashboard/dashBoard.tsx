@@ -2,28 +2,44 @@ import Piechart from "../utils/pieChart";
 import React, { useEffect } from "react";
 import ContentHeader from "@/components/Layouts/content-header";
 import { useState } from "react";
-import {
-  ChevronDown,
-  Users,
-  CheckCircle,
-  UserCheck,
-  TrendingUp,
-  TrendingDown,
-  UserX
-} from "lucide-react";
+import { ChevronDown, Users, UserX } from "lucide-react";
+
+// models
+import { fetchAllDomains } from "@/api/master/domain";
+import { fetchAllCertifications } from "@/api/master/certification";
+import { Certificates } from "@/lib/models/candidate";
 import { fetchAllClients } from "@/api/master/clients";
+import { fetchAllTechnologies } from "@/api/master/masterTech";
+import { fetchAllLocations } from "@/api/master/masterLocation";
 import { fetchAllJobs } from "@/api/client/clientJob";
 import { fetchCandidates } from "@/api/candidates/candidates";
+import { domainDetails, Technology } from "@/lib/models/candidate";
+import { fetchAllCompanies } from "@/api/master/masterCompany";
+import { Company } from "@/lib/models/client";
+import { Location } from "@/lib/definitions";
+
+// tables
+
+import CompanyTable from "../tables/companyTable";
+import DomainTable from "../tables/domainTable";
+import TechnologyTable from "../tables/technologyTable";
+import LocationTable from "../tables/locationTable";
+import CertificateTable from "../tables/certificationTable";
 
 export default function Dashboard() {
   const [selectedUser, setSelectedUser] = useState("All Users");
   const [selectedJob, setSelectedJob] = useState("All Jobs");
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isJobDropdownOpen, setIsJobDropdownOpen] = useState(false);
-  const [allClients,setAllClients] = useState(0);
-  const [clients,setClients] = useState<any>([]);
-  const [allJobs,setAllJobs] = useState<any>([]);
-  const [allCandidates,setAllCandidates] = useState(0);
+  const [allClients, setAllClients] = useState(0);
+  const [clients, setClients] = useState<any>([]);
+  const [allJobs, setAllJobs] = useState<any>([]);
+  const [allCandidates, setAllCandidates] = useState(0);
+  const [allTech, setAllTech] = useState<Technology[]>([]);
+  const [allCompanies, setAllCompanies] = useState<Company[]>([]);
+  const [allDomains, setAllDomains] = useState<domainDetails[]>([]);
+  const [allCertificates, setAllCertificates] = useState<Certificates[]>([]);
+  const [allLocations, setAllLocations] = useState<Location[]>([]);
 
   useEffect(() => {
     fetchAllClients().then((data: any) => {
@@ -32,16 +48,31 @@ export default function Dashboard() {
     });
     fetchAllJobs().then((data: any) => {
       setAllJobs(data);
-    })
+    });
     fetchCandidates().then((data: any) => {
       setAllCandidates(data.totalElements);
-    })
+    });
+    fetchAllTechnologies().then((data: any) => {
+      setAllTech(data);
+    });
+    fetchAllCompanies().then((data: any) => {
+      setAllCompanies(data);
+    });
+    fetchAllDomains().then((data: any) => {
+      setAllDomains(data);
+    });
+    fetchAllCertifications().then((data: any) => {
+      setAllCertificates(data);
+    });
+    fetchAllLocations().then((data: any) => {
+      setAllLocations(data);
+    });
   }, []);
 
   // Mock data
   const users = clients.map((client: any) => client.clientName);
   const clientJobs = allJobs.map((job: any) => job.jobTitle);
-  const [jobs,setAllClientJobs] = useState<any>([clientJobs]);
+  const [jobs, setAllClientJobs] = useState<any>([clientJobs]);
 
   // const stats = {
   //   "All Jobs": {
@@ -96,7 +127,9 @@ export default function Dashboard() {
 
   const handleUserSelect = (user: string) => {
     setSelectedUser(user);
-    setAllClientJobs(allJobs.filter((job:any)=>job.client.clientName === user));
+    setAllClientJobs(
+      allJobs.filter((job: any) => job.client.clientName === user)
+    );
     setIsUserDropdownOpen(false);
     setIsJobDropdownOpen(false);
   };
@@ -121,7 +154,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="font-sans">
-            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100">
+            <div className="bg-(var(--content-background)) rounded-2xl p-4 shadow-lg border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-blue-600">
                   Active Clients
@@ -129,7 +162,9 @@ export default function Dashboard() {
                 <Users className="h-6 w-6 text-blue-500" />
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-gray-800">{allClients}</span>
+                <span className="text-2xl font-bold text-black dark:text-white">
+                  {allClients}
+                </span>
                 <span className="bg-green-200 text-green-800 px-3 py-1 font-semibold rounded-full flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
@@ -146,7 +181,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="font-sans">
-            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100">
+            <div className="bg-(var(--content-background)) rounded-2xl p-4 shadow-lg border border-gray-100">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-blue-600">
                   Inactive Clients
@@ -154,7 +189,9 @@ export default function Dashboard() {
                 <UserX className="h-6 w-6 text-gray-500" />
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-gray-800">0</span>
+                <span className="text-2xl font-bold text-black dark:text-white">
+                  0
+                </span>
                 <span className="bg-red-200 text-red-800 font-semibold px-3 py-1 rounded-full flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
@@ -174,29 +211,27 @@ export default function Dashboard() {
       </section>
       {/* Jobs */}
       <section className="mt-10">
-        <div className="w-full p-6 bg-white rounded-lg">
+        <div className="w-full p-6 bg-(var(--content-background)) dark:text-white rounded-lg">
           {/* Dropdowns */}
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             {/* User Dropdown */}
             <div className="relative w-full md:w-1/2 space-y-2">
-            <h3 className="font-semibold">Select Client</h3>
+              <h3 className="font-semibold">Select Client</h3>
               <button
                 onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                className="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-2 bg-(var(--content-background)) border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-black transition-colors"
               >
-                <span className="font-medium text-gray-700">
-                  {selectedUser}
-                </span>
+                <span className="font-medium">{selectedUser}</span>
                 <ChevronDown className="h-5 w-5 text-gray-500" />
               </button>
               {isUserDropdownOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                <div className="absolute z-20 mt-1 w-full border text-black bg-gray-100 border-gray-300 rounded-lg shadow-lg">
                   <ul className="py-1 max-h-60 overflow-auto">
-                    {users.map((user:any) => (
+                    {users.map((user: any) => (
                       <li
                         key={user}
                         onClick={() => handleUserSelect(user)}
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
+                        className="px-4 py-2 hover:bg-blue-500 cursor-pointer"
                       >
                         {user}
                       </li>
@@ -208,26 +243,32 @@ export default function Dashboard() {
 
             {/* Job Dropdown */}
             <div className="relative w-full md:w-1/2 space-y-2">
-            <h3 className="font-semibold">Select Job</h3>
+              <h3 className="font-semibold">Select Job</h3>
               <button
                 onClick={() => setIsJobDropdownOpen(!isJobDropdownOpen)}
-                className="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-2 bg-(var(--content-background)) border border-gray-300 rounded-lg shadow-sm dark:text-white hover:bg-gray-50 hover:text-black transition-colors"
               >
-                <span className="font-medium text-gray-700">{selectedJob}</span>
-                <ChevronDown className="h-5 w-5 text-gray-500" />
+                <span className="font-medium">{selectedJob}</span>
+                <ChevronDown className="h-5 w-5 hover:text-black" />
               </button>
               {isJobDropdownOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                <div className="absolute z-10 mt-1 w-full bg-gray-100 text-black border border-gray-300 rounded-lg shadow-lg">
                   <ul className="py-1 max-h-60 overflow-auto">
-                    {jobs.length > 0 ? jobs?.map((job:any, index:number) => (
-                      <li
-                        key={index}
-                        onClick={() => handleJobSelect(job)}
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700"
-                      >
-                        {job.jobTitle}
+                    {jobs.length > 0 ? (
+                      jobs?.map((job: any, index: number) => (
+                        <li
+                          key={index}
+                          onClick={() => handleJobSelect(job)}
+                          className="px-4 py-2 hover:bg-blue-500 cursor-pointer"
+                        >
+                          {job.jobTitle}
+                        </li>
+                      ))
+                    ) : (
+                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        No Jobs
                       </li>
-                    )):<li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-700">No Jobs</li>}
+                    )}
                   </ul>
                 </div>
               )}
@@ -237,21 +278,32 @@ export default function Dashboard() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Total Candidates Card */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+            <div className="text-black bg-(var(--content-background)) p-6 rounded-lg shadow-md border dark:text-white border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  Total Candidates
-                </h2>
+                <h2 className="text-lg font-semibold">Total Candidates</h2>
                 <Users className="h-6 w-6 text-blue-500" />
               </div>
-              <p className="text-3xl font-bold text-gray-800">
-                {allCandidates}
-              </p>
-              <p className="text-sm text-gray-500 mt-2">For {selectedJob}</p>
+              <p className="text-3xl font-bold">{allCandidates}</p>
+              <p className="text-sm mt-2">For {selectedJob}</p>
             </div>
           </div>
         </div>
       </section>
+      {allTech.length > 0 ? (
+        <TechnologyTable initialData={allTech}></TechnologyTable>
+      ) : null}
+      {allCompanies.length > 0 ? (
+        <CompanyTable initialData={allCompanies}></CompanyTable>
+      ) : null}
+      {allDomains.length > 0 ? (
+        <DomainTable initialData={allDomains}></DomainTable>
+      ) : null}
+      {allCertificates.length > 0 ? (
+        <CertificateTable initialData={allCertificates}></CertificateTable>
+      ) : null}
+      {allLocations.length > 0 ? (
+        <LocationTable initialData={allLocations}></LocationTable>
+      ) : null}
     </>
   );
 }

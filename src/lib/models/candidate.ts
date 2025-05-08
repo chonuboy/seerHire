@@ -169,6 +169,7 @@ export const candidateTableColumns: Columns = [
 export interface Certificates {
   certificationId?: number;
   certificationName: string;
+  insertedOn?: string;
 }
 
 export interface contactCertificate{
@@ -211,7 +212,7 @@ export interface Interviews {
 export interface Technology{
   techId?:number,
   technology:string,
-  inserteOn?:string,
+  insertedOn?:string,
 }
 
 export interface allTechs{

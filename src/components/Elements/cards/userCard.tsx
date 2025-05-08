@@ -61,7 +61,7 @@ export default function UserCard() {
   };
 
   return (
-    <div className="space-y-4 text-xs md:text-base">
+    <div className="space-y-4 text-xs md:text-base mx-4">
       {allUsers == null ? (
         <div>
           <h2>
@@ -81,7 +81,7 @@ export default function UserCard() {
           </div>
 
           <div className="overflow-x-scroll rounded-lg shadow-md">
-            <table className="w-full bg-white border-collapse">
+            <table className="w-full bg-(var(--content-background)) border border-gray-200">
               <thead>
                 <tr className="bg-gray-100 text-left">
                   <th className="py-3 px-4 font-semibold text-gray-800 border-b">
@@ -99,7 +99,7 @@ export default function UserCard() {
                 {allUsers !== null &&
                   allUsers?.length > 0 &&
                   allUsers?.map((user, index) => (
-                    <tr key={index} className="hover:bg-gray-50 border-b">
+                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100">
                       <td className="py-4 px-4">{user.userName}</td>
                       <td className="py-4 px-4">{user.email}</td>
                       <td className="py-4 px-4">{user.roles[0].roleName}</td>

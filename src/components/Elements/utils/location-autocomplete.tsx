@@ -25,21 +25,21 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 		setInputValue(value);
 
 		const filteredSuggestions = options.filter(
-			(option) => option?.locationDetails?.toLowerCase().indexOf(value.toLowerCase()) > -1
-		);
+			(option) => option?.locationDetails && option.locationDetails.toLowerCase().indexOf(value.toLowerCase()) > -1
+		  );
 		setSuggestions(filteredSuggestions);
 		setShowSuggestions(true);
 	};
 
 	const handleSelectSuggestion = (suggestion: Location) => {
-		setInputValue(suggestion.locationDetails);
+		setInputValue(suggestion?.locationDetails ?? '');
 		onChange(suggestion);
 
 
 		setSuggestions([]);
 		setShowSuggestions(false);
 	};
-
+ 
 	const handleAddNew = async () => {
 		if (inputValue.trim() && !findObject(options, "locationDetails", inputValue.trim())) {
 			console.log("Add new location:", inputValue);

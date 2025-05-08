@@ -43,7 +43,7 @@ export default function AddRound({
 
     try {
       const response = await createInterviewRound(roundData).then((data)=>console.log(data));
-      // if (response) {
+      // if (response:any) {
       //   toast.success("Round added successfully", {
       //     position: "top-center",
       //     autoClose: 5000,

@@ -4,7 +4,17 @@
   "/": "pages/index.js",
   "/clients": "pages/clients.js",
   "/candidates": "pages/candidates.js",
-  "/candidates/add": "pages/candidates/add.js",
+  "/candidates/[id]": "pages/candidates/[id].js",
   "/clients/[id]": "pages/clients/[id].js",
-  "/candidates/[id]": "pages/candidates/[id].js"
+  "/jobs/[id]": "pages/jobs/[id].js",
+  "/jobs/[id]/candidates": "pages/jobs/[id]/candidates.js",
+  "/recruitments": "pages/recruitments.js",
+  "/recruitments/[id]": "pages/recruitments/[id].js",
+  "/jobs/[id]/interviews": "pages/jobs/[id]/interviews.js",
+  "/search": "pages/search.js",
+  "/search/results": "pages/search/results.js",
+  "/interviews": "pages/interviews.js",
+  "/candidates/[id]/interviews/[interviewid]": "pages/candidates/[id]/interviews/[interviewid].js",
+  "/settings": "pages/settings.js",
+  "/help": "pages/help.js"
 }

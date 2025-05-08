@@ -16,7 +16,7 @@ import AddRound from "@/components/Forms/jobs/addInterview";
 import { Candidate } from "@/lib/definitions";
 import { fetchCandidate } from "@/api/candidates/candidates";
 import { fetchContactInterview } from "@/api/candidates/interviews";
-import { fetchInterviewRoundsByContact } from "@/api/interviews/InterviewRounds";
+import { fetchInterviewRoundsByContactAndJob } from "@/api/interviews/InterviewRounds";
 import { fetchInterviewRound } from "@/api/interviews/InterviewRounds";
 import { Interview } from "@/lib/models/candidate";
 
@@ -42,17 +42,17 @@ export default function CandidateInterviews() {
         console.log(err);
       });
 
-    fetchInterviewRoundsByContact(candidateId).then((data) => {
+      fetchInterviewRoundsByContactAndJob(candidateId,Id).then((data) => {
       setAllRounds(data);
     });
 
     fetchContactInterview(Id).then((data) => {
-      console.log(data);
       setCurrentJobData(data);
     });
-  }, [candidateId, Id]);
+  }, [candidateId, Id, updateRoundEnabled]);
 
   const handleUpdateRound = (round: Round) => {
+    console.log(round);
     setSelectedRound(round); // Set the selected round
     setUpdateRoundEnabled(true); // Show the update form
   };
@@ -107,7 +107,7 @@ export default function CandidateInterviews() {
                         variant={
                           round.interviewStatus === "Passed"
                             ? "success"
-                            : "secondary"
+                            : round.interviewStatus === "On-Hold" ? "secondary" : "rejected"
                         }
                       >
                         {round.interviewStatus}
@@ -166,8 +166,7 @@ export default function CandidateInterviews() {
             <Popup onClose={() => setUpdateRoundEnabled(false)}>
               <InterviewForm
                 initialValues={selectedRound} // Pass the selected round
-                id={selectedRound.roundNumber}
-                className="bg-white relative mt-8 rounded-md"
+                id={selectedRound.roundId ?? 0}
                 autoClose={() => setUpdateRoundEnabled(false)}
               />
             </Popup>

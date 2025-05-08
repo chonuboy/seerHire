@@ -58,6 +58,7 @@ import { createContactCompany } from "@/api/candidates/companies";
 import { fetchAllCompanies, createCompany } from "@/api/master/masterCompany";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 import { getContactPreferredJobTypes } from "@/api/candidates/preferredJob";
+import { fetchContactInterview, fetchInterviewsByContact } from "@/api/candidates/interviews";
 
 export default function Candidates() {
   // candidate state
@@ -199,6 +200,11 @@ export default function Candidates() {
     fetchAllCertifications().then((data) => {
       setMasterCertificates(data);
     });
+
+    fetchInterviewsByContact(Number(router.query.id)).then((data) => {
+      setCandidateInterviews(data);
+      console.log(data);
+    })
 
     // getContactPreferredJobTypes().then((data) => {
     //   console.log(data);
@@ -878,7 +884,7 @@ export default function Candidates() {
                       <Link
                         href={`/candidates/${Number(
                           router.query.id
-                        )}/interviews/${item.interviewId}`}
+                        )}/interviews/${item?.clientJob?.jobId}`}
                       >
                         <button className="bg-[var(--theme-background)] border-black-200 border-2 py-1 px-2 absolute right-4 bottom-4 bg-blue-500 text-white rounded-md border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
                           View Results
@@ -1375,7 +1381,7 @@ export default function Candidates() {
         {/* Resume Section */}
         <section
           id="resume"
-          className="bg-white p-2 rounded-lg shadow-sm border space-y-6 border-gray-200"
+          className="bg-white p-2 rounded-lg shadow-sm space-y-6 mb-8"
         >
           <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
           <PdfViewer
@@ -1383,6 +1389,7 @@ export default function Candidates() {
             autoClose={() => {
               setIsFormVisible(false);
             }}
+            resume={currentCandidate.resume ? currentCandidate.resume : ""}
           ></PdfViewer>
         </section>
 

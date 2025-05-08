@@ -56,7 +56,7 @@ export const Table: React.FC<TableProps> = ({
   }
 
   return (
-    <div className="rounded-lg border text-xs md:text-base border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
+    <div className="rounded-lg border text-xs md:text-base border-blue-200 bg-(var(content-background) shadow-lg overflow-hidden">
       <div className="flex flex-col">
         {/* Table Header */}
         <div
