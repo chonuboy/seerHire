@@ -28,6 +28,7 @@ export default function Clients() {
   const [showGSTField, setShowGSTField] = useState(countryCodes[0].hasGST);
   const [displayedFinanceNumber, setDisplayedFinanceNumber] = useState("");
   const [locations, setLocations] = useState<Location[]>([]);
+  const [locationAdded,setLocationAdded] = useState(false);
 
   useEffect(() => {
     fetchAllClients(currentPage - 1, 10).then((data: any) => {
@@ -37,7 +38,7 @@ export default function Clients() {
     fetchAllLocations().then((data: any) => {
       setLocations(data);
     });
-  }, [currentPage, searchKeyword]);
+  }, [currentPage, searchKeyword,locationAdded]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -47,6 +48,7 @@ export default function Clients() {
     formik.setFieldValue("clientHeadQuarterCountry", {
       locationId: location.locationId,
     });
+    
   };
 
   const addNewHeadLocation = async (location: Location) => {
@@ -55,6 +57,7 @@ export default function Clients() {
       return;
     }
     formik.setFieldValue("ClientHeadQuarterCountry", location);
+    setLocationAdded(true);
   };
 
   const onChangeStateLocation = (location: Location) => {
@@ -69,6 +72,7 @@ export default function Clients() {
       return;
     }
     formik.setFieldValue("ClientHeadQuarterState", location);
+    setLocationAdded(true);
   };
 
   const handleSearch = () => {
@@ -138,6 +142,18 @@ export default function Clients() {
     validateOnMount: false,
     validateOnBlur: false,
     onSubmit: (values) => {
+      if(!values.clientHeadQuarterCountry.locationId){
+        toast.error("Please Select Headquarter Country", {
+          position: "top-center",
+        });
+        return;
+      }
+      if(!values.clientHeadQuarterState.locationId){
+        toast.error("Please Select Headquarter State", {
+          position: "top-center",
+        });
+        return;
+      }
       try {
         createClient(values).then((data) => {
           console.log(data);
@@ -167,7 +183,7 @@ export default function Clients() {
   return (
     <MainLayout>
       <ContentHeader title="Clients" />
-      <div className="flex justify-between gap-4 items-center mb-4 text-xs md:text-base">
+      <div className="flex justify-between gap-4 items-center mb-4 text-xs md:text-base dark:text-black">
         <button
           className="md:px-4 px-2 py-1 bg-blue-600 text-white rounded-md"
           onClick={() => setIsClientAdded(true)}
@@ -305,7 +321,6 @@ export default function Clients() {
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Finance Point of Contact
-                      <span className="px-1 font-bold text-red-500">*</span>
                     </label>
                     <input
                       id="financePocName"
@@ -332,7 +347,6 @@ export default function Clients() {
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Finance Contact Number
-                      <span className="px-1 font-bold text-red-500">*</span>
                     </label>
                     <div className="flex">
                       <span className="inline-flex items-center px-2 py-2 rounded-l-md border border-r-0 text-gray-500 text-sm">
@@ -373,7 +387,6 @@ export default function Clients() {
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Finance Email Address
-                      <span className="px-1 font-bold text-red-500">*</span>
                     </label>
                     <input
                       id="financeEmail"

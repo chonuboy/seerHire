@@ -18,7 +18,7 @@ export const CandidateCard = ({
   });
 
   return (
-    <Card className="p-2 space-y-4 max-h-full shadow-none md:text-base text-sm">
+    <Card className="p-2 space-y-4 max-h-full shadow-none md:text-base text-sm dark:bg-black">
       <div className="flex justify-between">
         <h1 className="font-semibold text-xl">
           {currentCandidate?.firstName} {currentCandidate?.lastName}
@@ -46,7 +46,7 @@ export const CandidateCard = ({
           {currentCandidate?.companyName}
         </h3>
       </div>
-      <CardContent className="bg-white p-2 w-full">
+      <CardContent className="bg-white p-2 w-full dark:bg-black">
         <div className="grid md:grid-cols-4 grid-cols-2 gap-2">
           <div className="space-y-2">
             <p>Preferred Job Type</p>

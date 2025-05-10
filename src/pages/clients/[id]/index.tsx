@@ -122,7 +122,7 @@ export default function Client() {
                           : "max-h-0 opacity-0"
                       }`}
                     >
-                      <div className="p-6 bg-muted bg-gray-200 space-y-4">
+                      <div className="p-6 bg-muted bg-gray-200 dark:bg-white dark:text-black space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <p className="text-sm">State</p>

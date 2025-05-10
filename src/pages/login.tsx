@@ -41,7 +41,10 @@ const LoginPage = () => {
         },
       });
       if (response.request.status == 200) {
-        setMessage(response.data.message);
+        console.log(response.data.message);
+        if(response.data.message === "Login Successful!") {
+          setMessage(response.data.message);
+        }
         dispatch(setEmail(username));
         dispatch(Pass(password));
         setError("");
@@ -59,7 +62,7 @@ const LoginPage = () => {
       }
     } catch (err: any) {
       console.log(err.message);
-      setError(err.message);
+      setError("Login Failed Please Try Again");
     }
   }
 
@@ -68,15 +71,15 @@ const LoginPage = () => {
       <header className="bg-slate-50 text-white py-2">
         <img src={seerTechLogo} className="object-cover md:h-16 h-10" />
       </header>
-      <div className="flex justify-center items-center p-8 bg-gray-50 pb-28 w-full h-full">
-        <div className="bg-white md:p-8 p-4 rounded-lg shadow-lg w-max md:w-1/4 space-y-6 mt-10 m-10 md:m-0">
-          <h1 className="md:text-xl text-lg font-bold text-center text-gray-800 mb-6">
+      <div className="flex justify-center items-center p-8 bg-gray-50 dark:bg-black pb-28 w-full h-full">
+        <div className="bg-white border border-gray-300 dark:bg-black md:p-8 p-4 rounded-lg shadow-lg w-max md:w-1/4 space-y-6 mt-10 m-10 md:m-0">
+          <h1 className="md:text-xl text-lg font-bold text-center dark:text-white text-gray-800 mb-6">
             Login
           </h1>
 
           {/* Messages and Errors */}
           {message && (
-            <p className="text-green-500  font-sans mt-4 text-center">
+            <p className="text-green-500 dark:text-green-400 font-sans mt-4 text-center">
               {message}
             </p>
           )}
@@ -96,7 +99,7 @@ const LoginPage = () => {
               placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-black"
             />
           </div>
 
@@ -110,7 +113,7 @@ const LoginPage = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-black"
             />
           </div>
 

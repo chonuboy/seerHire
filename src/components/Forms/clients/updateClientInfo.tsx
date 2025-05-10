@@ -70,7 +70,7 @@ export default function ClientInfoUpdateForm({
               value={formik.values.financePocName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-black"
               placeholder="Enter contact name"
             />
             {formik.touched.financePocName && formik.errors.financePocName ? (
@@ -90,7 +90,7 @@ export default function ClientInfoUpdateForm({
               value={formik.values.financeNumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-black"
               placeholder="Enter contact number"
             />
             {formik.touched.financeNumber && formik.errors.financeNumber ? (
@@ -110,7 +110,7 @@ export default function ClientInfoUpdateForm({
               value={formik.values.financeEmail}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-black"
               placeholder="email@example.com"
             />
             {formik.touched.financeEmail && formik.errors.financeEmail ? (
@@ -135,7 +135,7 @@ export default function ClientInfoUpdateForm({
               value={formik.values.gstnumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-black"
               placeholder="Enter GST number"
             />
             {formik.touched.gstnumber && formik.errors.gstnumber ? (
@@ -155,7 +155,7 @@ export default function ClientInfoUpdateForm({
               value={formik.values.cinnumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-black"
               placeholder="Enter CIN number"
             />
             {formik.touched.cinnumber && formik.errors.cinnumber ? (
@@ -175,7 +175,7 @@ export default function ClientInfoUpdateForm({
               value={formik.values.pannumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-black"
               placeholder="Enter PAN number"
             />
             {formik.touched.pannumber && formik.errors.pannumber ? (

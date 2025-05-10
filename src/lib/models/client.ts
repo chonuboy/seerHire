@@ -163,14 +163,13 @@ export const clientValidationSchema = yup.object().shape({
     .object()
     .required("Client HQ Country is required"),
   clientHeadQuarterState: yup.object().required("Client HQ State is required"),
-  financePocName: yup.string().required("Finance POC is required"),
+  financePocName: yup.string().nullable(),
   financeNumber: yup
     .string()
-    .required("Finance Number is required")
     .matches(
       /^\+[0-9]{1,3}[0-9]{4,14}$/,
       "Must be a valid phone number with country code"
-    ),
+    ).nullable(),
   financeEmail: yup
     .string()
     .matches(
@@ -178,7 +177,7 @@ export const clientValidationSchema = yup.object().shape({
       "Invalid email format"
     )
     .email("Invalid email format")
-    .required("Finance Email is required"),
+    .nullable(),
   gstnumber: yup.string().nullable(),
   cinnumber: yup.string().nullable(),
   pannumber: yup.string().nullable(),
@@ -191,12 +190,10 @@ export const clientLocationSchema = yup.object().shape({
     .matches(/^\d+$/, "Pincode must be numeric"),
   address1: yup.string().required("Address is required"),
   hrContactPerson: yup.string()
-  .required("HR Contact Person is required")
-  .matches(/^[a-zA-Z]+$/, "HR Contact Person must contain only alphabets"),
+  .required("HR Contact Person is required"),
 
 technicalPerson: yup.string()
-  .required("Technical Person is required")
-  .matches(/^[a-zA-Z]+$/, "Technical Person must contain only alphabets"),
+  .required("Technical Person is required"),
   hrMobileNumber: yup
     .string()
     .required("HR Mobile Number is required")
@@ -207,7 +204,10 @@ technicalPerson: yup.string()
     .matches(/^\d+$/, "Landline must be numeric").max(10, "Must be 10 Numbers or less"),
   hrContactPersonEmail: yup
     .string()
-    .email("Invalid email format")
+    .matches(
+      /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/i,
+      "Invalid email format"
+    )
     .required("Email is required"),
   state: yup.object().shape({
     locationId: yup

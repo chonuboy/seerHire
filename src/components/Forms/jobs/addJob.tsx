@@ -130,7 +130,7 @@ export const AddJob = ({
               name="jobTitle"
               type="text"
               placeholder="Enter job title"
-              className={`w-full px-3 py-2 border  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full px-3 py-2 border  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.jobTitle || ""}
@@ -155,7 +155,7 @@ export const AddJob = ({
               name="jobCode"
               type="text"
               placeholder="Enter job code"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.jobCode || ""}
@@ -180,7 +180,7 @@ export const AddJob = ({
               name="salaryInCtc"
               type="number"
               placeholder="Enter salary"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.salaryInCtc || ""}
@@ -205,7 +205,7 @@ export const AddJob = ({
               name="experience"
               type="number"
               placeholder="Enter experience"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.experience || ""}
@@ -228,7 +228,7 @@ export const AddJob = ({
             <select
               id="isJobActive"
               name="isJobActive"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.isJobActive || ""}
@@ -256,7 +256,7 @@ export const AddJob = ({
             <select
               id="jobPostType"
               name="jobPostType"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.jobPostType || ""}
@@ -286,7 +286,7 @@ export const AddJob = ({
               name="insertedBy"
               type="text"
               placeholder="Enter name"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.insertedBy || ""}
@@ -377,7 +377,7 @@ export const AddJob = ({
         </div>
 
         {/* Job Description (Editor) */}
-        <div className="space-y-2 mt-4">
+        {/* <div className="space-y-2 mt-4">
           <label className="font-semibold text-gray-600">Job Description</label>
           <JoditEditor
             value={jd || ""}
@@ -409,7 +409,7 @@ export const AddJob = ({
               {formik.errors.jobDescription}
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Form Actions */}
         <div className="mt-8 flex flex-col sm:flex-row-reverse gap-3">

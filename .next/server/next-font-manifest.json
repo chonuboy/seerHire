@@ -6,15 +6,23 @@
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/clients": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
     "/candidates": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
     "/candidates/[id]": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/candidates/[id]/interviews/[interviewid]": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/recruitments": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/clients": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
@@ -26,39 +34,11 @@
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/jobs/[id]/candidates": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/recruitments": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/jobs/[id]/interviews": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
     "/search": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/search/results": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/interviews": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/candidates/[id]/interviews/[interviewid]": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/settings": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/help": [
+    "/candidates/add": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ]

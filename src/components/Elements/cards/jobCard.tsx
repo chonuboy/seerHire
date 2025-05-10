@@ -83,10 +83,10 @@ export default function JobCard({
       Active: "bg-green-100 text-green-800",
       OnHold: "bg-yellow-100 text-yellow-800",
       Closed: "bg-red-100 text-red-800",
-    }[job.isJobActive] || "bg-gray-100 text-gray-800";
+    }[job.isJobActive] || "bg-gray-100 text-gray-800 dark:text-white";
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+    <div className="bg-white dark:bg-black dark:text-white rounded-lg shadow-md overflow-hidden border border-gray-200">
       <div className="p-6">
         <div
           onClick={() => {
@@ -95,10 +95,10 @@ export default function JobCard({
         >
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                 {job.jobTitle || "Untitled Position"}
               </h2>
-              <div className="flex items-center mt-1 text-gray-600">
+              <div className="flex items-center mt-1 text-gray-600 dark:text-white">
                 <Tag className="h-4 w-4 mr-1" />
                 <span className="text-sm mr-3">{job.jobCode}</span>
                 <span
@@ -109,46 +109,46 @@ export default function JobCard({
               </div>
             </div>
             <div className="text-right">
-              <div className="text-xl font-bold text-gray-800 flex items-center">
-                <DollarSign className="h-5 w-5 mr-1 text-gray-600" />
+              <div className="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+                <DollarSign className="h-5 w-5 mr-1 text-gray-600 dark:text-white" />
                 {job.salaryInCtc} LPA
               </div>
-              <span className="text-sm text-gray-500">CTC</span>
+              <span className="text-sm text-gray-500 dark:text-white">CTC</span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className="flex items-center text-gray-700">
-              <Briefcase className="h-5 w-5 mr-2 text-gray-500" />
+              <Briefcase className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium">Experience Required</div>
-                <div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">Experience Required</div>
+                <div className="dark:bg-black dark:text-white">
                   {job.experience} {job.experience === 1 ? "Year" : "Years"}
                 </div>
               </div>
             </div>
 
             <div className="flex items-center text-gray-700">
-              <User className="h-5 w-5 mr-2 text-gray-500" />
+              <User className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium">Posted By</div>
-                <div>{job.insertedBy}</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">Posted By</div>
+                <div className="dark:bg-black dark:text-white">{job.insertedBy}</div>
               </div>
             </div>
 
             <div className="flex items-center text-gray-700">
-              <Calendar className="h-5 w-5 mr-2 text-gray-500" />
+              <Calendar className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium">Created On</div>
-                <div>{formatDate(job.createdOn)}</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">Created On</div>
+                <div className="dark:bg-black dark:text-white">{formatDate(job.createdOn)}</div>
               </div>
             </div>
 
             <div className="flex items-center text-gray-700">
-              <Clock className="h-5 w-5 mr-2 text-gray-500" />
+              <Clock className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium">Job Post Type</div>
-                <div>{job.jobPostType}</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">Job Post Type</div>
+                <div className="dark:bg-black dark:text-white">{job.jobPostType}</div>
               </div>
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function JobCard({
                 setShowJdModal(true);
                 console.log(job.jd);
               }}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium dark:bg-black dark:text-white text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:hover:text-black"
             >
               <FileText className="h-4 w-4 mr-2" />
               View Job Description

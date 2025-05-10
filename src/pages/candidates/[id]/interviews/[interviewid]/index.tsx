@@ -49,7 +49,7 @@ export default function CandidateInterviews() {
     fetchContactInterview(Id).then((data) => {
       setCurrentJobData(data);
     });
-  }, [candidateId, Id, updateRoundEnabled]);
+  }, [candidateId, Id, updateRoundEnabled,addRoundEnabled]);
 
   const handleUpdateRound = (round: Round) => {
     console.log(round);
@@ -78,7 +78,7 @@ export default function CandidateInterviews() {
           {allRounds && allRounds.length > 0 ? (
             allRounds?.map((round) => (
               <div key={round.roundId}>
-                <Card className="p-4">
+                <Card className="p-4 dark:bg-black">
                   <CardHeader className="mb-4">
                     <h3 className="font-semibold text-lg">
                       Round {round.roundNumber}
@@ -90,14 +90,14 @@ export default function CandidateInterviews() {
                       Update
                     </button>
                   </CardHeader>
-                  <CardContent className="bg-white border shadow-sm p-4">
+                  <CardContent className="bg-white border shadow-sm p-4 dark:bg-black dark:text-white">
                     <div className="flex justify-between items-start mb-6">
                       <div className="flex items-center gap-12">
                         <div>
                           <h4 className="font-semibold text-lg">
                             {round.roundName}
                           </h4>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-300">
                             {round.roundDate}
                           </p>
                         </div>
@@ -116,40 +116,40 @@ export default function CandidateInterviews() {
 
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
                       <div>
-                        <p className="text-sm text-black font-semibold">
+                        <p className="text-sm text-black dark:text-white font-semibold">
                           Interviewer Name
                         </p>
-                        <p className="text-gray-700">{round.interviewerName}</p>
+                        <p className="text-gray-700 dark:text-gray-200">{round.interviewerName}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-black font-semibold">
+                        <p className="text-sm text-black dark:text-white font-semibold">
                           Technology Interviewed
                         </p>
-                        <p className="text-gray-700">
+                        <p className="text-gray-700 dark:text-gray-200">
                           {round.technologyInterviewed}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-black font-semibold">
+                        <p className="text-sm text-black dark:text-white font-semibold">
                           Tech Rating
                         </p>
-                        <p className="text-gray-700">{round.techRating}/10</p>
+                        <p className="text-gray-700 dark:text-gray-200">{round.techRating}/10</p>
                       </div>
                       <div>
-                        <p className="text-sm text-black font-semibold">
+                        <p className="text-sm text-black dark:text-white font-semibold">
                           Soft skill Rating
                         </p>
-                        <p className="text-gray-700">
+                        <p className="text-gray-700 dark:text-gray-200">
                           {round.softskillsRating}/10
                         </p>
                       </div>
                     </div>
 
                     <div className="mt-4">
-                      <p className="text-sm text-black font-semibold">
+                      <p className="text-sm text-black dark:text-white font-semibold">
                         Remarks
                       </p>
-                      <p className="text-gray-700">{round.remarks}</p>
+                      <p className="text-gray-700 dark:text-gray-200">{round.remarks}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -190,7 +190,7 @@ export default function CandidateInterviews() {
               allRounds[0].interview &&
               allRounds[0].interview.contactDetails ? (
                 <AddRound
-                  className="mt-10 rounded-md bg-white m-8"
+                  className="mt-10 rounded-md bg-white m-8 dark:text-black"
                   interviewInfo={{
                     interview: allRounds[0].interview,
                   }}

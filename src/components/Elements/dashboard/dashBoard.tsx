@@ -289,21 +289,24 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-      {allTech.length > 0 ? (
-        <TechnologyTable initialData={allTech}></TechnologyTable>
-      ) : null}
-      {allCompanies.length > 0 ? (
-        <CompanyTable initialData={allCompanies}></CompanyTable>
-      ) : null}
-      {allDomains.length > 0 ? (
-        <DomainTable initialData={allDomains}></DomainTable>
-      ) : null}
-      {allCertificates.length > 0 ? (
-        <CertificateTable initialData={allCertificates}></CertificateTable>
-      ) : null}
-      {allLocations.length > 0 ? (
-        <LocationTable initialData={allLocations}></LocationTable>
-      ) : null}
+      {/* Tables */}
+      <section className="space-y-4">
+        {allTech.length > 0 ? (
+          <TechnologyTable initialData={allTech}></TechnologyTable>
+        ) : null}
+        {allCompanies.length > 0 ? (
+          <CompanyTable initialData={allCompanies}></CompanyTable>
+        ) : null}
+        {allDomains.length > 0 ? (
+          <DomainTable initialData={allDomains}></DomainTable>
+        ) : null}
+        {allCertificates.length > 0 ? (
+          <CertificateTable initialData={allCertificates}></CertificateTable>
+        ) : null}
+        {allLocations.length > 0 ? (
+          <LocationTable initialData={allLocations}></LocationTable>
+        ) : null}
+      </section>
     </>
   );
 }

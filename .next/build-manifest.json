@@ -23,18 +23,6 @@
       "static/chunks/src_pages_index_5771e1._.js",
       "static/chunks/src_pages_index_69ba3d._.js"
     ],
-    "/clients": [
-      "static/chunks/[root of the server]__1515e3._.js",
-      "static/chunks/node_modules_next_f0965f._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_lodash-es_ff7e50._.js",
-      "static/chunks/node_modules_1066b0._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_clients_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_clients_index_tsx_8201ea._.js"
-    ],
     "/candidates": [
       "static/chunks/[root of the server]__345a51._.js",
       "static/chunks/node_modules_next_f0965f._.js",
@@ -69,6 +57,60 @@
       "static/chunks/[next]_internal_font_google_902fed._.css",
       "static/chunks/src_pages_candidates_[id]_index_tsx_5771e1._.js",
       "static/chunks/src_pages_candidates_[id]_index_tsx_235e8a._.js"
+    ],
+    "/candidates/[id]/interviews/[interviewid]": [
+      "static/chunks/[root of the server]__e0f562._.js",
+      "static/chunks/node_modules_next_f0965f._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
+      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
+      "static/chunks/node_modules_lodash-es_ff7e50._.js",
+      "static/chunks/node_modules_a0be7b._.js",
+      "static/chunks/[next]_internal_font_google_902fed._.css",
+      "static/chunks/src_pages_candidates_[id]_interviews_[interviewid]_index_tsx_5771e1._.js",
+      "static/chunks/src_pages_candidates_[id]_interviews_[interviewid]_index_tsx_7cbec8._.js"
+    ],
+    "/_error": [
+      "static/chunks/[root of the server]__31723f._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_beb007._.js",
+      "static/chunks/[root of the server]__e5d775._.js",
+      "static/chunks/src_pages__error_5771e1._.js",
+      "static/chunks/src_pages__error_ba917a._.js"
+    ],
+    "/recruitments": [
+      "static/chunks/[root of the server]__f3ca18._.js",
+      "static/chunks/node_modules_next_f0965f._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
+      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
+      "static/chunks/node_modules_lodash-es_ff7e50._.js",
+      "static/chunks/node_modules_fee246._.js",
+      "static/chunks/[next]_internal_font_google_902fed._.css",
+      "static/chunks/src_pages_recruitments_index_tsx_5771e1._.js",
+      "static/chunks/src_pages_recruitments_index_tsx_bfa77f._.js"
+    ],
+    "/recruitments/[id]": [
+      "static/chunks/[root of the server]__e9e9c0._.js",
+      "static/chunks/node_modules_next_3fff62._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
+      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
+      "static/chunks/node_modules_fcf665._.js",
+      "static/chunks/src_pages_recruitments_[id]_index_tsx_5771e1._.js",
+      "static/chunks/src_pages_recruitments_[id]_index_tsx_896718._.js"
+    ],
+    "/clients": [
+      "static/chunks/[root of the server]__1515e3._.js",
+      "static/chunks/node_modules_next_f0965f._.js",
+      "static/chunks/node_modules_react-dom_82bb97._.js",
+      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
+      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
+      "static/chunks/node_modules_lodash-es_ff7e50._.js",
+      "static/chunks/node_modules_1066b0._.js",
+      "static/chunks/[next]_internal_font_google_902fed._.css",
+      "static/chunks/src_pages_clients_index_tsx_5771e1._.js",
+      "static/chunks/src_pages_clients_index_tsx_8201ea._.js"
     ],
     "/clients/[id]": [
       "static/chunks/[root of the server]__95107d._.js",
@@ -117,61 +159,6 @@
       "static/chunks/src_pages_jobs_[id]_index_tsx_5771e1._.js",
       "static/chunks/src_pages_jobs_[id]_index_tsx_d41ad0._.js"
     ],
-    "/jobs/[id]/candidates": [
-      "static/chunks/[root of the server]__d6fe39._.js",
-      "static/chunks/node_modules_next_dist_compiled_855de4._.js",
-      "static/chunks/node_modules_next_dist_shared_lib_4250ce._.js",
-      "static/chunks/node_modules_next_dist_client_b7bfb9._.js",
-      "static/chunks/node_modules_next_dist_6270f6._.js",
-      "static/chunks/node_modules_next_878378._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_underscore_modules_b8ed98._.js",
-      "static/chunks/node_modules_bluebird_js_release_645a00._.js",
-      "static/chunks/node_modules_mammoth_bda646._.js",
-      "static/chunks/node_modules_jszip_lib_c638a7._.js",
-      "static/chunks/node_modules_pako_ac54cd._.js",
-      "static/chunks/node_modules_@xmldom_xmldom_lib_f30bec._.js",
-      "static/chunks/node_modules_dingbat-to-unicode_dist_a424c8._.js",
-      "static/chunks/node_modules_85e5e1._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_jobs_[id]_candidates_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_jobs_[id]_candidates_index_tsx_174065._.js"
-    ],
-    "/recruitments": [
-      "static/chunks/[root of the server]__f3ca18._.js",
-      "static/chunks/node_modules_next_f0965f._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_lodash-es_ff7e50._.js",
-      "static/chunks/node_modules_fee246._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_recruitments_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_recruitments_index_tsx_bfa77f._.js"
-    ],
-    "/recruitments/[id]": [
-      "static/chunks/[root of the server]__e9e9c0._.js",
-      "static/chunks/node_modules_next_3fff62._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_fcf665._.js",
-      "static/chunks/src_pages_recruitments_[id]_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_recruitments_[id]_index_tsx_896718._.js"
-    ],
-    "/jobs/[id]/interviews": [
-      "static/chunks/node_modules_next_8efe7f._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_6ba751._.js",
-      "static/chunks/[root of the server]__3461f3._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_jobs_[id]_interviews_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_jobs_[id]_interviews_index_tsx_e0831e._.js"
-    ],
     "/search": [
       "static/chunks/[root of the server]__47878f._.js",
       "static/chunks/node_modules_next_54c657._.js",
@@ -182,68 +169,17 @@
       "static/chunks/src_pages_search_index_tsx_5771e1._.js",
       "static/chunks/src_pages_search_index_tsx_b16a29._.js"
     ],
-    "/search/results": [
-      "static/chunks/[root of the server]__bb286e._.js",
-      "static/chunks/node_modules_next_dist_compiled_855de4._.js",
-      "static/chunks/node_modules_next_dist_shared_lib_4250ce._.js",
-      "static/chunks/node_modules_next_dist_client_b7bfb9._.js",
-      "static/chunks/node_modules_next_dist_6270f6._.js",
-      "static/chunks/node_modules_next_878378._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_underscore_modules_b8ed98._.js",
-      "static/chunks/node_modules_bluebird_js_release_645a00._.js",
-      "static/chunks/node_modules_mammoth_bda646._.js",
-      "static/chunks/node_modules_jszip_lib_c638a7._.js",
-      "static/chunks/node_modules_pako_ac54cd._.js",
-      "static/chunks/node_modules_@xmldom_xmldom_lib_f30bec._.js",
-      "static/chunks/node_modules_dingbat-to-unicode_dist_a424c8._.js",
-      "static/chunks/node_modules_85e5e1._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_search_results_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_search_results_index_tsx_239bfa._.js"
-    ],
-    "/interviews": [
-      "static/chunks/node_modules_next_8efe7f._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
-      "static/chunks/node_modules_axios_lib_9a6fdf._.js",
-      "static/chunks/node_modules_a7948b._.js",
-      "static/chunks/[root of the server]__da0f45._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_interviews_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_interviews_index_tsx_4cc4b9._.js"
-    ],
-    "/candidates/[id]/interviews/[interviewid]": [
-      "static/chunks/[root of the server]__e0f562._.js",
-      "static/chunks/node_modules_next_f0965f._.js",
+    "/candidates/add": [
+      "static/chunks/[root of the server]__6e5c2c._.js",
+      "static/chunks/node_modules_next_a5007d._.js",
       "static/chunks/node_modules_react-dom_82bb97._.js",
       "static/chunks/node_modules_@reduxjs_toolkit_dist_8ef84d._.js",
       "static/chunks/node_modules_axios_lib_9a6fdf._.js",
       "static/chunks/node_modules_lodash-es_ff7e50._.js",
-      "static/chunks/node_modules_d315c1._.js",
+      "static/chunks/node_modules_555fa2._.js",
       "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_candidates_[id]_interviews_[interviewid]_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_candidates_[id]_interviews_[interviewid]_index_tsx_204b24._.js"
-    ],
-    "/settings": [
-      "static/chunks/[root of the server]__03a40f._.js",
-      "static/chunks/node_modules_next_54c657._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_e84c0c._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_settings_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_settings_index_tsx_436bf0._.js"
-    ],
-    "/help": [
-      "static/chunks/[root of the server]__e4dbda._.js",
-      "static/chunks/node_modules_next_54c657._.js",
-      "static/chunks/node_modules_react-dom_82bb97._.js",
-      "static/chunks/node_modules_5f6f96._.js",
-      "static/chunks/[next]_internal_font_google_902fed._.css",
-      "static/chunks/src_pages_help_index_tsx_5771e1._.js",
-      "static/chunks/src_pages_help_index_tsx_f585d6._.js"
+      "static/chunks/src_pages_candidates_add_index_tsx_5771e1._.js",
+      "static/chunks/src_pages_candidates_add_index_tsx_d5adb6._.js"
     ]
   },
   "devFiles": [],

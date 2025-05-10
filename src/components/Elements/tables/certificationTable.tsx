@@ -41,9 +41,9 @@ export default function CertificateTable({ initialData }: { initialData: Certifi
 
   return (
     <div className="w-full mx-auto bg-white rounded-lg overflow-hidden">
-      <div className="p-6">
+      <div className="p-6 dark:bg-black">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Certificates</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Certificates</h2>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -66,7 +66,7 @@ export default function CertificateTable({ initialData }: { initialData: Certifi
 
         <div className="overflow-x-auto border rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 dark:bg-white dark:text-black ">
               <tr>
                 <th className="px-6 py-3 text-left">
                   Certificate
@@ -76,11 +76,11 @@ export default function CertificateTable({ initialData }: { initialData: Certifi
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-black dark:text-white divide-y divide-gray-200">
               {certificates.map((certificate) => (
-                <tr key={certificate.certificationId} className="hover:bg-gray-50">
+                <tr key={certificate.certificationId} className="hover:bg-gray-50 dark:hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">{certificate.certificationName}</div>
+                    <div className="font-medium text-gray-900 dark:text-white dark:hover:text-black">{certificate.certificationName}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{formatDate(certificate.insertedOn? certificate.insertedOn : "")}</td>
                 </tr>

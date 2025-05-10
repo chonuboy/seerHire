@@ -41,9 +41,9 @@ export default function DomainTable({ initialData }: { initialData: Domain[] }) 
 
   return (
     <div className="w-full mx-auto bg-white rounded-lg overflow-hidden">
-      <div className="p-6">
+      <div className="p-6 dark:bg-black">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Domains</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Domains</h2>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -66,7 +66,7 @@ export default function DomainTable({ initialData }: { initialData: Domain[] }) 
 
         <div className="overflow-x-auto border rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 dark:bg-white dark:text-black">
               <tr>
                 <th className="px-6 py-3 text-left">
                   Domain
@@ -76,11 +76,11 @@ export default function DomainTable({ initialData }: { initialData: Domain[] }) 
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-black divide-y divide-gray-200">
               {domains.map((domain) => (
-                <tr key={domain.domainId} className="hover:bg-gray-50">
+                <tr key={domain.domainId} className="hover:bg-gray-50 hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">{domain.domainDetails}</div>
+                    <div className="font-medium">{domain.domainDetails}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{formatDate(domain.insertedOn? domain.insertedOn : "")}</td>
                 </tr>

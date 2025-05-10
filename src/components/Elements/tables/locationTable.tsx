@@ -44,9 +44,9 @@ export default function LocationTable({
 
   return (
     <div className="w-full mx-auto bg-white rounded-lg overflow-hidden">
-      <div className="p-6">
+      <div className="p-6 dark:bg-black">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Locations</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Locations</h2>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -71,15 +71,15 @@ export default function LocationTable({
 
         <div className="overflow-x-auto border rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 dark:bg-white dark:text-black">
               <tr>
                 <th className="px-6 py-3 text-left">Location</th>
                 <th className="px-6 py-3 text-left">Date Added</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-black divide-y divide-gray-200">
               {locations.map((location) => (
-                <tr key={location.locationId} className="hover:bg-gray-50">
+                <tr key={location.locationId} className="hover:bg-gray-50 dark:hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium">
                       {location.locationDetails}

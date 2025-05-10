@@ -103,6 +103,11 @@ export default function Candidates() {
   // Add New Candidate
   //------------------------------------------------------------
   const addNewCandidate = async (reqData: Candidate) => {
+    if(!reqData.resume){
+      toast.error("Resume is required", {
+        position: "top-right",
+      })
+    }
     reqData.isActive =
       reqData.candidateStatus == CandidateStatus.ACTIVE ? true : false;
     reqData.differentlyAbled =
@@ -224,7 +229,7 @@ export default function Candidates() {
           <div className="p-2 md:p-4 grid grid-cols-1 md:grid-cols-2 md:gap-8 gap-4 text-gray-900  text-sm md:text-base">
             <div className="space-y-3 rounded-lg">
               <label htmlFor="firstName" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="font-semibold text-gray-600 dark:text-white ">
                   First Name
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -233,7 +238,7 @@ export default function Candidates() {
                 type="text"
                 name="firstName"
                 placeholder="Enter First Name"
-                className="py-2 px-1 w-full focus:outline-[var(--theme-background)] border rounded-lg"
+                className="py-2 px-1 w-full focus:outline-[var(--theme-background)] dark:bg-black dark:text-white border outline:none rounded-lg"
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
               />
@@ -245,7 +250,7 @@ export default function Candidates() {
             </div>
             <div className="space-y-3 rounded-lg">
               <label htmlFor="lastName" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Last Name
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -254,7 +259,7 @@ export default function Candidates() {
                 type="text"
                 name="lastName"
                 placeholder="Enter Last Name"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
               />
@@ -267,7 +272,7 @@ export default function Candidates() {
 
             <div className="space-y-3 rounded-lg">
               <label htmlFor="dob" className="flex">
-                <span className="font-semibold text-gray-600 ">
+                <span className="font-semibold text-gray-600 dark:text-white ">
                   Date of Birth
                 </span>
               </label>
@@ -275,7 +280,7 @@ export default function Candidates() {
                 type="date"
                 name="dob"
                 placeholder="Enter Date of Birth"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.dob}
                 onChange={formik.handleChange}
               />
@@ -287,14 +292,14 @@ export default function Candidates() {
             </div>
             <div className="space-y-3 h-auto rounded-lg">
               <label htmlFor="emailId" className="flex">
-                <span className="  font-semibold text-gray-600">Email</span>
+                <span className="  font-semibold text-gray-600 dark:text-white">Email</span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="emailId"
                 placeholder="Enter Email"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.emailId}
                 onChange={formik.handleChange}
               />
@@ -307,7 +312,7 @@ export default function Candidates() {
 
             <div className="space-y-3 h-auto  rounded-lg">
               <label htmlFor="primaryNumber" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Mobile number
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -316,7 +321,7 @@ export default function Candidates() {
                 type="text"
                 name="primaryNumber"
                 placeholder="Enter 10 digit mobile number"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.primaryNumber}
                 onChange={formik.handleChange}
               />
@@ -328,7 +333,7 @@ export default function Candidates() {
             </div>
             <div className="space-y-3 h-auto rounded-lg">
               <label htmlFor="secondaryNumber" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Alternate Mobile number
                 </span>
                 {/* <span className="px-1 font-bold text-red-500">*</span> */}
@@ -337,7 +342,7 @@ export default function Candidates() {
                 type="text"
                 name="secondaryNumber"
                 placeholder="Enter 10 digit mobile number"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.secondaryNumber}
                 onChange={formik.handleChange}
               />
@@ -350,11 +355,11 @@ export default function Candidates() {
 
             <div className="h-auto md:h-full space-y-3 rounded-lg">
               <label htmlFor="gender" className="flex">
-                <span className="  font-semibold text-gray-600 ">Gender</span>
+                <span className="  font-semibold text-gray-600 dark:text-white ">Gender</span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <fieldset>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="gender"
@@ -365,7 +370,7 @@ export default function Candidates() {
                   />
                   <label htmlFor="male">{Gender.MALE}</label>
                 </div>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="gender"
@@ -376,7 +381,7 @@ export default function Candidates() {
                   />
                   <label htmlFor="female">{Gender.FEMALE}</label>
                 </div>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="gender"
@@ -396,13 +401,13 @@ export default function Candidates() {
             </div>
             <div className="h-auto md:h-full space-y-3 rounded-lg">
               <label htmlFor="maritalStatus" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Marital Status
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <fieldset>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="maritalStatus"
@@ -415,7 +420,7 @@ export default function Candidates() {
                   />
                   <label htmlFor="married">{MaritalStatus.MARRIED}</label>
                 </div>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="maritalStatus"
@@ -439,11 +444,11 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="address" className="flex">
-                <span className="  font-semibold text-gray-600 ">Address</span>
+                <span className="  font-semibold text-gray-600 dark:text-white ">Address</span>
               </label>
               <textarea
                 name="address"
-                className="py-2 px-1 border rounded-lg w-full focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 border rounded-lg w-full focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 placeholder="Enter address"
                 rows={4}
                 cols={50}
@@ -458,13 +463,13 @@ export default function Candidates() {
             </div>
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="addressLocality" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Address Locality
                 </span>
               </label>
               <textarea
                 name="addressLocality"
-                className="py-2 px-1 border rounded-lg w-full focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 border rounded-lg w-full focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 placeholder="Enter address"
                 rows={4}
                 cols={50}
@@ -484,7 +489,7 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="currentLocation" className="flex">
-                <span className="font-semibold text-gray-600">
+                <span className="font-semibold text-gray-600 dark:text-white">
                   Current Location
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -506,13 +511,13 @@ export default function Candidates() {
             </div>
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="pinCode" className="flex">
-                <span className="  font-semibold text-gray-600 ">Pincode</span>
+                <span className="  font-semibold text-gray-600 dark:text-white ">Pincode</span>
               </label>
               <input
                 type="text"
                 name="pinCode"
                 placeholder="Enter Pincode"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.pinCode}
                 onChange={formik.handleChange}
               />
@@ -528,17 +533,17 @@ export default function Candidates() {
 
           {/* ================================= */}
           <div className="text-base md:text-lg font-semibold mb-4 text-blue-500">
-            Upload Resume
+            Upload Resume <span className="text-red-500">*</span>
           </div>
           <div className="text-sm md:text-base">
             <div className="h-auto space-y-3 rounded-lg">
               <div
-                className="mt-2 flex flex-col items-center justify-center w-full h-64 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
+                className="mt-2 flex flex-col items-center justify-center w-full h-64 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100  dark:hover:bg-black cursor-pointer dark:bg-black dark:text-white"
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
               >
                 <svg
-                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-100"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -552,9 +557,9 @@ export default function Candidates() {
                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                   />
                 </svg>
-                <div className="mb-4 flex text-sm/6 text-gray-500">
+                <div className="mb-4 flex text-sm/6 text-gray-100">
                   <button
-                    className="border border-dashed  border-gray-900 px-2 font-semibold"
+                    className="border border-dashed  text-black dark:text-white border-gray-900 px-2 font-semibold"
                     type="button"
                     onClick={handleChooseFile}
                   >
@@ -569,14 +574,14 @@ export default function Candidates() {
                     onClick={handleFileClick}
                     onChange={handleFileChange}
                   />
-                  <p className="pl-2">or drag and drop</p>
+                  <p className="pl-2 text-gray-600 dark:text-white">or drag and drop</p>
                 </div>
-                <p className="text-xs/4 text-gray-500">
+                <p className="text-xs/4 text-gray-800 dark:text-gray-100">
                   PDF, DOC, DOCX up to 5MB
                 </p>
                 {file && (
                   <p className="mt-4 text-green-500">
-                    File Selected
+                    {file.name}
                   </p>
                 )}
                 <button
@@ -611,13 +616,13 @@ export default function Candidates() {
           <div className="p-2 md:p-4  grid grid-cols-1 md:grid-cols-2 md: gap-8  text-gray-900   text-sm md:text-base">
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="companyName" className="flex">
-                <span className="  font-semibold text-gray-600 ">Company</span>
+                <span className="  font-semibold text-gray-600 dark:text-white ">Company</span>
               </label>
               <input
                 type="text"
                 name="companyName"
                 placeholder="Enter Current or Previous Company"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={
                   formik.values.companyName ? formik.values.companyName : ""
                 }
@@ -631,7 +636,7 @@ export default function Candidates() {
             </div>
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="designation" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Designation
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -640,7 +645,7 @@ export default function Candidates() {
                 type="text"
                 name="designation"
                 placeholder="Enter Designation"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.designation}
                 onChange={formik.handleChange}
               />
@@ -653,7 +658,7 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="totalExperience" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Experience (In Years)
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -662,7 +667,7 @@ export default function Candidates() {
                 type="text"
                 name="totalExperience"
                 placeholder="Enter Minimum Work Experience"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.totalExperience}
                 onChange={formik.handleChange}
               />
@@ -674,7 +679,7 @@ export default function Candidates() {
             </div>
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="currentSalary" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Current Salary (In CTC)
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -683,7 +688,7 @@ export default function Candidates() {
                 type="text"
                 name="currentSalary"
                 placeholder="Enter Minimum to Maximum Salary"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.currentSalary}
                 onChange={formik.handleChange}
               />
@@ -696,7 +701,7 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="expectedSalary" className="flex">
-                <span className="font-semibold text-gray-600">
+                <span className="font-semibold text-gray-600 dark:text-white">
                   Expected Salary (In CTC)
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -705,7 +710,7 @@ export default function Candidates() {
                 type="text"
                 name="expectedSalary"
                 placeholder="Enter Minimum to Maximum Salary"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.expectedSalary}
                 onChange={formik.handleChange}
               />
@@ -718,7 +723,7 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="highestEducation" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Education
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -727,7 +732,7 @@ export default function Candidates() {
                 type="text"
                 name="highestEducation"
                 placeholder="Enter Highest Education"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.highestEducation}
                 onChange={formik.handleChange}
               />
@@ -739,7 +744,7 @@ export default function Candidates() {
             </div>
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="techRole" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Tech Role
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -749,7 +754,7 @@ export default function Candidates() {
                 type="text"
                 name="techRole"
                 placeholder="Enter Tech Role"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.techRole}
                 onChange={formik.handleChange}
               />
@@ -762,7 +767,7 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="noticePeriod" className="flex">
-                <span className="  font-semibold text-gray-600 ">
+                <span className="  font-semibold text-gray-600 dark:text-white ">
                   Notice Period (In Days)
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -771,7 +776,7 @@ export default function Candidates() {
                 type="text"
                 name="noticePeriod"
                 placeholder="Enter Minimum days"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                 value={formik.values.noticePeriod}
                 onChange={formik.handleChange}
               />
@@ -784,13 +789,13 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="isDifferentlyAbled" className="flex">
-                <span className="font-semibold text-gray-600">
+                <span className="font-semibold text-gray-600 dark:text-white">
                   Differently Abled
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <fieldset>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="isDifferentlyAbled"
@@ -804,7 +809,7 @@ export default function Candidates() {
                   />
                   <label htmlFor="yes">{DifferentlyAbled.YES}</label>
                 </div>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="isDifferentlyAbled"
@@ -828,13 +833,13 @@ export default function Candidates() {
 
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="candidateStatus" className="flex">
-                <span className="font-semibold text-gray-600">
+                <span className="font-semibold text-gray-600 dark:text-white">
                   Candidate Status
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
               </label>
               <fieldset>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex items-center gap-2 py-1 dark:text-white">
                   <input
                     type="radio"
                     name="candidateStatus"
@@ -849,7 +854,7 @@ export default function Candidates() {
                   <label htmlFor="active">{CandidateStatus.ACTIVE}</label>
                 </div>
 
-                <div className="flex items-center gap-2 py-2">
+                <div className="flex items-center gap-2 py-2 dark:text-white">
                   <input
                     type="radio"
                     name="candidateStatus"
@@ -874,13 +879,13 @@ export default function Candidates() {
             {DifferentlyAbled.YES === formik.values.isDifferentlyAbled && (
               <div className="h-auto space-y-3 rounded-lg">
                 <label htmlFor="differentlyAbledType" className="flex">
-                  <span className="font-semibold text-gray-600">
+                  <span className="font-semibold text-gray-600 dark:text-white">
                     Differently Abled Type
                   </span>
                 </label>
                 <select
                   name="differentlyAbledType"
-                  className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                  className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
                   value={formik.values.differentlyAbledType || ""}
                   onChange={formik.handleChange}
                 >

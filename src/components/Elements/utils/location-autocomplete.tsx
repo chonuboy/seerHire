@@ -69,7 +69,7 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 	return (
 		<div>
 			<input
-				className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+				className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
 				type="text"
 				name={name}
 				placeholder={placeholder}

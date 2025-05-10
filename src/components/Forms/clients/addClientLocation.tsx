@@ -108,7 +108,7 @@ const AddClientLocation = ({
               placeholder="Enter Address"
               onChange={formik.handleChange}
               value={formik.values.address1}
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border border-gray-300 rounded-md p-2 dark:text-black"
             />
           </div>
 
@@ -157,7 +157,7 @@ const AddClientLocation = ({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.pincode}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:text-black"
               />
               {formik.touched.pincode && formik.errors.pincode && (
                 <p className="mt-1 text-sm text-red-600">
@@ -185,7 +185,7 @@ const AddClientLocation = ({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.hrContactPerson}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:text-black"
               />
               {formik.touched.hrContactPerson &&
                 formik.errors.hrContactPerson && (
@@ -211,7 +211,7 @@ const AddClientLocation = ({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.technicalPerson}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:text-black"
               />
               {formik.touched.technicalPerson &&
                 formik.errors.technicalPerson && (
@@ -237,7 +237,7 @@ const AddClientLocation = ({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.hrMobileNumber}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:text-black"
               />
               {formik.touched.hrMobileNumber &&
                 formik.errors.hrMobileNumber && (
@@ -263,7 +263,7 @@ const AddClientLocation = ({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.companyLandline}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:text-black"
               />
               {formik.touched.companyLandline &&
                 formik.errors.companyLandline && (
@@ -289,7 +289,7 @@ const AddClientLocation = ({
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.hrContactPersonEmail}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:text-black"
               />
               {formik.touched.hrContactPersonEmail &&
                 formik.errors.hrContactPersonEmail && (

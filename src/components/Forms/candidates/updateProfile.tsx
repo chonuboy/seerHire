@@ -11,7 +11,7 @@ const ProfileUpdateForm = ({
   initialValues,
   id,
   autoClose,
-  masterLocations
+  masterLocations,
 }: {
   initialValues: any;
   id: number;
@@ -22,17 +22,17 @@ const ProfileUpdateForm = ({
   const [pendingValue, setPendingValue] = useState<boolean | null>(null);
   const onChangeLocation = (location: Location) => {
     formik.setFieldValue("currentLocation", {
-      locationId: location.locationId
+      locationId: location.locationId,
     });
   };
 
   const addNewLocation = async (location: Location) => {
-    if(masterLocations.includes(location)){
+    if (masterLocations.includes(location)) {
       toast.error("Location already exists");
-      return
+      return;
     }
     formik.setFieldValue("currentLocation", {
-      locationId: location.locationId
+      locationId: location.locationId,
     });
     autoClose();
   };
@@ -56,17 +56,16 @@ const ProfileUpdateForm = ({
   const getUpdatedFields = (initialValues: any, values: any) => {
     const updatedFields = Object.keys(values).reduce(
       (acc: Record<string, any>, key) => {
-        if(key === "currentLocation"){
-          if(values[key].locationId !== initialValues[key].locationId){
+        if (key === "currentLocation") {
+          if (values[key].locationId !== initialValues[key].locationId) {
             acc[key] = values[key];
           }
         }
 
         if (values[key] !== initialValues[key]) {
-          if(key!=="currentLocation"){
+          if (key !== "currentLocation") {
             acc[key] = values[key];
           }
-            
         }
         return acc;
       },
@@ -75,21 +74,39 @@ const ProfileUpdateForm = ({
 
     return updatedFields;
   };
+
+  const transormedvalues = {
+    ...initialValues,
+    isExpectedCtcNegotiable: initialValues.isExpectedCtcNegotiable  === "true" ? true : initialValues.isExpectedCtcNegotiable === "false" ? false : false,
+  };
+
   const formik = useFormik({
-    initialValues: initialValues, // Pass initialValues from props
+    initialValues: transormedvalues, // Pass initialValues from props
     // validationSchema: profileUpdateSchema,
     onSubmit: (values) => {
       const updatedFields = getUpdatedFields(initialValues, values);
       console.log(updatedFields);
       try {
         updateCandidate(updatedFields, id).then((data) => {
-        console.log(updatedFields)
-        console.log(data);
-          autoClose();
-        });
-
-        toast.success("Profile updated successfully", {
-          position: "top-right",
+          console.log(updatedFields);
+          console.log(data);
+          if (data.status === 200) {
+            toast.success("Profile updated successfully", {
+              position: "top-right",
+            });
+            autoClose();
+          } else {
+            if (data.response.data) {
+              const errorMessages = Object.values(data.response.data)[0];
+              toast.error(errorMessages as string, {
+                position: "top-right",
+              });
+            } else {
+              toast.error("Failed to update profile. Please try again.", {
+                position: "top-right",
+              });
+            }
+          }
         });
       } catch (error) {
         console.error("Error updating profile:", error);
@@ -113,7 +130,7 @@ const ProfileUpdateForm = ({
             name="firstName"
             type="text"
             placeholder="e.g. John"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.firstName}
@@ -135,7 +152,7 @@ const ProfileUpdateForm = ({
             name="lastName"
             type="text"
             placeholder="e.g. Doe"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.lastName}
@@ -216,6 +233,34 @@ const ProfileUpdateForm = ({
           ) : null}
         </div>
 
+        <div className="space-y-2">
+          <label htmlFor="salary_negotiable" className="text-gray-400 font-medium">
+            Salary Negotiablility
+          </label>
+          <div>
+            <div className="flex items-center gap-2">
+              <input
+                id="salary_negotiable"
+                name="negotiable"
+                type="radio"
+                onChange={() => formik.setFieldValue("isExpectedCtcNegotiable", true)}
+                checked={formik.values.isExpectedCtcNegotiable === true}
+              />
+              <label htmlFor="salary_negotiable">Yes</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                id="salary_innegotiable"
+                name="negotiable"
+                type="radio"
+                onChange={() => formik.setFieldValue("isExpectedCtcNegotiable", false)}
+                checked={formik.values.isExpectedCtcNegotiable === false}
+              />
+              <label htmlFor="salary_innegotiable">No</label>
+            </div>
+          </div>
+        </div>
+
         {/* Tech Role */}
         <div className="space-y-2">
           <label htmlFor="designation" className="text-gray-400 font-medium">
@@ -226,7 +271,7 @@ const ProfileUpdateForm = ({
             name="designation"
             type="text"
             placeholder="e.g. Software Engineer"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.designation}
@@ -251,7 +296,7 @@ const ProfileUpdateForm = ({
             name="totalExperience"
             type="number"
             placeholder="e.g. 5"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.totalExperience}
@@ -274,7 +319,7 @@ const ProfileUpdateForm = ({
             id="highestEducation"
             name="highestEducation"
             placeholder="e.g. Bachelor's in Computer Science"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.highestEducation}
@@ -296,7 +341,7 @@ const ProfileUpdateForm = ({
             name="primaryNumber"
             type="tel"
             placeholder="e.g. +1234567890"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.primaryNumber}
@@ -318,7 +363,7 @@ const ProfileUpdateForm = ({
             name="emailId"
             type="email"
             placeholder="e.g. john@example.com"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.emailId}
@@ -340,7 +385,7 @@ const ProfileUpdateForm = ({
             name="currentSalary"
             type="number"
             placeholder="e.g. 50000"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.currentSalary}
@@ -363,7 +408,7 @@ const ProfileUpdateForm = ({
           <select
             id="preferredJobType"
             name="preferredJobType"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.preferredJobType}
@@ -387,7 +432,7 @@ const ProfileUpdateForm = ({
           <select
             id="gender"
             name="gender"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.gender}
@@ -413,7 +458,7 @@ const ProfileUpdateForm = ({
             name="noticePeriod"
             type="number"
             placeholder="e.g. 30"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.noticePeriod}
@@ -433,7 +478,7 @@ const ProfileUpdateForm = ({
           <select
             id="maritalStatus"
             name="maritalStatus"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.maritalStatus}
@@ -477,7 +522,7 @@ const ProfileUpdateForm = ({
             id="address1"
             name="address1"
             placeholder="e.g. 123 Main St"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.address1}
@@ -501,7 +546,7 @@ const ProfileUpdateForm = ({
             id="addressLocality"
             name="addressLocality"
             placeholder="e.g. Downtown"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.addressLocality}
@@ -524,7 +569,7 @@ const ProfileUpdateForm = ({
           <input
             id="differentlyAbledType"
             name="differentlyAbledType"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.differentlyAbledType}

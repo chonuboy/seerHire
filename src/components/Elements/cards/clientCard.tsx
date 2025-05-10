@@ -17,7 +17,7 @@ export default function ClientCard({ id }: { id: number }) {
   }, [isclientUpdated])
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden text-xs md:text-base">
+    <div className="bg-white dark:bg-black dark:text-white rounded-lg shadow-lg border border-gray-100 overflow-hidden text-xs md:text-base">
       {/* Header Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4">
         <h1 className="text-lg md:text-2xl font-bold text-white">{currentClient?.clientName}</h1>
@@ -25,59 +25,59 @@ export default function ClientCard({ id }: { id: number }) {
 
       {/* Content Section */}
       <div className="p-2">
-        <div className="bg-gray-50 rounded-lg p-5 mb-2">
-          <h2 className="text-gray-700 font-semibold mb-4 text-sm md:text-base border-b pb-2">Client Information</h2>
+        <div className="bg-gray-50 dark:bg-black dark:text-white rounded-lg p-5 mb-2">
+          <h2 className="text-gray-700 dark:text-white font-semibold mb-4 text-sm md:text-base border-b pb-2">Client Information</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">Head office country</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">Head office country</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.clientHeadQuarterCountry.locationDetails ? currentClient?.clientHeadQuarterCountry.locationDetails : "-"}
               </p>
             </div>
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">Head office state</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">Head office state</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.clientHeadQuarterState.locationDetails ? currentClient?.clientHeadQuarterState.locationDetails : "-"}
               </p>
             </div>
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">Finance POC Person</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">Finance POC Person</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.financePocName ? currentClient?.financePocName : "-"}
               </p>
             </div>
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">Finance Mobile Number</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">Finance Mobile Number</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.financeNumber ? currentClient?.financeNumber : "-"}
               </p>
             </div>
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">Finance Email</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">Finance Email</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1 truncate">
                 {currentClient?.financeEmail ? currentClient?.financeEmail : "-"}
               </p>
             </div>
           </div>
 
-          <h2 className="text-gray-700 font-semibold my-4 text-sm md:text-base border-b pb-2 pt-4">
+          <h2 className="text-gray-700 dark:text-white font-semibold my-4 text-sm md:text-base border-b pb-2 pt-4">
             Legal Information
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">GST</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">GST</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.gstnumber ? currentClient?.gstnumber : "-"}
               </p>
             </div>
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">CIN</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">CIN</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.cinnumber ? currentClient?.cinnumber : "-"}
               </p>
             </div>
-            <div className="bg-white p-3 rounded-md shadow-sm">
-              <p className="text-gray-500 text-xs md:text-sm">PAN</p>
+            <div className="bg-white p-3 rounded-md shadow-sm dark:bg-black dark:text-white">
+              <p className="text-gray-500 text-xs md:text-sm dark:text-white">PAN</p>
               <p className="text-blue-600 font-semibold text-sm md:text-base mt-1">
                 {currentClient?.pannumber ? currentClient?.pannumber : "-"}
               </p>

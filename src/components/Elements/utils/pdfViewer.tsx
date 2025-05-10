@@ -67,7 +67,10 @@ const PdfViewer = ({
       uploadCandidateResume(formData, candidateId)
         .then((data) => {
           console.log(data);
-          setIsResumeUploaded(false);
+          setTimeout(() => {
+            setIsResumeUploaded(false);
+          },2000);
+          
         })
         .catch((err) => {
           toast.error(err.message, {
@@ -105,6 +108,7 @@ const PdfViewer = ({
           setPdfUrl(objectUrl);
           setError(null);
         } else if (resume.includes("docx")) {
+          console.log(resume);
           setPdfData(pdfData);
           mammoth
             .convertToHtml({ arrayBuffer: pdfData })
@@ -114,6 +118,7 @@ const PdfViewer = ({
               const blob = new Blob([html], { type: "text/html" });
               objectUrl = URL.createObjectURL(blob);
               setPdfUrl(objectUrl);
+              console.log(objectUrl);
             })
             .catch((err) => {
               setError("Failed to render DOCX file");
@@ -128,15 +133,85 @@ const PdfViewer = ({
     loadPdf();
 
     // Clean up the object URL when component unmounts
-    return () => {
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
-    };
-  }, [candidateId, setUpdatedFileName]);
+    // return () => {
+    //   if (objectUrl) {
+    //     URL.revokeObjectURL(objectUrl);
+    //   }
+    // };
+  }, [candidateId, setUpdatedFileName, isResumeuploaded ]);
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return (
+      <div>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setIsResumeUploaded(true);
+          }}
+        >
+          Add Document
+        </button>
+        {!isJd && isResumeuploaded && (
+          <Popup onClose={() => setIsResumeUploaded(false)}>
+            <div className="text-sm md:text-base mt-28">
+              <div className="space-y-3 rounded-lg">
+                <div
+                  className="mt-2 flex flex-col items-center justify-center w-full p-4 h-30 rounded-lg border border-dashed border-gray-900/25 bg-gray-50 hover:bg-gray-100 cursor-pointer"
+                  onDrop={handleDrop}
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <svg
+                    className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 16"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                    />
+                  </svg>
+                  <div className="mb-4 flex text-sm/6 text-gray-500">
+                    <button
+                      className="border border-dashed  border-gray-900 px-2 font-semibold"
+                      type="button"
+                      onClick={handleChooseFile}
+                    >
+                      Choose a File
+                    </button>
+                    <input
+                      type="file"
+                      name="resume"
+                      ref={fileInputRef}
+                      accept=".pdf, .doc, .docx"
+                      style={{ display: "none" }}
+                      onClick={handleFileClick}
+                      onChange={handleFileChange}
+                    />
+                    <p className="pl-2">or drag and drop</p>
+                  </div>
+                  <p className="text-xs/4 text-gray-500">
+                    PDF, DOC, DOCX up to 5MB
+                  </p>
+                  {file && <p className="mt-4 text-green-500">File Selected</p>}
+                  <button
+                    className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
+                    type="button"
+                    onClick={handleUpload}
+                  >
+                    Upload
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Popup>
+        )}
+      </div>
+    );
   }
 
   if (!pdfUrl) {
@@ -223,7 +298,7 @@ const PdfViewer = ({
                 <p className="text-xs/4 text-gray-500">
                   PDF, DOC, DOCX up to 5MB
                 </p>
-                {file && <p className="mt-4 text-green-500">File Selected</p>}
+                {file && <p className="mt-4 text-green-500">{file.name}</p>}
                 <button
                   className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
                   type="button"

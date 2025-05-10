@@ -66,7 +66,7 @@ export default function JobInfoUpdateForm({
                 htmlFor="jobTitle"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Job Title*
+                Job Title
               </label>
               <input
                 type="text"
@@ -76,7 +76,7 @@ export default function JobInfoUpdateForm({
                 onChange={formik.handleChange}
                 className={`w-full px-3 py-2 border ${
                   formik.errors.jobTitle ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               />
               {formik.errors.jobTitle && (
                 <p className="mt-1 text-sm text-red-600">
@@ -91,7 +91,7 @@ export default function JobInfoUpdateForm({
                 htmlFor="jobCode"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Job Code*
+                Job Code
               </label>
               <input
                 type="text"
@@ -101,7 +101,7 @@ export default function JobInfoUpdateForm({
                 onChange={formik.handleChange}
                 className={`w-full px-3 py-2 border ${
                   formik.errors.jobCode ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               />
               {formik.errors.jobCode && (
                 <p className="mt-1 text-sm text-red-600">
@@ -116,7 +116,7 @@ export default function JobInfoUpdateForm({
                 htmlFor="experience"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Experience (Years)*
+                Experience (Years)
               </label>
               <input
                 type="number"
@@ -129,7 +129,7 @@ export default function JobInfoUpdateForm({
                   formik.errors.experience
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               />
               {formik.errors.experience && (
                 <p className="mt-1 text-sm text-red-600">
@@ -144,7 +144,7 @@ export default function JobInfoUpdateForm({
                 htmlFor="salaryInCtc"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Salary (LPA)*
+                Salary (LPA)
               </label>
               <input
                 type="number"
@@ -157,7 +157,7 @@ export default function JobInfoUpdateForm({
                   formik.errors.salaryInCtc
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
               />
               {formik.errors.salaryInCtc && (
                 <p className="mt-1 text-sm text-red-600">
@@ -179,7 +179,7 @@ export default function JobInfoUpdateForm({
                 id="isJobActive"
                 value={formik.values.isJobActive || "OnHold"}
                 onChange={formik.handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
               >
                 <option value="Active">Active</option>
                 <option value="OnHold">On Hold</option>
@@ -200,7 +200,7 @@ export default function JobInfoUpdateForm({
                 id="jobPostType"
                 value={formik.values.jobPostType || "Replacement"}
                 onChange={formik.handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
               >
                 <option value="New">New</option>
                 <option value="Replacement">Replacement</option>
@@ -222,7 +222,7 @@ export default function JobInfoUpdateForm({
                 id="insertedBy"
                 value={formik.values.insertedBy || ""}
                 onChange={formik.handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
               />
             </div>
           </div>
@@ -241,7 +241,7 @@ export default function JobInfoUpdateForm({
               rows={4}
               value={formik.values.jobDescription || ""}
               onChange={formik.handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
             />
           </div>
 

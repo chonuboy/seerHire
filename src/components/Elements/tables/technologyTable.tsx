@@ -34,9 +34,9 @@ export default function TechnologyTable({ initialData }: { initialData: Technolo
 
   return (
     <div className="w-full mx-auto bg-white rounded-lg overflow-hidden">
-      <div className="p-6">
+      <div className="p-6 dark:bg-black">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Technologies</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Technologies</h2>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -58,8 +58,8 @@ export default function TechnologyTable({ initialData }: { initialData: Technolo
         </div>
 
         <div className="overflow-x-auto rounded-lg">
-          <table className="min-w-full border divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full border divide-y divide-gray-200 dark:text-white">
+            <thead className="bg-gray-50 dark:bg-white dark:text-black">
               <tr>
                 <th className="px-6 py-3 text-left">
                   Technology
@@ -69,9 +69,9 @@ export default function TechnologyTable({ initialData }: { initialData: Technolo
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-black divide-y divide-gray-200">
               {technologies.map((tech) => (
-                <tr key={tech.techId} className="hover:bg-gray-50">
+                <tr key={tech.techId} className="hover:bg-gray-50 dark:hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium">{tech.technology}</div>
                   </td>

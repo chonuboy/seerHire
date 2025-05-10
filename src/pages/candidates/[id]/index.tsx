@@ -58,7 +58,10 @@ import { createContactCompany } from "@/api/candidates/companies";
 import { fetchAllCompanies, createCompany } from "@/api/master/masterCompany";
 import { fetchAllLocations } from "@/api/master/masterLocation";
 import { getContactPreferredJobTypes } from "@/api/candidates/preferredJob";
-import { fetchContactInterview, fetchInterviewsByContact } from "@/api/candidates/interviews";
+import {
+  fetchContactInterview,
+  fetchInterviewsByContact,
+} from "@/api/candidates/interviews";
 
 export default function Candidates() {
   // candidate state
@@ -204,7 +207,7 @@ export default function Candidates() {
     fetchInterviewsByContact(Number(router.query.id)).then((data) => {
       setCandidateInterviews(data);
       console.log(data);
-    })
+    });
 
     // getContactPreferredJobTypes().then((data) => {
     //   console.log(data);
@@ -645,14 +648,14 @@ export default function Candidates() {
 
   return (
     <MainLayout>
-      <section className="space-y-10 p-4 relative md:text-base text-xs">
+      <section className="space-y-10 p-4 relative md:text-base h-max text-xs">
         {/* Profile Section */}
         <h1 className="border-b border-black-200 font-semibold text-2xl">
           Profile
         </h1>
         <div
           id="profile"
-          className="flex md:flex-row flex-col md:justify-between md:items-center md:text-base text-xs mt-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200 space-y-4"
+          className="flex md:flex-row flex-col md:justify-between md:items-center md:text-base text-xs mt-4 bg-white dark:bg-black dark:text-white p-4 rounded-lg shadow-sm border border-gray-200 space-y-4"
         >
           <div className="space-y-2">
             <h3 className="font-medium text-blue-500 text-2xl">
@@ -669,7 +672,7 @@ export default function Candidates() {
                   .getElementById("resume")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
-              className="bg-[var(--field-background)] border-black-200 border-2 py-1 px-2 rounded-lg hover:bg-black hover:text-[var(--content-background)]"
+              className="bg-[var(--field-background)] border-black-200 border-2 py-1 px-2 rounded-lg hover:bg-black hover:text-[var(--content-background)] dark:hover:text-black dark:hover:bg-white"
             >
               View Resume
             </button>
@@ -687,7 +690,7 @@ export default function Candidates() {
         </div>
 
         {/* Personal Info Section */}
-        <div className="bg-white p-4 rounded-lg space-y-4 shadow-lg">
+        <div className="bg-white dark:bg-black dark:text-white p-4 rounded-lg space-y-4 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <h3 className="md:text-xl text-sm font-semibold">Personal Info</h3>
             {isEdit ? (
@@ -704,10 +707,15 @@ export default function Candidates() {
             )}
           </div>
 
-          <div id="profile_info" className="p-4 bg-zinc-50 rounded-lg">
+          <div
+            id="profile_info"
+            className="p-4 bg-zinc-50 dark:bg-black dark:text-white rounded-lg"
+          >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Total Experience</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Total Experience
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.totalExperience === null || undefined
                     ? "-"
@@ -716,8 +724,8 @@ export default function Candidates() {
                 </p>
               </div>
               {currentCandidate?.differentlyAbled === true && (
-                <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                  <p className="text-gray-500 break-words">
+                <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                  <p className="text-gray-500 break-words dark:text-white">
                     Differently Abled Type
                   </p>
                   <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
@@ -729,79 +737,112 @@ export default function Candidates() {
                 </div>
               )}
 
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Date of Birth</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Date of Birth
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.dob ? currentCandidate.dob : "-"}
                 </p>
               </div>
 
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Qualification</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Qualification
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.highestEducation === null || undefined
                     ? "-"
                     : currentCandidate?.highestEducation}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Mobile Number</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Mobile Number
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.primaryNumber === null || undefined
                     ? "-"
                     : currentCandidate?.primaryNumber}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Email</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Email
+                </p>
                 <p className="text-blue-600 break-words whitespace-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.emailId === null || undefined
                     ? "-"
                     : currentCandidate?.emailId}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Current Salary</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Current Salary
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.currentSalary === null || undefined
                     ? "-"
-                    : currentCandidate?.currentSalary}
+                    : currentCandidate?.currentSalary}{" "}
+                  LPA
                 </p>
               </div>
-              {/* <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Preferred Job Type</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Salary Negotiable
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.isExpectedCtcNegotiable === null ||
+                  undefined
+                    ? "-"
+                    : currentCandidate?.isExpectedCtcNegotiable === true
+                    ? "Yes"
+                    : "No"}
+                </p>
+              </div>
+              {/* <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">Preferred Job Type</p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.preferredJobType === null || undefined
                     ? "-"
                     : currentCandidate?.preferredJobType}
                 </p>
               </div> */}
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Gender</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Gender
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.gender === null || undefined
                     ? "-"
                     : currentCandidate?.gender}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Notice Period</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Notice Period
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.noticePeriod === null || undefined
                     ? "-"
-                    : currentCandidate?.noticePeriod}
+                    : currentCandidate?.noticePeriod}{" "}
+                  Days
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Marital Status</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Marital Status
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.maritalStatus === null || undefined
                     ? "-"
                     : currentCandidate?.maritalStatus}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Location</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Location
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.currentLocation.locationDetails === null ||
                   undefined
@@ -809,8 +850,10 @@ export default function Candidates() {
                     : currentCandidate?.currentLocation.locationDetails}
                 </p>
               </div>
-              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white">
-                <p className="text-gray-500 break-words">Address</p>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Address
+                </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.addressLocality === null || undefined
                     ? "-"
@@ -909,7 +952,7 @@ export default function Candidates() {
                 <div>
                   <input
                     id="skill-dropdown"
-                    className="px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                    className="px-4 py-1 border border-gray-300 dark:bg-black dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                     list="skill-list"
                     placeholder="Select or type a skill"
                     value={selectedSkill}
@@ -933,7 +976,7 @@ export default function Candidates() {
                     type="text"
                     list="exp-list"
                     placeholder="Select experience"
-                    className="px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                    className="px-4 py-1 border border-gray-300 dark:bg-black dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                     value={techExp}
                     onChange={(e) => setTechExp(e.target.value)}
                   />
@@ -958,7 +1001,7 @@ export default function Candidates() {
                     type="text"
                     list="level-list"
                     placeholder="Select level"
-                    className="px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                    className="px-4 py-1 border border-gray-300 dark:bg-black dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                     value={expLevel}
                     onChange={(e) => setExpLevel(e.target.value)}
                   />
@@ -999,12 +1042,15 @@ export default function Candidates() {
           )}
 
           {technologies && technologies.length > 0 ? (
-            <div id="Skills_rating" className="bg-white space-y-4">
+            <div
+              id="Skills_rating"
+              className="bg-white dark:bg-black dark:text-white rounded-md space-y-4"
+            >
               <h3 className="md:text-xl text-sm font-light">Skills Rating</h3>
               <div className="overflow-x-auto rounded-md">
                 {" "}
                 <table className="min-w-full text-xs md:text-base border border-gray-200">
-                  <thead className="bg-gray-100">
+                  <thead className="bg-gray-100 ">
                     <tr>
                       <th className="font-light text-left text-blue-500 px-2 py-1 md:px-4 md:py-2">
                         Skill
@@ -1024,7 +1070,10 @@ export default function Candidates() {
                   </thead>
                   <tbody>
                     {technologies?.map((item, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
+                      <tr
+                        key={index}
+                        className="hover:bg-gray-50 dark:hover:text-black"
+                      >
                         <td className="text-left px-2 py-1 md:px-4 md:py-2 border border-gray-200">
                           {item.technology.technology}
                         </td>
@@ -1165,7 +1214,7 @@ export default function Candidates() {
         <section>
           <div
             id="domain"
-            className="bg-white p-2 rounded-lg shadow-sm space-y-6"
+            className="bg-white dark:bg-black dark:text-white p-2 rounded-lg shadow-sm space-y-6"
           >
             <h3 className="md:text-xl text-sm font-semibold">Domains</h3>
             {isEdit ? (
@@ -1174,7 +1223,7 @@ export default function Candidates() {
                   type="text"
                   list="domain-list"
                   placeholder="Select domain"
-                  className="bg-white px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                  className="bg-white px-4 py-1 border border-gray-300 dark:bg-black dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
                   value={selectedDomain}
                   onChange={(e) => setSelectedDomain(e.target.value)}
                 />
@@ -1203,7 +1252,7 @@ export default function Candidates() {
                 candidateDomains?.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-gray-200 px-4 py-1 rounded-lg relative"
+                    className="bg-gray-200 dark:bg-white dark:text-black px-4 py-1 rounded-lg relative"
                   >
                     {isEdit ? (
                       <X
@@ -1235,7 +1284,7 @@ export default function Candidates() {
         {/* Companies Section */}
 
         <section>
-          <div className="p-2 bg-white rounded-lg shadow-sm space-y-6">
+          <div className="p-2 bg-white dark:bg-black dark:text-white rounded-lg shadow-sm space-y-6">
             <div className="mb-4 space-y-6">
               <h2 className="md:text-xl text-sm font-semibold">
                 Previous Companies
@@ -1248,7 +1297,7 @@ export default function Candidates() {
                     id="companies"
                     list="company-list"
                     placeholder="Select Company"
-                    className="bg-white px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                    className="bg-white px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none dark:bg-black dark:text-white"
                     onChange={(e) => setSelectedCompany(e.target.value)}
                     value={selectedCompany}
                   />
@@ -1280,7 +1329,7 @@ export default function Candidates() {
               ) : (
                 candidateCompanies?.map((company, index) => (
                   <div className="relative" key={index}>
-                    <p className="px-4 py-1 bg-gray-200 rounded-lg text-xs md:text-base">
+                    <p className="px-4 py-1 bg-gray-200 dark:bg-white dark:text-black rounded-lg text-xs md:text-base">
                       {company.company.companyName}
                     </p>
                     {isEdit ? (
@@ -1313,7 +1362,7 @@ export default function Candidates() {
         {/* Certificates Section */}
 
         <section>
-          <div className="p-2 bg-white rounded-lg shadow-sm space-y-4">
+          <div className="p-2 bg-white dark:bg-black dark:text-white rounded-lg shadow-sm space-y-4">
             <h3 className="md:text-xl text-sm font-semibold">Certificates</h3>
             {isEdit ? (
               <div className="flex md:flex-row flex-col gap-4 md:items-center">
@@ -1323,7 +1372,7 @@ export default function Candidates() {
                   id="certificates"
                   list="certificate-list"
                   placeholder="Select Certificate"
-                  className="bg-white px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                  className="bg-white px-4 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none dark:bg-black dark:text-white"
                   onChange={(e) => setSelectedCertificate(e.target.value)}
                 />
                 <datalist id="certificate-list">
@@ -1343,11 +1392,11 @@ export default function Candidates() {
             ) : null}
 
             {candidateCertificates && candidateCertificates?.length > 0 ? (
-              <div className="bg-white rounded-lg space-y-4">
+              <div className="bg-white rounded-lg dark:bg-black dark:text-white space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   {candidateCertificates.map((certificate, index) => (
                     <div key={index} className="relative">
-                      <p className="px-4 py-1 bg-gray-200 rounded-lg text-xs md:text-base">
+                      <p className="px-4 py-1 bg-gray-200 dark:bg-white dark:text-black rounded-lg text-xs md:text-base">
                         {certificate.certification?.certificationName}
                       </p>
                       {isEdit ? (
@@ -1381,16 +1430,23 @@ export default function Candidates() {
         {/* Resume Section */}
         <section
           id="resume"
-          className="bg-white p-2 rounded-lg shadow-sm space-y-6 mb-8"
+          className="p-2 rounded-lg shadow-sm space-y-6 mb-8"
         >
-          <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
-          <PdfViewer
-            candidateId={Number(router.query.id)}
-            autoClose={() => {
-              setIsFormVisible(false);
-            }}
-            resume={currentCandidate.resume ? currentCandidate.resume : ""}
-          ></PdfViewer>
+          <h3 className="font-semibold text-sm  md:text-xl">
+            Resume
+          </h3>
+          {currentCandidate.resume?.includes("pdf") ||
+          currentCandidate.resume?.includes("docx") ? (
+            <PdfViewer
+              candidateId={Number(router.query.id)}
+              autoClose={() => {
+                setIsFormVisible(false);
+              }}
+              resume={currentCandidate.resume ? currentCandidate.resume : ""}
+            ></PdfViewer>
+          ) : (
+            <p>Resume Not Found</p>
+          )}
         </section>
 
         {/* Footer Buttons */}

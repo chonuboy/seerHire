@@ -46,7 +46,7 @@ export default function InterviewForm({
   });
   return (
       <div className="mt-4 mb-4 w-full max-w-2xl mx-auto sm:px-2 lg:p-4">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg dark:text-black">
           <div className="p-6 sm:p-8">
             <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
               <svg

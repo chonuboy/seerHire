@@ -31,9 +31,9 @@ export default function CompanyTable({ initialData }: { initialData: Company[] }
 
   return (
     <div className="w-full mx-auto bg-white rounded-lg overflow-hidden">
-      <div className="p-6">
+      <div className="p-6 dark:bg-black">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Companies</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Companies</h2>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -56,9 +56,9 @@ export default function CompanyTable({ initialData }: { initialData: Company[] }
 
         <div className="overflow-x-auto rounded-lg border">
           <table className="min-w-full divide-y divide-gray-200">
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200 dark:bg-black">
               {companies.map((company) => (
-                <tr key={company.companyId} className="hover:bg-gray-50">
+                <tr key={company.companyId} className="hover:bg-gray-50 hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium">{company.companyName}</div>
                   </td>

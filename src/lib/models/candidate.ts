@@ -360,3 +360,41 @@ export const interviewFormSchema = yup.object().shape({
     .of(yup.string().min(1, 'Technology must be at least 1 character')) // Validate each technology
     .nullable(),
 });
+
+export const interviewRoundSchema = yup.object().shape({
+  roundNumber: yup
+    .number()
+    .required('Round number is required')
+    .min(1, 'Round number must be at least 1')
+    .integer('Round number must be an integer'),
+  roundDate: yup
+    .date()
+    .required('Interview date is required'),
+  interviewerName: yup
+    .string()
+    .required('Interviewer name is required')
+    .min(3, 'Interviewer name must be at least 3 characters'),
+  interviewStatus: yup
+    .string()
+    .required('Interview status is required')
+    .oneOf(['Passed', 'Rejected', 'On-Hold', 'Pending'], 'Invalid status'),
+  technologyInterviewed: yup
+    .string()
+    .required('Technology is required')
+    .min(2, 'Technology must be at least 2 characters'),
+  techRating: yup
+    .number()
+    .nullable()
+    .typeError('Tech rating must be a number')
+    .min(1, 'Minimum rating is 1')
+    .max(10, 'Maximum rating is 10').required('Tech rating is required'),
+  softskillsRating: yup
+    .number()
+    .nullable()
+    .typeError('Soft skills rating must be a number')
+    .min(1, 'Minimum rating is 1')
+    .max(10, 'Maximum rating is 10').required('Soft skills rating is required'),
+  remarks: yup
+    .string()
+    .nullable().required('Remarks are required'),
+});
