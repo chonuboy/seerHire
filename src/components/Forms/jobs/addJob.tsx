@@ -148,7 +148,7 @@ export const AddJob = ({
               htmlFor="jobCode"
               className="block text-sm font-medium text-gray-700"
             >
-              Job Code <span className="text-red-500">*</span>
+              Job Code
             </label>
             <input
               id="jobCode"
@@ -377,7 +377,7 @@ export const AddJob = ({
         </div>
 
         {/* Job Description (Editor) */}
-        {/* <div className="space-y-2 mt-4">
+        <div className="space-y-2 mt-4">
           <label className="font-semibold text-gray-600">Job Description</label>
           <JoditEditor
             value={jd || ""}
@@ -409,7 +409,7 @@ export const AddJob = ({
               {formik.errors.jobDescription}
             </div>
           )}
-        </div> */}
+        </div>
 
         {/* Form Actions */}
         <div className="mt-8 flex flex-col sm:flex-row-reverse gap-3">

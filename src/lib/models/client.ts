@@ -119,7 +119,7 @@ export const RecruitmentColumn = [
 ];
 
 export const jobFormSchema = yup.object().shape({
-  jobCode: yup.string().min(3, "Must be at least 3 characters").required("Job code is required").nullable(),
+  jobCode: yup.string().min(3, "Must be at least 3 characters").nullable(),
   jobTitle: yup
     .string()
     .min(3, "Must be at least 3 characters")

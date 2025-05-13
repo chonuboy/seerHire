@@ -47,6 +47,7 @@ export default function Candidates() {
   const [certifications, setCertifications] = useState<any>();
   const [previousCompanies, setPreviousCompanies] = useState<any>();
   const [candidateId, setCandidateId] = useState(0);
+  const [locationAdded,setIsLocationAdded] = useState(false);
 
   useEffect(() => {
     fetchAllLocations().then((data) => {
@@ -65,7 +66,7 @@ export default function Candidates() {
     fetchAllCompanies().then((data) => {
       setPreviousCompanies(data);
     });
-  }, []);
+  }, [locationAdded]);
 
   const handleSkip = () => {
     router.push("/candidates");
@@ -76,7 +77,12 @@ export default function Candidates() {
   };
 
   const addNewLocation = async (location: Location) => {
+    if(locations.includes(location)) {
+      toast.error("Location already exists");
+      return;
+    }
     formik.setFieldValue("currentLocation", location);
+    setIsLocationAdded(true);
   };
 
   // Pass the useFormik() hook initial form values, a validate function that will be called when
@@ -717,6 +723,46 @@ export default function Candidates() {
               {formik.errors.expectedSalary ? (
                 <div className="text-red-500 text-sm border-red-500">
                   {formik.errors.expectedSalary}
+                </div>
+              ) : null}
+            </div>
+            
+            <div className="h-auto space-y-3 rounded-lg">
+              <label htmlFor="candidateStatus" className="flex">
+                <span className="font-semibold text-gray-600 dark:text-white">
+                  Salary Negotiable?
+                </span>
+              </label>
+              <fieldset>
+                <div className="flex items-center gap-2 py-1 dark:text-white">
+                  <input
+                    type="radio"
+                    name="negotiable"
+                    value="true"
+                    id="negotiable_yes"
+                    onChange={()=>{
+                      formik.setFieldValue("isExpectedCtcNegotiable", true)
+                    }}
+                  />
+                  <label htmlFor="negotiable_yes">Yes</label>
+                </div>
+
+                <div className="flex items-center gap-2 py-2 dark:text-white">
+                  <input
+                    type="radio"
+                    name="negotiable"
+                    value="false"
+                    id="negotiable_no"
+                    onChange={()=>{
+                      formik.setFieldValue("isExpectedCtcNegotiable", false)
+                    }}
+                  />
+                  <label htmlFor="inactive">No</label>
+                </div>
+              </fieldset>
+              {formik.errors.isExpectedCtcNegotiable ? (
+                <div className="text-red-500 text-sm border-red-500">
+                  {formik.errors.isExpectedCtcNegotiable}
                 </div>
               ) : null}
             </div>

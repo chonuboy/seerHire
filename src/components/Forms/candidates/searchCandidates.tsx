@@ -299,7 +299,7 @@ const SearchForm: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <SingleInput
               name="minSalary"
-              title="Min Salary (LPA)"
+              title="Min CTC (LPA)"
               placeholder="0"
               value={formik.values.minSalary}
               onChange={formik.handleChange}
@@ -308,7 +308,7 @@ const SearchForm: React.FC = () => {
             />
             <SingleInput
               name="maxSalary"
-              title="Max Salary (LPA)"
+              title="Max CTC (LPA)"
               placeholder="50"
               value={formik.values.maxSalary}
               onChange={formik.handleChange}

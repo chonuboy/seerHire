@@ -7,19 +7,25 @@ import { useState } from "react";
 import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
 import { Location } from "@/lib/definitions";
 import { fetchAllLocations } from "@/api/master/masterLocation";
+import { createContactPreferredJobType, updateContactPreferredJobType } from "@/api/candidates/preferredJob";
 const ProfileUpdateForm = ({
   initialValues,
   id,
   autoClose,
   masterLocations,
+  preferredJobModes,
+  preferredLocation
 }: {
   initialValues: any;
   id: number;
   autoClose: () => void;
   masterLocations: any;
+  preferredJobModes: any;
+  preferredLocation: any;
 }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingValue, setPendingValue] = useState<boolean | null>(null);
+  const [modes, setModes] = useState<any>([]);
   const onChangeLocation = (location: Location) => {
     formik.setFieldValue("currentLocation", {
       locationId: location.locationId,
@@ -77,7 +83,13 @@ const ProfileUpdateForm = ({
 
   const transormedvalues = {
     ...initialValues,
-    isExpectedCtcNegotiable: initialValues.isExpectedCtcNegotiable  === "true" ? true : initialValues.isExpectedCtcNegotiable === "false" ? false : false,
+    isExpectedCtcNegotiable:
+      initialValues.isExpectedCtcNegotiable === "true"
+        ? true
+        : initialValues.isExpectedCtcNegotiable === "false"
+        ? false
+        : false,
+    preferredJobModes: initialValues.preferredJobModes
   };
 
   const formik = useFormik({
@@ -85,35 +97,36 @@ const ProfileUpdateForm = ({
     // validationSchema: profileUpdateSchema,
     onSubmit: (values) => {
       const updatedFields = getUpdatedFields(initialValues, values);
+      console.log(modes);
       console.log(updatedFields);
-      try {
-        updateCandidate(updatedFields, id).then((data) => {
-          console.log(updatedFields);
-          console.log(data);
-          if (data.status === 200) {
-            toast.success("Profile updated successfully", {
-              position: "top-right",
-            });
-            autoClose();
-          } else {
-            if (data.response.data) {
-              const errorMessages = Object.values(data.response.data)[0];
-              toast.error(errorMessages as string, {
-                position: "top-right",
-              });
-            } else {
-              toast.error("Failed to update profile. Please try again.", {
-                position: "top-right",
-              });
-            }
-          }
-        });
-      } catch (error) {
-        console.error("Error updating profile:", error);
-        toast.error("Failed to update profile. Please try again.", {
-          position: "top-right",
-        });
-      }
+      // try {
+      //   updateCandidate(updatedFields, id).then((data) => {
+      //     console.log(updatedFields);
+      //     console.log(data);
+      //     if (data.status === 200) {
+      //       toast.success("Profile updated successfully", {
+      //         position: "top-right",
+      //       });
+      //       autoClose();
+      //     } else {
+      //       if (data.response.data) {
+      //         const errorMessages = Object.values(data.response.data)[0];
+      //         toast.error(errorMessages as string, {
+      //           position: "top-right",
+      //         });
+      //       } else {
+      //         toast.error("Failed to update profile. Please try again.", {
+      //           position: "top-right",
+      //         });
+      //       }
+      //     }
+      //   });
+      // } catch (error) {
+      //   console.error("Error updating profile:", error);
+      //   toast.error("Failed to update profile. Please try again.", {
+      //     position: "top-right",
+      //   });
+      // }
     },
   });
 
@@ -234,7 +247,10 @@ const ProfileUpdateForm = ({
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="salary_negotiable" className="text-gray-400 font-medium">
+          <label
+            htmlFor="salary_negotiable"
+            className="text-gray-400 font-medium"
+          >
             Salary Negotiablility
           </label>
           <div>
@@ -243,7 +259,9 @@ const ProfileUpdateForm = ({
                 id="salary_negotiable"
                 name="negotiable"
                 type="radio"
-                onChange={() => formik.setFieldValue("isExpectedCtcNegotiable", true)}
+                onChange={() =>
+                  formik.setFieldValue("isExpectedCtcNegotiable", true)
+                }
                 checked={formik.values.isExpectedCtcNegotiable === true}
               />
               <label htmlFor="salary_negotiable">Yes</label>
@@ -253,7 +271,9 @@ const ProfileUpdateForm = ({
                 id="salary_innegotiable"
                 name="negotiable"
                 type="radio"
-                onChange={() => formik.setFieldValue("isExpectedCtcNegotiable", false)}
+                onChange={() =>
+                  formik.setFieldValue("isExpectedCtcNegotiable", false)
+                }
                 checked={formik.values.isExpectedCtcNegotiable === false}
               />
               <label htmlFor="salary_innegotiable">No</label>
@@ -398,31 +418,51 @@ const ProfileUpdateForm = ({
         </div>
 
         {/* Preferred Job Type */}
-        {/* <div className="space-y-2">
+        <div className="space-y-2">
           <label
             htmlFor="preferredJobType"
             className="text-gray-400 font-medium"
           >
             Preferred Job Type
           </label>
-          <select
-            id="preferredJobType"
-            name="preferredJobType"
-            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.preferredJobType}
-          >
-            <option value="full-time">Full-time</option>
-            <option value="part-time">Part-time</option>
-            <option value="contract">Contract</option>
-          </select>
-          {formik.touched.preferredJobType && formik.errors.preferredJobType ? (
-            <div className="text-red-500 text-sm">
-              {formik.errors.preferredJobType.toString()}
-            </div>
-          ) : null}
-        </div> */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              value={"Onsite"}
+              name="preferredJobType_Onsite"
+              onChange={(e)=>{
+                if(e.target.checked){
+                  
+                }else{
+                  formik.values.preferredJobModes = preferredJobModes
+                }
+              }}
+              checked = {(preferredJobModes.includes("Onsite") || preferredJobModes.includes("Flexible")) ? true : false}
+            />
+            <label htmlFor="preferredJobType_Onsite">Onsite</label>
+            <input
+              type="checkbox"
+              value={"Remote"}
+              name="preferredJobType_Remote"
+              onChange={()=>{
+                modes.push("Remote")
+              }}
+              checked = {(preferredJobModes.includes("Remote") || preferredJobModes.includes("Flexible")) ? true : false}
+            />
+            <label htmlFor="preferredJobType_Remote">Remote</label>
+            <input
+              type="checkbox"
+              value={"Hybrid"}
+              name="preferredJobType_Hybrid"
+              onChange={(e)=>{
+                modes.push("Hybrid")
+                e.target.checked = true;
+              }}
+              checked = {(preferredJobModes.includes("Hybrid") || preferredJobModes.includes("Flexible")) ? true : false}
+            />
+            <label htmlFor="preferredJobType_Hybrid">Hybrid</label>
+          </div>
+        </div>
 
         {/* Gender */}
         <div className="space-y-2">
@@ -495,12 +535,11 @@ const ProfileUpdateForm = ({
 
         {/* Current Location */}
 
-        <div className="h-auto space-y-3 rounded-lg">
+        <div className="h-auto mt-0.5 space-y-2 rounded-lg">
           <label htmlFor="currentLocation" className="flex">
-            <span className="font-semibold text-gray-600">
+            <span className="text-gray-400 font-medium">
               Current Location
             </span>
-            <span className="px-1 font-bold text-red-500">*</span>
           </label>
 
           <LocationAutocomplete

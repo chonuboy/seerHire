@@ -186,6 +186,8 @@ export default function UserCard() {
                         >
                           <option value="1">SuperAdmin</option>
                           <option value="2">Recruiter</option>
+                          <option value="3">Candidate</option>
+                          <option value="4">JR Recruiter</option>
                         </select>
                       </div>
 

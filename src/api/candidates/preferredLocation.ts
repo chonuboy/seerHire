@@ -3,7 +3,7 @@ import { API_URL } from "../api_URL";
 import { Email,Password } from "../creds";
 
 // GET /api/contact-preferred-locations/{id}
-export const fetchContactPreferredLocation = async (id: string) => {
+export const fetchContactPreferredLocation = async (id: number) => {
   try {
     const response = await axios.get(`${API_URL}api/contact-preferred-locations/${id}`, {
       method: "GET",

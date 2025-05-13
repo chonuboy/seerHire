@@ -48,12 +48,12 @@ export default function AddRound({
   return (
     <div className={`${className}`}>
       <div className="w-full max-w-2xl mx-auto p-6">
-        <h1 className="text-2xl font-semibold mb-6">Add New Round</h1>
+        <h1 className="text-2xl font-semibold mb-6 dark:text-black">Add New Round</h1>
 
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
           {/* Interview Date */}
           <div className="space-y-2">
-            <label htmlFor="roundDate" className="block text-sm font-medium">
+            <label htmlFor="roundDate" className="block text-sm font-medium dark:text-black">
               Interview Date
             </label>
             <input
@@ -72,7 +72,7 @@ export default function AddRound({
 
           {/* Round Number */}
           <div className="space-y-2">
-            <label htmlFor="roundNumber" className="block text-sm font-medium">
+            <label htmlFor="roundNumber" className="block text-sm font-medium dark:text-black">
               Round Number
             </label>
             <input
@@ -91,7 +91,7 @@ export default function AddRound({
 
           {/* Interviewer Name */}
           <div className="space-y-2">
-            <label htmlFor="interviewerName" className="block text-sm font-medium">
+            <label htmlFor="interviewerName" className="block text-sm font-medium dark:text-black">
               Interviewer Name
             </label>
             <input
@@ -111,7 +111,7 @@ export default function AddRound({
 
           {/* Interview Status */}
           <div className="space-y-2">
-            <span className="block text-sm font-medium">Interview Status</span>
+            <span className="block text-sm font-medium dark:text-black">Interview Status</span>
             <div className="flex gap-4">
               {['Passed', 'Rejected', 'On-Hold', 'Pending'].map((status) => (
                 <label key={status} className="inline-flex items-center">
@@ -124,7 +124,7 @@ export default function AddRound({
                     onBlur={formik.handleBlur}
                     className="form-radio text-blue-600"
                   />
-                  <span className="ml-2">{status}</span>
+                  <span className="ml-2 dark:text-black">{status}</span>
                 </label>
               ))}
             </div>
@@ -135,7 +135,7 @@ export default function AddRound({
 
           {/* Remarks */}
           <div className="space-y-2">
-            <label htmlFor="remarks" className="block text-sm font-medium">
+            <label htmlFor="remarks" className="block text-sm font-medium dark:text-black">
               Remarks
             </label>
             <textarea
@@ -154,7 +154,7 @@ export default function AddRound({
 
           {/* Tech Rating */}
           <div className="space-y-2">
-            <label htmlFor="techRating" className="block text-sm font-medium">
+            <label htmlFor="techRating" className="block text-sm font-medium dark:text-black">
               Tech Rating
             </label>
             <input
@@ -176,7 +176,7 @@ export default function AddRound({
 
           {/* Soft Skills Rating */}
           <div className="space-y-2">
-            <label htmlFor="softskillsRating" className="block text-sm font-medium">
+            <label htmlFor="softskillsRating" className="block text-sm font-medium dark:text-black">
               Soft Skill Rating
             </label>
             <input
@@ -198,7 +198,7 @@ export default function AddRound({
 
           {/* Technology Interviewed */}
           <div className="space-y-2">
-            <label htmlFor="technologyInterviewed" className="block text-sm font-medium">
+            <label htmlFor="technologyInterviewed" className="block text-sm font-medium dark:text-black">
               Technology Interviewed
             </label>
             <input

@@ -1,19 +1,20 @@
-import RecruitmentCandidateCard from "@/components/Elements/cards/recruitmentCandidate"
-import { useEffect, useState } from "react"
-import { fetchRecruitmentData } from "@/api/recruitment/recruitmentData"
-import { useRouter } from "next/router"
+import RecruitmentCandidateCard from "@/components/Elements/cards/recruitmentCandidate";
+import { useEffect, useState } from "react";
+import { fetchRecruitmentData } from "@/api/recruitment/recruitmentData";
+import { useRouter } from "next/router";
 
 export default function Home() {
-
-  const [currentCandidate,setCurrentCandidate] = useState(null);
+  const [currentCandidate, setCurrentCandidate] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    if (router.isReady) {
       fetchRecruitmentData(Number(router.query.id)).then((data) => {
         setCurrentCandidate(data);
         console.log(data);
-      })
-  },[]);
+      });
+    }
+  }, [router.isReady]);
 
   // Sample candidate data based on the provided JSON
   const candidateData = {
@@ -41,16 +42,19 @@ export default function Home() {
     resumeLink: null,
     sourcingStatus: null,
     preferredRoles: [],
-  }
+  };
 
   return (
     <main className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Candidate Profile</h1>
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">
+          Candidate Profile
+        </h1>
 
-        <RecruitmentCandidateCard candidate={currentCandidate ? currentCandidate : candidateData} />
-        </div>
+        <RecruitmentCandidateCard
+          candidate={currentCandidate ? currentCandidate : candidateData}
+        />
+      </div>
     </main>
-  )
+  );
 }
-

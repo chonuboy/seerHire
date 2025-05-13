@@ -49,7 +49,7 @@ export default function AllInterviews() {
         <section className="rounded-lg shadow-sm p-4">
           <div
             id="interviews"
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white py-4"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 dark:bg-black bg-white py-4"
           >
             {allInterviews?.length
               ? allInterviews?.map((item, index) => (

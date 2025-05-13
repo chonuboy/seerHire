@@ -32,8 +32,9 @@ export default function Client() {
   const [isBranch, setIsBranch] = useState(false);
 
   useEffect(() => {
-    if (router.query.id) {
-      fetchJobsByClient(Number(router.query.id)).then((data) => {
+    if (router.isReady) {
+      const id = Number(router.query.id);
+      fetchJobsByClient(id).then((data) => {
         setAllJobs(data);
         if (data.length > 0) {
           setNewJobId(data[data.length - 1].jobId + 1);
@@ -42,7 +43,7 @@ export default function Client() {
       const user = localStorage.getItem("user");
       setUser(user);
 
-      fetchClient(Number(router.query.id)).then((data) => {
+      fetchClient(id).then((data) => {
         setCurrentClient(data);
       });
 
@@ -50,7 +51,7 @@ export default function Client() {
         if (data.length > 0 && data[0].client.clientId) {
           const filteredLocations = data.filter(
             (location: any) =>
-              location.client.clientId === Number(router.query.id)
+              location.client.clientId === id
           );
           setCurrentClientLocations(filteredLocations);
         }
@@ -59,13 +60,18 @@ export default function Client() {
         setMasterLocations(data);
       });
     }
-  }, [router.query.id, isBranch, isJobUpdated]);
+  }, [router.isReady, isBranch, isJobUpdated]);
 
   return (
     <MainLayout>
       <ContentHeader title="Client Info" />
       <div className="space-y-8">
-        <ClientCard id={Number(router.query.id)} />
+
+        {
+          router.isReady && (
+            <ClientCard id={Number(router.query.id)} />
+          )
+        }
 
         <div className="space-y-6">
           <div className="space-y-4">

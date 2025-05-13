@@ -85,13 +85,15 @@ export const createJob = async (reqData: any) => {
 };
 
 // GET /api/jobs/jd/{jobId}
+
 export const fetchJobDescription = async (jobId: number) => {
   try {
     const response = await axios.get(`${API_URL}api/jobs/jd/${jobId}`, {
-      method: 'GET',
+      responseType: 'arraybuffer', // This is crucial for PDF files
       headers: {
-        'Authorization': 'Basic ' + btoa(`${Email}:${Password}`), // replace with your credentials
-        'Content-Type': 'application/json',
+        "Accept": "application/pdf",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: 'Basic ' + btoa(`${Email}:${Password}`),
       },
     });
     return response.data;

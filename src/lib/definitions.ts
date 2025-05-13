@@ -35,6 +35,7 @@ export type Candidate = {
 	resume?:string | undefined;
 	relavantExperience?: string;
 	isExpectedCtcNegotiable?:boolean;
+	linkedin?:string;
 };
 
 export type Location = {

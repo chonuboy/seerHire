@@ -34,22 +34,26 @@ export default function CandidateInterviews() {
   const [selectedRound, setSelectedRound] = useState<Round | null>(null); // Track the selected round
 
   useEffect(() => {
-    fetchCandidate(candidateId)
-      .then((data) => {
-        setCurrentCandidate(data);
-      })
-      .catch((err) => {
-        console.log(err);
+    if (router.isReady) {
+      const Id = Number(router.query.interviewid);
+      const candidateId = Number(router.query.id);
+      fetchCandidate(candidateId)
+        .then((data) => {
+          setCurrentCandidate(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      fetchInterviewRoundsByContactAndJob(candidateId, Id).then((data) => {
+        setAllRounds(data);
       });
 
-      fetchInterviewRoundsByContactAndJob(candidateId,Id).then((data) => {
-      setAllRounds(data);
-    });
-
-    fetchContactInterview(Id).then((data) => {
-      setCurrentJobData(data);
-    });
-  }, [candidateId, Id, updateRoundEnabled,addRoundEnabled]);
+      fetchContactInterview(Id).then((data) => {
+        setCurrentJobData(data);
+      });
+    }
+  }, [candidateId, Id, updateRoundEnabled, addRoundEnabled, router.isReady]);
 
   const handleUpdateRound = (round: Round) => {
     console.log(round);
@@ -107,7 +111,9 @@ export default function CandidateInterviews() {
                         variant={
                           round.interviewStatus === "Passed"
                             ? "success"
-                            : round.interviewStatus === "On-Hold" ? "secondary" : "rejected"
+                            : round.interviewStatus === "On-Hold"
+                            ? "secondary"
+                            : "rejected"
                         }
                       >
                         {round.interviewStatus}
@@ -119,7 +125,9 @@ export default function CandidateInterviews() {
                         <p className="text-sm text-black dark:text-white font-semibold">
                           Interviewer Name
                         </p>
-                        <p className="text-gray-700 dark:text-gray-200">{round.interviewerName}</p>
+                        <p className="text-gray-700 dark:text-gray-200">
+                          {round.interviewerName}
+                        </p>
                       </div>
                       <div>
                         <p className="text-sm text-black dark:text-white font-semibold">
@@ -133,7 +141,9 @@ export default function CandidateInterviews() {
                         <p className="text-sm text-black dark:text-white font-semibold">
                           Tech Rating
                         </p>
-                        <p className="text-gray-700 dark:text-gray-200">{round.techRating}/10</p>
+                        <p className="text-gray-700 dark:text-gray-200">
+                          {round.techRating}/10
+                        </p>
                       </div>
                       <div>
                         <p className="text-sm text-black dark:text-white font-semibold">
@@ -149,7 +159,9 @@ export default function CandidateInterviews() {
                       <p className="text-sm text-black dark:text-white font-semibold">
                         Remarks
                       </p>
-                      <p className="text-gray-700 dark:text-gray-200">{round.remarks}</p>
+                      <p className="text-gray-700 dark:text-gray-200">
+                        {round.remarks}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -186,27 +198,27 @@ export default function CandidateInterviews() {
         {addRoundEnabled && (
           <Popup onClose={() => setAddRoundEnabled(false)}>
             {allRounds &&
-              allRounds.length > 0 &&
-              allRounds[0].interview &&
-              allRounds[0].interview.contactDetails ? (
+            allRounds.length > 0 &&
+            allRounds[0].interview &&
+            allRounds[0].interview.contactDetails ? (
+              <AddRound
+                className="mt-10 rounded-md bg-white m-8 dark:text-black"
+                interviewInfo={{
+                  interview: allRounds[0].interview,
+                }}
+                onclose={() => setAddRoundEnabled(false)}
+              />
+            ) : (
+              currentJobData && (
                 <AddRound
-                  className="mt-10 rounded-md bg-white m-8 dark:text-black"
+                  className="mt-10 rounded-md bg-white m-8"
                   interviewInfo={{
-                    interview: allRounds[0].interview,
+                    interview: currentJobData,
                   }}
                   onclose={() => setAddRoundEnabled(false)}
                 />
-              ): (
-                currentJobData && (
-                    <AddRound
-                      className="mt-10 rounded-md bg-white m-8"
-                      interviewInfo={{
-                        interview: currentJobData
-                      }}
-                      onclose={() => setAddRoundEnabled(false)}
-                    />
-                )
-              )}
+              )
+            )}
           </Popup>
         )}
       </div>

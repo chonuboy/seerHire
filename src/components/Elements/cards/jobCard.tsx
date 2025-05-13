@@ -12,7 +12,8 @@ import JobInfoUpdateForm from "@/components/Forms/jobs/updateJobInfo";
 import { Popup } from "./popup";
 import { useRouter } from "next/router";
 import { fetchJobDescription } from "@/api/client/clientJob";
-import PdfViewer from "../utils/pdfViewer";
+import mammoth from "mammoth";
+import { fetchCandidateResume } from "@/api/candidates/candidates";
 
 interface JobData {
   createdOn: string;
@@ -38,36 +39,47 @@ export default function JobCard({
 }) {
   const [showJdModal, setShowJdModal] = useState(false);
   const [isJobUpdated, setIsJobUpdated] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfData, setPdfData] = useState<any>(null);
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
+  const loadPdf = async (jd: any, jobId: any) => {
     let objectUrl: string | null = null;
-    const loadPdf = async () => {
-      try {
-        const pdfData = await fetchJobDescription(job.jobId)
-          .then((response) => response)
-          .catch((error) => console.error(error));
+    let pdfData: any;
+    setShowJdModal(true);
+    try {
+      pdfData = await fetchJobDescription(jobId)
+        .then((response) => response)
+        .catch((error) => console.error(error));
 
-        // Create a Blob from the PDF data
+      if (jd.includes("pdf")) {
         const blob = new Blob([pdfData], { type: "application/pdf" });
 
         // Create a URL for the Blob
         objectUrl = URL.createObjectURL(blob);
         setPdfUrl(objectUrl);
-      } catch (err) {
-        console.error("Failed to load PDF:", err);
+        setError(null);
+      } else if (jd.includes("docx")) {
+        setPdfData(pdfData);
+        mammoth
+          .convertToHtml({ arrayBuffer: pdfData })
+          .then((result) => {
+            // Create HTML from the DOCX content
+            const html = result.value;
+            const blob = new Blob([html], { type: "text/html" });
+            objectUrl = URL.createObjectURL(blob);
+            setPdfUrl(objectUrl);
+          })
+          .catch((err) => {
+            setError("Failed to render DOCX file");
+          });
       }
-    };
-
-    loadPdf();
-    return () => {
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
-    };
-  }, []);
-
+    } catch (err) {
+      console.error("Failed to load PDF:", err);
+      setError("Failed to load resume. Please try again.");
+    }
+  };
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
@@ -121,7 +133,9 @@ export default function JobCard({
             <div className="flex items-center text-gray-700">
               <Briefcase className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium dark:bg-black dark:text-white">Experience Required</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">
+                  Experience Required
+                </div>
                 <div className="dark:bg-black dark:text-white">
                   {job.experience} {job.experience === 1 ? "Year" : "Years"}
                 </div>
@@ -131,43 +145,52 @@ export default function JobCard({
             <div className="flex items-center text-gray-700">
               <User className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium dark:bg-black dark:text-white">Posted By</div>
-                <div className="dark:bg-black dark:text-white">{job.insertedBy}</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">
+                  Posted By
+                </div>
+                <div className="dark:bg-black dark:text-white">
+                  {job.insertedBy}
+                </div>
               </div>
             </div>
 
             <div className="flex items-center text-gray-700">
               <Calendar className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium dark:bg-black dark:text-white">Created On</div>
-                <div className="dark:bg-black dark:text-white">{formatDate(job.createdOn)}</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">
+                  Created On
+                </div>
+                <div className="dark:bg-black dark:text-white">
+                  {formatDate(job.createdOn)}
+                </div>
               </div>
             </div>
 
             <div className="flex items-center text-gray-700">
               <Clock className="h-5 w-5 mr-2 text-gray-500 dark:text-white" />
               <div>
-                <div className="text-sm font-medium dark:bg-black dark:text-white">Job Post Type</div>
-                <div className="dark:bg-black dark:text-white">{job.jobPostType}</div>
+                <div className="text-sm font-medium dark:bg-black dark:text-white">
+                  Job Post Type
+                </div>
+                <div className="dark:bg-black dark:text-white">
+                  {job.jobPostType}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {job.jd.includes("pdf") && (
-          <div className="mt-6">
-            <button
-              onClick={() => {
-                setShowJdModal(true);
-                console.log(job.jd);
-              }}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium dark:bg-black dark:text-white text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:hover:text-black"
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              View Job Description
-            </button>
-          </div>
-        )}
+        <div className="mt-6">
+          <button
+            onClick={() => {
+              loadPdf(job.jd, job.jobId);
+            }}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium dark:bg-black dark:text-white text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:hover:text-black"
+          >
+            <FileText className="h-4 w-4 mr-2" />
+            View Job Description
+          </button>
+        </div>
         <div className="flex justify-end">
           <button
             className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4"
@@ -193,18 +216,25 @@ export default function JobCard({
       </div>
 
       {/* JD Modal */}
-      {showJdModal && (
-        <Popup onClose={() => setShowJdModal(false)}>
-          <div className="mt-14">
-            <PdfViewer
-              resume={job.jd}
-              candidateId={job.jobId}
-              isJd
-              autoClose={() => setShowJdModal(false)}
-            ></PdfViewer>
-          </div>
-        </Popup>
-      )}
+      <div className="grid md:grid-cols-2 gap-8 grid-cols-1 p-4">
+        {showJdModal && pdfUrl !== "" && (
+          <Popup onClose={() => setShowJdModal(false)}>
+            <iframe
+              src={pdfUrl}
+              width="100%"
+              height="100%"
+              style={{
+                border: "none",
+                backgroundColor: "white",
+                overflow: "auto",
+                padding: "20px",
+                marginTop: "60px",
+              }}
+              title="Candidate Resume"
+            />
+          </Popup>
+        )}
+      </div>
     </div>
   );
 }

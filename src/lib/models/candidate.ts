@@ -26,6 +26,7 @@ export const CandidateModel: Candidate = {
   totalExperience: null,
   isActive: true,
   candidateStatus: CandidateStatus.ACTIVE,
+  isExpectedCtcNegotiable:false,
   currentSalary: null,
   // expectedSalary: 0,
   highestEducation: "",

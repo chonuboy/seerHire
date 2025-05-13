@@ -57,11 +57,15 @@ import { createContactDomain } from "@/api/candidates/domains";
 import { createContactCompany } from "@/api/candidates/companies";
 import { fetchAllCompanies, createCompany } from "@/api/master/masterCompany";
 import { fetchAllLocations } from "@/api/master/masterLocation";
-import { getContactPreferredJobTypes } from "@/api/candidates/preferredJob";
+import {
+  getContactPreferredJobTypeByContact,
+  getContactPreferredJobTypes,
+} from "@/api/candidates/preferredJob";
 import {
   fetchContactInterview,
   fetchInterviewsByContact,
 } from "@/api/candidates/interviews";
+import { fetchContactPreferredLocation } from "@/api/candidates/preferredLocation";
 
 export default function Candidates() {
   // candidate state
@@ -119,104 +123,131 @@ export default function Candidates() {
 
   const [initialData, setInitialData] = useState<ReqData | null>(null);
   const [formData, setFormData] = useState<ReqData | null>(null);
-  const [preferredJobType, setPreferredJobType] = useState("");
+  const [preferredJobType, setPreferredJobType] = useState<any[]>([]);
+  const [preferredLocation, setPreferredLocation] = useState<any[]>([]);
+  
 
   // Get Operations
   useEffect(() => {
-    fetchCandidate(Number(router.query.id))
-      .then((data) => {
-        console.log(data);
-        setCurrentCandidate(data);
-        setInitialData(data);
-        setFormData(data);
-      })
-      .catch((error) => console.log(error));
+    if (router.isReady) {
+      const id = router.query.id;
+      fetchCandidate(Number(id))
+        .then((data) => {
+          console.log(data);
+          setCurrentCandidate(data);
+          setInitialData(data);
+          setFormData(data);
+        })
+        .catch((error) => console.log(error));
 
-    fetchAllLocations().then((data) => {
-      const allLocatoins = data;
-      setLocations(allLocatoins);
-    });
+      fetchAllLocations().then((data) => {
+        const allLocatoins = data;
+        setLocations(allLocatoins);
+      });
 
-    fetchAllContactTechnologies()
-      .then((data) => {
-        const contactIdToMatch = Number(router.query.id);
+      fetchAllContactTechnologies()
+        .then((data) => {
+          const contactIdToMatch = Number(id);
+          // Step 1: Filter objects with the matching contactId
+          const filteredData = data.filter(
+            (item: any) => item.contactDetails.contactId === contactIdToMatch
+          );
+          // Step 2: Extract the technology field from the filtered objects
+          const technologies = filteredData.map((item: any) => item);
+          setTechnologies(technologies);
+        })
+        .catch((error) => console.log(error));
+
+      fetchAllContactDomains().then((data) => {
+        const contactIdToMatch = Number(id);
         // Step 1: Filter objects with the matching contactId
         const filteredData = data.filter(
           (item: any) => item.contactDetails.contactId === contactIdToMatch
         );
-        // Step 2: Extract the technology field from the filtered objects
-        const technologies = filteredData.map((item: any) => item);
-        setTechnologies(technologies);
-      })
-      .catch((error) => console.log(error));
-
-    fetchAllContactDomains().then((data) => {
-      const contactIdToMatch = Number(router.query.id);
-      // Step 1: Filter objects with the matching contactId
-      const filteredData = data.filter(
-        (item: any) => item.contactDetails.contactId === contactIdToMatch
-      );
-      const domains = filteredData.map((item: any) => item);
-      setCandidateDomains(domains);
-    });
-
-    fetchAllTechnologies()
-      .then((data) => {
-        setMasterTech(data);
-      })
-      .catch((error) => {
-        console.log(error);
+        const domains = filteredData.map((item: any) => item);
+        setCandidateDomains(domains);
       });
 
-    fetchAllDomains()
-      .then((data) => {
-        setMasterDomains(data);
-      })
-      .catch((error) => {
-        console.log(error);
+      fetchAllTechnologies()
+        .then((data) => {
+          setMasterTech(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      fetchAllDomains()
+        .then((data) => {
+          setMasterDomains(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      fetchAllContactCompanies().then((data) => {
+        const contactIdToMatch = Number(id);
+        // Step 1: Filter objects with the matching contactId
+        const filteredData = data.filter(
+          (item: any) => item.contactDetails.contactId === contactIdToMatch
+        );
+        const companies = filteredData.map((item: any) => item);
+        setCandidateCompanies(companies);
       });
 
-    fetchAllContactCompanies().then((data) => {
-      const contactIdToMatch = Number(router.query.id);
-      // Step 1: Filter objects with the matching contactId
-      const filteredData = data.filter(
-        (item: any) => item.contactDetails.contactId === contactIdToMatch
-      );
-      const companies = filteredData.map((item: any) => item);
-      setCandidateCompanies(companies);
-    });
-
-    fetchContactCertificationsByContact(Number(router.query.id)).then(
-      (data) => {
+      fetchContactCertificationsByContact(Number(id)).then((data) => {
         setCandidateCertificates(data);
-      }
-    );
-
-    fetchAllCompanies()
-      .then((data) => {
-        setMasterCompanies(data);
-      })
-      .catch((error) => {
-        console.log(error);
       });
 
-    fetchAllCertifications().then((data) => {
-      setMasterCertificates(data);
-    });
+      fetchAllCompanies()
+        .then((data) => {
+          setMasterCompanies(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    fetchInterviewsByContact(Number(router.query.id)).then((data) => {
-      setCandidateInterviews(data);
-      console.log(data);
-    });
+      fetchAllCertifications().then((data) => {
+        setMasterCertificates(data);
+      });
 
-    // getContactPreferredJobTypes().then((data) => {
-    //   console.log(data);
-    // })
+      fetchInterviewsByContact(Number(id)).then((data) => {
+        setCandidateInterviews(data);
+
+        getContactPreferredJobTypeByContact(Number(id)).then((data) => {
+          let modes;
+          if (data.status == "NOT_FOUND") {
+            setPreferredJobType([]);
+            return;
+          }
+          if (data.length > 1) {
+            modes = data.map((job: any) => job.preferredJobMode);
+          } else {
+            modes = [data[0].preferredJobMode];
+          }
+          setPreferredJobType(modes);
+          }
+        );
+        fetchContactPreferredLocation(Number(id)).then((data) => {
+          if (data.status == "NOT_FOUND") {
+            setPreferredLocation([]);
+            return;
+          } else {
+            setPreferredLocation(data.location.locationDetails);
+          }
+        });
+      });
+    }
 
     const { mode } = router.query;
     const isEdit = mode ? true : false;
     setIsEdit(isEdit);
-  }, [isFormVisible, isSkillUpdated, isSkillAdded, isResumeUpoladed]);
+  }, [
+    isFormVisible,
+    isSkillUpdated,
+    isSkillAdded,
+    isResumeUpoladed,
+    router.isReady,
+  ]);
 
   // Post Operations
 
@@ -658,11 +689,25 @@ export default function Candidates() {
           className="flex md:flex-row flex-col md:justify-between md:items-center md:text-base text-xs mt-4 bg-white dark:bg-black dark:text-white p-4 rounded-lg shadow-sm border border-gray-200 space-y-4"
         >
           <div className="space-y-2">
-            <h3 className="font-medium text-blue-500 text-2xl">
-              {currentCandidate?.firstName} {currentCandidate?.lastName}
-            </h3>
+            <div className="flex gap-2">
+              <h3 className="font-medium relative text-blue-500 text-2xl">
+                {currentCandidate?.firstName} {currentCandidate?.lastName}
+                {currentCandidate?.isActive === true ? (
+                <span className="absolute top-0 -right-5 w-3 h-3 bg-green-500 rounded-full">
+                </span>
+              ): (
+                <span className="absolute top-0 -right-5 w-3 h-3 bg-red-500 rounded-full">
+                </span>
+              )}
+              </h3>
+              
+            </div>
+
             <h4 className="font-semibold text-lg">
-              {currentCandidate?.designation}
+              {currentCandidate?.designation} @{" "}
+              <span className="text-blue-500">
+                {currentCandidate?.companyName}
+              </span>
             </h4>
           </div>
           <div className="flex gap-2 items-center">
@@ -748,6 +793,27 @@ export default function Candidates() {
 
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
+                  Preferred Location
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {preferredLocation.length > 0 ? preferredLocation : "-"}
+                </p>
+              </div>
+
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Preferred Job Type
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {preferredJobType.length > 1
+                    ? preferredJobType.map((item) => item).join(", ")
+                    : preferredJobType[0]}
+                  {preferredJobType.length === 0 ? "-" : ""}
+                </p>
+              </div>
+
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
                   Qualification
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
@@ -764,6 +830,16 @@ export default function Candidates() {
                   {currentCandidate?.primaryNumber === null || undefined
                     ? "-"
                     : currentCandidate?.primaryNumber}
+                </p>
+              </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Secondary Mobile Number
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.secondaryNumber === null || undefined
+                    ? "-"
+                    : currentCandidate?.secondaryNumber}
                 </p>
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
@@ -789,6 +865,27 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
+                  Expected Salary
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.expectedSalary === null || undefined
+                    ? "-"
+                    : currentCandidate?.expectedSalary}{" "}
+                  LPA
+                </p>
+              </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Tech Role
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.techRole === null || undefined
+                    ? "-"
+                    : currentCandidate?.techRole}
+                </p>
+              </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
                   Salary Negotiable
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
@@ -800,14 +897,6 @@ export default function Candidates() {
                     : "No"}
                 </p>
               </div>
-              {/* <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
-                <p className="text-gray-500 break-words dark:text-white">Preferred Job Type</p>
-                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {currentCandidate?.preferredJobType === null || undefined
-                    ? "-"
-                    : currentCandidate?.preferredJobType}
-                </p>
-              </div> */}
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
                   Gender
@@ -841,7 +930,7 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Location
+                  Current Location
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.currentLocation.locationDetails === null ||
@@ -865,12 +954,36 @@ export default function Candidates() {
                     : currentCandidate?.addressLocality}
                 </p>
               </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Pincode
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.pinCode === null || undefined
+                    ? "-"
+                    : currentCandidate?.pinCode}
+                </p>
+              </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Linkedin URL
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.linkedin === null || undefined
+                    ? "-"
+                    :(
+                      <a href={currentCandidate?.linkedin} target="_blank">Visit</a>
+                    )}
+                </p>
+              </div>
             </div>
           </div>
           {isFormVisible && (
             <Popup onClose={() => setIsFormVisible(false)}>
               <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mb-6 mt-10">
                 <ProfileUpdateForm
+                  preferredJobModes={preferredJobType}
+                  preferredLocation={preferredLocation}
                   id={Number(router.query.id)}
                   initialValues={currentCandidate ? currentCandidate : null}
                   masterLocations={locations}
@@ -1432,9 +1545,7 @@ export default function Candidates() {
           id="resume"
           className="p-2 rounded-lg shadow-sm space-y-6 mb-8"
         >
-          <h3 className="font-semibold text-sm  md:text-xl">
-            Resume
-          </h3>
+          <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
           {currentCandidate.resume?.includes("pdf") ||
           currentCandidate.resume?.includes("docx") ? (
             <PdfViewer

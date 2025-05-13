@@ -82,3 +82,19 @@ export const createContactPreferredJobType = async (data: any) => {
     return err.response ? err.response.data : err.message;
   }
 };
+
+// GET /api/contact-preferred-job-types/contact/{contactID}
+export const getContactPreferredJobTypeByContact = async (id: number) => {
+  try {
+    const response = await axios.get(`${API_URL}api/contact-preferred-job-types/contact/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: "Basic " + btoa(`${Email}:${Password}`),
+      },
+    });
+    return response.data;
+  } catch (err: any) {
+    return err.response ? err.response.data : err.message;
+  }
+};

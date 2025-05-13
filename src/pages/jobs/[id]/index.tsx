@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import ClientCard from "@/components/Elements/cards/clientCard";
 import { JobDescription } from "@/components/Elements/cards/jobDescription";
 import JobDescriptionUploader from "@/components/Forms/jobs/jdUploader";
+import PdfViewer from "@/components/Elements/utils/pdfViewer";
 
 export default function Job() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function Job() {
   const [currentJob, setCurrentJob] = useState<any | null>(null);
 
   useEffect(() => {
-    if (jobId) {
+    if (router.isReady) {
       fetchJob(jobId)
         .then((data) => {
           setCurrentJob(data);
@@ -24,7 +25,7 @@ export default function Job() {
           console.log(err);
         });
     }
-  },[]);
+  }, [router.isReady]);
 
   return (
     <MainLayout>
@@ -38,26 +39,29 @@ export default function Job() {
         )}
 
         <h3 className="text-xl font-semibold">Job Info</h3>
-        {currentJob ? (
-          <JobCard job={currentJob} />
-        ):(
-          "No Job"
-        )}
+        {currentJob ? <JobCard job={currentJob} /> : "No Job"}
 
         <div className="w-full">
-        <h3 className="text-xl font-semibold">Job Description</h3>
-        <JobDescriptionUploader jobId={Number(router.query.id)}/>
+          <h3 className="text-xl font-semibold">Job Description</h3>
+          <JobDescriptionUploader jobId={Number(router.query.id)} />
         </div>
 
-        <div className="w-full space-y-4 text-lg" dangerouslySetInnerHTML={{ __html: currentJob?.jobDescription || "" }}>
-
-        </div>
-        <JobDescription currentJob={currentJob}/>
+        <div
+          className="w-full space-y-4 text-lg"
+          dangerouslySetInnerHTML={{ __html: currentJob?.jobDescription || "" }}
+        ></div>
+        <JobDescription currentJob={currentJob} />
         <div className="flex justify-end items-end gap-4">
-          <button className="bg-gray-400 px-4 py-1 rounded-md hover:bg-gray-500 hover:text-white" onClick={()=>router.push(`/jobs/${jobId}/interviews`)}>
+          <button
+            className="bg-gray-400 px-4 py-1 rounded-md hover:bg-gray-500 hover:text-white"
+            onClick={() => router.push(`/jobs/${jobId}/interviews`)}
+          >
             Interview Section
           </button>
-          <button className="bg-blue-500 px-4 py-1 rounded-md hover:bg-blue-600 hover:text-white" onClick={()=>router.push(`/jobs/${jobId}/candidates`)}>
+          <button
+            className="bg-blue-500 px-4 py-1 rounded-md hover:bg-blue-600 hover:text-white"
+            onClick={() => router.push(`/jobs/${jobId}/candidates`)}
+          >
             View Candidates
           </button>
         </div>

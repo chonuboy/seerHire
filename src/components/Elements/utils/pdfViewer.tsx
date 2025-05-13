@@ -14,7 +14,7 @@ const PdfViewer = ({
   resume,
 }: {
   candidateId: number;
-  autoClose: () => void;
+  autoClose?: () => void;
   isJd?: boolean;
   resume: string;
 }) => {
@@ -108,7 +108,6 @@ const PdfViewer = ({
           setPdfUrl(objectUrl);
           setError(null);
         } else if (resume.includes("docx")) {
-          console.log(resume);
           setPdfData(pdfData);
           mammoth
             .convertToHtml({ arrayBuffer: pdfData })
@@ -118,7 +117,6 @@ const PdfViewer = ({
               const blob = new Blob([html], { type: "text/html" });
               objectUrl = URL.createObjectURL(blob);
               setPdfUrl(objectUrl);
-              console.log(objectUrl);
             })
             .catch((err) => {
               setError("Failed to render DOCX file");
@@ -151,7 +149,7 @@ const PdfViewer = ({
         >
           Add Document
         </button>
-        {!isJd && isResumeuploaded && (
+        {isResumeuploaded && (
           <Popup onClose={() => setIsResumeUploaded(false)}>
             <div className="text-sm md:text-base mt-28">
               <div className="space-y-3 rounded-lg">
@@ -215,11 +213,11 @@ const PdfViewer = ({
   }
 
   if (!pdfUrl) {
-    return <div>Loading Document...</div>;
+    return <div>Please Upload a Document</div>;
   }
 
   return (
-    <div className="h-screen w-full text-xs md:text-base">
+    <div className="h-screen m-auto w-9/12 text-xs md:text-base">
       {!isJd && (
         <div className="flex justify-end my-4">
           <button
