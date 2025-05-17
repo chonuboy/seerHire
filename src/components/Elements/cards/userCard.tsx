@@ -14,7 +14,7 @@ interface User {
 }
 
 export default function UserCard() {
-  const [allUsers, setAllusers] = useState<User[] | null>(null);
+  const [allUsers, setAllusers] = useState<any>([]);
   const [isUserAdded, setIsUserAdded] = useState<boolean>(false);
   const router = useRouter();
   useEffect(() => {
@@ -62,11 +62,9 @@ export default function UserCard() {
 
   return (
     <div className="space-y-4 text-xs md:text-base mx-4">
-      {allUsers == null ? (
+      {allUsers?.length == 0 ? (
         <div>
-          <h2>
-            No Users
-          </h2>
+          <h2>No Users</h2>
         </div>
       ) : (
         <div>
@@ -96,15 +94,16 @@ export default function UserCard() {
                 </tr>
               </thead>
               <tbody>
-                {allUsers !== null &&
-                  allUsers?.length > 0 &&
-                  allUsers?.map((user, index) => (
-                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100">
-                      <td className="py-4 px-4">{user.userName}</td>
-                      <td className="py-4 px-4">{user.email}</td>
-                      <td className="py-4 px-4">{user.roles[0].roleName}</td>
-                    </tr>
-                  ))}
+                {allUsers && allUsers.length > 0 && allUsers.map((user:any, index:number) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100"
+                  >
+                    <td className="py-4 px-4">{user.userName}</td>
+                    <td className="py-4 px-4">{user.email}</td>
+                    <td className="py-4 px-4">{user.roles[0].roleName}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             {isUserAdded && (

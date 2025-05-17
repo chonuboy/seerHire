@@ -7,18 +7,30 @@ import { useEffect, useState } from "react";
 import { fetchCandidates } from "@/api/candidates/candidates";
 import { contactSearchByKeyword } from "@/api/candidates/candidates";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function Candidates() {
   const [allCandidates, setAllCandidates] = useState();
   const [candidateFound, setCandidateFound] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const router = useRouter();
+  const [query,setQuery] = useState<any>(null);
+  const [jobId, setJobId] = useState<any>(null);
 
   useEffect(() => {
     fetchCandidates(currentPage-1, 10).then((data: any) => {
       setAllCandidates(data);
     });
-  }, [currentPage,searchKeyword]);
+    if(router.isReady){
+      if(router.query.jobId && router.query.assignInterview){
+        setJobId(router.query.jobId);
+        setQuery(router.query.assignInterview);
+        localStorage.setItem("assignInterview", JSON.stringify(router.query.assignInterview));
+        localStorage.setItem("jobId", JSON.stringify(router.query.jobId));
+      }
+    }
+  }, [currentPage,searchKeyword,router.isReady]);
 
  
   const handleSearch = () => {
@@ -80,6 +92,8 @@ export default function Candidates() {
               candidateTableColumns={candidateTableColumns}
               currentPage={currentPage}
               onPageChange={handlePageChange}
+              interviewAssign={query}
+              interviewjobId={jobId}
             />
           ) : (
             <p className="p-2">Loading Candidates...</p>

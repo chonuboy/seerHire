@@ -77,7 +77,7 @@ export default function CertificateTable({ initialData }: { initialData: Certifi
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-black dark:text-white divide-y divide-gray-200">
-              {certificates.map((certificate) => (
+              {certificates && certificates.length>1 && certificates.map((certificate) => (
                 <tr key={certificate.certificationId} className="hover:bg-gray-50 dark:hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium text-gray-900 dark:text-white dark:hover:text-black">{certificate.certificationName}</div>

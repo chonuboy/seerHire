@@ -27,10 +27,11 @@ const SearchForm: React.FC = () => {
       minSalary: null,
       maxSalary: null,
       noticePeriod: null,
-      preferredJobType: null,
       highestEducation: null,
       preferredLocation: [],
       domain: [],
+      preferredJobMode:[],
+      contactHiringType: [],
       mustHaveTechnologies: null,
       goodToHaveTechnologies: null,
       companies: [],
@@ -221,6 +222,25 @@ const SearchForm: React.FC = () => {
             onAddTag={(tag) => handleAddTag("companies", tag)}
             onRemoveTag={(tag) => handleRemoveTag("companies", tag)}
           />
+          {/* PreferredJobTypes */}
+          <TagInput
+            name="preferredjobmode"
+            title="Preferred Job Types"
+            placeholder="Enter job types..."
+            tags={formik.values.preferredJobMode ?? []}
+            onAddTag={(tag) => handleAddTag("preferredJobMode", tag)}
+            onRemoveTag={(tag) => handleRemoveTag("preferredJobMode", tag)}
+          />
+
+          {/* Hiring Types */}
+          <TagInput
+            name="hiring type"
+            title="Hiring Types"
+            placeholder="Enter hiring types..."
+            tags={formik.values.contactHiringType ?? []}
+            onAddTag={(tag) => handleAddTag("contactHiringType", tag)}
+            onRemoveTag={(tag) => handleRemoveTag("contactHiringType", tag)}
+          />
 
           {/* Domain */}
           <TagInput
@@ -319,15 +339,6 @@ const SearchForm: React.FC = () => {
 
           {/* Job Type and Notice Period */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <SingleInput
-              name="preferredJobType"
-              title="Job Type"
-              placeholder="Full-time, Contract, etc."
-              value={formik.values.preferredJobType}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.preferredJobType ? formik.errors.preferredJobType : null}
-            />
             <SingleInput
               name="noticePeriod"
               title="Notice Period (days)"

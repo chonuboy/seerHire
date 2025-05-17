@@ -1,9 +1,12 @@
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { jobFormSchema } from "@/lib/models/client";
-import { updateJob, uploadJobDescription } from "@/api/client/clientJob";
+import { updateJob } from "@/api/client/clientJob";
 import { Save, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 export default function JobInfoUpdateForm({
   currentJob,
@@ -15,8 +18,10 @@ export default function JobInfoUpdateForm({
   autoClose: () => void;
 }) {
   // Helper function to get updated fields
+  
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [jd, setJobDescription] = useState<string | null>(null);
   const getUpdatedFields = (initialValues: any, values: any) => {
     return Object.keys(values).reduce((acc: Record<string, any>, key) => {
       if (values[key] !== initialValues[key]) {
@@ -228,20 +233,34 @@ export default function JobInfoUpdateForm({
           </div>
 
           {/* Job Description */}
-          <div className="mt-6">
-            <label
-              htmlFor="jobDescription"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+          <div className="space-y-2 mt-4">
+            <label className="font-semibold text-gray-600">
               Job Description
             </label>
-            <textarea
-              name="jobDescription"
-              id="jobDescription"
-              rows={4}
+            <JoditEditor
               value={formik.values.jobDescription || ""}
-              onChange={formik.handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
+              config={{
+                height: 300,
+                placeholder: "Type job description here...",
+                readonly: false,
+                showCharsCounter: false,
+                showWordsCounter: false,
+                showXPathInStatusbar: false,
+                buttons:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                buttonsMD:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                buttonsSM:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                buttonsXS:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+              }}
+              onBlur={(content) => {
+                setJobDescription(content);
+              }}
+              onChange={(content) => {
+                formik.values.jobDescription = content;
+              }}
             />
           </div>
 
@@ -283,14 +302,14 @@ export default function JobInfoUpdateForm({
               )}
             </button>
             <div className="flex space-x-2">
-            <button
-              type="button"
-              onClick={autoClose}
-              className="inline-flex items-center px-4 py-1 border border-gray-300 shadow-sm text-xs md:text-base leading-4 font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Cancel
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={autoClose}
+                className="inline-flex items-center px-4 py-1 border border-gray-300 shadow-sm text-xs md:text-base leading-4 font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </form>
       </div>

@@ -244,10 +244,11 @@ export interface SearchQueries {
   minSalary?: number|null;
   maxSalary?: number|null;
   noticePeriod?: number|null;
-  preferredJobType?: string|null;
+  preferredJobMode?: string[]|null;
   highestEducation?: string|null;
   preferredLocation?: string[]|null;
   domain?: string[]|null;
+  contactHiringType: string[]|null;
   mustHaveTechnologies?: string[] |null;
   goodToHaveTechnologies?: string[] |null;
   companies?: string[]|null;
@@ -363,11 +364,11 @@ export const interviewFormSchema = yup.object().shape({
 });
 
 export const interviewRoundSchema = yup.object().shape({
-  roundNumber: yup
-    .number()
-    .required('Round number is required')
-    .min(1, 'Round number must be at least 1')
-    .integer('Round number must be an integer'),
+  // roundNumber: yup
+  //   .number()
+  //   .required('Round number is required')
+  //   .min(1, 'Round number must be at least 1')
+  //   .integer('Round number must be an integer'),
   roundDate: yup
     .date()
     .required('Interview date is required'),

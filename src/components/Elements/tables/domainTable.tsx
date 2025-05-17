@@ -77,7 +77,7 @@ export default function DomainTable({ initialData }: { initialData: Domain[] }) 
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-black divide-y divide-gray-200">
-              {domains.map((domain) => (
+              {domains && domains.length>1 &&domains.map((domain) => (
                 <tr key={domain.domainId} className="hover:bg-gray-50 hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium">{domain.domainDetails}</div>

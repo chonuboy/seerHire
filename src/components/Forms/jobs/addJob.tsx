@@ -3,11 +3,11 @@ import type React from "react";
 import { useState, useRef } from "react";
 import { useFormik } from "formik";
 import { jobFormSchema } from "@/lib/models/client";
-import { createJob } from "@/api/client/clientJob";
+import { createJob, uploadJD } from "@/api/client/clientJob";
 import type { ClientInfo } from "@/lib/models/client";
 import { FileText, Upload, X } from "lucide-react";
 import dynamic from "next/dynamic";
-import { uploadJobDescription } from "@/api/client/clientJob";
+import { uploadJobDescriptionById } from "@/api/client/clientJob";
 import { fetchAllJobs } from "@/api/client/clientJob";
 import { toast } from "react-toastify";
 
@@ -30,6 +30,7 @@ export const AddJob = ({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [jobId, setJobId] = useState(0);
+  const [jobDescriptionDocName, setJobDescriptionDocName] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -78,15 +79,24 @@ export const AddJob = ({
         }
 
         // Submit the form
-        createJob(values).then((data) => {
-          console.log(data);
-          if (data.status === 201) {
-            toast.success("Job added successfully", {
-              position: "top-right",
-            });
-          }
-        });
-        autoClose();
+
+        console.log(values);
+        if (formik.values.jd === "" || formik.values.jd === null || !uploadedFile) {
+          toast.error("Please upload Job description Document", {
+            position: "top-right",
+          });
+          return;
+        } else {
+          createJob(values).then((data) => {
+            console.log(data);
+            autoClose();
+            if (data.status === 201) {
+              toast.success("Job added successfully", {
+                position: "top-right",
+              });
+            }
+          });
+        }
       } catch (error) {
         console.error("Error submitting form:", error);
       } finally {
@@ -100,6 +110,16 @@ export const AddJob = ({
     if (files && files.length > 0) {
       setUploadedFile(files[0]);
     }
+  };
+
+  const uploadJobDescription = (uploadedFile: File) => {
+    uploadJD({
+      file: uploadedFile,
+    }).then((res) => {
+      toast.success("File uploaded successfully", { position: "top-right" });
+      setJobDescriptionDocName(res);
+      formik.values.jd = res;
+    });
   };
 
   const clearFile = () => {
@@ -352,7 +372,10 @@ export const AddJob = ({
                           </p>
                         </div>
                       </div>
-                      <button className="bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600">
+                      <button
+                        className="bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600"
+                        onClick={() => uploadJobDescription(uploadedFile)}
+                      >
                         Upload
                       </button>
                       <button

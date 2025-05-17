@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { uploadJobDescription } from "@/api/client/clientJob";
+import { uploadJobDescriptionById } from "@/api/client/clientJob";
 import { toast } from "react-toastify";
 
 export default function JobDescriptionUploader({ jobId }: { jobId: number }) {
@@ -18,12 +18,21 @@ export default function JobDescriptionUploader({ jobId }: { jobId: number }) {
       setError("Please select a file to upload.");
       return;
     }
+    console.log(file.size);
+
+    if(file.size > 50000){
+      toast.error("File size should be less than 5MB", {
+        position: "top-right",
+        delay: 500,
+      });
+      return;
+    }
 
     setUploading(true);
     setError(null);
 
     try {
-      uploadJobDescription(jobId, file).then((res) => {
+      uploadJobDescriptionById(jobId, file).then((res) => {
         console.log(res);
         toast.success("File uploaded successfully", { position: "top-right" });
         setUploading(false);
@@ -37,7 +46,7 @@ export default function JobDescriptionUploader({ jobId }: { jobId: number }) {
   };
 
   return (
-    <div className="mx-auto p-6 bg-white rounded-xl shadow-lg border mt-4 border-gray-200 transition-all duration-300 hover:shadow-xl">
+    <div className="mx-auto p-6 bg-white rounded-xl shadow-lg border mt-8 border-gray-200 transition-all duration-300 hover:shadow-xl">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-1">Upload Document</h3>
@@ -64,7 +73,7 @@ export default function JobDescriptionUploader({ jobId }: { jobId: number }) {
             <span className="text-base font-medium text-gray-700 mb-1">
               {file ? file.name : "Choose a file or drag it here"}
             </span>
-            <span className="text-xs text-gray-500">PDF, DOC, DOCX (Max 10MB)</span>
+            <span className="text-xs text-gray-500">PDF, DOC, DOCX (Max 5MB)</span>
             <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} className="hidden" />
           </label>
         </div>

@@ -12,6 +12,7 @@ import { createContactHiringType } from "@/api/candidates/hiringType";
 import { Technology } from "@/lib/models/candidate";
 import { toast } from "react-toastify";
 import { createContactDomain } from "@/api/candidates/domains";
+import { create } from "domain";
 
 // This would be provided by the parent component
 type ProfessionalFormProps = {
@@ -108,7 +109,7 @@ export default function ProfessionalForm({
   };
 
   // Toggle checkbox values
-  const   toggleCheckbox = (
+  const toggleCheckbox = (
     field: "preferredJobModes" | "hiringTypes",
     value: string
   ) => {
@@ -508,12 +509,37 @@ export default function ProfessionalForm({
                     }`}
                     onClick={() => {
                       toggleCheckbox("preferredJobModes", mode);
-                      createContactPreferredJobType({
-                        contactDetails: {
-                          contactId: candidateId,
-                        },
-                        preferredJobMode: mode,
-                      }).then((data) => {});
+                      if (
+                        formData.preferredJobModes.includes("Onsite") &&
+                        formData.preferredJobModes.includes("Remote") &&
+                        mode === "Hybrid"
+                      ) {
+                        createContactPreferredJobType({
+                          contactDetails: {
+                            contactId: candidateId,
+                          },
+                          preferredJobMode: mode,
+                        }).then((data) => {
+                          console.log(data);
+                          setTimeout(() => {
+                            createContactPreferredJobType({
+                              preferredJobMode: "Flexible",
+                              contactDetails: {
+                                contactId: candidateId,
+                              },
+                            });
+                          }, 1000);
+                        });
+                      } else {
+                        createContactPreferredJobType({
+                          contactDetails: {
+                            contactId: candidateId,
+                          },
+                          preferredJobMode: mode,
+                        }).then((data) => {
+                          console.log(data);
+                        });
+                      }
                     }}
                   >
                     {formData.preferredJobModes.includes(mode) && (
@@ -568,7 +594,6 @@ export default function ProfessionalForm({
                             console.log(data);
                           });
                         }, 2000);
-                        
                       } else {
                         createContactHiringType({
                           hiringType: type,

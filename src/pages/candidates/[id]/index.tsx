@@ -65,7 +65,11 @@ import {
   fetchContactInterview,
   fetchInterviewsByContact,
 } from "@/api/candidates/interviews";
-import { fetchContactPreferredLocation } from "@/api/candidates/preferredLocation";
+import {
+  fetchAllContactPreferredLocations,
+  fetchContactPreferredLocation,
+} from "@/api/candidates/preferredLocation";
+import { getContactHiringTypeByContactId } from "@/api/candidates/hiringType";
 
 export default function Candidates() {
   // candidate state
@@ -125,7 +129,7 @@ export default function Candidates() {
   const [formData, setFormData] = useState<ReqData | null>(null);
   const [preferredJobType, setPreferredJobType] = useState<any[]>([]);
   const [preferredLocation, setPreferredLocation] = useState<any[]>([]);
-  
+  const [hiringTypes, setHiringTypes] = useState<any[]>([]);
 
   // Get Operations
   useEffect(() => {
@@ -133,10 +137,10 @@ export default function Candidates() {
       const id = router.query.id;
       fetchCandidate(Number(id))
         .then((data) => {
-          console.log(data);
           setCurrentCandidate(data);
           setInitialData(data);
           setFormData(data);
+          console.log(data);
         })
         .catch((error) => console.log(error));
 
@@ -212,29 +216,52 @@ export default function Candidates() {
 
       fetchInterviewsByContact(Number(id)).then((data) => {
         setCandidateInterviews(data);
+      });
 
-        getContactPreferredJobTypeByContact(Number(id)).then((data) => {
-          let modes;
-          if (data.status == "NOT_FOUND") {
-            setPreferredJobType([]);
-            return;
-          }
-          if (data.length > 1) {
-            modes = data.map((job: any) => job.preferredJobMode);
-          } else {
-            modes = [data[0].preferredJobMode];
-          }
-          setPreferredJobType(modes);
-          }
-        );
-        fetchContactPreferredLocation(Number(id)).then((data) => {
-          if (data.status == "NOT_FOUND") {
-            setPreferredLocation([]);
-            return;
-          } else {
-            setPreferredLocation(data.location.locationDetails);
-          }
-        });
+      getContactPreferredJobTypeByContact(Number(id)).then((data) => {
+        let modes;
+        if (data.status == "NOT_FOUND") {
+          setPreferredJobType([]);
+          return;
+        }
+        if (data.length > 1) {
+          modes = data.map((job: any) => ({
+            typeId: job.contactPreferredJobModeId,
+            jobType: job.preferredJobMode,
+          }));
+        } else {
+          modes = [data[0].preferredJobMode];
+        }
+        setPreferredJobType(modes);
+      });
+
+      fetchAllContactPreferredLocations().then((data) => {
+        if (data.status == "NOT_FOUND") {
+          setPreferredLocation([]);
+          return;
+        } else {
+          const filtered = data.filter(
+            (item: any) => item.contactDetails.contactId == id
+          );
+          setPreferredLocation(filtered);
+        }
+      });
+
+      getContactHiringTypeByContactId(Number(id)).then((data) => {
+        let types;
+        if (data.status == "NOT_FOUND") {
+          setHiringTypes([]);
+          return;
+        }
+        if (data.length > 1) {
+          types = data.map((item: any) => ({
+            typeId: item.contactHiringTypeId,
+            hiringType: item.hiringType,
+          }));
+        } else {
+          types = [data[0].hiringType];
+        }
+        setHiringTypes(types);
       });
     }
 
@@ -300,7 +327,7 @@ export default function Candidates() {
         };
 
         // Create the new technology
-        const createdSkill = await createTechnology(newSkill);
+        const createdSkill = await createTechnology(newSkill)
 
         // Update masterTech with the new skill
         setMasterTech((prev) =>
@@ -693,18 +720,15 @@ export default function Candidates() {
               <h3 className="font-medium relative text-blue-500 text-2xl">
                 {currentCandidate?.firstName} {currentCandidate?.lastName}
                 {currentCandidate?.isActive === true ? (
-                <span className="absolute top-0 -right-5 w-3 h-3 bg-green-500 rounded-full">
-                </span>
-              ): (
-                <span className="absolute top-0 -right-5 w-3 h-3 bg-red-500 rounded-full">
-                </span>
-              )}
+                  <span className="absolute top-0 -right-5 w-3 h-3 bg-green-500 rounded-full"></span>
+                ) : (
+                  <span className="absolute top-0 -right-5 w-3 h-3 bg-red-500 rounded-full"></span>
+                )}
               </h3>
-              
             </div>
 
             <h4 className="font-semibold text-lg">
-              {currentCandidate?.designation} @{" "}
+              {currentCandidate?.designation} at{" "}
               <span className="text-blue-500">
                 {currentCandidate?.companyName}
               </span>
@@ -796,7 +820,11 @@ export default function Candidates() {
                   Preferred Location
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {preferredLocation.length > 0 ? preferredLocation : "-"}
+                  {preferredLocation.length > 0
+                    ? preferredLocation
+                        .map((item) => item["location"]["locationDetails"])
+                        .join(", ")
+                    : "-"}
                 </p>
               </div>
 
@@ -805,10 +833,21 @@ export default function Candidates() {
                   Preferred Job Type
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {preferredJobType.length > 1
-                    ? preferredJobType.map((item) => item).join(", ")
-                    : preferredJobType[0]}
-                  {preferredJobType.length === 0 ? "-" : ""}
+                  {preferredJobType.length > 0
+                    ? preferredJobType.map((item) => item["jobType"]).join(", ")
+                    : "-"}
+                </p>
+              </div>
+
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Hiring Type
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {hiringTypes.length > 1
+                    ? hiringTypes.map((item) => item.hiringType).join(", ")
+                    : hiringTypes[0]}
+                  {hiringTypes.length === 0 ? "-" : ""}
                 </p>
               </div>
 
@@ -820,6 +859,16 @@ export default function Candidates() {
                   {currentCandidate?.highestEducation === null || undefined
                     ? "-"
                     : currentCandidate?.highestEducation}
+                </p>
+              </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Current Company
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.companyName === null || undefined
+                    ? "-"
+                    : currentCandidate?.companyName}
                 </p>
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
@@ -941,7 +990,7 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Address
+                  Current Address
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.addressLocality === null || undefined
@@ -969,11 +1018,13 @@ export default function Candidates() {
                   Linkedin URL
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {currentCandidate?.linkedin === null || undefined
-                    ? "-"
-                    :(
-                      <a href={currentCandidate?.linkedin} target="_blank">Visit</a>
-                    )}
+                  {currentCandidate?.linkedin === null || undefined ? (
+                    "-"
+                  ) : (
+                    <a href={currentCandidate?.linkedin} target="_blank">
+                      Visit
+                    </a>
+                  )}
                 </p>
               </div>
             </div>
@@ -984,6 +1035,7 @@ export default function Candidates() {
                 <ProfileUpdateForm
                   preferredJobModes={preferredJobType}
                   preferredLocation={preferredLocation}
+                  hiringTypes={hiringTypes}
                   id={Number(router.query.id)}
                   initialValues={currentCandidate ? currentCandidate : null}
                   masterLocations={locations}
@@ -1038,9 +1090,12 @@ export default function Candidates() {
                         Date : {item.interviewDate}
                       </p>
                       <Link
-                        href={`/candidates/${Number(
-                          router.query.id
-                        )}/interviews/${item?.clientJob?.jobId}`}
+                        href={{
+                          pathname: `/candidates/${Number(
+                            router.query.id
+                          )}/interviews/${item?.clientJob?.jobId}`,
+                          query: { contactInterViewId: item?.interviewId },
+                        }}
                       >
                         <button className="bg-[var(--theme-background)] border-black-200 border-2 py-1 px-2 absolute right-4 bottom-4 bg-blue-500 text-white rounded-md border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
                           View Results
@@ -1161,13 +1216,12 @@ export default function Candidates() {
             >
               <h3 className="md:text-xl text-sm font-light">Skills Rating</h3>
               <div className="overflow-x-auto rounded-md">
-                {" "}
                 <table className="min-w-full text-xs md:text-base border border-gray-200">
                   <thead className="bg-gray-100 ">
                     <tr>
                       <th className="font-light text-left text-blue-500 px-2 py-1 md:px-4 md:py-2">
                         Skill
-                      </th>{" "}
+                      </th>
                       <th className="font-light text-left text-blue-500 px-2 py-1 md:px-4 md:py-2">
                         Experience
                       </th>

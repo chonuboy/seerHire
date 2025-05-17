@@ -33,7 +33,6 @@ export default function Clients() {
   useEffect(() => {
     fetchAllClients(currentPage - 1, 10).then((data: any) => {
       setClients(data);
-      console.log(data);
     });
     fetchAllLocations().then((data: any) => {
       setLocations(data);
@@ -63,6 +62,7 @@ export default function Clients() {
   const onChangeStateLocation = (location: Location) => {
     formik.setFieldValue("clientHeadQuarterState", {
       locationId: location.locationId,
+      locationDetails: location.locationDetails
     });
   };
 
@@ -136,7 +136,6 @@ export default function Clients() {
       gstnumber: null,
       cinnumber: null,
       pannumber: null,
-      isClientBillingStateTamilNadu: false,
     },
     validationSchema: clientValidationSchema,
     validateOnMount: false,
@@ -153,6 +152,12 @@ export default function Clients() {
           position: "top-center",
         });
         return;
+      }
+
+      if(values.clientHeadQuarterState.locationDetails === "Tamil Nadu" || values.clientHeadQuarterState.locationDetails === "TamilNadu" || values.clientHeadQuarterState.locationDetails === "Tamilnadu" || values.clientHeadQuarterState.locationDetails === "tamilnadu"){
+        formik.setFieldValue("isClientBillingStateTamilNadu", true);
+      }else{
+        formik.setFieldValue("isClientBillingStateTamilNadu", false);
       }
       try {
         createClient(values).then((data) => {

@@ -4,6 +4,8 @@ import { deleteClient } from "@/api/master/clients";
 import { deleteUser } from "@/api/users/users";
 import { useRouter } from "next/router";
 import { get } from "http";
+import { createContactInterview } from "@/api/candidates/interviews";
+import { toast } from "react-toastify";
 // Define types for the Table component props
 interface Column {
   Header: string;
@@ -24,6 +26,8 @@ interface TableProps {
   onPageChange?: (page: number) => void;
   pageSize?: number;
   isRecruitment?: boolean;
+  assignInterview?: any;
+  jobId?: any;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -35,8 +39,36 @@ export const Table: React.FC<TableProps> = ({
   onPageChange,
   pageSize,
   isRecruitment,
+  assignInterview,
+  jobId
 }) => {
   const router = useRouter();
+
+  const addInterview = (candidateId: number, jobId: number) => {
+    createContactInterview({
+      interviewStatus: "Scheduled",
+      clientJob: {
+        jobId: jobId,
+      },
+      contactDetails: {
+        contactId: candidateId,
+      },
+    }).then((data) => {
+      if (
+        data.message ===
+        "The combination of contact ID and jobId ID already exists."
+      ) {
+        toast.error("Interview already scheduled", {
+          position: "top-right",
+        });
+      } else {
+        console.log(data);
+        router.push(
+          `candidates/${candidateId}/interviews/${jobId}?contactInterViewId=${data.interviewId}`
+        );
+      }
+    })
+  };
 
   // Handle empty data or columns
   if (!data || data.length === 0) {
@@ -98,20 +130,20 @@ export const Table: React.FC<TableProps> = ({
                 >
                   <p
                     className={`text-xs md:text-base font-light ${
-                      item[col.accessor] === false
+                      item[col.accessor] === false && !assignInterview
                         ? "bg-red-800  text-white px-2 py-1 rounded-lg font-semibold text-xs w-fit  dark:border-white"
-                        : item[col.accessor] === true
+                        : item[col.accessor] === true && !assignInterview
                         ? "bg-green-500 text-white px-4 py-1 rounded-lg font-semibold text-xs w-fit  dark:border-white"
                         : "text-gray-700 dark:text-gray-200 text-xs"
                     }`}
                   >
                     {col.accessor === "fullName"
                       ? `${item.firstName} ${item.lastName}`
-                      : item[col.accessor] === true
+                      : item[col.accessor] === true && !assignInterview
                       ? "Active"
-                      : item[col.accessor] === false
+                      : item[col.accessor] === false && !assignInterview
                       ? "Inactive"
-                      : item[col.accessor] === null
+                      : item[col.accessor] === null && !assignInterview
                       ? "-"
                       : item[col.accessor]}
 
@@ -128,6 +160,18 @@ export const Table: React.FC<TableProps> = ({
                         {role.roleName}
                       </p>
                     ))}
+                  {col.Header === "Status" && assignInterview && jobId && (
+                    <div>
+                      <button
+                        onClick={() => {
+                          addInterview(item.contactId, jobId);
+                        }}
+                        className="bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-2 rounded"
+                      >
+                        Assign
+                      </button>
+                    </div>
+                  )}
                   {col.Header === "Action" && (
                     <div>
                       <button className="bg-yellow-500 hover:bg-yellow-700 text-sm text-white font-bold py-1 px-4 rounded">
@@ -149,7 +193,7 @@ export const Table: React.FC<TableProps> = ({
               : null; // Pass 'edit' for edit mode;
 
           // If a link generator is provided, wrap the row in a Link component
-          return rowLink ? (
+          return rowLink && !assignInterview ? (
             <Link href={rowLink} key={index}>
               {rowContent}
             </Link>

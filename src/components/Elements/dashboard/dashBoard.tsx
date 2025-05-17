@@ -40,14 +40,30 @@ export default function Dashboard() {
   const [allDomains, setAllDomains] = useState<domainDetails[]>([]);
   const [allCertificates, setAllCertificates] = useState<Certificates[]>([]);
   const [allLocations, setAllLocations] = useState<Location[]>([]);
-
+  const [users, setUsers] = useState<any>([]);
+  const [clientJobs, setClientJobs] = useState<any>([]);
+  const [userRole, setUserRole] = useState<string | null>(null);
   useEffect(() => {
+    const userRole = localStorage.getItem("userRole");
+    setUserRole(userRole);
     fetchAllClients().then((data: any) => {
       setAllClients(data.totalElements);
       setClients(data.content);
+      if (!data) {
+        const users = data.content.map((client: any) => client.clientName);
+        setUsers(users);
+      } else {
+        setUsers([]);
+      }
     });
     fetchAllJobs().then((data: any) => {
       setAllJobs(data);
+      if (!data) {
+        const clientJobs = data.map((job: any) => job.jobTitle);
+        setClientJobs(clientJobs);
+      } else {
+        setClientJobs([]);
+      }
     });
     fetchCandidates().then((data: any) => {
       setAllCandidates(data.totalElements);
@@ -69,9 +85,10 @@ export default function Dashboard() {
     });
   }, []);
 
-  // Mock data
-  const users = clients.map((client: any) => client.clientName);
-  const clientJobs = allJobs.map((job: any) => job.jobTitle);
+  // Mock dataif()
+  if (clients && clients.length > 1) {
+  }
+
   const [jobs, setAllClientJobs] = useState<any>([clientJobs]);
 
   // const stats = {
@@ -290,23 +307,25 @@ export default function Dashboard() {
         </div>
       </section>
       {/* Tables */}
-      <section className="space-y-4">
-        {allTech.length > 0 ? (
-          <TechnologyTable initialData={allTech}></TechnologyTable>
-        ) : null}
-        {allCompanies.length > 0 ? (
-          <CompanyTable initialData={allCompanies}></CompanyTable>
-        ) : null}
-        {allDomains.length > 0 ? (
-          <DomainTable initialData={allDomains}></DomainTable>
-        ) : null}
-        {allCertificates.length > 0 ? (
-          <CertificateTable initialData={allCertificates}></CertificateTable>
-        ) : null}
-        {allLocations.length > 0 ? (
-          <LocationTable initialData={allLocations}></LocationTable>
-        ) : null}
-      </section>
+      {userRole === "SuperAdmin" && (
+        <section className="space-y-4">
+          {allTech.length > 0 ? (
+            <TechnologyTable initialData={allTech}></TechnologyTable>
+          ) : null}
+          {allCompanies.length > 0 ? (
+            <CompanyTable initialData={allCompanies}></CompanyTable>
+          ) : null}
+          {allDomains.length > 0 ? (
+            <DomainTable initialData={allDomains}></DomainTable>
+          ) : null}
+          {allCertificates.length > 0 ? (
+            <CertificateTable initialData={allCertificates}></CertificateTable>
+          ) : null}
+          {allLocations.length > 0 ? (
+            <LocationTable initialData={allLocations}></LocationTable>
+          ) : null}
+        </section>
+      )}
     </>
   );
 }

@@ -5,7 +5,7 @@ import { Email, Password } from "../creds";
 // GET /api/contact-preferred-job-types/{id}
 export const getContactPreferredJobType = async (id: number) => {
   try {
-    const response = await axios.get(`${API_URL}/api/contact-preferred-job-types/${id}`, {
+    const response = await axios.get(`${API_URL}api/contact-preferred-job-types/${id}`, {
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
@@ -21,7 +21,7 @@ export const getContactPreferredJobType = async (id: number) => {
 // PUT /api/contact-preferred-job-types/{id}
 export const updateContactPreferredJobType = async (id: number, data: any) => {
   try {
-    const response = await axios.put(`${API_URL}/api/contact-preferred-job-types/${id}`, data, {
+    const response = await axios.put(`${API_URL}api/contact-preferred-job-types/${id}`, data, {
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
@@ -37,7 +37,7 @@ export const updateContactPreferredJobType = async (id: number, data: any) => {
 // DELETE /api/contact-preferred-job-types/{id}
 export const deleteContactPreferredJobType = async (id: number) => {
   try {
-    const response = await axios.delete(`${API_URL}/api/contact-preferred-job-types/${id}`, {
+    const response = await axios.delete(`${API_URL}api/contact-preferred-job-types/${id}`, {
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
@@ -53,7 +53,7 @@ export const deleteContactPreferredJobType = async (id: number) => {
 // GET /api/contact-preferred-job-types
 export const getContactPreferredJobTypes = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/contact-preferred-job-types`, {
+    const response = await axios.get(`${API_URL}api/contact-preferred-job-types`, {
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",

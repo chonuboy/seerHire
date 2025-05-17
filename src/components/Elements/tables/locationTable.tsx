@@ -78,7 +78,7 @@ export default function LocationTable({
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-black divide-y divide-gray-200">
-              {locations.map((location) => (
+              {locations && locations.length>1 && locations.map((location) => (
                 <tr key={location.locationId} className="hover:bg-gray-50 dark:hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium">

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import mammoth from "mammoth";
 import { Popup } from "./popup";
-import { is } from "tinymce";
 
 export const ResultCard = ({
   candidateData,
@@ -111,7 +110,7 @@ export const ResultCard = ({
                     <button
                       className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700"
                       onClick={() => {
-                        router.push("/interviews");
+                        router.push("/jobs/alljobs/");
                         localStorage.setItem(
                           "interviewCandidateId",
                           JSON.stringify(candidate.contactId)
@@ -127,7 +126,7 @@ export const ResultCard = ({
           </div>
         ))
       ) : (
-        <p className="p-4">No Relevant candidates Found</p>
+        <p>No Relevant candidates Found</p>
       )}
     </div>
   );

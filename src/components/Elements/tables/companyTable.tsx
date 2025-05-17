@@ -57,7 +57,7 @@ export default function CompanyTable({ initialData }: { initialData: Company[] }
         <div className="overflow-x-auto rounded-lg border">
           <table className="min-w-full divide-y divide-gray-200">
             <tbody className="bg-white divide-y divide-gray-200 dark:bg-black">
-              {companies.map((company) => (
+              {companies && companies.length>1 && companies.map((company) => (
                 <tr key={company.companyId} className="hover:bg-gray-50 hover:text-black">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium">{company.companyName}</div>

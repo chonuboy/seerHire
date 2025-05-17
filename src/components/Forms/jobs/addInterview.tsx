@@ -1,38 +1,49 @@
-import { useFormik } from 'formik';
-import { interviewRoundSchema } from '@/lib/models/candidate';
-import { createInterviewRound } from '@/api/interviews/InterviewRounds';
-import { toast } from 'react-toastify';
+import { useFormik } from "formik";
+import { Interview, interviewRoundSchema } from "@/lib/models/candidate";
+import { createInterviewRound } from "@/api/interviews/InterviewRounds";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function AddRound({
   className,
-  interviewInfo,
+  interviewId,
   onclose,
+  roundNumber,
+  masterTechnologies,
 }: {
   className?: string;
-  interviewInfo?: any;
+  interviewId?: number | string | string[] | undefined | null;
   onclose?: () => void;
+  roundNumber?: number;
+  masterTechnologies?: any[] | undefined | null;
 }) {
   const formik = useFormik({
     initialValues: {
-      roundNumber: 0,
-      roundDate: '',
-      interviewerName: '',
-      interviewStatus: 'Scheduled',
-      technologyInterviewed: '',
+      // roundNumber: undefined,
+      roundDate: "",
+      interviewerName: "",
+      interviewStatus: "Scheduled",
+      technologyInterviewed: "",
       techRating: undefined,
       softskillsRating: undefined,
-      remarks: '',
-      interview: interviewInfo?.interview || null,
+      remarks: "",
+      interview: {
+        interviewId: interviewId,
+      },
     },
     validationSchema: interviewRoundSchema,
     onSubmit: async (values) => {
+      console.log(interviewId);
+      console.log(values);
+
       try {
         await createInterviewRound(values).then((data) => {
           console.log(data);
-          if(data.status === 200) {
+          if (data.status === 200) {
             toast.success("Round added successfully", {
               position: "top-right",
-            })
+            });
           }
           if (onclose) onclose();
         });
@@ -48,13 +59,18 @@ export default function AddRound({
   return (
     <div className={`${className}`}>
       <div className="w-full max-w-2xl mx-auto p-6">
-        <h1 className="text-2xl font-semibold mb-6 dark:text-black">Add New Round</h1>
+        <h1 className="text-2xl font-semibold mb-6 dark:text-black">
+          Add New Round
+        </h1>
 
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
           {/* Interview Date */}
           <div className="space-y-2">
-            <label htmlFor="roundDate" className="block text-sm font-medium dark:text-black">
-              Interview Date
+            <label
+              htmlFor="roundDate"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Interview Date <span className="text-red-500">*</span>
             </label>
             <input
               type="date"
@@ -66,14 +82,19 @@ export default function AddRound({
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
             />
             {formik.touched.roundDate && formik.errors.roundDate && (
-              <div className="text-red-500 text-sm">{formik.errors.roundDate}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.roundDate}
+              </div>
             )}
           </div>
 
           {/* Round Number */}
-          <div className="space-y-2">
-            <label htmlFor="roundNumber" className="block text-sm font-medium dark:text-black">
-              Round Number
+          {/* <div className="space-y-2">
+            <label
+              htmlFor="roundNumber"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Round Number<span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -85,14 +106,19 @@ export default function AddRound({
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
             />
             {formik.touched.roundNumber && formik.errors.roundNumber && (
-              <div className="text-red-500 text-sm">{formik.errors.roundNumber}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.roundNumber}
+              </div>
             )}
-          </div>
+          </div> */}
 
           {/* Interviewer Name */}
           <div className="space-y-2">
-            <label htmlFor="interviewerName" className="block text-sm font-medium dark:text-black">
-              Interviewer Name
+            <label
+              htmlFor="interviewerName"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Interviewer Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -104,16 +130,21 @@ export default function AddRound({
               placeholder="Enter Interviewer Name"
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
             />
-            {formik.touched.interviewerName && formik.errors.interviewerName && (
-              <div className="text-red-500 text-sm">{formik.errors.interviewerName}</div>
-            )}
+            {formik.touched.interviewerName &&
+              formik.errors.interviewerName && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.interviewerName}
+                </div>
+              )}
           </div>
 
           {/* Interview Status */}
           <div className="space-y-2">
-            <span className="block text-sm font-medium dark:text-black">Interview Status</span>
+            <span className="block text-sm font-medium dark:text-black">
+              Interview Status <span className="text-red-500">*</span>
+            </span>
             <div className="flex gap-4">
-              {['Passed', 'Rejected', 'On-Hold', 'Pending'].map((status) => (
+              {["Passed", "Rejected", "On-Hold", "Pending"].map((status) => (
                 <label key={status} className="inline-flex items-center">
                   <input
                     type="radio"
@@ -128,15 +159,21 @@ export default function AddRound({
                 </label>
               ))}
             </div>
-            {formik.touched.interviewStatus && formik.errors.interviewStatus && (
-              <div className="text-red-500 text-sm">{formik.errors.interviewStatus}</div>
-            )}
+            {formik.touched.interviewStatus &&
+              formik.errors.interviewStatus && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.interviewStatus}
+                </div>
+              )}
           </div>
 
           {/* Remarks */}
           <div className="space-y-2">
-            <label htmlFor="remarks" className="block text-sm font-medium dark:text-black">
-              Remarks
+            <label
+              htmlFor="remarks"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Remarks<span className="text-red-500">*</span>
             </label>
             <textarea
               id="remarks"
@@ -148,20 +185,25 @@ export default function AddRound({
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px] dark:text-black"
             />
             {formik.touched.remarks && formik.errors.remarks && (
-              <div className="text-red-500 text-sm">{formik.errors.remarks}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.remarks}
+              </div>
             )}
           </div>
 
           {/* Tech Rating */}
           <div className="space-y-2">
-            <label htmlFor="techRating" className="block text-sm font-medium dark:text-black">
-              Tech Rating
+            <label
+              htmlFor="techRating"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Tech Rating<span className="text-red-500">*</span>
             </label>
             <input
               type="number"
               id="techRating"
               name="techRating"
-              value={formik.values.techRating || ''}
+              value={formik.values.techRating || ""}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter Rating from 1 to 10"
@@ -170,20 +212,25 @@ export default function AddRound({
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
             />
             {formik.touched.techRating && formik.errors.techRating && (
-              <div className="text-red-500 text-sm">{formik.errors.techRating}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.techRating}
+              </div>
             )}
           </div>
 
           {/* Soft Skills Rating */}
           <div className="space-y-2">
-            <label htmlFor="softskillsRating" className="block text-sm font-medium dark:text-black">
-              Soft Skill Rating
+            <label
+              htmlFor="softskillsRating"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Soft Skill Rating<span className="text-red-500">*</span>
             </label>
             <input
               type="number"
               id="softskillsRating"
               name="softskillsRating"
-              value={formik.values.softskillsRating || ''}
+              value={formik.values.softskillsRating || ""}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter Rating from 1 to 10"
@@ -191,29 +238,46 @@ export default function AddRound({
               max="10"
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
             />
-            {formik.touched.softskillsRating && formik.errors.softskillsRating && (
-              <div className="text-red-500 text-sm">{formik.errors.softskillsRating}</div>
-            )}
+            {formik.touched.softskillsRating &&
+              formik.errors.softskillsRating && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.softskillsRating}
+                </div>
+              )}
           </div>
 
           {/* Technology Interviewed */}
           <div className="space-y-2">
-            <label htmlFor="technologyInterviewed" className="block text-sm font-medium dark:text-black">
-              Technology Interviewed
+            <label
+              htmlFor="technologyInterviewed"
+              className="block text-sm font-medium dark:text-black"
+            >
+              Technology Interviewed<span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              id="technologyInterviewed"
-              name="technologyInterviewed"
-              value={formik.values.technologyInterviewed}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="Enter Single or Multiple Technologies"
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
-            />
-            {formik.touched.technologyInterviewed && formik.errors.technologyInterviewed && (
-              <div className="text-red-500 text-sm">{formik.errors.technologyInterviewed}</div>
-            )}
+            <div className="flex gap-2">
+              <select
+                name=""
+                id=""
+                className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
+                onChange={(e) =>
+                  formik.setFieldValue("technologyInterviewed", e.target.value)
+                }
+                value={formik.values.technologyInterviewed}
+              >
+                <option value="">Select a Skill</option>
+                {masterTechnologies?.map((skill: any, index: number) => (
+                  <option key={index} value={skill.technology}>
+                    {skill.technology}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {formik.touched.technologyInterviewed &&
+              formik.errors.technologyInterviewed && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.technologyInterviewed}
+                </div>
+              )}
           </div>
 
           {/* Submit and Cancel Buttons */}
@@ -222,7 +286,7 @@ export default function AddRound({
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             disabled={formik.isSubmitting}
           >
-            {formik.isSubmitting ? 'Adding...' : 'Add Round'}
+            {formik.isSubmitting ? "Adding..." : "Add Round"}
           </button>
           <button
             type="button"

@@ -103,7 +103,7 @@ export const fetchJobDescription = async (jobId: number) => {
 };
 
 // POST /api/jobs/jd/{jobId}
-  export const uploadJobDescription = async (jobId: number, file: File) => {
+  export const uploadJobDescriptionById = async (jobId: number, file: File) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -133,5 +133,22 @@ export const fetchJobsByClient = async (clientId: number) => {
     return response.data;
   } catch (err: any) {
     return err.response ? err.response.data : err;
+  }
+};
+
+export const uploadJD = async (reqData:any) => {
+  try {
+    const response = await axios.post(`${API_URL}api/jobs/jd`, reqData, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: "Basic " + btoa(`${Email}:${Password}`),
+      },
+    });
+    return response.data;
+  } catch (err: any) {
+    console.error("Upload error:", err);
+    return err.response ? err.response.data : err.message;
   }
 };

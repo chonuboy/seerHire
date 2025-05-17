@@ -8,11 +8,13 @@ import ClientCard from "@/components/Elements/cards/clientCard";
 import { JobDescription } from "@/components/Elements/cards/jobDescription";
 import JobDescriptionUploader from "@/components/Forms/jobs/jdUploader";
 import PdfViewer from "@/components/Elements/utils/pdfViewer";
+import { Popup } from "@/components/Elements/cards/popup";
 
 export default function Job() {
   const router = useRouter();
   const jobId = Number(router.query.id);
   const [currentJob, setCurrentJob] = useState<any | null>(null);
+  const [isJdUpdated, setJdUpdated] = useState(false);
 
   useEffect(() => {
     if (router.isReady) {
@@ -20,6 +22,7 @@ export default function Job() {
         .then((data) => {
           setCurrentJob(data);
           console.log(data.jd);
+          console.log(data)
         })
         .catch((err) => {
           console.log(err);
@@ -38,18 +41,32 @@ export default function Job() {
           "No Client"
         )}
 
-        <h3 className="text-xl font-semibold">Job Info</h3>
-        {currentJob ? <JobCard job={currentJob} /> : "No Job"}
+        {currentJob ? (
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">Job Info</h3>
+            <div className="flex justify-end">
+              <button className="bg-blue-500 text-white py-1 px-2 rounded-md" onClick={() => setJdUpdated(true)}>
+                Update JD
+              </button>
+            </div>
 
-        <div className="w-full">
-          <h3 className="text-xl font-semibold">Job Description</h3>
-          <JobDescriptionUploader jobId={Number(router.query.id)} />
-        </div>
+            <JobCard job={currentJob} />
+          </div>
+        ) : (
+          "No Job"
+        )}
+        {
+          isJdUpdated && (
+            <Popup onClose={() => setJdUpdated(false)}>
+              <JobDescriptionUploader jobId={Number(router.query.id)} />
+            </Popup>
+          )
+        }
 
-        <div
+        {/* <div
           className="w-full space-y-4 text-lg"
           dangerouslySetInnerHTML={{ __html: currentJob?.jobDescription || "" }}
-        ></div>
+        ></div> */}
         <JobDescription currentJob={currentJob} />
         <div className="flex justify-end items-end gap-4">
           <button
@@ -62,7 +79,7 @@ export default function Job() {
             className="bg-blue-500 px-4 py-1 rounded-md hover:bg-blue-600 hover:text-white"
             onClick={() => router.push(`/jobs/${jobId}/candidates`)}
           >
-            View Candidates
+            Applied Candidates
           </button>
         </div>
       </div>

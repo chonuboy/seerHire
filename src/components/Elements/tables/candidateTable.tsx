@@ -8,12 +8,16 @@ const CandidateTable = ({
   currentPage,
   onPageChange,
   isRecruitment,
+  interviewAssign,
+  interviewjobId
 }: {
   candidateTableData: any;
   candidateTableColumns: Columns;
   currentPage?: number;
   onPageChange?: (page: number) => void;
   isRecruitment?: boolean;
+  interviewAssign?: any;
+  interviewjobId?: any;
 }) => {
 
   return (
@@ -28,6 +32,8 @@ const CandidateTable = ({
       currentPage={currentPage}
       totalPages={candidateTableData.totalPages}
       onPageChange={onPageChange}
+      assignInterview={interviewAssign}
+      jobId={interviewjobId}
     />
   );
 };

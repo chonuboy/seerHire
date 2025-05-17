@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "./Card";
 import { Candidate } from "@/lib/definitions";
+import { getContactPreferredJobTypeByContact } from "@/api/candidates/preferredJob";
+import { getContactHiringTypeByContactId } from "@/api/candidates/hiringType";
 
 export const CandidateCard = ({
   children,
@@ -12,10 +14,34 @@ export const CandidateCard = ({
   const [currentCandidate, setCurrentCandidate] = useState<Candidate | null>(
     null
   );
+  const [candidateId, setCandidateId] = useState<number | null>(null);
+  const [allPreferredJobTypes, setAllPreferredJobTypes] = useState<any[]>([]);
 
   useEffect(() => {
     if (candidateData) setCurrentCandidate(candidateData);
-  });
+    if (candidateData?.contactId) setCandidateId(candidateData?.contactId);
+    if (candidateId !== undefined || candidateId !== 0) {
+      try{
+        if(candidateId){
+          getContactPreferredJobTypeByContact(candidateId).then((data) => {
+        let modes;
+        if (data.status == "NOT_FOUND") {
+          setAllPreferredJobTypes(["Not Menioned"]);
+          return;
+        }
+        if (data.length > 1) {
+          modes = data.map((job: any) => job.preferredJobMode);
+        } else {
+          modes = [data[0].preferredJobMode];
+        }
+        setAllPreferredJobTypes(modes);
+      }).catch(err => {});
+      }
+    }catch(err){}
+        
+      
+    }
+  },[candidateData, candidateId]);  
 
   return (
     <Card className="p-2 space-y-4 max-h-full shadow-none md:text-base text-sm dark:bg-black">
@@ -51,9 +77,7 @@ export const CandidateCard = ({
           <div className="space-y-2">
             <p>Preferred Job Type</p>
             <p className="text-blue-600 font-semibold text-sm">
-              {currentCandidate?.preferredJobType
-                ? currentCandidate.preferredJobType
-                : "Not Mentioned"}
+              {allPreferredJobTypes.join(", ")}
             </p>
           </div>
           <div className="space-y-2">
@@ -97,7 +121,7 @@ export const CandidateCard = ({
           <div className="space-y-2">
             <p>Expected Salary</p>
             <p className="text-blue-600 font-semibold text-sm">
-              {currentCandidate?.currentSalary}
+              {currentCandidate?.currentSalary} LPA
             </p>
           </div>
         </div>

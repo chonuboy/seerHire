@@ -197,11 +197,11 @@ technicalPerson: yup.string()
   hrMobileNumber: yup
     .string()
     .required("HR Mobile Number is required")
-    .max(11, "Must be 11 Numbers or less"),
+    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/i,"Invalid Mobile number format"),
   companyLandline: yup
     .string()
     .required("Company Landline is required")
-    .matches(/^\d+$/, "Landline must be numeric").max(10, "Must be 10 Numbers or less"),
+    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/i,"Invalid landline number format"),
   hrContactPersonEmail: yup
     .string()
     .matches(

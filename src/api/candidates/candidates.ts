@@ -28,12 +28,12 @@ export async function uploadResume(reqData: any) {
         "X-Requested-With": "XMLHttpRequest",
         Authorization: "Basic " + btoa(`${Email}:${Password}`),
       },
-      onUploadProgress: (progressEvent: any) => {
-        const progress = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        console.log(progress);
-      },
+      // onUploadProgress: (progressEvent: any) => {
+      //   const progress = Math.round(
+      //     (progressEvent.loaded * 100) / progressEvent.total
+      //   );
+      //   console.log(progress);
+      // },
     });
     return response.data;
   } catch (err: any) {
@@ -191,4 +191,28 @@ export async function uploadCandidateResume(reqData: any, contactId: number) {
     console.error("Upload error:", err);
     return err.response ? err.response.data : err.message;
   }
+}
+
+export async function uploadAutofillResume(reqData: any) {
+  try{
+    const response = await axios.post(`${API_URL}api/resume/parse`, reqData, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: "Basic " + btoa(`${Email}:${Password}`),
+      },
+      onUploadProgress: (progressEvent: any) => {
+        const progress = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        console.log(progress);
+      },
+    });
+    return response.data;
+  } catch (err: any) {
+    console.error("Upload error:", err);
+    return err.response ? err.response.data : err.message;
+  }
+  
 }

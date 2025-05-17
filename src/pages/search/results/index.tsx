@@ -14,7 +14,6 @@ export default function SearchResults(){
         console.log(currentQueries);
         try{
             searchCandidates(currentQueries).then((data)=>{
-                console.log(data);
                 setResults(data.content);
             }).catch((err)=>{
                 console.log(err);

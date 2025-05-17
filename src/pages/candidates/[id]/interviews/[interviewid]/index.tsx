@@ -10,32 +10,38 @@ import { CandidateCard } from "@/components/Elements/cards/candidateCard";
 import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
 import JobCard from "@/components/Elements/cards/jobCard";
-import { Round } from "@/lib/models/candidate";
+import { Round, Technology } from "@/lib/models/candidate";
 import InterviewForm from "@/components/Forms/jobs/updateInterview";
 import AddRound from "@/components/Forms/jobs/addInterview";
 import { Candidate } from "@/lib/definitions";
 import { fetchCandidate } from "@/api/candidates/candidates";
-import { fetchContactInterview } from "@/api/candidates/interviews";
-import { fetchInterviewRoundsByContactAndJob } from "@/api/interviews/InterviewRounds";
+import { fetchContactInterview, fetchInterviewsByContact } from "@/api/candidates/interviews";
+import { fetchInterviewRoundsByContact, fetchInterviewRoundsByContactAndJob } from "@/api/interviews/InterviewRounds";
 import { fetchInterviewRound } from "@/api/interviews/InterviewRounds";
 import { Interview } from "@/lib/models/candidate";
+import { fetchAllContactTechnologies } from "@/api/candidates/candidateTech";
+import { fetchAllTechnologies } from "@/api/master/masterTech";
 
 export default function CandidateInterviews() {
   const router = useRouter();
-  const Id = Number(router.query.interviewid);
+  const {contactInterViewId} = router.query; 
   const candidateId = Number(router.query.id);
   const [addRoundEnabled, setAddRoundEnabled] = useState(false);
   const [updateRoundEnabled, setUpdateRoundEnabled] = useState(false);
   const [currentCandidate, setCurrentCandidate] = useState<Candidate | null>(
     null
   );
-  const [currentJobData, setCurrentJobData] = useState<Interview | null>(null);
+  const [currentJobData, setCurrentJobData] = useState<Interview[] | null>(null);
   const [allRounds, setAllRounds] = useState<Round[] | null>(null);
   const [selectedRound, setSelectedRound] = useState<Round | null>(null); // Track the selected round
+  const [masterTech,setMasterTech] = useState<any[] | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
       const Id = Number(router.query.interviewid);
+      if(router.query.id){
+        
+      }
       const candidateId = Number(router.query.id);
       fetchCandidate(candidateId)
         .then((data) => {
@@ -45,15 +51,20 @@ export default function CandidateInterviews() {
           console.log(err);
         });
 
-      fetchInterviewRoundsByContactAndJob(candidateId, Id).then((data) => {
+      fetchInterviewRoundsByContactAndJob(candidateId,Id).then((data) => {
         setAllRounds(data);
       });
 
-      fetchContactInterview(Id).then((data) => {
+      fetchInterviewsByContact(candidateId).then((data) => {
         setCurrentJobData(data);
       });
+
+      fetchAllTechnologies().then((data) => {
+        setMasterTech(data);
+        console.log(data);
+      });
     }
-  }, [candidateId, Id, updateRoundEnabled, addRoundEnabled, router.isReady]);
+  }, [candidateId, contactInterViewId, updateRoundEnabled, addRoundEnabled, router.isReady]);
 
   const handleUpdateRound = (round: Round) => {
     console.log(round);
@@ -79,6 +90,14 @@ export default function CandidateInterviews() {
         {/* Interviews Section */}
         <section className="space-y-8">
           <h2 className="text-xl font-semibold">Interviews</h2>
+          <div className="flex justify-end">
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+              onClick={() => setAddRoundEnabled(true)}
+            >
+              Add New Round
+            </button>
+          </div>
           {allRounds && allRounds.length > 0 ? (
             allRounds?.map((round) => (
               <div key={round.roundId}>
@@ -98,9 +117,9 @@ export default function CandidateInterviews() {
                     <div className="flex justify-between items-start mb-6">
                       <div className="flex items-center gap-12">
                         <div>
-                          <h4 className="font-semibold text-lg">
-                            {round.roundName}
-                          </h4>
+                          <div className="font-semibold text-lg flex items-center gap-2">
+                            <span className="text-green-500">{round.interview?.clientJob?.jobTitle}</span>
+                          </div>
                           <p className="text-sm text-gray-500 dark:text-gray-300">
                             {round.roundDate}
                           </p>
@@ -113,7 +132,7 @@ export default function CandidateInterviews() {
                             ? "success"
                             : round.interviewStatus === "On-Hold"
                             ? "secondary"
-                            : "rejected"
+                            : round.interviewStatus === "Pending" ? "default" : "rejected"
                         }
                       >
                         {round.interviewStatus}
@@ -184,41 +203,19 @@ export default function CandidateInterviews() {
             </Popup>
           )}
 
-          <div className="flex justify-end mt-8">
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-              onClick={() => setAddRoundEnabled(true)}
-            >
-              Add New Round
-            </button>
-          </div>
+          
         </section>
 
         {/* Render the Add Round Popup */}
-        {addRoundEnabled && (
+        {addRoundEnabled && currentJobData && (
           <Popup onClose={() => setAddRoundEnabled(false)}>
-            {allRounds &&
-            allRounds.length > 0 &&
-            allRounds[0].interview &&
-            allRounds[0].interview.contactDetails ? (
-              <AddRound
-                className="mt-10 rounded-md bg-white m-8 dark:text-black"
-                interviewInfo={{
-                  interview: allRounds[0].interview,
-                }}
-                onclose={() => setAddRoundEnabled(false)}
-              />
-            ) : (
-              currentJobData && (
-                <AddRound
+            <AddRound
                   className="mt-10 rounded-md bg-white m-8"
-                  interviewInfo={{
-                    interview: currentJobData,
-                  }}
+                  interviewId={contactInterViewId}
                   onclose={() => setAddRoundEnabled(false)}
+                  roundNumber={allRounds?.[allRounds?.length - 1]?.roundNumber ?? 0}
+                  masterTechnologies={masterTech}
                 />
-              )
-            )}
           </Popup>
         )}
       </div>

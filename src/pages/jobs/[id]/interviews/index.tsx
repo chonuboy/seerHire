@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Interview } from "@/lib/models/candidate";
-import { fetchAllContactInterviews } from "@/api/candidates/interviews";
+import { fetchAllContactInterviews, fetchContactsByJob } from "@/api/candidates/interviews";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -13,17 +13,17 @@ export default function AllInterviews() {
 
   useEffect(() => {
     try {
-      fetchAllContactInterviews().then((data) => {
-        const filteredInterviews = data.filter(
-          (interview: Interview) => interview.clientJob?.jobId === Number(id)
-        );
-        setAllInterviews(filteredInterviews);
+      if(router.isReady){
+        fetchContactsByJob(Number(router.query.id)).then((data) => {
+        setAllInterviews(data);
         console.log(data);
       });
+      }
+      
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [router.isReady]);
 
   return (
     <MainLayout>
@@ -68,12 +68,10 @@ export default function AllInterviews() {
                     Date : {item.interviewDate}
                   </p>
                   <Link
-                    href={`/candidates/${Number(router.query.id)}/interviews/${
-                      index + 1
-                    }`}
+                    href={{ pathname:`/candidates/${item?.contactDetails?.contactId}/interviews/${item?.clientJob?.jobId}`,query:{contactInterViewId:item?.interviewId}}}
                   >
                     <button className="bg-[var(--theme-background)] border-black-200 border-2 py-1 px-2 absolute right-4 bottom-4 bg-blue-500 text-white rounded-md border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
-                      View Results
+                      All Rounds
                     </button>
                   </Link>
                 </div>
