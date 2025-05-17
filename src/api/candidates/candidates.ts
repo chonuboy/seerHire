@@ -117,10 +117,10 @@ export const fetchCandidate = async (candidateId: any) => {
   }
 };
 
-export const searchCandidates = async (query: any) => {
+export const searchCandidates = async (query: any, page: number) => {
   try {
     const response = await axios.post(
-      `${API_URL}api/search/candidates`,
+      `${API_URL}api/search/candidates?page=${page}&size=10`,
       query,
       {
         method: "POST",

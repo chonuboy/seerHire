@@ -46,6 +46,7 @@ export default function Dashboard() {
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     setUserRole(userRole);
+    console.log(userRole)
     fetchAllClients().then((data: any) => {
       setAllClients(data.totalElements);
       setClients(data.content);
@@ -182,7 +183,7 @@ export default function Dashboard() {
                 <span className="text-2xl font-bold text-black dark:text-white">
                   {allClients}
                 </span>
-                <span className="bg-green-200 text-green-800 px-3 py-1 font-semibold rounded-full flex items-center">
+                {/* <span className="bg-green-200 text-green-800 px-3 py-1 font-semibold rounded-full flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
                     viewBox="0 0 24 24"
@@ -193,7 +194,7 @@ export default function Dashboard() {
                     <path d="M5 15l7-7 7 7" />
                   </svg>
                   10%
-                </span>
+                </span> */}
               </div>
             </div>
           </div>
@@ -209,7 +210,7 @@ export default function Dashboard() {
                 <span className="text-2xl font-bold text-black dark:text-white">
                   0
                 </span>
-                <span className="bg-red-200 text-red-800 font-semibold px-3 py-1 rounded-full flex items-center">
+                {/* <span className="bg-red-200 text-red-800 font-semibold px-3 py-1 rounded-full flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
                     viewBox="0 0 24 24"
@@ -220,7 +221,7 @@ export default function Dashboard() {
                     <path d="M5 9l7 7 7-7" />
                   </svg>
                   0%
-                </span>
+                </span> */}
               </div>
             </div>
           </div>
@@ -307,7 +308,6 @@ export default function Dashboard() {
         </div>
       </section>
       {/* Tables */}
-      {userRole === "SuperAdmin" && (
         <section className="space-y-4">
           {allTech.length > 0 ? (
             <TechnologyTable initialData={allTech}></TechnologyTable>
@@ -325,7 +325,6 @@ export default function Dashboard() {
             <LocationTable initialData={allLocations}></LocationTable>
           ) : null}
         </section>
-      )}
     </>
   );
 }

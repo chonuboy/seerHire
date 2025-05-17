@@ -8,12 +8,14 @@ import { fetchJobDescription } from "@/api/client/clientJob";
 import mammoth from "mammoth";
 import { Popup } from "../cards/popup";
 const PdfViewer = ({
+  isEdit,
   candidateId,
   autoClose,
   isJd,
   resume,
 }: {
   candidateId: number;
+  isEdit?: boolean;
   autoClose?: () => void;
   isJd?: boolean;
   resume: string;
@@ -60,9 +62,6 @@ const PdfViewer = ({
 
     const formData = new FormData();
     formData.append("file", file);
-    toast.warning("Uploading Resume...", {
-      position: "bottom-right",
-    });
     try {
       uploadCandidateResume(formData, candidateId)
         .then((data) => {
@@ -217,8 +216,8 @@ const PdfViewer = ({
   }
 
   return (
-    <div className="h-screen m-auto w-9/12 text-xs md:text-base">
-      {!isJd && (
+    <div className="h-screen m-auto w-9/12 text-xs md:text-base dark:bg-white p-2">
+      {!isJd && isEdit && (
         <div className="flex justify-end my-4">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0.5 px-4 rounded"
@@ -313,8 +312,8 @@ const PdfViewer = ({
       <iframe
         src={pdfUrl}
         width="100%"
-        height="100%"
-        style={{ border: "none" }}
+        height="93%"
+        style={{ border: "none",overflow: "hidden" ,scrollbarWidth: "none",msOverflowStyle: "none" }}
         title="Candidate Resume"
       />
     </div>

@@ -206,8 +206,11 @@ export interface Round {
 
 
 export interface Interviews {
+  interviewId?: number;
   interview:Interview,
+  interviewStatus?: string;
   contactDetails?:Candidate|null,
+  clientJob?:Client;
 }
 
 export interface Technology{
@@ -248,7 +251,7 @@ export interface SearchQueries {
   highestEducation?: string|null;
   preferredLocation?: string[]|null;
   domain?: string[]|null;
-  contactHiringType: string[]|null;
+  contactHiringType: string[]|null|undefined;
   mustHaveTechnologies?: string[] |null;
   goodToHaveTechnologies?: string[] |null;
   companies?: string[]|null;

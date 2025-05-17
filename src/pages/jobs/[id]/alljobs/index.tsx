@@ -40,9 +40,15 @@ export default function AllJobs() {
           });
         } else {
           console.log(data);
-          router.push(
-            `candidates/${contactId}/interviews/${jobId}?contactInterViewId=${data.interviewId}`
-          );
+          toast.success("Interview scheduled successfully", {
+            position: "top-right",
+          });
+          setTimeout(() => {
+            router.push({
+              pathname: `/candidates/${contactId}/interviews/${jobId}`,
+              query: { contactInterViewId: data.interviewId },
+            });
+          }, 1000);
         }
       });
     } catch (err: any) {

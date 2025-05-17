@@ -1,10 +1,19 @@
-import React from 'react'
+import { fetchAllClients } from '@/api/master/clients';
+import React, { useEffect, useState } from 'react'
 import { PieChart, Pie, Cell} from 'recharts';
 import { ResponsiveContainer,Tooltip } from 'recharts'; 
 const Piechart = () => {
+    const [clientCount,setClientCount] = useState(0);
+
+    useEffect(() => {
+        fetchAllClients().then((data) => {
+            setClientCount(data.totalElements)
+        })
+    }, [])
+
     const data = [
-        { name: "Active Clients", value: 200, color: "#3b82f6" },
-        {name:"Inactive Clients",value:50,color:"#d1cece"},
+        { name: "Active Clients", value: clientCount, color: "#3b82f6" },
+        {name:"Inactive Clients",value:0,color:"#d1cece"},
     ]
     return (
         <div>

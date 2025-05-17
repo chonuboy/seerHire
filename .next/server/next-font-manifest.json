@@ -10,7 +10,7 @@
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/clients": [
+    "/candidates/[id]": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
@@ -18,19 +18,15 @@
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/search": [
+    "/analytics": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/settings": [
+    "/candidates/[id]/interviews/[interviewid]": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/candidates/add": [
-      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
-      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
-    ],
-    "/candidates/[id]": [
+    "/clients": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
@@ -38,7 +34,19 @@
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ],
-    "/help": [
+    "/jobs/[id]": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/jobs/[id]/candidates": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/candidates/add": [
+      "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
+      "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
+    ],
+    "/search": [
       "static/media/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBHMdazQ-s.p.a797655c.woff2",
       "static/media/R70mjywflP6FLr3gZx7K8UyuXDs9zVwDmXCb8lxYgmuii32UGoVldX6UgfjL4_3sMM_kB_qXSEX5KSh01uHN_g-s.p.6349392f.woff2"
     ]

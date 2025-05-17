@@ -94,16 +94,18 @@ export default function UserCard() {
                 </tr>
               </thead>
               <tbody>
-                {allUsers && allUsers.length > 0 && allUsers.map((user:any, index:number) => (
-                  <tr
-                    key={index}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100"
-                  >
-                    <td className="py-4 px-4">{user.userName}</td>
-                    <td className="py-4 px-4">{user.email}</td>
-                    <td className="py-4 px-4">{user.roles[0].roleName}</td>
-                  </tr>
-                ))}
+                {allUsers &&
+                  allUsers.length > 0 &&
+                  allUsers.map((user: any, index: number) => (
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100"
+                    >
+                      <td className="py-4 px-4">{user.userName}</td>
+                      <td className="py-4 px-4">{user.email}</td>
+                      <td className="py-4 px-4">{user.roles[0].roleName}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
             {isUserAdded && (
@@ -128,7 +130,7 @@ export default function UserCard() {
                           name="userName"
                           value={formData.userName}
                           onChange={handleChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-black"
                           required
                         />
                       </div>
@@ -146,7 +148,7 @@ export default function UserCard() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-black"
                           required
                         />
                       </div>
@@ -164,7 +166,7 @@ export default function UserCard() {
                           name="password"
                           value={formData.password}
                           onChange={handleChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-black"
                           required
                         />
                       </div>
@@ -181,7 +183,7 @@ export default function UserCard() {
                           name="role"
                           value={formData.roles[0].roleId}
                           onChange={handleRoleChange}
-                          className="mt-1 w-full py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="mt-1 w-full py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-black"
                         >
                           <option value="1">SuperAdmin</option>
                           <option value="2">Recruiter</option>
@@ -190,19 +192,52 @@ export default function UserCard() {
                         </select>
                       </div>
 
-                      <div className="space-y-4">
+                      <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         <button
                           type="submit"
-                          className="w-full bg-blue-500 text-white py-1 rounded-md"
+                          className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
                         >
-                          Submit
+                          <svg
+                            className="w-5 h-5 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Update
                         </button>
                         <button
-                          className="w-full bg-red-500 text-white py-1 rounded-md"
-                          onClick={() => {
+                          type="button"
+                          onClick={()=>{
                             setIsUserAdded(false);
+                            formData.email = '';
+                            formData.password = '';
+                            formData.userName = '';
+                            
                           }}
+                          className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
                         >
+                          <svg
+                            className="w-5 h-5 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
                           Cancel
                         </button>
                       </div>

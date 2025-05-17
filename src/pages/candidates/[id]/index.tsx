@@ -321,8 +321,7 @@ export default function Candidates() {
         // If the skill doesn't exist, create it
         const newSkill = {
           technology: selectedSkill,
-          experience: techExp,
-          expertiseLevel: expLevel,
+
           //  fields for the createTechnology API
         };
 
@@ -735,16 +734,6 @@ export default function Candidates() {
             </h4>
           </div>
           <div className="flex gap-2 items-center">
-            <button
-              onClick={() =>
-                document
-                  .getElementById("resume")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="bg-[var(--field-background)] border-black-200 border-2 py-1 px-2 rounded-lg hover:bg-black hover:text-[var(--content-background)] dark:hover:text-black dark:hover:bg-white"
-            >
-              View Resume
-            </button>
             <button
               onClick={() =>
                 document
@@ -1292,7 +1281,7 @@ export default function Candidates() {
                         disabled
                         type="text"
                         value={selectedTech.technology.technology}
-                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
                         onChange={(e) =>
                           setSelectedTech({
                             ...selectedTech,
@@ -1312,7 +1301,7 @@ export default function Candidates() {
                         id="experience"
                         type="text"
                         value={selectedTech.experience}
-                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
                         onChange={(e) =>
                           setSelectedTech({
                             ...selectedTech,
@@ -1331,7 +1320,7 @@ export default function Candidates() {
                       <select
                         name="skill"
                         id="skill"
-                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
                         value={selectedTech.expertiseLevel} // Controlled component
                         onChange={(e) => {
                           setSelectedTech({
@@ -1340,6 +1329,7 @@ export default function Candidates() {
                           });
                         }}
                       >
+                        <option className="text-gray-500" disabled value="">Select level</option>
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Advanced">Advanced</option>
@@ -1603,6 +1593,7 @@ export default function Candidates() {
           {currentCandidate.resume?.includes("pdf") ||
           currentCandidate.resume?.includes("docx") ? (
             <PdfViewer
+            isEdit = {isEdit}
               candidateId={Number(router.query.id)}
               autoClose={() => {
                 setIsFormVisible(false);

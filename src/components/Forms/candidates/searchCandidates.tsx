@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useEffect, useState } from "react"
-import { useFormik } from "formik"
-import { TagInput } from "./inputs"
-import { SingleInput } from "./inputs"
-import { candidateSearchSchema } from "@/lib/models/candidate"
-import type { SearchQueries } from "@/lib/models/candidate"
-import { X } from "lucide-react"
-import { setSearchQuery } from "@/Features/candidateSearchSlice"
-import { useDispatch } from "react-redux"
-import { useRouter } from "next/router"
-import { toast } from "react-toastify"
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { TagInput } from "./inputs";
+import { SingleInput } from "./inputs";
+import { candidateSearchSchema } from "@/lib/models/candidate";
+import type { SearchQueries } from "@/lib/models/candidate";
+import { X } from "lucide-react";
+import { setSearchQuery } from "@/Features/candidateSearchSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const SearchForm: React.FC = () => {
-  const [inputValue, setInputValue] = useState("")
-  const dispatch = useDispatch()
-  const router = useRouter()
+  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const formik = useFormik<SearchQueries>({
     initialValues: {
@@ -30,7 +30,7 @@ const SearchForm: React.FC = () => {
       highestEducation: null,
       preferredLocation: [],
       domain: [],
-      preferredJobMode:[],
+      preferredJobMode: [],
       contactHiringType: [],
       mustHaveTechnologies: null,
       goodToHaveTechnologies: null,
@@ -39,107 +39,125 @@ const SearchForm: React.FC = () => {
     validationSchema: candidateSearchSchema,
     onSubmit: (values) => {
       if (values.companies?.length === 0) {
-        values.companies = null
+        values.companies = null;
       }
       if (values.preferredLocation?.length === 0) {
-        values.preferredLocation = null
+        values.preferredLocation = null;
       }
       if (values.domain?.length === 0) {
-        values.domain = null
+        values.domain = null;
       }
 
-      const payload = Object.entries(values).reduce((acc: any, [key, value]) => {
-        if (value !== null && value !== "" && !(Array.isArray(value) && value.length === 0)) {
-          acc[key] = value
-        }
-        return acc
-      }, {})
+      const payload = Object.entries(values).reduce(
+        (acc: any, [key, value]) => {
+          if (
+            value !== null &&
+            value !== "" &&
+            !(Array.isArray(value) && value.length === 0)
+          ) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {}
+      );
 
-      console.log(payload)
+      console.log(payload);
 
       if (Object.keys(payload).length === 0) {
         toast.error("Please enter at least one search criteria.", {
           position: "top-center",
-        })
+        });
       } else {
-        dispatch(setSearchQuery(payload))
+        dispatch(setSearchQuery(payload));
         setTimeout(() => {
-          router.push("/search/results")
-        }, 2000)
+          router.push("/search/results");
+        }, 2000);
       }
     },
-  })
+  });
 
   useEffect(() => {
-    console.log(formik.values)
-    console.log(formik.errors)
-  }, [formik.values, formik.errors])
+    console.log(formik.values);
+    console.log(formik.errors);
+  }, [formik.values, formik.errors]);
 
   const handleAddGoodToHave = () => {
     if (
       formik.values.goodToHaveTechnologies?.includes(inputValue.trim()) ||
       formik.values.mustHaveTechnologies?.includes(inputValue.trim())
     ) {
-      toast.error("Technology already added", { position: "top-center" })
-      return
+      toast.error("Technology already added", { position: "top-center" });
+      return;
     }
     if (inputValue.trim()) {
       formik.setFieldValue("goodToHaveTechnologies", [
-        ...(formik.values.goodToHaveTechnologies?.length ? formik.values.goodToHaveTechnologies : []),
+        ...(formik.values.goodToHaveTechnologies?.length
+          ? formik.values.goodToHaveTechnologies
+          : []),
         inputValue.trim(),
-      ])
-      setInputValue("")
+      ]);
+      setInputValue("");
     }
-  }
+  };
 
   const handleAddMustHave = () => {
     if (
       formik.values.goodToHaveTechnologies?.includes(inputValue.trim()) ||
       formik.values.mustHaveTechnologies?.includes(inputValue.trim())
     ) {
-      toast.error("Technology already added", { position: "top-center" })
-      return
+      toast.error("Technology already added", { position: "top-center" });
+      return;
     }
     if (inputValue.trim()) {
       formik.setFieldValue("mustHaveTechnologies", [
-        ...(formik.values.mustHaveTechnologies?.length ? formik.values.mustHaveTechnologies : []),
+        ...(formik.values.mustHaveTechnologies?.length
+          ? formik.values.mustHaveTechnologies
+          : []),
         inputValue.trim(),
-      ])
-      setInputValue("")
+      ]);
+      setInputValue("");
     }
-  }
+  };
 
   const handleRemoveTechnology = (tech: string) => {
     formik.setFieldValue(
       "goodToHaveTechnologies",
-      formik.values.goodToHaveTechnologies?.filter((t) => t !== tech),
-    )
+      formik.values.goodToHaveTechnologies?.filter((t) => t !== tech)
+    );
     formik.setFieldValue(
       "mustHaveTechnologies",
-      formik.values.mustHaveTechnologies?.filter((t) => t !== tech),
-    )
-  }
+      formik.values.mustHaveTechnologies?.filter((t) => t !== tech)
+    );
+  };
 
   const handleAddTag = (field: keyof SearchQueries, tag: string) => {
-    if (Array.isArray(formik.values[field]) && formik.values[field].includes(tag)) {
-      toast.error(`${tag} already added`, { position: "top-center" })
-      return
+    if (
+      Array.isArray(formik.values[field]) &&
+      formik.values[field].includes(tag)
+    ) {
+      toast.error(`${tag} already added`, { position: "top-center" });
+      return;
     }
-    if (Array.isArray(formik.values[field]) && formik.values[field].includes(tag)) {
-      return
+    if (
+      Array.isArray(formik.values[field]) &&
+      formik.values[field].includes(tag)
+    ) {
+      return;
     }
 
-    Array.isArray(formik.values[field]) && formik.setFieldValue(field, [...formik.values[field], tag])
-  }
+    Array.isArray(formik.values[field]) &&
+      formik.setFieldValue(field, [...formik.values[field], tag]);
+  };
 
   const handleRemoveTag = (field: keyof SearchQueries, tag: string) => {
     formik.setFieldValue(
       field,
       Array.isArray(formik.values[field])
         ? formik.values[field].filter((t: string) => t !== tag)
-        : formik.values[field],
-    )
-  }
+        : formik.values[field]
+    );
+  };
 
   return (
     <form
@@ -222,25 +240,6 @@ const SearchForm: React.FC = () => {
             onAddTag={(tag) => handleAddTag("companies", tag)}
             onRemoveTag={(tag) => handleRemoveTag("companies", tag)}
           />
-          {/* PreferredJobTypes */}
-          <TagInput
-            name="preferredjobmode"
-            title="Preferred Job Types"
-            placeholder="Enter job types..."
-            tags={formik.values.preferredJobMode ?? []}
-            onAddTag={(tag) => handleAddTag("preferredJobMode", tag)}
-            onRemoveTag={(tag) => handleRemoveTag("preferredJobMode", tag)}
-          />
-
-          {/* Hiring Types */}
-          <TagInput
-            name="hiring type"
-            title="Hiring Types"
-            placeholder="Enter hiring types..."
-            tags={formik.values.contactHiringType ?? []}
-            onAddTag={(tag) => handleAddTag("contactHiringType", tag)}
-            onRemoveTag={(tag) => handleRemoveTag("contactHiringType", tag)}
-          />
 
           {/* Domain */}
           <TagInput
@@ -260,6 +259,172 @@ const SearchForm: React.FC = () => {
             onAddTag={(tag) => handleAddTag("preferredLocation", tag)}
             onRemoveTag={(tag) => handleRemoveTag("preferredLocation", tag)}
           />
+          {/* Remote|Onsite|Hybrid|Flexible */}
+
+          <div className="space-y-6">
+            <label className="font-semibold dark:text-white text-lg text-blue-800 mt-10">
+              Preferred Job Types
+            </label>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="preferred_Remote"
+                  id="Remote"
+                  onChange={(e) => {
+                    if (!e.target.checked) {
+                      formik.values.preferredJobMode?.filter((mode) => {
+                        mode !== e.target.value;
+                      });
+                    } else {
+                      formik.values.preferredJobMode?.push(e.target.value);
+                    }
+                  }}
+                  value="Remote"
+                />
+                <label htmlFor="preferred_Remote">Remote</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="preferred_Onsite"
+                  id="Onsite"
+                  onChange={(e) => {
+                    if (!e.target.checked) {
+                      formik.values.preferredJobMode?.filter((mode) => {
+                        mode !== e.target.value;
+                      });
+                    } else {
+                      formik.values.preferredJobMode?.push(e.target.value);
+                    }
+                  }}
+                  value="Onsite"
+                />
+                <label htmlFor="preferred_Onsite">Onsite</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="preferred_Hybrid"
+                  id="Hybrid"
+                  onChange={(e) => {
+                    if (!e.target.checked) {
+                      formik.values.preferredJobMode?.filter((mode) => {
+                        mode !== e.target.value;
+                      });
+                    } else {
+                      formik.values.preferredJobMode?.push(e.target.value);
+                    }
+                  }}
+                  value="Hybrid"
+                />
+                <label htmlFor="preferred_Hybrid">Hybrid</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="preferred_Flexible"
+                  id="Flexible"
+                  onChange={(e) => {
+                    if (!e.target.checked) {
+                      formik.values.preferredJobMode?.filter((mode) => {
+                        mode !== e.target.value;
+                      });
+                    } else {
+                      formik.values.preferredJobMode?.push(e.target.value);
+                    }
+                  }}
+                  value="Flexible"
+                />
+                <label htmlFor="preferred_Flexible">Flexible</label>
+              </div>
+            </div>
+          </div>
+
+          {/* Hiring Types */}
+          <div className="space-y-6">
+            <label className="font-semibold dark:text-white text-lg text-blue-800 mt-10">
+              Hiring Type
+            </label>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="hiringType_FullTime"
+                  id="FullTime"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      formik.values.contactHiringType?.push(e.target.value);
+                    } else {
+                      formik.values.contactHiringType =
+                        formik.values.contactHiringType?.filter(
+                          (type) => type !== e.target.value
+                        );
+                    }
+                  }}
+                  value="Full Time"
+                />
+                <label htmlFor="hiringType_FullTime">Full Time</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="hiringType_PartTime"
+                  id="PartTime"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      formik.values.contactHiringType?.push(e.target.value);
+                    } else {
+                      formik.values.contactHiringType =
+                        formik.values.contactHiringType?.filter(
+                          (type) => type !== e.target.value
+                        );
+                    }
+                  }}
+                  value="Part Time"
+                />
+                <label htmlFor="hiringType_PartTime">Part Time</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="hiringType_Contract"
+                  id="Contract"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      formik.values.contactHiringType?.push(e.target.value);
+                    } else {
+                      formik.values.contactHiringType =
+                        formik.values.contactHiringType?.filter(
+                          (type) => type !== e.target.value
+                        );
+                    }
+                  }}
+                  value="Contract"
+                />
+                <label htmlFor="hiringType_Contract">Contract</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="hiringType_Flexible"
+                  id="Flexible"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      formik.values.contactHiringType?.push(e.target.value);
+                    } else {
+                      formik.values.contactHiringType =
+                        formik.values.contactHiringType?.filter(
+                          (type) => type !== e.target.value
+                        );
+                    }
+                  }}
+                  value="Flexible"
+                />
+                <label htmlFor="hiringType_Flexible">Flexible</label>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Right Column */}
@@ -289,7 +454,11 @@ const SearchForm: React.FC = () => {
               value={formik.values.highestEducation}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.highestEducation ? formik.errors.highestEducation : null}
+              error={
+                formik.touched.highestEducation
+                  ? formik.errors.highestEducation
+                  : null
+              }
             />
           </div>
 
@@ -302,7 +471,11 @@ const SearchForm: React.FC = () => {
               value={formik.values.minExperience}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.minExperience ? formik.errors.minExperience : null}
+              error={
+                formik.touched.minExperience
+                  ? formik.errors.minExperience
+                  : null
+              }
             />
             <SingleInput
               name="maxExperience"
@@ -311,7 +484,11 @@ const SearchForm: React.FC = () => {
               value={formik.values.maxExperience}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.maxExperience ? formik.errors.maxExperience : null}
+              error={
+                formik.touched.maxExperience
+                  ? formik.errors.maxExperience
+                  : null
+              }
             />
           </div>
 
@@ -346,7 +523,9 @@ const SearchForm: React.FC = () => {
               value={formik.values.noticePeriod}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.noticePeriod ? formik.errors.noticePeriod : null}
+              error={
+                formik.touched.noticePeriod ? formik.errors.noticePeriod : null
+              }
             />
           </div>
         </div>
@@ -360,7 +539,7 @@ const SearchForm: React.FC = () => {
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default SearchForm
+export default SearchForm;

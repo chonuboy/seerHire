@@ -628,7 +628,7 @@ export default function ProfessionalForm({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="px-4 py-2 text-white bg-red-500 border border-gray-300 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
               Cancel
             </button>

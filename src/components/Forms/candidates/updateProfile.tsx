@@ -292,7 +292,9 @@ const ProfileUpdateForm = ({
           if (matchTypeId)
             deleteContactHiringType(matchTypeId.typeId).then(() => {
               if (flexibleTypeId)
-                deleteContactHiringType(flexibleTypeId.typeId).then((data)=>{console.log(data)});
+                deleteContactHiringType(flexibleTypeId.typeId).then((data) => {
+                  console.log(data);
+                });
             });
         } else {
           createContactHiringType({
@@ -513,7 +515,9 @@ const ProfileUpdateForm = ({
                 onChange={() => handleStatusChange(true)}
                 checked={formik.values.isActive === true}
               />
-              <label htmlFor="status_active">Active</label>
+              <label htmlFor="status_active" className="dark:text-black">
+                Active
+              </label>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -523,7 +527,9 @@ const ProfileUpdateForm = ({
                 onChange={() => handleStatusChange(false)}
                 checked={formik.values.isActive === false}
               />
-              <label htmlFor="status_inactive">Inactive</label>
+              <label htmlFor="status_inactive" className="dark:text-black">
+                Inactive
+              </label>
             </div>
           </div>
 
@@ -587,7 +593,9 @@ const ProfileUpdateForm = ({
                 }
                 checked={formik.values.isExpectedCtcNegotiable === true}
               />
-              <label htmlFor="salary_negotiable">Yes</label>
+              <label htmlFor="salary_negotiable" className="dark:text-black">
+                Yes
+              </label>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -599,7 +607,9 @@ const ProfileUpdateForm = ({
                 }
                 checked={formik.values.isExpectedCtcNegotiable === false}
               />
-              <label htmlFor="salary_innegotiable">No</label>
+              <label htmlFor="salary_innegotiable" className="dark:text-black">
+                No
+              </label>
             </div>
           </div>
         </div>
@@ -848,7 +858,12 @@ const ProfileUpdateForm = ({
               }}
               checked={isOnsite || isFlexible}
             />
-            <label htmlFor="preferredJobType_Onsite">Onsite</label>
+            <label
+              htmlFor="preferredJobType_Onsite"
+              className="dark:text-black"
+            >
+              Onsite
+            </label>
             <input
               type="checkbox"
               value={"Remote"}
@@ -858,7 +873,12 @@ const ProfileUpdateForm = ({
               }}
               checked={isRemote || isFlexible}
             />
-            <label htmlFor="preferredJobType_Remote">Remote</label>
+            <label
+              htmlFor="preferredJobType_Remote"
+              className="dark:text-black"
+            >
+              Remote
+            </label>
             <input
               type="checkbox"
               value={"Hybrid"}
@@ -868,7 +888,12 @@ const ProfileUpdateForm = ({
               }}
               checked={isHybrid || isFlexible}
             />
-            <label htmlFor="preferredJobType_Hybrid">Hybrid</label>
+            <label
+              htmlFor="preferredJobType_Hybrid"
+              className="dark:text-black"
+            >
+              Hybrid
+            </label>
             <input
               type="checkbox"
               value={"Flexible"}
@@ -878,7 +903,12 @@ const ProfileUpdateForm = ({
               }}
               checked={isFlexible}
             />
-            <label htmlFor="preferredJobType_Flexible">Flexible</label>
+            <label
+              htmlFor="preferredJobType_Flexible"
+              className="dark:text-black"
+            >
+              Flexible
+            </label>
           </div>
         </div>
 
@@ -901,7 +931,12 @@ const ProfileUpdateForm = ({
                 }}
                 checked={isFullTime || isFlexibleHiring}
               />
-              <label htmlFor="preferredHiringType_FullTime">Full Time</label>
+              <label
+                htmlFor="preferredHiringType_FullTime"
+                className="dark:text-black"
+              >
+                Full Time
+              </label>
             </div>
             <div className="flex items-center gap-1">
               <input
@@ -913,7 +948,12 @@ const ProfileUpdateForm = ({
                 }}
                 checked={isPartTime || isFlexibleHiring}
               />
-              <label htmlFor="preferredHiringType_PartTime">Part Time</label>
+              <label
+                htmlFor="preferredHiringType_PartTime"
+                className="dark:text-black"
+              >
+                Part Time
+              </label>
             </div>
 
             <div className="flex items-center gap-1">
@@ -926,7 +966,9 @@ const ProfileUpdateForm = ({
                 }}
                 checked={isContract || isFlexibleHiring}
               />
-              <label htmlFor="HiringType_Contract">Contract</label>
+              <label htmlFor="HiringType_Contract" className="dark:text-black">
+                Contract
+              </label>
             </div>
 
             <div className="flex items-center gap-1">
@@ -939,7 +981,12 @@ const ProfileUpdateForm = ({
                 }}
                 checked={isFlexibleHiring}
               />
-              <label htmlFor="preferredHiringType_Flexible">Flexible</label>
+              <label
+                htmlFor="preferredHiringType_Flexible"
+                className="dark:text-black"
+              >
+                Flexible
+              </label>
             </div>
           </div>
         </div>
@@ -1148,7 +1195,9 @@ const ProfileUpdateForm = ({
                   formik.setFieldValue("differentlyAbled", true);
                 }}
               />
-              <label htmlFor="differentlyAbledtrue">Yes</label>
+              <label htmlFor="differentlyAbledtrue" className="dark:text-black">
+                Yes
+              </label>
             </div>
 
             <div className="flex items-center gap-2">
@@ -1162,7 +1211,12 @@ const ProfileUpdateForm = ({
                   formik.setFieldValue("differentlyAbled", false);
                 }}
               />
-              <label htmlFor="differentlyAbledfalse">No</label>
+              <label
+                htmlFor="differentlyAbledfalse"
+                className="dark:text-black"
+              >
+                No
+              </label>
             </div>
           </div>
 
@@ -1201,18 +1255,49 @@ const ProfileUpdateForm = ({
       </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300"
-      >
-        Submit
-      </button>
-      <button
-        onClick={autoClose}
-        className="w-full bg-red-600 hover:bg-red-700 transition duration-300 text-white py-2 rounded-md"
-      >
-        Cancel
-      </button>
+      <div className="flex flex-col sm:flex-row gap-4 pt-4">
+        <button
+          type="submit"
+          className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
+        >
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          Update
+        </button>
+        <button
+          type="button"
+          onClick={autoClose}
+          className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
+        >
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+          Cancel
+        </button>
+      </div>
     </form>
   );
 };

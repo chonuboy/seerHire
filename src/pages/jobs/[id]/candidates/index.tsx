@@ -4,30 +4,26 @@ import { useEffect, useState } from "react";
 import { fetchContactsByJob } from "@/api/candidates/interviews";
 import { useRouter } from "next/router";
 import { ResultCard } from "@/components/Elements/cards/resultCard";
-import { Interview } from "@/lib/models/candidate";
+import { Interview, Interviews } from "@/lib/models/candidate";
 import { Candidate } from "@/lib/definitions";
+import { AppliedCandidates } from "@/components/Elements/cards/appliedCandidate";
 
 export default function InterviewCandidates() {
   const router = useRouter();
   const id = Number(router.query.id);
-  const [Candidates, setCandidates] = useState<Candidate[] | null>(null);
+  const [interviews,SetInterviews] = useState<Interviews[] | null>(null);
   useEffect(() => {
     fetchContactsByJob(id).then((data) => {
       if (data.length > 0) {
-        const contactDetailsArray = data
-          .map((interview: Interview) => interview.contactDetails)
-          .filter(
-            (contactDetails: any) =>
-              contactDetails !== null && contactDetails !== undefined
-          );
-        setCandidates(contactDetailsArray);
+        console.log(data);
+        SetInterviews(data);
       }
     });
   }, []);
   return (
     <MainLayout>
       <ContentHeader title="Applied Candidates" />
-      {Candidates && Candidates.length > 0 ? (
+      {interviews && interviews.length > 0 ? (
         <div>
           <div className="flex justify-end">
             <button
@@ -42,7 +38,7 @@ export default function InterviewCandidates() {
               Add New Candidate
             </button>
           </div>
-          <ResultCard candidateData={Candidates}></ResultCard>
+          <AppliedCandidates interviews={interviews}></AppliedCandidates>
         </div>
       ) : (
         <h1 className="p-4">No Candidates Found</h1>

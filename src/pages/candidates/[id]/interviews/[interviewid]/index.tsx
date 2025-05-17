@@ -113,7 +113,7 @@ export default function CandidateInterviews() {
                       Update
                     </button>
                   </CardHeader>
-                  <CardContent className="bg-white border shadow-sm p-4 dark:bg-black dark:text-white">
+                  <CardContent className="bg-white light:border shadow-sm p-4 dark:bg-black dark:text-white">
                     <div className="flex justify-between items-start mb-6">
                       <div className="flex items-center gap-12">
                         <div>

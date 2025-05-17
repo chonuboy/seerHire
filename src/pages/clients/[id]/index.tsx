@@ -60,7 +60,7 @@ export default function Client() {
         setMasterLocations(data);
       });
     }
-  }, [router.isReady, isAddJob, isBranch, isJobUpdated]);
+  }, [router.isReady, isAddJob, isBranch, isJobUpdated,isBranchUpdated]);
 
   return (
     <MainLayout>

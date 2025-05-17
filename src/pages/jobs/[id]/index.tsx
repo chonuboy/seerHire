@@ -70,12 +70,6 @@ export default function Job() {
         <JobDescription currentJob={currentJob} />
         <div className="flex justify-end items-end gap-4">
           <button
-            className="bg-gray-400 px-4 py-1 rounded-md hover:bg-gray-500 hover:text-white"
-            onClick={() => router.push(`/jobs/${jobId}/interviews`)}
-          >
-            Interview Section
-          </button>
-          <button
             className="bg-blue-500 px-4 py-1 rounded-md hover:bg-blue-600 hover:text-white"
             onClick={() => router.push(`/jobs/${jobId}/candidates`)}
           >

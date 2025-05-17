@@ -222,29 +222,6 @@ export default function Clients() {
 
               <form className="space-y-6" onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                  {/* Country Selection */}
-                  <div className="md:col-span-2">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Country Code
-                    </label>
-                    <select
-                      id="country"
-                      name="country"
-                      className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
-                      value={selectedCountry.code}
-                      onChange={handleCountryChange}
-                    >
-                      {countryCodes.map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {country.name} ({country.code})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
                   {/* Client Name */}
                   <div>
                     <label
@@ -354,9 +331,19 @@ export default function Clients() {
                       Finance Contact Number
                     </label>
                     <div className="flex">
-                      <span className="inline-flex items-center px-2 py-2 rounded-l-md border border-r-0 text-gray-500 text-sm">
-                        {selectedCountry.dial_code}
-                      </span>
+                      <select
+                      id="country"
+                      name="country"
+                      className="inline-flex items-center py-2 outline-none rounded-l-md border border-r-0 text-gray-500 text-sm"
+                      value={selectedCountry.code}
+                      onChange={handleCountryChange}
+                    >
+                      {countryCodes.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.dial_code} ({country.code})
+                        </option>
+                      ))}
+                    </select>
                       <input
                         id="financeNumber"
                         name="financeNumber"
@@ -489,35 +476,52 @@ export default function Clients() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-200 mt-6">
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      type="submit"
-                      className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 flex items-center justify-center"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-2"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      Add Client
-                    </button>
-                    <button
-                      type="button"
-                      className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-all duration-300"
-                      onClick={() => {setIsClientAdded(false); formik.resetForm();}}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  type="submit"
+                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Add
+                </button>
+                <button
+                  type="button"
+                  onClick={()=>{
+                    setIsClientAdded(false);
+                    formik.resetForm();
+                  }}
+                  className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                  Cancel
+                </button>
+              </div>
               </form>
             </div>
           </Popup>

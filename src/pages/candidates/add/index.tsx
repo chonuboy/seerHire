@@ -331,7 +331,7 @@ export default function Candidates() {
                       </svg>
                       <div className="mb-4 flex text-sm/6 text-gray-100">
                         <button
-                          className="border border-dashed  text-black dark:text-white border-gray-900 px-2 font-semibold"
+                          className="border border-dashed  text-black dark:text-blue-500 border-gray-900 px-2 font-semibold"
                           type="button"
                           onClick={handleChooseFile}
                         >
@@ -717,7 +717,7 @@ export default function Candidates() {
                 </svg>
                 <div className="mb-4 flex text-sm/6 text-gray-100">
                   <button
-                    className="border border-dashed  text-black dark:text-white border-gray-900 px-2 font-semibold"
+                    className="border border-dashed  text-black dark:text-white dark:border-white border-gray-900 px-2 font-semibold"
                     type="button"
                     onClick={handleChooseFile}
                   >
