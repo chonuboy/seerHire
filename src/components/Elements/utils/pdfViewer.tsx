@@ -137,7 +137,7 @@ const PdfViewer = ({
     // };
   }, [candidateId, setUpdatedFileName, isResumeuploaded ]);
 
-  if (error) {
+  if (error  || !pdfUrl) {
     return (
       <div>
         <button
@@ -209,10 +209,6 @@ const PdfViewer = ({
         )}
       </div>
     );
-  }
-
-  if (!pdfUrl) {
-    return <div>Please Upload a Document</div>;
   }
 
   return (

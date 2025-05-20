@@ -288,47 +288,75 @@ export interface ReqData {
 }
 
 export const profileUpdateSchema = yup.object().shape({
-  firstName: yup.string().min(3, "Must be at least 3 characters").nullable(),
-  lastName: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  firstName: yup.string()
+    .min(3, "Must be at least 3 characters")
+    .max(30, "Must be 30 characters or less")
+    .nullable()
+    .matches(/^[a-zA-Z ]+$/, 'Only alphabets are allowed'),
+  lastName: yup.string()
+    .min(3, "Must be at least 3 characters")
+    .nullable()
+    .max(30, "Must be 30 characters or less")
+    .matches(/^[a-zA-Z ]+$/, 'Only alphabets are allowed'),
   isActive: yup.boolean().nullable(),
-  designation: yup.string().min(3, "Must be at least 3 characters").nullable(), 
+  designation: yup.string().min(3, "Must be at least 3 characters").max(50, "Must be 50 characters or less").matches(/^[a-zA-Z ]+$/, 'Only alphabets are allowed').nullable(),
+  techRole: yup.string().nullable().min(3, "Must be at least 3 characters").max(100, "Must be 100 characters or less"), // Added techRole which was missing
   totalExperience: yup
     .number()
-    .typeError('Total Experience must be a number') // Ensure it's a number
-    .positive('Total Experience must be a positive number') // Must be positive
-    .nullable(), 
-  highestEducation: yup.string().min(3, "Must be at least 3 characters").nullable(), 
+    .typeError('Total Experience must be a number')
+    .positive('Total Experience must be a positive number')
+    .nullable(),
+  highestEducation: yup.string().min(3, "Must be at least 3 characters").max(30, "Must be 50 characters or less").matches(/^[a-zA-Z. ]+$/, 'Only alphabets are allowed').nullable(),
   primaryNumber: yup
     .string()
-    .matches(/^\+?[0-9]{10,15}$/, 'Mobile Number is invalid') // Validate phone number format
-    .nullable(), 
+    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/, 'Mobile Number is invalid')
+    .nullable(),
+  secondaryNumber: yup
+    .string()
+    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/, 'Mobile Number is invalid')
+    .nullable(),
   emailId: yup
     .string()
-    .email('Email is invalid') // Validate email format
-    .nullable(), 
+    .matches(/^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/)
+    .nullable(),
   currentSalary: yup
     .number()
-    .typeError('Current Salary must be a number') // Ensure it's a number
-    .positive('Current Salary must be a positive number') // Must be positive
-    .nullable(), 
-  preferredJobType: yup
-    .string()
-    .nullable(), 
-  gender: yup
-    .string()
-    .nullable(), 
+    .typeError('Current Salary must be a number')
+    .positive('Current Salary must be a positive number')
+    .nullable(),
+  expectedSalary: yup
+    .number()
+    .typeError('Expected Salary must be a number')
+    .positive('Expected Salary must be a positive number')
+    .nullable(),
+  isExpectedCtcNegotiable: yup.boolean().nullable(), // Added this field
+  gender: yup.string().nullable(),
   noticePeriod: yup
     .number()
-    .typeError('Notice Period must be a number') // Ensure it's a number
-    .positive('Notice Period must be a positive number') // Must be positive
-    .nullable(), 
-  maritalStatus: yup
-    .string()
+    .typeError('Notice Period must be a number')
+    .positive('Notice Period must be a positive number')
     .nullable(),
+  maritalStatus: yup.string().nullable(),
   address1: yup.string().nullable(),
-  currentLocation: yup.number().nullable(),
-  addressLocality: yup.string().nullable(), 
-  differentlyAbledType: yup.string().nullable(), 
+  addressLocality: yup.string().nullable(),
+  pinCode: yup
+    .number()
+    .typeError('Pincode must be a number')
+    .positive('Pincode must be a positive number')
+    .min(6, 'Pincode must be 6 digits')
+    .nullable(),
+  companyName: yup.string().nullable().min(3, "Must be at least 3 characters").max(50, "Must be 50 characters or less"), // Added companyName
+  differentlyAbled: yup.boolean().nullable(), // Added differentlyAbled
+  differentlyAbledType: yup.string().nullable(),
+  linkedin: yup.string().nullable(),
+  dob: yup.date().nullable().max(new Date(), 'Date of birth cannot be in the future'),
+  currentLocation: yup.object().shape({
+    locationId: yup.number().required(),
+    locationDetails: yup.string().nullable()
+  }).nullable(),
+  preferredJobModes: yup.array().nullable(), // Added preferredJobModes
+  hiringTypes: yup.array().nullable(), // Added hiringTypes
+  contactId: yup.number().nullable() // Added contactId
 });
 
 

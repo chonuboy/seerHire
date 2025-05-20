@@ -8,6 +8,7 @@ import { fetchCandidates } from "@/api/candidates/candidates";
 import { contactSearchByKeyword } from "@/api/candidates/candidates";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { Popup } from "@/components/Elements/cards/popup";
 
 export default function Candidates() {
   const [allCandidates, setAllCandidates] = useState();
@@ -15,24 +16,27 @@ export default function Candidates() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
   const router = useRouter();
-  const [query,setQuery] = useState<any>(null);
+  const [query, setQuery] = useState<any>(null);
   const [jobId, setJobId] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchCandidates(currentPage-1, 10).then((data: any) => {
+    fetchCandidates(currentPage - 1, 10).then((data: any) => {
       setAllCandidates(data);
     });
-    if(router.isReady){
-      if(router.query.jobId && router.query.assignInterview){
+    if (router.isReady) {
+      if (router.query.jobId && router.query.assignInterview) {
         setJobId(router.query.jobId);
         setQuery(router.query.assignInterview);
-        localStorage.setItem("assignInterview", JSON.stringify(router.query.assignInterview));
+        localStorage.setItem(
+          "assignInterview",
+          JSON.stringify(router.query.assignInterview)
+        );
         localStorage.setItem("jobId", JSON.stringify(router.query.jobId));
       }
     }
-  }, [currentPage,searchKeyword,router.isReady]);
+  }, [currentPage, searchKeyword, router.isReady]);
 
- 
   const handleSearch = () => {
     if (!searchKeyword) {
       toast.error("Please Enter a Keyword", {
@@ -42,15 +46,18 @@ export default function Candidates() {
     contactSearchByKeyword(searchKeyword).then((data) => {
       if (data.status === "NOT_FOUND") {
         setCandidateFound(true);
-        toast.error(data.message, {
+        toast.error(`Candidate Not Found for this keyword : ${searchKeyword}`, {
           position: "top-center",
-        })
+        });
+        setIsLoading(false);
         return;
       } else {
-        setCandidateFound(false);
+        setIsLoading(true);
         setTimeout(() => {
+          setCandidateFound(false);
+          setIsLoading(false);
           setAllCandidates(data);
-        }, 1000);
+        }, 2000);
       }
     });
   };
@@ -63,27 +70,42 @@ export default function Candidates() {
     <MainLayout>
       <div className="min-h-screen">
         <ContentHeader title="Candidates" />
-        <div className="flex justify-between mb-4">
-          <AddButton title="Add New Candidate" url="add" />
-          <div className="flex items-center gap-4">
+        <div className="mb-4">
+          <div className="space-y-2">
             <input
               type="text"
-              className="text-sm py-1 border w-full rounded-md dark:text-black px-2"
-              placeholder="Search Candidates"
+              className="text-sm py-3 border bg-gray-50 w-full rounded-md font-sans dark:text-black px-2"
+              placeholder="Search Candidates By Name or Email or Phone"
               onChange={(e) => setSearchKeyword(e.target.value)}
               value={searchKeyword}
               onKeyDown={(e) => {
                 e.key === "Enter" && handleSearch();
               }}
             />
-            <button
-              className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
-              onClick={handleSearch}
-            >
-              Search
-            </button>
+
+            <div className="flex justify-between">
+              <button
+                className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
+                onClick={handleSearch}
+              >
+                Search
+              </button>
+              <AddButton title="Add New Candidate" url="add" />
+            </div>
           </div>
         </div>
+        {isLoading && (
+          <div>
+            <Popup onClose={() => setIsLoading(false)}>
+              <div className="flex mx-auto items-center justify-center flex-col my-80">
+                <div>
+                  <div className="ml-4 w-10 h-10 rounded-full border-white border-4 border-t-blue-600 animate-spin" />
+                  <span className="text-white">Searching</span>
+                </div>
+              </div>
+            </Popup>
+          </div>
+        )}
 
         <div>
           {allCandidates ? (

@@ -70,6 +70,7 @@ import {
   fetchContactPreferredLocation,
 } from "@/api/candidates/preferredLocation";
 import { getContactHiringTypeByContactId } from "@/api/candidates/hiringType";
+import { formatDate } from "@/components/Elements/tables/domainTable";
 
 export default function Candidates() {
   // candidate state
@@ -326,7 +327,7 @@ export default function Candidates() {
         };
 
         // Create the new technology
-        const createdSkill = await createTechnology(newSkill)
+        const createdSkill = await createTechnology(newSkill);
 
         // Update masterTech with the new skill
         setMasterTech((prev) =>
@@ -397,6 +398,18 @@ export default function Candidates() {
         });
         return;
       }
+      if(selectedDomain.length < 3){
+        toast.error("Domain Must be Greater than 3 characters", {
+          position: "top-center",
+        })
+        return
+      }
+      if(selectedDomain.length > 30){
+        toast.error("Domain Must be less than 30 characters", {
+          position: "top-center",
+        })
+        return
+      }
       // Check if if the selected domain exist in the candidate's domain array
       if (
         candidateDomains?.some(
@@ -415,51 +428,72 @@ export default function Candidates() {
         (domain) =>
           domain.domainDetails.toLowerCase() === selectedDomain.toLowerCase()
       );
+      let domainId;
       if (!domainExists) {
         const newDomain = {
           domainDetails: selectedDomain,
           //  fields for the createDomain API
         };
-        createDomain(newDomain).then((data) => {
-          setMasterDomains((prev) =>
-            prev
-              ? [...prev, data.domain.domainDetails]
-              : [data.domain.domainDetails]
-          );
-        });
+        const data = await createDomain(newDomain);
+        if(!data.domainId){
+          toast.error("Please Enter Valid Domain", {
+            position: "top-center",
+          })
+        }
+        domainId = data.domainId;
+      } else {
+        domainId = masterDomains?.find(
+          (domain) =>
+            domain.domainDetails.toLowerCase() === selectedDomain.toLowerCase()
+        )?.domainId;
       }
 
-      await createContactDomain({
+      if(!domainId){
+        return;
+      }else{
+        await createContactDomain({
         domain: {
-          domainId: masterDomains?.find(
-            (domain) =>
-              domain.domainDetails.toLowerCase() ===
-              selectedDomain.toLowerCase()
-          )?.domainId,
+          domainId: domainId,
         },
         contactDetails: {
           contactId: Number(router.query.id),
         },
       }).then((data) => {
-        setSelectedDomain("");
         setCandidateDomains((prev) => (prev ? [...prev, data] : [data]));
         toast.success("Domain added successfully", {
           position: "top-center",
         });
+        setSelectedDomain("");
+        setIsSkillUpdated(true);
       });
+      }
     } catch (error) {
-      console.error("Error adding domain:", error);
       toast.error("Failed to add domain. Please try again.", {
         position: "top-center",
       });
     }
   };
 
-  const postCompany = async () => {
+  const postCompany = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(selectedCompany);
+
     try {
       // Check if a company is selected
       if (selectedCompany.length === 0) {
         toast.error("Please select a company", {
+          position: "top-center",
+        });
+        return;
+      }
+      if (selectedCompany.length < 3) {
+        toast.error("Please select a company with at least 3 characters", {
+          position: "top-center",
+        });
+        return;
+      }
+      if (selectedCompany.length > 30) {
+        toast.error("Please select a company with less than 30 characters", {
           position: "top-center",
         });
         return;
@@ -484,41 +518,37 @@ export default function Candidates() {
           company.companyName.toLowerCase() === selectedCompany.toLowerCase()
       );
 
-      // If the company doesn't exist in masterCompanies, add it
+      let companyId;
       if (!companyExists) {
         const newCompany = {
-          companyName: selectedCompany,
+          companyName: selectedCompany.trim(),
           //  fields for the createCompany API
         };
-
-        await createCompany(newCompany).then((data) => {
-          setMasterCompanies((prev) => (prev ? [...prev, data] : [data]));
-        });
-
-        // Update masterCompanies state with the new company
+        const data = await createCompany(newCompany);
+        if(!data.companyId) {
+          toast.error("Please Enter Valid Company Name", {
+            position:"top-center"
+          })
+        }
+        companyId = data.companyId;
+      } else {
+        companyId = masterCompanies?.find(
+          (company) =>
+            company.companyName.toLowerCase() === selectedCompany.toLowerCase()
+        )?.companyId;
       }
-
-      // Call createContactCompany to associate the company with the candidate
-      if (companyExists) {
-        await createContactCompany({
-          contactDetails: currentCandidate,
-          company: {
-            companyId: masterCompanies?.find(
-              (company) =>
-                company.companyName.toLowerCase() ===
-                selectedCompany.toLowerCase()
-            )?.companyId,
-          },
-        }).then((data) => {
-          setCandidateCompanies((prev) => (prev ? [...prev, data] : [data]));
-        });
-      }
-
-      console.log("Company added to candidate:", selectedCompany);
-      setSelectedCompany("");
+      if(!companyId) return
+      const data = await createContactCompany({
+        contactDetails: currentCandidate,
+        company: {
+          companyId: companyId,
+        },
+      });
+      setCandidateCompanies((prev) => (prev ? [...prev, data] : [data]));
       toast.success("Company added successfully", {
         position: "top-center",
       });
+      setSelectedCompany("");
     } catch (error) {
       console.error("Error adding company:", error);
       toast.error("Failed to add company. Please try again.", {
@@ -587,6 +617,11 @@ export default function Candidates() {
           certificationName: selectedCertificate,
         },
       });
+      if (response) {
+        toast.success("Certification added successfully", {
+          position: "top-center",
+        });
+      }
 
       // Ensure we're working with an array for candidateCertificates
       setCandidateCertificates((prev) => {
@@ -800,7 +835,9 @@ export default function Candidates() {
                   Date of Birth
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {currentCandidate?.dob ? currentCandidate.dob : "-"}
+                  {currentCandidate?.dob
+                    ? formatDate(currentCandidate.dob)
+                    : "-"}
                 </p>
               </div>
 
@@ -822,9 +859,9 @@ export default function Candidates() {
                   Preferred Job Type
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {preferredJobType.length > 0
+                  {preferredJobType.length > 1
                     ? preferredJobType.map((item) => item["jobType"]).join(", ")
-                    : "-"}
+                    : preferredJobType.length === 1 ? preferredJobType[0] : preferredJobType.length === 0 ? "-" : ""} 
                 </p>
               </div>
 
@@ -1329,7 +1366,9 @@ export default function Candidates() {
                           });
                         }}
                       >
-                        <option className="text-gray-500" disabled value="">Select level</option>
+                        <option className="text-gray-500" disabled value="">
+                          Select level
+                        </option>
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Advanced">Advanced</option>
@@ -1430,7 +1469,9 @@ export default function Candidates() {
                       ""
                     )}
 
-                    <p>{item.domain.domainDetails}</p>
+                    <p>
+                      {item.domain.domainDetails ?? item.domain.domainDetails}
+                    </p>
                   </div>
                 ))
               )}
@@ -1480,14 +1521,15 @@ export default function Candidates() {
                 ""
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-4">
               {candidateCompanies?.length === 0 ? (
                 <p>No Companies Found</p>
               ) : (
                 candidateCompanies?.map((company, index) => (
                   <div className="relative" key={index}>
                     <p className="px-4 py-1 bg-gray-200 dark:bg-white dark:text-black rounded-lg text-xs md:text-base">
-                      {company.company.companyName}
+                      {company.company.companyName ??
+                        company.company.companyName}
                     </p>
                     {isEdit ? (
                       <X
@@ -1550,7 +1592,7 @@ export default function Candidates() {
 
             {candidateCertificates && candidateCertificates?.length > 0 ? (
               <div className="bg-white rounded-lg dark:bg-black dark:text-white space-y-4">
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-4">
                   {candidateCertificates.map((certificate, index) => (
                     <div key={index} className="relative">
                       <p className="px-4 py-1 bg-gray-200 dark:bg-white dark:text-black rounded-lg text-xs md:text-base">
@@ -1590,19 +1632,14 @@ export default function Candidates() {
           className="p-2 rounded-lg shadow-sm space-y-6 mb-8"
         >
           <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
-          {currentCandidate.resume?.includes("pdf") ||
-          currentCandidate.resume?.includes("docx") ? (
-            <PdfViewer
-            isEdit = {isEdit}
-              candidateId={Number(router.query.id)}
-              autoClose={() => {
-                setIsFormVisible(false);
-              }}
-              resume={currentCandidate.resume ? currentCandidate.resume : ""}
-            ></PdfViewer>
-          ) : (
-            <p>Resume Not Found</p>
-          )}
+          <PdfViewer
+            isEdit={isEdit}
+            candidateId={Number(router.query.id)}
+            autoClose={() => {
+              setIsFormVisible(false);
+            }}
+            resume={currentCandidate.resume ? currentCandidate.resume : ""}
+          ></PdfViewer>
         </section>
 
         {/* Footer Buttons */}

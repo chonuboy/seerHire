@@ -52,11 +52,10 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 				onAdd(response);
 				setDisabled(false);
 				setInputValue(inputValue.trim());
-				toast.success("Location added to the list successfully");
-			} catch (error) {
+			} catch (error:any) {
 				setDisabled(false);
 				console.log(error);
-				toast.error("Error adding location");
+				toast.error(error.data.message);
 			}
 			setSuggestions([]);
 			setShowSuggestions(false);

@@ -10,6 +10,9 @@ import {
   createContactPreferredJobType,
   deleteContactPreferredJobType,
 } from "@/api/candidates/preferredJob";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format, parseISO, isValid } from "date-fns";
 import {
   createContactHiringType,
   deleteContactHiringType,
@@ -122,9 +125,10 @@ const ProfileUpdateForm = ({
       }
       // When Flexible is checked, uncheck all others
       if (!e.target.checked) {
-        setIsRemote(false);
-        setIsHybrid(false);
-        setIsOnsite(false);
+        const matchingtypeId = preferredJobModes
+          .flat()
+          .find((item: { jobType: string }) => item.jobType === "Flexible");
+        deleteContactPreferredJobType(matchingtypeId.typeId).then((res) => {});
       }
     } else {
       // When any other option is checked, uncheck Flexible
@@ -139,6 +143,7 @@ const ProfileUpdateForm = ({
             .flat()
             .find((item: { jobType: string }) => item.jobType === "Flexible");
           deleteContactPreferredJobType(matchingtypeId.typeId).then((res) => {
+            if (!flexibletypeId) return;
             deleteContactPreferredJobType(flexibletypeId.typeId).then(
               (res) => {}
             );
@@ -149,17 +154,18 @@ const ProfileUpdateForm = ({
               contactId: formik.values.contactId,
             },
             preferredJobMode: value,
-          }).then((res) => {});
-          if (isHybrid && isOnsite) {
-            createContactPreferredJobType({
-              contactDetails: {
-                contactId: formik.values.contactId,
-              },
-              preferredJobMode: "Flexible",
-            }).then((res) => {
-              setIsFlexible(true);
-            });
-          }
+          }).then((res) => {
+            if (isHybrid && isOnsite) {
+              createContactPreferredJobType({
+                contactDetails: {
+                  contactId: formik.values.contactId,
+                },
+                preferredJobMode: "Flexible",
+              }).then((res) => {
+                setIsFlexible(true);
+              });
+            }
+          });
         }
       } else if (value === "Hybrid") {
         setIsHybrid(!isHybrid);
@@ -171,6 +177,7 @@ const ProfileUpdateForm = ({
             .flat()
             .find((item: { jobType: string }) => item.jobType === "Flexible");
           deleteContactPreferredJobType(matchingtypeId.typeId).then((res) => {
+            if (!flexibletypeId) return;
             deleteContactPreferredJobType(flexibletypeId.typeId).then(
               (res) => {}
             );
@@ -181,17 +188,18 @@ const ProfileUpdateForm = ({
               contactId: formik.values.contactId,
             },
             preferredJobMode: value,
-          }).then((res) => {});
-          if (isRemote && isOnsite) {
-            createContactPreferredJobType({
-              contactDetails: {
-                contactId: formik.values.contactId,
-              },
-              preferredJobMode: "Flexible",
-            }).then((res) => {
-              setIsFlexible(true);
-            });
-          }
+          }).then((res) => {
+            if (isRemote && isOnsite) {
+              createContactPreferredJobType({
+                contactDetails: {
+                  contactId: formik.values.contactId,
+                },
+                preferredJobMode: "Flexible",
+              }).then((res) => {
+                setIsFlexible(true);
+              });
+            }
+          });
         }
       } else if (value === "Onsite") {
         setIsOnsite(!isOnsite);
@@ -203,6 +211,7 @@ const ProfileUpdateForm = ({
             .flat()
             .find((item: { jobType: string }) => item.jobType === "Flexible");
           deleteContactPreferredJobType(matchingtypeId.typeId).then((res) => {
+            if (!flexibletypeId) return;
             deleteContactPreferredJobType(flexibletypeId.typeId).then(
               (res) => {}
             );
@@ -213,17 +222,18 @@ const ProfileUpdateForm = ({
               contactId: formik.values.contactId,
             },
             preferredJobMode: value,
-          }).then((res) => {});
-          if (isRemote && isHybrid) {
-            createContactPreferredJobType({
-              contactDetails: {
-                contactId: formik.values.contactId,
-              },
-              preferredJobMode: "Flexible",
-            }).then((res) => {
-              setIsFlexible(true);
-            });
-          }
+          }).then((res) => {
+            if (isRemote && isHybrid) {
+              createContactPreferredJobType({
+                contactDetails: {
+                  contactId: formik.values.contactId,
+                },
+                preferredJobMode: "Flexible",
+              }).then((res) => {
+                setIsFlexible(true);
+              });
+            }
+          });
         }
       }
     }
@@ -241,93 +251,149 @@ const ProfileUpdateForm = ({
             contactId: formik.values.contactId,
           },
           hiringType: value,
-        }).then(() => {
+        }).then((res) => {
           createContactHiringType({
             contactDetails: {
               contactId: formik.values.contactId,
             },
             hiringType: "Full Time",
-          }).then(() => {
+          }).then((res) => {
             createContactHiringType({
               contactDetails: {
                 contactId: formik.values.contactId,
               },
               hiringType: "Part Time",
-            }).then(() => {
+            }).then((res) => {
               createContactHiringType({
                 contactDetails: {
                   contactId: formik.values.contactId,
                 },
                 hiringType: "Contract",
-              });
+              }).then((res) => {});
             });
           });
         });
-      } else {
-        // When Flexible is unchecked, uncheck all others
-        setIsFullTime(false);
-        setIsPartTime(false);
-        setIsContract(false);
+      }
+      // When Flexible is checked, uncheck all others
+      if (!e.target.checked) {
+        const matchingtypeId = hiringTypes
+          .flat()
+          .find(
+            (item: { hiringType: string }) => item.hiringType === "Flexible"
+          );
+        deleteContactHiringType(matchingtypeId.typeId).then((res) => {});
       }
     } else {
-      // Uncheck Flexible if any other option is selected
+      // When any other option is checked, uncheck Flexible
       setIsFlexibleHiring(false);
-
-      const updateStateAndServer = (
-        type: string,
-        isChecked: boolean,
-        setFn: React.Dispatch<React.SetStateAction<boolean>>
-      ) => {
-        setFn(!isChecked);
+      if (value === "Full Time") {
+        setIsFullTime(!isFullTime);
         if (!e.target.checked) {
-          const matchTypeId = hiringTypes
+          const matchingtypeId = hiringTypes
             .flat()
-            .find((item: { hiringType: string }) => item.hiringType === type);
-          const flexibleTypeId = hiringTypes
+            .find(
+              (item: { hiringType: string }) => item.hiringType === "Full Time"
+            );
+          const flexibletypeId = hiringTypes
             .flat()
             .find(
               (item: { hiringType: string }) => item.hiringType === "Flexible"
             );
-
-          if (matchTypeId)
-            deleteContactHiringType(matchTypeId.typeId).then(() => {
-              if (flexibleTypeId)
-                deleteContactHiringType(flexibleTypeId.typeId).then((data) => {
-                  console.log(data);
-                });
-            });
+          deleteContactHiringType(matchingtypeId.typeId).then((res) => {
+            if (!flexibletypeId) return;
+            deleteContactHiringType(flexibletypeId.typeId).then((res) => {});
+          });
         } else {
           createContactHiringType({
             contactDetails: {
               contactId: formik.values.contactId,
             },
-            hiringType: type,
+            hiringType: value,
+          }).then((res) => {
+            if (isPartTime && isContract) {
+              createContactHiringType({
+                contactDetails: {
+                  contactId: formik.values.contactId,
+                },
+                hiringType: "Flexible",
+              }).then((res) => {
+                setIsFlexibleHiring(true);
+              });
+            }
           });
-
-          const otherChecks =
-            (type === "Full Time" && isPartTime && isContract) ||
-            (type === "Part Time" && isFullTime && isContract) ||
-            (type === "Contract" && isFullTime && isPartTime);
-
-          if (otherChecks) {
-            createContactHiringType({
-              contactDetails: {
-                contactId: formik.values.contactId,
-              },
-              hiringType: "Flexible",
-            }).then(() => {
-              setIsFlexibleHiring(true);
-            });
-          }
         }
-      };
-
-      if (value === "Full Time") {
-        updateStateAndServer("Full Time", isFullTime, setIsFullTime);
       } else if (value === "Part Time") {
-        updateStateAndServer("Part Time", isPartTime, setIsPartTime);
+        setIsPartTime(!isPartTime);
+        if (!e.target.checked) {
+          const matchingtypeId = hiringTypes
+            .flat()
+            .find(
+              (item: { hiringType: string }) => item.hiringType === "Part Time"
+            );
+          const flexibletypeId = hiringTypes
+            .flat()
+            .find(
+              (item: { hiringType: string }) => item.hiringType === "Flexible"
+            );
+          deleteContactHiringType(matchingtypeId.typeId).then((res) => {
+            if (!flexibletypeId) return;
+            deleteContactHiringType(flexibletypeId.typeId).then((res) => {});
+          });
+        } else {
+          createContactHiringType({
+            contactDetails: {
+              contactId: formik.values.contactId,
+            },
+            hiringType: value,
+          }).then((res) => {
+            if (isFullTime && isContract) {
+              createContactHiringType({
+                contactDetails: {
+                  contactId: formik.values.contactId,
+                },
+                hiringType: "Flexible",
+              }).then((res) => {
+                setIsFlexibleHiring(true);
+              });
+            }
+          });
+        }
       } else if (value === "Contract") {
-        updateStateAndServer("Contract", isContract, setIsContract);
+        setIsContract(!isContract);
+        if (!e.target.checked) {
+          const matchingtypeId = hiringTypes
+            .flat()
+            .find(
+              (item: { hiringType: string }) => item.hiringType === "Contract"
+            );
+          const flexibletypeId = hiringTypes
+            .flat()
+            .find(
+              (item: { hiringType: string }) => item.hiringType === "Flexible"
+            );
+          deleteContactHiringType(matchingtypeId.typeId).then((res) => {
+            if (!flexibletypeId) return;
+            deleteContactHiringType(flexibletypeId.typeId).then((res) => {});
+          });
+        } else {
+          createContactHiringType({
+            contactDetails: {
+              contactId: formik.values.contactId,
+            },
+            hiringType: value,
+          }).then((res) => {
+            if (isFullTime && isPartTime) {
+              createContactHiringType({
+                contactDetails: {
+                  contactId: formik.values.contactId,
+                },
+                hiringType: "Flexible",
+              }).then((res) => {
+                setIsFlexibleHiring(true);
+              });
+            }
+          });
+        }
       }
     }
   };
@@ -340,7 +406,6 @@ const ProfileUpdateForm = ({
     formik.setFieldValue("currentLocation", {
       locationId: location.locationId,
     });
-    autoClose();
   };
 
   const handleStatusChange = (value: boolean) => {
@@ -388,7 +453,7 @@ const ProfileUpdateForm = ({
         ? true
         : initialValues.isExpectedCtcNegotiable === "false"
         ? false
-        : false,
+        : initialValues.isExpectedCtcNegotiable,
     preferredJobModes: initialValues.preferredJobModes,
   };
 
@@ -397,11 +462,10 @@ const ProfileUpdateForm = ({
 
   const formik = useFormik({
     initialValues: transormedvalues, // Pass initialValues from props
-    // validationSchema: profileUpdateSchema,
+    validationSchema: profileUpdateSchema,
     onSubmit: (values) => {
+      console.log(values);
       const updatedFields = getUpdatedFields(initialValues, values);
-      console.log(modes);
-      console.log(updatedFields);
       try {
         updateCandidate(updatedFields, id).then((data) => {
           console.log(updatedFields);
@@ -481,18 +545,36 @@ const ProfileUpdateForm = ({
         </div>
 
         {/* Date of Birth */}
-        <div className="space-y-2">
+        <div className="flex flex-col space-y-2">
           <label htmlFor="dob" className="text-gray-400 font-medium">
             Date of Birth
           </label>
-          <input
+          <DatePicker
             id="dob"
             name="dob"
-            type="date"
+            selected={
+              typeof formik.values.dob === "string"
+                ? parseISO(formik.values.dob)
+                : formik.values.dob instanceof Date &&
+                  isValid(formik.values.dob)
+                ? formik.values.dob
+                : null
+            }
+            onChange={(date: Date | null) => {
+              if (date) {
+                // Store in ISO format
+                formik.setFieldValue("dob", format(date, "yyyy-MM-dd"));
+              } else {
+                formik.setFieldValue("dob", null);
+              }
+            }}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="dd/mm/yyyy"
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.dob}
+            maxDate={new Date()}
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
           />
           {formik.touched.dob && formik.errors.dob ? (
             <div className="text-red-500 text-sm">
@@ -856,7 +938,9 @@ const ProfileUpdateForm = ({
               onChange={(e) => {
                 handleJobTypeBoxCheck(e, "Onsite");
               }}
-              checked={isOnsite || isFlexible}
+              checked={
+                isOnsite || isFlexible || preferredJobModes.includes("Onsite")
+              }
             />
             <label
               htmlFor="preferredJobType_Onsite"
@@ -871,7 +955,9 @@ const ProfileUpdateForm = ({
               onChange={(e) => {
                 handleJobTypeBoxCheck(e, "Remote");
               }}
-              checked={isRemote || isFlexible}
+              checked={
+                isRemote || isFlexible || preferredJobModes.includes("Remote")
+              }
             />
             <label
               htmlFor="preferredJobType_Remote"
@@ -886,7 +972,9 @@ const ProfileUpdateForm = ({
               onChange={(e) => {
                 handleJobTypeBoxCheck(e, "Hybrid");
               }}
-              checked={isHybrid || isFlexible}
+              checked={
+                isHybrid || isFlexible || preferredJobModes.includes("Hybrid")
+              }
             />
             <label
               htmlFor="preferredJobType_Hybrid"
@@ -929,7 +1017,11 @@ const ProfileUpdateForm = ({
                 onChange={(e) => {
                   handleHiringTypeBoxCheck(e, "Full Time");
                 }}
-                checked={isFullTime || isFlexibleHiring}
+                checked={
+                  isFullTime ||
+                  isFlexibleHiring ||
+                  hiringTypes.includes("Full Time")
+                }
               />
               <label
                 htmlFor="preferredHiringType_FullTime"
@@ -946,7 +1038,11 @@ const ProfileUpdateForm = ({
                 onChange={(e) => {
                   handleHiringTypeBoxCheck(e, "Part Time");
                 }}
-                checked={isPartTime || isFlexibleHiring}
+                checked={
+                  isPartTime ||
+                  isFlexibleHiring ||
+                  hiringTypes.includes("Part Time")
+                }
               />
               <label
                 htmlFor="preferredHiringType_PartTime"
@@ -964,7 +1060,11 @@ const ProfileUpdateForm = ({
                 onChange={(e) => {
                   handleHiringTypeBoxCheck(e, "Contract");
                 }}
-                checked={isContract || isFlexibleHiring}
+                checked={
+                  isContract ||
+                  isFlexibleHiring ||
+                  hiringTypes.includes("Contract")
+                }
               />
               <label htmlFor="HiringType_Contract" className="dark:text-black">
                 Contract
@@ -1230,20 +1330,40 @@ const ProfileUpdateForm = ({
         {/* Differently Abled Type */}
         {isDifferentlyAbleEnabled && (
           <div className="space-y-2">
-            <label
-              htmlFor="differentlyAbledType"
-              className="text-gray-400 font-medium"
-            >
-              Differently Abled Type
+            <label htmlFor="differentlyAbledType" className="flex">
+              <span className="font-medium text-gray-400 dark:text-white">
+                Differently Abled Type
+              </span>
             </label>
-            <input
+            <select
               id="differentlyAbledType"
               name="differentlyAbledType"
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
+              className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
+              value={formik.values.differentlyAbledType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.differentlyAbledType}
-            />
+            >
+              <option value="">None</option>
+              <option value="Physical (e.g., mobility impairments, limb differences)">
+                Physical
+              </option>
+              <option value="Sensory (e.g., blindness, deafness)">
+                Sensory
+              </option>
+              <option value="Intellectual/Developmental (e.g., Down syndrome, Autism)">
+                Intellectual/Developmental
+              </option>
+              <option value="Mental Health (e.g., depression, anxiety)">
+                Mental Health
+              </option>
+              <option value="Neurological (e.g., epilepsy, TBI)">
+                Neurological
+              </option>
+              <option value="Chronic Illness (e.g., diabetes, MS)">
+                Chronic Illness
+              </option>
+              <option value="Other/Not Listed">Other/Not Listed</option>
+            </select>
             {formik.touched.differentlyAbledType &&
             formik.errors.differentlyAbledType ? (
               <div className="text-red-500 text-sm">

@@ -21,15 +21,14 @@ export default function Clients() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [clientFound, setClientFound] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showNewLocationForm, setShowNewLocationForm] = useState(false);
   const [newLocation, setNewLocation] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
   const [showGSTField, setShowGSTField] = useState(countryCodes[0].hasGST);
   const [displayedFinanceNumber, setDisplayedFinanceNumber] = useState("");
   const [locations, setLocations] = useState<Location[]>([]);
-  const [locationAdded,setLocationAdded] = useState(false);
-
+  const [locationAdded, setLocationAdded] = useState(false);
   useEffect(() => {
     fetchAllClients(currentPage - 1, 10).then((data: any) => {
       setClients(data);
@@ -37,7 +36,7 @@ export default function Clients() {
     fetchAllLocations().then((data: any) => {
       setLocations(data);
     });
-  }, [currentPage, searchKeyword,locationAdded]);
+  }, [currentPage, searchKeyword, locationAdded]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -47,7 +46,6 @@ export default function Clients() {
     formik.setFieldValue("clientHeadQuarterCountry", {
       locationId: location.locationId,
     });
-    
   };
 
   const addNewHeadLocation = async (location: Location) => {
@@ -55,14 +53,13 @@ export default function Clients() {
       toast.error("Location already exists");
       return;
     }
-    formik.setFieldValue("ClientHeadQuarterCountry", location);
-    setLocationAdded(true);
+    formik.setFieldValue("clientHeadQuarterCountry", location);
   };
 
   const onChangeStateLocation = (location: Location) => {
     formik.setFieldValue("clientHeadQuarterState", {
       locationId: location.locationId,
-      locationDetails: location.locationDetails
+      locationDetails: location.locationDetails,
     });
   };
 
@@ -71,8 +68,7 @@ export default function Clients() {
       toast.error("Location already exists");
       return;
     }
-    formik.setFieldValue("ClientHeadQuarterState", location);
-    setLocationAdded(true);
+    formik.setFieldValue("clientHeadQuarterState", location);
   };
 
   const handleSearch = () => {
@@ -89,10 +85,12 @@ export default function Clients() {
         });
         return;
       } else {
-        setClientFound(false);
+        setIsLoading(true);
         setTimeout(() => {
+          setIsLoading(false);
+          setClientFound(false);
           setClients(data);
-        }, 1000);
+        }, 2000);
       }
     });
   };
@@ -112,7 +110,9 @@ export default function Clients() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const mobilenumberWithoutCode = e.target.value.replace(/^\+?\d*\s?/, ""); // Remove any existing country code
-    setDisplayedFinanceNumber(`${selectedCountry.dial_code} ${mobilenumberWithoutCode}`);
+    setDisplayedFinanceNumber(
+      `${selectedCountry.dial_code} ${mobilenumberWithoutCode}`
+    );
     formik.setFieldValue(
       "financeNumber",
       `${selectedCountry.dial_code}${mobilenumberWithoutCode}`
@@ -136,32 +136,36 @@ export default function Clients() {
       gstnumber: null,
       cinnumber: null,
       pannumber: null,
+      isClientBillingStateTamilNadu: false,
     },
     validationSchema: clientValidationSchema,
     validateOnMount: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      if(!values.clientHeadQuarterCountry.locationId){
+      console.log(values);
+      if (!values.clientHeadQuarterCountry.locationId) {
         toast.error("Please Select Headquarter Country", {
           position: "top-center",
         });
         return;
       }
-      if(!values.clientHeadQuarterState.locationId){
+      if (!values.clientHeadQuarterState.locationId) {
         toast.error("Please Select Headquarter State", {
           position: "top-center",
         });
         return;
       }
 
-      if(values.clientHeadQuarterState.locationDetails === "Tamil Nadu" || values.clientHeadQuarterState.locationDetails === "TamilNadu" || values.clientHeadQuarterState.locationDetails === "Tamilnadu" || values.clientHeadQuarterState.locationDetails === "tamilnadu"){
+      if (
+        values.clientHeadQuarterState.locationDetails === "Tamil Nadu" ||
+        values.clientHeadQuarterState.locationDetails === "TamilNadu" ||
+        values.clientHeadQuarterState.locationDetails === "Tamilnadu" ||
+        values.clientHeadQuarterState.locationDetails === "tamilnadu"
+      ) {
         formik.setFieldValue("isClientBillingStateTamilNadu", true);
-      }else{
-        formik.setFieldValue("isClientBillingStateTamilNadu", false);
       }
       try {
         createClient(values).then((data) => {
-          console.log(data);
           if (data.status === 200) {
             toast.success("Client added successfully", {
               position: "top-center",
@@ -188,29 +192,43 @@ export default function Clients() {
   return (
     <MainLayout>
       <ContentHeader title="Clients" />
-      <div className="flex justify-between gap-4 items-center mb-4 text-xs md:text-base dark:text-black">
-        <button
-          className="md:px-4 px-2 py-1 bg-blue-600 text-white rounded-md"
-          onClick={() => setIsClientAdded(true)}
-        >
-          Add New Client
-        </button>
-        <div className="flex items-center gap-4">
-          <input
-            type="text"
-            className="text-sm py-1 px-2 rounded-md border w-full dark:text-black"
-            placeholder="Search Clients"
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            value={searchKeyword}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          />
+      <div className="space-y-4 mb-4">
+        <input
+          type="text"
+          className="text-sm py-3 border bg-gray-50 w-full rounded-md font-sans dark:text-black px-2"
+          placeholder="Search Clients By Name or Email or Phone"
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          value={searchKeyword}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        />
+        <div className="flex justify-between items-center">
           <button
             className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
             onClick={handleSearch}
           >
             Search
           </button>
+          <button
+            className="md:px-4 px-2 py-0.5 bg-blue-600 text-white rounded-md"
+            onClick={() => setIsClientAdded(true)}
+          >
+            Add New Client
+          </button>
         </div>
+
+        {isLoading && (
+          <div>
+            <Popup onClose={() => setIsLoading(false)}>
+              <div className="flex mx-auto items-center justify-center flex-col my-80">
+                <div>
+                  <div className="ml-4 w-10 h-10 rounded-full border-white border-4 border-t-blue-600 animate-spin" />
+                  <span className="text-white">Searching</span>
+                </div>
+              </div>
+            </Popup>
+          </div>
+        )}
+
         {isClientAdded && (
           <Popup onClose={() => setIsClientAdded(false)}>
             <div className="bg-white shadow-lg rounded-xl mx-auto mt-14 max-w-2xl p-6">
@@ -332,18 +350,18 @@ export default function Clients() {
                     </label>
                     <div className="flex">
                       <select
-                      id="country"
-                      name="country"
-                      className="inline-flex items-center py-2 outline-none rounded-l-md border border-r-0 text-gray-500 text-sm"
-                      value={selectedCountry.code}
-                      onChange={handleCountryChange}
-                    >
-                      {countryCodes.map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {country.dial_code} ({country.code})
-                        </option>
-                      ))}
-                    </select>
+                        id="country"
+                        name="country"
+                        className="inline-flex items-center py-2 outline-none rounded-l-md border border-r-0 text-gray-500 text-sm"
+                        value={selectedCountry.code}
+                        onChange={handleCountryChange}
+                      >
+                        {countryCodes.map((country) => (
+                          <option key={country.code} value={country.code}>
+                            {country.dial_code} ({country.code})
+                          </option>
+                        ))}
+                      </select>
                       <input
                         id="financeNumber"
                         name="financeNumber"
@@ -355,7 +373,9 @@ export default function Clients() {
                           .trim()}
                         onChange={(e) => {
                           const mobilenumberWithoutCode = e.target.value;
-                          setDisplayedFinanceNumber(`${mobilenumberWithoutCode}`);
+                          setDisplayedFinanceNumber(
+                            `${mobilenumberWithoutCode}`
+                          );
                           formik.setFieldValue(
                             "financeNumber",
                             `${selectedCountry.dial_code}${mobilenumberWithoutCode}`
@@ -477,51 +497,51 @@ export default function Clients() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    type="submit"
+                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  Add
-                </button>
-                <button
-                  type="button"
-                  onClick={()=>{
-                    setIsClientAdded(false);
-                    formik.resetForm();
-                  }}
-                  className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Add
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsClientAdded(false);
+                      formik.resetForm();
+                    }}
+                    className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Cancel
-                </button>
-              </div>
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    Cancel
+                  </button>
+                </div>
               </form>
             </div>
           </Popup>
