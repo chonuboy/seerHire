@@ -19,6 +19,10 @@ import {
   DifferentlyAbled,
 } from "@/lib/constants";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format, parseISO } from "date-fns";
+
 import MainLayout from "@/components/Layouts/layout";
 import ContentHeader from "@/components/Layouts/content-header";
 import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
@@ -44,6 +48,7 @@ export default function Candidates() {
   const router = useRouter();
   const [locations, setLocations] = useState<Location[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadRef = useRef<HTMLInputElement>(null);
   const [showForm, setShowForm] = useState(false);
   const [skills, setSkills] = useState<Technology[] | null>(null);
   const [domains, setDomains] = useState<any>();
@@ -53,6 +58,10 @@ export default function Candidates() {
   const [locationAdded, setIsLocationAdded] = useState(false);
   const [isAutofill, setIsAutofill] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
+  const [autoFill,setAutofill] = useState<File | undefined>(undefined);
+  const [updatedAutoFillName, setUpdatedAutoFillName] = useState<string | undefined>(
+    undefined
+  );
   const [assignInterview, setAssignInterview] = useState<number | null>(null);
 
   useEffect(() => {
@@ -103,6 +112,14 @@ export default function Candidates() {
     validateOnMount: false,
     validateOnBlur: true, // Add this line to prevent validation on blur
     onSubmit: async (values) => {
+      if(!values.currentLocation.locationId){
+        toast.error("Please Select Location", {
+          position: "top-center",
+        });
+        return
+      }
+      console.log(formik.errors)
+      console.log(values)
       setIsSubmitting(true);
       addNewCandidate(values);
     },
@@ -117,11 +134,11 @@ export default function Candidates() {
   // Add New Candidate
   //------------------------------------------------------------
   const addNewCandidate = async (reqData: Candidate) => {
-    if (!reqData.resume) {
-      toast.error("Resume is required", {
-        position: "top-right",
-      });
-    }
+    // if (!reqData.resume) {
+    //   toast.error("Resume is required", {
+    //     position: "top-right",
+    //   });
+    // }
     reqData.isActive =
       reqData.candidateStatus == CandidateStatus.ACTIVE ? true : false;
     reqData.differentlyAbled =
@@ -136,9 +153,6 @@ export default function Candidates() {
           toast.success("Candidate added successfully", {
             position: "top-center",
           });
-          // setTimeout(() => {
-          //   router.push("/candidates");
-          // },1000);
           setCandidateId(data.data.contactId);
           setShowForm(true);
           if (assignInterview) {
@@ -157,26 +171,9 @@ export default function Candidates() {
             });
           }
         } else {
-          if (data.message === "Location not found with id: 0") {
-            toast.error("Current Location is required", {
-              position: "top-center",
-            });
-            return;
-          }
-          toast.warn(data.message, {
-            position: "top-center",
-          });
-          if (!data.message) {
-            Object.entries(data).forEach(([fieldName, errorMessage]) => {
-              toast.warn(
-                `${
-                  fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
-                }: ${errorMessage}`,
-                {
-                  position: "top-center",
-                  autoClose: 5000,
-                }
-              );
+          if (data.message) {
+            toast.error(data.message, {
+              position: "top-right",
             });
           }
         }
@@ -198,13 +195,28 @@ export default function Candidates() {
     if (target && target.type === "file") {
       setFile(target?.files?.[0]);
       setUpdatedFileName(target?.files?.[0]?.name);
-      console.log(target?.files?.[0]);
     }
   };
+
+  const handleResumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+    const target = event.target;
+    if (target && target.type === "file") {
+      setAutofill(target?.files?.[0]);
+      setUpdatedAutoFillName(target?.files?.[0]?.name);
+      setFile(target?.files?.[0]);
+      setUpdatedFileName(target?.files?.[0]?.name);
+    }
+  }
   const handleChooseFile = (event: React.MouseEvent) => {
     event.stopPropagation();
     fileInputRef?.current?.click();
   };
+
+  const handleUploadResume = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    uploadRef?.current?.click();
+  }
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -236,8 +248,8 @@ export default function Candidates() {
           formik.values.gender = data.Gender;
           formik.values.designation = data.CurrentDesignation;
           formik.values.address = data.Address;
-          formik.values.addressLocality  = data.AddressLocality;
-          formik.values.currentLocation.locationDetails = data.Location
+          formik.values.addressLocality = data.AddressLocality;
+          formik.values.currentLocation.locationDetails = data.Location;
         })
         .catch((err) => {
           toast.error(err.message, {
@@ -333,18 +345,18 @@ export default function Candidates() {
                         <button
                           className="border border-dashed  text-black dark:text-blue-500 border-gray-900 px-2 font-semibold"
                           type="button"
-                          onClick={handleChooseFile}
+                          onClick={handleUploadResume}
                         >
                           Choose a File
                         </button>
                         <input
                           type="file"
                           name="resume"
-                          ref={fileInputRef}
+                          ref={uploadRef}
                           accept=".pdf, .doc, .docx"
                           style={{ display: "none" }}
                           onClick={handleFileClick}
-                          onChange={handleFileChange}
+                          onChange={handleResumeChange}
                         />
                         <p className="pl-2 text-gray-600 dark:text-white">
                           or drag and drop
@@ -355,8 +367,7 @@ export default function Candidates() {
                       </p>
                       {file && (
                         <p className="mt-4 text-green-500">
-                          {updatedFileName}
-                          {successMsg}
+                          {updatedAutoFillName}
                         </p>
                       )}
                       {isLoader && (
@@ -367,6 +378,7 @@ export default function Candidates() {
                         className="bg-[var(--button-background)] text-white py-2 px-4 rounded mt-4 hover:bg-[var(--hover-button-background)] hover:text-[var(--hover-button-foreground)]  disabled:[var(--disabled-button-background)] "
                         type="button"
                         onClick={handleUploadAutofillResume}
+                        disabled={isLoader}
                       >
                         Upload
                       </button>
@@ -388,6 +400,7 @@ export default function Candidates() {
               </label>
               <input
                 type="text"
+                id="firstName"
                 name="firstName"
                 placeholder="Enter First Name"
                 className="py-2 px-1 w-full focus:outline-[var(--theme-background)] dark:bg-black dark:text-white border outline:none rounded-lg"
@@ -422,26 +435,39 @@ export default function Candidates() {
               ) : null}
             </div>
 
-            <div className="space-y-3 rounded-lg">
-              <label htmlFor="dob" className="flex">
-                <span className="font-semibold text-gray-600 dark:text-white ">
-                  Date of Birth
-                </span>
+            <div className="flex flex-col space-y-2">
+              <label htmlFor="dob" className="font-semibold text-gray-600 dark:text-white">
+                Date of Birth
               </label>
-              <input
-                type="date"
+              <DatePicker
+                id="dob"
                 name="dob"
-                placeholder="Enter Date of Birth"
-                className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
-                value={formik.values.dob}
-                onChange={formik.handleChange}
+                selected={
+                  formik.values.dob ? parseISO(formik.values.dob) : null
+                }
+                onChange={(date: Date | null) => {
+                  if (date) {
+                    // Store in ISO format
+                    formik.setFieldValue("dob", format(date, "yyyy-MM-dd"));
+                  } else {
+                    formik.setFieldValue("dob", null);
+                  }
+                }}
+                dateFormat="dd/MM/yyyy"
+                placeholderText="dd/mm/yyyy"
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-black"
+                maxDate={new Date()}
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
               />
-              {formik.errors.dob ? (
-                <div className="text-red-500 text-sm border-red-500">
-                  {formik.errors.dob}
+              {formik.touched.dob && formik.errors.dob ? (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.dob.toString()}
                 </div>
               ) : null}
             </div>
+
             <div className="space-y-3 h-auto rounded-lg">
               <label htmlFor="emailId" className="flex">
                 <span className="  font-semibold text-gray-600 dark:text-white">
@@ -509,7 +535,7 @@ export default function Candidates() {
 
             <div className="h-auto md:h-full space-y-3 rounded-lg">
               <label htmlFor="gender" className="flex">
-                <span className="  font-semibold text-gray-600 dark:text-white ">
+                <span className="font-semibold text-gray-600 dark:text-white ">
                   Gender
                 </span>
                 <span className="px-1 font-bold text-red-500">*</span>
@@ -885,7 +911,7 @@ export default function Candidates() {
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="candidateStatus" className="flex">
                 <span className="font-semibold text-gray-600 dark:text-white">
-                  Salary Negotiable?
+                  Salary Negotiable? <span className="px-1 font-bold text-red-500">*</span>
                 </span>
               </label>
               <fieldset>
@@ -893,7 +919,8 @@ export default function Candidates() {
                   <input
                     type="radio"
                     name="negotiable"
-                    value="true"
+                    value={"true"}
+                    checked={formik.values.isExpectedCtcNegotiable}
                     id="negotiable_yes"
                     onChange={() => {
                       formik.setFieldValue("isExpectedCtcNegotiable", true);
@@ -907,6 +934,7 @@ export default function Candidates() {
                     type="radio"
                     name="negotiable"
                     value="false"
+                    checked = {!formik.values.isExpectedCtcNegotiable}
                     id="negotiable_no"
                     onChange={() => {
                       formik.setFieldValue("isExpectedCtcNegotiable", false);

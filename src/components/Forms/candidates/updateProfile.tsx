@@ -468,24 +468,15 @@ const ProfileUpdateForm = ({
       const updatedFields = getUpdatedFields(initialValues, values);
       try {
         updateCandidate(updatedFields, id).then((data) => {
-          console.log(updatedFields);
-          console.log(data);
           if (data.status === 200) {
             toast.success("Profile updated successfully", {
               position: "top-right",
             });
             autoClose();
           } else {
-            if (data.response.data) {
-              const errorMessages = Object.values(data.response.data)[0];
-              toast.error(errorMessages as string, {
-                position: "top-right",
-              });
-            } else {
-              toast.error("Failed to update profile. Please try again.", {
-                position: "top-right",
-              });
-            }
+            toast.error(data.message, {
+              position: "top-right",
+            });
           }
         });
       } catch (error) {
@@ -1290,6 +1281,7 @@ const ProfileUpdateForm = ({
                 name="differentlyAbled"
                 id="differentlyAbledtrue"
                 value={"true"}
+                checked = {formik.values.differentlyAbled}
                 onChange={() => {
                   setIsDifferentlyAbleEnabled(true);
                   formik.setFieldValue("differentlyAbled", true);
@@ -1304,7 +1296,8 @@ const ProfileUpdateForm = ({
               <input
                 type="radio"
                 name="differentlyAbled"
-                value={"true"}
+                value={"false"}
+                checked = {!formik.values.differentlyAbled}
                 id="differentlyAbledfalse"
                 onChange={() => {
                   setIsDifferentlyAbleEnabled(false);

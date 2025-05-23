@@ -50,8 +50,7 @@ export default function Client() {
       fetchAllClientLocations().then((data) => {
         if (data.length > 0 && data[0].client.clientId) {
           const filteredLocations = data.filter(
-            (location: any) =>
-              location.client.clientId === id
+            (location: any) => location.client.clientId === id
           );
           setCurrentClientLocations(filteredLocations);
         }
@@ -60,18 +59,28 @@ export default function Client() {
         setMasterLocations(data);
       });
     }
-  }, [router.isReady, isAddJob, isBranch, isJobUpdated,isBranchUpdated]);
+  }, [router.isReady, isAddJob, isBranch, isJobUpdated, isBranchUpdated]);
+
+  const fetchJobs = async () => {
+    try {
+      if (router.isReady) {
+        fetchJobsByClient(Number(router.query.id)).then((data) => {
+          setAllJobs(data);
+          if (data.length > 0) {
+            setNewJobId(data[data.length - 1].jobId + 1);
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  };
 
   return (
     <MainLayout>
       <ContentHeader title="Client Info" />
       <div className="space-y-8">
-
-        {
-          router.isReady && (
-            <ClientCard id={Number(router.query.id)} />
-          )
-        }
+        {router.isReady && <ClientCard id={Number(router.query.id)} />}
 
         <div className="space-y-6">
           <div className="space-y-4">
@@ -215,7 +224,7 @@ export default function Client() {
             {allJobs?.length > 0 ? (
               allJobs.map((job, index) => (
                 <JobCard
-                  autoClose={() => setIsJobUpdated(!isJobUpdated)}
+                  onUpdate={fetchJobs}
                   job={job}
                   key={index}
                 />

@@ -29,7 +29,7 @@ export const updateJob = async (jobId: number, reqData: any) => {
         'X-Requested-With': 'XMLHttpRequest',
       },
     });
-    return response.data;
+    return response;
   } catch (err: any) {
     return err.response ? err.response.data : err.message;
   }

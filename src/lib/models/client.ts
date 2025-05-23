@@ -123,13 +123,14 @@ export const jobFormSchema = yup.object().shape({
   jobTitle: yup
     .string()
     .min(3, "Must be at least 3 characters")
+    .max(50, "Must be 50 characters or less")
     .required("Job title is required"),
   jobDescription: yup
     .string()
     .min(3, "Must be at least 3 characters")
     .required("Job description is required"),
   salaryInCtc: yup.number().required("Salary is required"),
-  jd: yup.string(),
+  jd: yup.string().required("JD is required"),
   experience: yup.string().required("Experience is required"),
   isJobActive: yup.string().required("Select status"),
   jobPostType: yup
@@ -142,34 +143,78 @@ export const jobFormSchema = yup.object().shape({
     .required("Inserted by is required"),
   client: yup.object().shape({
     clientId: yup.number(),
-  })
+  }),
 });
 
 export const clientFormSchema = yup.object().shape({
   financePocName: yup
     .string()
     .min(3, "Finance POC Name must be at least 3 characters")
-    .nullable(),
-  financeNumber: yup.string().nullable().min(10,"Must be at least 10 characters").max(15,"Must be less than 14 characters"),
-  financeEmail: yup.string().email("Finance Email is invalid").nullable(),
-  gstnumber: yup.string().nullable().min(3, "GST must be at least 3 characters"),
-  cinnumber: yup.string().nullable().min(3, "CIN must be at least 3 characters"),
-  pannumber: yup.string().nullable().min(3, "PAN must be at least 3 characters"),
-});
-
-export const clientValidationSchema = yup.object().shape({
-  clientName: yup.string().required("Client Name is required"),
-  clientHeadQuarterCountry: yup
-    .object()
-    .required("Client HQ Country is required"),
-  clientHeadQuarterState: yup.object().required("Client HQ State is required"),
-  financePocName: yup.string().nullable(),
+    .nullable()
+    .max(50, "Must be 50 characters or less")
+    .matches(/^[a-zA-Z ]+$/, "Only alphabets are allowed"),
   financeNumber: yup
     .string()
     .matches(
       /^\+[0-9]{1,3}[0-9]{4,14}$/,
       "Must be a valid phone number with country code"
-    ).nullable(),
+    )
+    .nullable()
+    .min(10, "Must be at least 10 characters")
+    .max(15, "Must be less than 14 characters"),
+  financeEmail: yup
+    .string()
+    .email("Finance Email is invalid")
+    .nullable()
+    .matches(
+      /^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/i,
+      "Invalid email format"
+    ),
+  gstnumber: yup
+    .string().matches(
+      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i,"Invalid GST format"
+    )
+    .nullable()
+    .min(3, "GST must be at least 3 characters")
+    .max(15, "Must be 15 characters or less"),
+  cinnumber: yup
+    .string()
+    .nullable().matches(
+      /^\d{6,15}$/i,"Invalid CIN format"
+    )
+    .min(3, "CIN must be at least 3 Numbers")
+    .max(15, "Must be 15 Numbers or less"),
+  pannumber: yup
+    .string().matches(
+      /^\d{6,15}$/i,"Invalid PAN format"
+    )
+    .nullable()
+    .min(3, "PAN must be at least 3 characters")
+    .max(15, "Must be 15 characters or less"),
+});
+
+export const clientValidationSchema = yup.object().shape({
+  clientName: yup
+    .string()
+    .required("Client Name is required")
+    .min(3, "Must be at least 3 characters")
+    .max(50, "Must be 50 characters or less"),
+  clientHeadQuarterCountry: yup
+    .object()
+    .required("Client HQ Country is required"),
+  clientHeadQuarterState: yup.object().required("Client HQ State is required"),
+  financePocName: yup
+    .string()
+    .nullable()
+    .min(3, "Finance POC Name must be at least 3 characters")
+    .max(50, "Must be 50 characters or less"),
+  financeNumber: yup
+    .string()
+    .matches(
+      /^\+[0-9]{1,3}[0-9]{4,14}$/,
+      "Must be a valid phone number with country code"
+    )
+    .nullable(),
   financeEmail: yup
     .string()
     .matches(
@@ -178,30 +223,43 @@ export const clientValidationSchema = yup.object().shape({
     )
     .email("Invalid email format")
     .nullable(),
-  gstnumber: yup.string().nullable(),
-  cinnumber: yup.string().nullable(),
-  pannumber: yup.string().nullable(),
+  gstnumber: yup.string().nullable().max(15, "Must be less than 15 characters"),
+  cinnumber: yup.string().nullable().max(15, "Must be less than 15 characters"),
+  pannumber: yup.string().nullable().max(15, "Must be less than 15 characters"),
 });
 
 export const clientLocationSchema = yup.object().shape({
   pincode: yup
     .string()
     .required("Pincode is required")
-    .matches(/^\d+$/, "Pincode must be numeric"),
+    .matches(/^\d+$/, "Pincode must be numeric")
+    .min(6, "Must be at least 6 characters")
+    .max(8, "Must be 8 characters or less"),
   address1: yup.string().required("Address is required"),
-  hrContactPerson: yup.string()
-  .required("HR Contact Person is required"),
+  hrContactPerson: yup
+    .string()
+    .required("HR Contact Person is required")
+    .min(3, "Must be at least 3 characters")
+    .max(30, "Must be 50 characters or less")
+    .matches(/^[a-zA-Z ]+$/),
 
-technicalPerson: yup.string()
-  .required("Technical Person is required"),
+  technicalPerson: yup
+    .string()
+    .required("Technical Person is required")
+    .min(3, "Must be at least 3 characters")
+    .max(30, "Must be 50 characters or less")
+    .matches(/^[a-zA-Z ]+$/),
   hrMobileNumber: yup
     .string()
     .required("HR Mobile Number is required")
-    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/i,"Invalid Mobile number format"),
+    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/i, "Invalid Mobile number format"),
   companyLandline: yup
     .string()
     .required("Company Landline is required")
-    .matches(/^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/i,"Invalid landline number format"),
+    .matches(
+      /^(?:\+?\d{1,3}[- ]?)?\d{8,12}$/i,
+      "Invalid landline number format"
+    ),
   hrContactPersonEmail: yup
     .string()
     .matches(
@@ -209,22 +267,47 @@ technicalPerson: yup.string()
       "Invalid email format"
     )
     .required("Email is required"),
-  state: yup.object().shape({
-    locationId: yup
-      .number()
-      .min(1, "Select a state"),
-  }).required("State is required"),
-  client: yup.object().shape({
-    clientId: yup
-      .number()
-      .required("Client is required")
-      .min(1, "Select a client"),
-  }).required("Client is required"),
+  state: yup
+    .object()
+    .shape({
+      locationId: yup.number().min(1, "Select a state"),
+    })
+    .required("State is required"),
+  client: yup
+    .object()
+    .shape({
+      clientId: yup
+        .number()
+        .required("Client is required")
+        .min(1, "Select a client"),
+    })
+    .required("Client is required"),
   cityId: yup.object().shape({
     locationId: yup
       .number()
       .required("City is required")
       .min(1, "Select a city"),
+  }),
+});
+
+export const jobUpdateSchema = yup.object().shape({
+  jobCode: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  jobTitle: yup
+    .string()
+    .min(3, "Must be at least 3 characters")
+    .max(50, "Must be 50 characters or less")
+    .nullable(),
+  jobDescription: yup
+    .string()
+    .min(3, "Must be at least 3 characters")
+    .nullable(),
+  salaryInCtc: yup.number().nullable(),
+  experience: yup.string().nullable(),
+  isJobActive: yup.string().nullable(),
+  jobPostType: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  insertedBy: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  client: yup.object().shape({
+    clientId: yup.number(),
   }),
 });
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { uploadJobDescriptionById } from "@/api/client/clientJob";
 import { toast } from "react-toastify";
 
-export default function JobDescriptionUploader({ jobId }: { jobId: number }) {
+export default function JobDescriptionUploader({ jobId,autoClose }: { jobId: number,autoClose?:()=>void }) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +37,7 @@ export default function JobDescriptionUploader({ jobId }: { jobId: number }) {
         toast.success("File uploaded successfully", { position: "top-right" });
         setUploading(false);
         setFile(null);
+        autoClose && autoClose();
       });
     } catch (err: any) {
       setError(err.message || "An error occurred during upload.");

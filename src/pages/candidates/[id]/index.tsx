@@ -359,13 +359,15 @@ export default function Candidates() {
           experience: techExp,
           expertiseLevel: expLevel,
         });
-        console.log("Skill added to candidate:", result.technology);
+        console.log("Skill added to candidate:", result.technology.technology);
+        setIsSkillAdded(true);
       } else if (tempId) {
         const result = await createContactTechnology({
           contactDetails: currentCandidate,
           technology: tempId,
         });
-        console.log("Skill added to candidate:", result.technology);
+        setIsSkillAdded(true);
+        console.log("Skill added to candidate:", result.technology.technology);
       }
 
       // Reset form fields
@@ -380,6 +382,7 @@ export default function Candidates() {
       toast.success("Skill added successfully", {
         position: "top-center",
       });
+      setIsSkillAdded(true);
     } catch (error) {
       console.error("Error adding skill:", error);
       toast.error("Failed to add skill. Please try again.", {
@@ -398,17 +401,17 @@ export default function Candidates() {
         });
         return;
       }
-      if(selectedDomain.length < 3){
+      if (selectedDomain.length < 3) {
         toast.error("Domain Must be Greater than 3 characters", {
           position: "top-center",
-        })
-        return
+        });
+        return;
       }
-      if(selectedDomain.length > 30){
+      if (selectedDomain.length > 30) {
         toast.error("Domain Must be less than 30 characters", {
           position: "top-center",
-        })
-        return
+        });
+        return;
       }
       // Check if if the selected domain exist in the candidate's domain array
       if (
@@ -435,10 +438,10 @@ export default function Candidates() {
           //  fields for the createDomain API
         };
         const data = await createDomain(newDomain);
-        if(!data.domainId){
+        if (!data.domainId) {
           toast.error("Please Enter Valid Domain", {
             position: "top-center",
-          })
+          });
         }
         domainId = data.domainId;
       } else {
@@ -448,24 +451,24 @@ export default function Candidates() {
         )?.domainId;
       }
 
-      if(!domainId){
+      if (!domainId) {
         return;
-      }else{
+      } else {
         await createContactDomain({
-        domain: {
-          domainId: domainId,
-        },
-        contactDetails: {
-          contactId: Number(router.query.id),
-        },
-      }).then((data) => {
-        setCandidateDomains((prev) => (prev ? [...prev, data] : [data]));
-        toast.success("Domain added successfully", {
-          position: "top-center",
+          domain: {
+            domainId: domainId,
+          },
+          contactDetails: {
+            contactId: Number(router.query.id),
+          },
+        }).then((data) => {
+          setCandidateDomains((prev) => (prev ? [...prev, data] : [data]));
+          toast.success("Domain added successfully", {
+            position: "top-center",
+          });
+          setSelectedDomain("");
+          setIsSkillUpdated(true);
         });
-        setSelectedDomain("");
-        setIsSkillUpdated(true);
-      });
       }
     } catch (error) {
       toast.error("Failed to add domain. Please try again.", {
@@ -525,10 +528,10 @@ export default function Candidates() {
           //  fields for the createCompany API
         };
         const data = await createCompany(newCompany);
-        if(!data.companyId) {
+        if (!data.companyId) {
           toast.error("Please Enter Valid Company Name", {
-            position:"top-center"
-          })
+            position: "top-center",
+          });
         }
         companyId = data.companyId;
       } else {
@@ -537,7 +540,7 @@ export default function Candidates() {
             company.companyName.toLowerCase() === selectedCompany.toLowerCase()
         )?.companyId;
       }
-      if(!companyId) return
+      if (!companyId) return;
       const data = await createContactCompany({
         contactDetails: currentCandidate,
         company: {
@@ -652,6 +655,7 @@ export default function Candidates() {
     setIsSkillUpdated(true);
     const tech = technologies?.[id];
     if (tech) {
+      console.log(technologies?.[id]);
       setSelectedTech({
         contactTechId: tech.contactTechId,
         technology: tech.technology,
@@ -673,8 +677,6 @@ export default function Candidates() {
 
   const handleUpdateContactTechnology = async (event: React.MouseEvent) => {
     event.preventDefault();
-    console.log("selectedTech", selectedTech);
-
     // Check if selectedTech and originalTech are defined
     if (!selectedTech || !originalTech) {
       toast.error("No skill selected for update.", {
@@ -695,9 +697,6 @@ export default function Candidates() {
     }
     updatedSkill.contactDetails = currentCandidate;
     // updatedSkill.technology = selectedTech.technology;
-
-    console.log("Updated Skill Payload:", updatedSkill);
-
     try {
       // Check if contactTechId is available
       if (selectedTech.contactTechId) {
@@ -706,8 +705,6 @@ export default function Candidates() {
           selectedTech.contactTechId,
           updatedSkill
         );
-        console.log("Skill updated successfully:", response);
-
         // Update the technologies array in state
         const updatedTechnologies = technologies?.map((tech) =>
           tech.contactTechId === selectedTech.contactTechId
@@ -861,7 +858,11 @@ export default function Candidates() {
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {preferredJobType.length > 1
                     ? preferredJobType.map((item) => item["jobType"]).join(", ")
-                    : preferredJobType.length === 1 ? preferredJobType[0] : preferredJobType.length === 0 ? "-" : ""} 
+                    : preferredJobType.length === 1
+                    ? preferredJobType[0]
+                    : preferredJobType.length === 0
+                    ? "-"
+                    : ""}
                 </p>
               </div>
 
@@ -1079,60 +1080,98 @@ export default function Candidates() {
         <section className="rounded-lg shadow-sm p-2">
           <h3 className="md:text-xl text-sm font-semibold">Interviews</h3>
 
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
             {candidateInterviews?.length ? (
               candidateInterviews?.map((item, index) => (
-                <div className="">
-                  <h4 className="font-bold md:text-lg text-md text-blue-700 mb-4 mt-4">
-                    {item.clientJob?.client.clientName}
-                  </h4>
-                  <div id="interviews" className="">
-                    <div
-                      key={index}
-                      className="border border-black-200  shadow-md bg-[var(--content-background)] p-4 rounded-lg text-xs md:text-base space-y-4 relative"
-                    >
-                      <div className="flex items-center justify-between flex-wrap border-b border-black-200">
-                        <h2 className="font-semibold md:text-xl text-lg">
+                <div
+                  key={index}
+                  className="transform transition-all duration-300 hover:shadow-xl"
+                >
+                  <div id="interviews">
+                    <div className="border border-gray-200 shadow-lg rounded-xl overflow-hidden bg-[var(--content-background)] relative">
+                      {/* Header Section */}
+                      <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200">
+                        <div className="flex items-center justify-between mb-1">
+                          <h2 className="text-sm md:text-base font-medium text-gray-600 dark:text-gray-300">
+                            {item.clientJob?.client.clientName}
+                          </h2>
+                          <div className="flex gap-2 items-center px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700">
+                            <div
+                              className={`w-3 h-3 md:w-3 md:h-3 rounded-full ${
+                                item.interviewStatus === "DONE"
+                                  ? "bg-green-500"
+                                  : item.interviewStatus === "PENDING"
+                                  ? "bg-yellow-500"
+                                  : item.interviewStatus === "REJECTED"
+                                  ? "bg-red-500"
+                                  : "bg-blue-500"
+                              }`}
+                            ></div>
+                            <span className="text-xs md:text-sm font-medium">
+                              {item.interviewStatus}
+                            </span>
+                          </div>
+                        </div>
+                        <h2 className="font-bold md:text-xl text-lg text-gray-800 dark:text-white truncate">
                           {item.clientJob?.jobTitle}
                         </h2>
-                        <div className="flex gap-2 items-center">
-                          <div
-                            className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${
-                              item.interviewStatus === "DONE"
-                                ? "bg-green-500"
-                                : item.interviewStatus === "PENDING"
-                                ? "bg-yellow-500"
-                                : item.interviewStatus === "REJECTED"
-                                ? "bg-red-500"
-                                : "bg-blue-500"
-                            }`}
-                          ></div>
-                          <span className="text-xs md:text-base">
-                            {item.interviewStatus}
-                          </span>
-                        </div>
                       </div>
-                      <p className="text-xs md:text-base">
-                        Date : {item.interviewDate}
-                      </p>
-                      <Link
-                        href={{
-                          pathname: `/candidates/${Number(
-                            router.query.id
-                          )}/interviews/${item?.clientJob?.jobId}`,
-                          query: { contactInterViewId: item?.interviewId },
-                        }}
-                      >
-                        <button className="bg-[var(--theme-background)] border-black-200 border-2 py-1 px-2 absolute right-4 bottom-4 bg-blue-500 text-white rounded-md border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border">
-                          View Results
-                        </button>
-                      </Link>
+
+                      {/* Content Section */}
+
+                      {/* Button Section */}
+                      <div className="p-4 pt-4 flex justify-end">
+                        <Link
+                          href={{
+                            pathname: `/candidates/${Number(
+                              router.query.id
+                            )}/interviews/${item?.clientJob?.jobId}`,
+                            query: { contactInterViewId: item?.interviewId },
+                          }}
+                        >
+                          <button className="bg-blue-500 text-white text-xs md:text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition-all duration-200 flex items-center">
+                            View Results
+                            <svg
+                              className="w-4 h-4 ml-1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="mt-4">No interviews found</div>
+              <div className="col-span-1 md:col-span-2 bg-gray-50 dark:bg-gray-800 rounded-lg p-8 text-center">
+                <svg
+                  className="w-12 h-12 mx-auto text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1}
+                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <p className="mt-4 text-gray-600 dark:text-gray-300 font-medium">
+                  No interviews found
+                </p>
+              </div>
             )}
           </div>
         </section>
@@ -1629,7 +1668,7 @@ export default function Candidates() {
         {/* Resume Section */}
         <section
           id="resume"
-          className="p-2 rounded-lg shadow-sm space-y-6 mb-8"
+          className="p-2 rounded-lg shadow-sm space-y-6"
         >
           <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
           <PdfViewer

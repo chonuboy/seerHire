@@ -34,7 +34,6 @@ const AddClientLocation = ({
     validateOnChange: true,
     
     onSubmit: async (values) => {
-      
       try {
         createClientLocation(values)
           .then((data) => {
@@ -110,6 +109,11 @@ const AddClientLocation = ({
               value={formik.values.address1}
               className="w-full border border-gray-300 rounded-md p-2 dark:text-black"
             />
+            {formik.touched.address1 && formik.errors.address1 && (
+                <p className="mt-1 text-sm text-red-600">
+                  {formik.errors.address1}
+                </p>
+              )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -127,6 +131,11 @@ const AddClientLocation = ({
                 options={masterLocations}
                 onAdd={addNewState}
               ></LocationAutocomplete>
+              {formik.touched.state?.locationId && formik.errors.state?.locationId && (
+                <p className="mt-1 text-sm text-red-600">
+                  {formik.errors.state?.locationId}
+                </p>
+              )}
             </div>
 
             <div className="h-auto space-y-3 rounded-lg">
@@ -143,6 +152,11 @@ const AddClientLocation = ({
                 options={masterLocations}
                 onAdd={addNewCity}
               ></LocationAutocomplete>
+              {formik.touched.cityId?.locationId && formik.errors.cityId?.locationId && (
+                <p className="mt-1 text-sm text-red-600">
+                  {formik.errors.cityId?.locationId}
+                </p>
+              )}
             </div>
 
             <div className="space-y-3">

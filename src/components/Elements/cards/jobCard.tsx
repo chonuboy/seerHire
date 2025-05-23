@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { fetchJobDescription } from "@/api/client/clientJob";
 import mammoth from "mammoth";
 import { fetchCandidateResume } from "@/api/candidates/candidates";
+import JobDescriptionUploader from "@/components/Forms/jobs/jdUploader";
 
 interface JobData {
   createdOn: string;
@@ -32,10 +33,12 @@ interface JobData {
 
 export default function JobCard({
   job,
-  autoClose,
+  onUpdate,
+  isClient,
 }: {
   job: JobData;
-  autoClose?: () => void;
+  onUpdate?: () => void;
+  isClient?: boolean;
 }) {
   const [showJdModal, setShowJdModal] = useState(false);
   const [isJobUpdated, setIsJobUpdated] = useState(false);
@@ -47,6 +50,7 @@ export default function JobCard({
   const loadPdf = async (jd: any, jobId: any) => {
     let objectUrl: string | null = null;
     let pdfData: any;
+
     setShowJdModal(true);
     try {
       pdfData = await fetchJobDescription(jobId)
@@ -95,7 +99,7 @@ export default function JobCard({
       Active: "bg-green-100 text-green-800",
       OnHold: "bg-yellow-100 text-yellow-800",
       Closed: "bg-red-100 text-red-800",
-    }[job.isJobActive] || "bg-gray-100 text-gray-800 dark:text-white";
+    }[job.isJobActive] || "bg-gray-100 text-gray-800 dark:text-black";
 
   return (
     <div className="bg-white dark:bg-black dark:text-white rounded-lg shadow-md overflow-hidden border border-gray-200">
@@ -191,14 +195,17 @@ export default function JobCard({
             View Job Description
           </button>
         </div>
-        <div className="flex justify-end">
-          <button
-            className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4"
-            onClick={() => setIsJobUpdated(true)}
-          >
-            Update
-          </button>
-        </div>
+        {!isClient && (
+          <div className="flex justify-end">
+            <button
+              className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4"
+              onClick={() => setIsJobUpdated(true)}
+            >
+              Update
+            </button>
+          </div>
+        )}
+
         {isJobUpdated && (
           <Popup onClose={() => setIsJobUpdated(false)}>
             <JobInfoUpdateForm
@@ -206,8 +213,8 @@ export default function JobCard({
               id={job.jobId}
               autoClose={() => {
                 setIsJobUpdated(false);
-                if (autoClose) {
-                  autoClose();
+                if (onUpdate) {
+                  onUpdate();
                 }
               }}
             />
@@ -217,7 +224,7 @@ export default function JobCard({
 
       {/* JD Modal */}
       <div className="grid md:grid-cols-2 gap-8 grid-cols-1 p-4">
-        {showJdModal && pdfUrl !== "" && (
+        {pdfUrl && showJdModal && pdfUrl !== "" && (
           <Popup onClose={() => setShowJdModal(false)}>
             <iframe
               src={pdfUrl}
@@ -230,8 +237,18 @@ export default function JobCard({
                 padding: "20px",
                 marginTop: "60px",
               }}
-              title="Candidate Resume"
+              title="jd"
             />
+          </Popup>
+        )}
+        {!pdfUrl && showJdModal && (
+          <Popup onClose={() => setShowJdModal(false)}>
+            <div className="mt-20">
+              <JobDescriptionUploader
+                autoClose={() => setShowJdModal(false)}
+                jobId={job.jobId}
+              />
+            </div>
           </Popup>
         )}
       </div>

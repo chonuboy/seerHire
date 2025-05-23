@@ -42,6 +42,7 @@ export default function Candidates() {
       toast.error("Please Enter a Keyword", {
         position: "top-center",
       });
+      return;
     }
     contactSearchByKeyword(searchKeyword).then((data) => {
       if (data.status === "NOT_FOUND") {

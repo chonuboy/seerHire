@@ -70,6 +70,10 @@ export const Table: React.FC<TableProps> = ({
     })
   };
 
+  if(assignInterview){
+    columns[columns.length-1].Header = "Assign Interview";
+  }
+
   // Handle empty data or columns
   if (!data || data.length === 0) {
     return (
@@ -160,7 +164,7 @@ export const Table: React.FC<TableProps> = ({
                         {role.roleName}
                       </p>
                     ))}
-                  {col.Header === "Status" && assignInterview && jobId && (
+                  {col.Header === "Assign Interview" && assignInterview && jobId && (
                     <div>
                       <button
                         onClick={() => {

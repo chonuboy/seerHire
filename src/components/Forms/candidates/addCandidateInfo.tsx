@@ -65,8 +65,8 @@ export default function ProfessionalForm({
   const [isLoading, setIsLoading] = useState(false);
   const [newDomain, setNewDomain] = useState("");
 
-  const jobModes = ["Remote", "Onsite", "Hybrid"];
-  const hiringTypes = ["Full Time", "Part Time", "Contract"];
+  const jobModes = ["Remote", "Onsite", "Hybrid", "Flexible"];
+  const hiringTypes = ["Full Time", "Part Time", "Contract", "Flexible"];
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -495,7 +495,7 @@ export default function ProfessionalForm({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Preferred Job Mode
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {jobModes.map((mode) => (
                 <label
                   key={mode}
@@ -509,37 +509,38 @@ export default function ProfessionalForm({
                     }`}
                     onClick={() => {
                       toggleCheckbox("preferredJobModes", mode);
-                      if (
-                        formData.preferredJobModes.includes("Onsite") &&
-                        formData.preferredJobModes.includes("Remote") &&
-                        mode === "Hybrid"
-                      ) {
-                        createContactPreferredJobType({
-                          contactDetails: {
-                            contactId: candidateId,
-                          },
-                          preferredJobMode: mode,
-                        }).then((data) => {
-                          console.log(data);
-                          setTimeout(() => {
+                      createContactPreferredJobType({
+                        contactDetails: {
+                          contactId: candidateId,
+                        },
+                        preferredJobMode: mode,
+                      }).then((data) => {
+                        if (mode === "Flexible") {
+                          toggleCheckbox("preferredJobModes", "Remote");
+                          toggleCheckbox("preferredJobModes", "Onsite");
+                          toggleCheckbox("preferredJobModes", "Hybrid");
+                          createContactPreferredJobType({
+                            contactDetails: {
+                              contactId: candidateId,
+                            },
+                            preferredJobMode: "Remote",
+                          }).then((data) => {
                             createContactPreferredJobType({
-                              preferredJobMode: "Flexible",
                               contactDetails: {
                                 contactId: candidateId,
                               },
+                              preferredJobMode: "Onsite",
+                            }).then((data) => {
+                              createContactPreferredJobType({
+                                contactDetails: {
+                                  contactId: candidateId,
+                                },
+                                preferredJobMode: "Hybrid",
+                              }).then((data) => {});
                             });
-                          }, 1000);
-                        });
-                      } else {
-                        createContactPreferredJobType({
-                          contactDetails: {
-                            contactId: candidateId,
-                          },
-                          preferredJobMode: mode,
-                        }).then((data) => {
-                          console.log(data);
-                        });
-                      }
+                          });
+                        }
+                      });
                     }}
                   >
                     {formData.preferredJobModes.includes(mode) && (
@@ -557,7 +558,7 @@ export default function ProfessionalForm({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Hiring Type
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {hiringTypes.map((type) => (
                 <label
                   key={type}
@@ -571,39 +572,38 @@ export default function ProfessionalForm({
                     }`}
                     onClick={() => {
                       toggleCheckbox("hiringTypes", type);
-                      if (
-                        formData.hiringTypes.includes("Full Time") &&
-                        formData.hiringTypes.includes("Part Time") &&
-                        type === "Contract"
-                      ) {
-                        createContactHiringType({
-                          hiringType: type,
-                          contactDetails: {
-                            contactId: candidateId,
-                          },
-                        }).then((data) => {
-                          console.log(data);
-                        });
-                        setTimeout(() => {
+                      createContactHiringType({
+                        hiringType: type,
+                        contactDetails: {
+                          contactId: candidateId,
+                        },
+                      }).then((data) => {
+                        if (type == "Flexible") {
+                          toggleCheckbox("hiringTypes", "Full Time");
+                          toggleCheckbox("hiringTypes", "Part Time");
+                          toggleCheckbox("hiringTypes", "Contract");
                           createContactHiringType({
-                            hiringType: "Flexible",
+                            hiringType: "Full Time",
                             contactDetails: {
                               contactId: candidateId,
                             },
                           }).then((data) => {
-                            console.log(data);
+                            createContactHiringType({
+                              hiringType: "Part Time",
+                              contactDetails: {
+                                contactId: candidateId,
+                              },
+                            }).then((data) => {
+                              createContactHiringType({
+                                hiringType: "Contract",
+                                contactDetails: {
+                                  contactId: candidateId,
+                                },
+                              }).then((data) => {});
+                            });
                           });
-                        }, 2000);
-                      } else {
-                        createContactHiringType({
-                          hiringType: type,
-                          contactDetails: {
-                            contactId: candidateId,
-                          },
-                        }).then((data) => {
-                          console.log(data);
-                        });
-                      }
+                        }
+                      });
                     }}
                   >
                     {formData.hiringTypes.includes(type) && (

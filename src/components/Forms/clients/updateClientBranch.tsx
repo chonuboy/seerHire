@@ -44,10 +44,20 @@ const UpdateClientLocation = ({
         try {
           updateClientLocation(locationId, updatedFields).then((data)=>{
             console.log(data);
-            toast.success("Branch updated successfully", {
-              position: "top-right",
-            })
-            autoClose();
+            // toast.success("Branch updated successfully", {
+            //   position: "top-right",
+            // })
+            // autoClose();
+            if(data.status === 200){
+              toast.success("Branch updated successfully", {
+                position: "top-right",
+              })
+              autoClose();
+            }else{
+              toast.error(data.message, {
+                position: "top-right",
+              })
+            }
           })
         } catch (error) {
           console.error("Form submission error", error);

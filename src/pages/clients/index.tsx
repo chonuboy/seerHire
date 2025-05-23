@@ -76,6 +76,7 @@ export default function Clients() {
       toast.error("Please Enter a Keyword", {
         position: "top-center",
       });
+      return;
     }
     searchClient(searchKeyword).then((data) => {
       if (data.status === "NOT_FOUND") {
@@ -173,7 +174,6 @@ export default function Clients() {
             setIsClientAdded(false);
             fetchAllClients(currentPage - 1, 10).then((data: any) => {
               setClients(data);
-              console.log(data);
             });
             formik.resetForm();
           }

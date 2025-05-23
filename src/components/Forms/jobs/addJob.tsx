@@ -52,7 +52,7 @@ export const AddJob = ({
     },
     validationSchema: jobFormSchema,
     validateOnBlur: false,
-    validateOnChange: false,
+    validateOnChange: true,
     onSubmit: (values) => {
       setIsSubmitting(true);
 
@@ -92,12 +92,15 @@ export const AddJob = ({
           return;
         } else {
           createJob(values).then((data) => {
-            console.log(data);
-            autoClose();
             if (data.status === 201) {
               toast.success("Job added successfully", {
                 position: "top-right",
               });
+              autoClose();
+            }else{
+              toast.error(data.message, {
+                position: "top-right",
+              })
             }
           });
         }
@@ -325,7 +328,7 @@ export const AddJob = ({
           {/* JD File Upload */}
           <div className="space-y-2 md:col-span-2">
             <label className="block text-sm font-medium text-gray-700">
-              Upload JD File
+              Upload JD File <span className="text-red-500">*</span>
             </label>
             <div className="mt-1 flex items-center">
               <div

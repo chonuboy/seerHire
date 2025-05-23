@@ -6,12 +6,12 @@ export type Candidate = {
 	contactId?:number,
 	firstName: string;
 	lastName: string;
-	dob: string;
+	dob: string|null;
 	primaryNumber: string;
 	secondaryNumber?: string|null;
 	emailId: string;
 	designation: string;
-	companyName: string;
+	companyName: string|null;
 	totalExperience: number|null;
 	isActive: boolean;
 	candidateStatus: string;
@@ -27,9 +27,9 @@ export type Candidate = {
 	currentLocation: Location;
 	differentlyAbled: boolean;
 	isDifferentlyAbled: string;
-	address: string;
-	addressLocality: string;
-	differentlyAbledType: string;
+	address: string|null;
+	addressLocality: string|null;
+	differentlyAbledType: string|null;
 	preferredJobType?: string;
 	image?:string
 	resume?:string | undefined;

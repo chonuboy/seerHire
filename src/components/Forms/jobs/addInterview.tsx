@@ -4,6 +4,9 @@ import { createInterviewRound } from "@/api/interviews/InterviewRounds";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format, parseISO, isValid } from "date-fns";
 
 export default function AddRound({
   className,
@@ -39,9 +42,12 @@ export default function AddRound({
 
       try {
         await createInterviewRound(values).then((data) => {
-          console.log(data);
           if (data.status === 200) {
             toast.success("Round added successfully", {
+              position: "top-right",
+            });
+          }else{
+            toast.error(data.message, {
               position: "top-right",
             });
           }
@@ -65,27 +71,42 @@ export default function AddRound({
 
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
           {/* Interview Date */}
-          <div className="space-y-2">
+          <div className="flex flex-col space-y-2">
             <label
               htmlFor="roundDate"
               className="block text-sm font-medium dark:text-black"
             >
               Interview Date <span className="text-red-500">*</span>
             </label>
-            <input
-              type="date"
+            <DatePicker
               id="roundDate"
               name="roundDate"
-              value={formik.values.roundDate}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              selected={
+                formik.values.roundDate
+                  ? parseISO(formik.values.roundDate)
+                  : null
+              }
+              onChange={(date: Date | null) => {
+                if (date) {
+                  // Store in ISO format
+                  formik.setFieldValue("roundDate", format(date, "yyyy-MM-dd"));
+                } else {
+                  formik.setFieldValue("roundDate", null);
+                }
+              }}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="dd/mm/yyyy"
               className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
+              maxDate={new Date()}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
             />
-            {formik.touched.roundDate && formik.errors.roundDate && (
+            {formik.touched.roundDate && formik.errors.roundDate ? (
               <div className="text-red-500 text-sm">
-                {formik.errors.roundDate}
+                {formik.errors.roundDate.toString()}
               </div>
-            )}
+            ) : null}
           </div>
 
           {/* Round Number */}
@@ -282,48 +303,48 @@ export default function AddRound({
 
           {/* Submit and Cancel Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  Add
-                </button>
-                <button
-                  type="button"
-                  onClick={onclose}
-                  className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Cancel
-                </button>
-              </div>
+            <button
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Add
+            </button>
+            <button
+              type="button"
+              onClick={onclose}
+              className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -32,10 +32,16 @@ export default function ClientInfoUpdateForm({
       try {
         updateClient(id, updatedFields).then((data) => {
           console.log(data)
-          autoClose()
-          toast.success("Client updated successfully", {
-            position: "top-right",
-          })
+          if(data.status === 200){
+            toast.success("Client updated successfully", {
+              position: "top-right",
+            })
+            autoClose()
+          }else{
+            toast.error(data.message, {
+              position: "top-right",
+            })
+          }
         })
       } catch (error: any) {
         console.log(error)

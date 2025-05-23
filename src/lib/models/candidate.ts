@@ -17,21 +17,19 @@ const phoneRegExp =
 export const CandidateModel: Candidate = {
   firstName: "",
   lastName: "",
-  dob: "",
+  dob: null,
   primaryNumber: "",
   secondaryNumber: null,
   emailId: "",
   designation: "",
-  companyName: "",
+  companyName: null,
   totalExperience: null,
   isActive: true,
   candidateStatus: CandidateStatus.ACTIVE,
   isExpectedCtcNegotiable:false,
   currentSalary: null,
-  // expectedSalary: 0,
   highestEducation: "",
   gender: Gender.MALE,
-  // hiringType: HiringType.FULL,
   pinCode: null,
   maritalStatus: MaritalStatus.MARRIED,
   techRole: "",
@@ -39,17 +37,16 @@ export const CandidateModel: Candidate = {
   currentLocation: { locationId: 0, locationDetails: "", insertedOn: "" },
   differentlyAbled: false,
   isDifferentlyAbled: DifferentlyAbled.NO,
-  address: "",
-  addressLocality: "",
-  differentlyAbledType: "",
-  // preferredJobType: PreferredJobType.REMOTE,
+  address: null,
+  addressLocality: null,
+  differentlyAbledType: null,
 };
 
 export const CandidateSchema = yup.object({
   firstName: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .max(15, "Must be 15 characters or less")
+    .max(20, "Must be 15 characters or less")
     .required("First name is required"),
   lastName: yup
     .string()
@@ -57,15 +54,7 @@ export const CandidateSchema = yup.object({
     .max(20, "Must be 20 characters or less")
     .required("Last name is required"),
     dob: yup
-    .date(),
-    // .test("isPastDate", "Enter a valid date", function (value) {
-    //   const dateValue = value?.getTime();
-    //   if (dateValue === undefined) {
-    //     return false; // or throw an error, depending on your requirements
-    //   }
-    //   const today = new Date();
-    //   return new Date(dateValue) < today;
-    // }),
+    .date().nullable(),
   primaryNumber: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
@@ -86,7 +75,7 @@ export const CandidateSchema = yup.object({
     .min(3, "Must be at least 3 characters")
     .max(50, "Must be 50 characters or less")
     .required("Designation is required"),
-  companyName: yup.string(),
+  companyName: yup.string().min(3, "Must be at least 3 characters").max(50, "Must be 50 characters or less").nullable(),
   totalExperience: yup.number().required("Experience is required"),
   candidateStatus: yup.string().required("Select status"),
   currentSalary: yup.number().required("Current salary is required"),
@@ -98,18 +87,18 @@ export const CandidateSchema = yup.object({
     .required("Highest education is required"),
   gender: yup.string().required("Select gender"),
   // hiringType: yup.string(),
-  pinCode: yup.number().nullable(),
+  pinCode: yup.number().nullable().min(6, "Must be at least 6 characters").max(8, "Must be 8 characters or less"),
   maritalStatus: yup.string().required("Select marital status"),
   techRole: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .required("Tech role is required"),
-  noticePeriod: yup.number().required("Notice period is required"),
+    .required("Tech role is required").max(100,"Must be 100 Characters or less"),
+  noticePeriod: yup.number().required("Notice period is required").max(150,"Must be less than 150 Days"),
   currentLocation: yup.object().required("Current location is required"),
   isDifferentlyAbled: yup.string().required("Select your preference"),
-  address: yup.string(),
-  addressLocality: yup.string(),
-  differentlyAbledType: yup.string(),
+  address: yup.string().min(3,"Must be Greater than 3 Characters").nullable(),
+  addressLocality: yup.string().min(3,"Must be Greater than 3 Characters").nullable(),
+  differentlyAbledType: yup.string().nullable(),
 });
 
 
@@ -317,7 +306,7 @@ export const profileUpdateSchema = yup.object().shape({
     .nullable(),
   emailId: yup
     .string()
-    .matches(/^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/)
+    .matches(/^[a-zA-Z0-9][-a-zA-Z0-9._]+@([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}$/i,"Invalid email format")
     .nullable(),
   currentSalary: yup
     .number()
@@ -367,15 +356,15 @@ export const interviewFormSchema = yup.object().shape({
     .typeError('Interview Date must be a valid date'), // Validate date format
   interviewerName: yup
     .string()
-    .min(3, 'Interviewer Name must be at least 3 characters')
+    .min(3, 'Interviewer Name must be at least 3 characters').max(30, "Must be 30 characters or less")
     .nullable(),
   status: yup
     .string()
-    .oneOf(['passed', 'rejected'], 'Status must be either "passed" or "rejected"') // Validate status
+    .oneOf(["Passed", "Rejected", "On-Hold","Pending"], 'Invalid status') // Validate status
     .nullable(),
   remarks: yup
     .string()
-    .nullable(),
+    .nullable().min(3, "Must be at least 3 characters").max(100, "Must be 100 characters or less"),
   techRating: yup
     .number()
     .typeError('Tech Rating must be a number') // Ensure it's a number
@@ -388,25 +377,17 @@ export const interviewFormSchema = yup.object().shape({
     .min(1, 'Soft Skills Rating must be at least 1') // Minimum value
     .max(10, 'Soft Skills Rating cannot exceed 10') // Maximum value
     .nullable(),
-  technologies: yup
-    .array()
-    .of(yup.string().min(1, 'Technology must be at least 1 character')) // Validate each technology
-    .nullable(),
+  technologiesInterviewed: yup.string().nullable().min(3, "Must be at least 3 characters").max(30, "Must be 30 characters or less"),
 });
 
 export const interviewRoundSchema = yup.object().shape({
-  // roundNumber: yup
-  //   .number()
-  //   .required('Round number is required')
-  //   .min(1, 'Round number must be at least 1')
-  //   .integer('Round number must be an integer'),
   roundDate: yup
     .date()
     .required('Interview date is required'),
   interviewerName: yup
     .string()
     .required('Interviewer name is required')
-    .min(3, 'Interviewer name must be at least 3 characters'),
+    .min(3, 'Interviewer name must be at least 3 characters').max(30, "Must be 30 characters or less"),
   interviewStatus: yup
     .string()
     .required('Interview status is required')
@@ -414,7 +395,7 @@ export const interviewRoundSchema = yup.object().shape({
   technologyInterviewed: yup
     .string()
     .required('Technology is required')
-    .min(2, 'Technology must be at least 2 characters'),
+    .min(3, 'Technology must be at least 3 characters').max(30, "Must be 30 characters or less"),
   techRating: yup
     .number()
     .nullable()
@@ -429,5 +410,5 @@ export const interviewRoundSchema = yup.object().shape({
     .max(10, 'Maximum rating is 10').required('Soft skills rating is required'),
   remarks: yup
     .string()
-    .nullable().required('Remarks are required'),
+    .nullable().required('Remarks are required').min(3, "Must be at least 3 characters").max(500, "Must be 500 characters or less"),
 });

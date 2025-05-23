@@ -30,6 +30,7 @@ export default function AllJobs() {
         contactDetails: {
           contactId: contactId,
         },
+        interviewDate: new Date().toISOString().split('T')[0],
       }).then((data) => {
         if (
           data.message ===

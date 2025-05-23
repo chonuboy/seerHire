@@ -50,7 +50,7 @@ export default function SearchResults() {
             </button>
             <input
               type="text"
-              className="w-12 h-7  text-sm border text-center border-gray-300 rounded"
+              className="w-12 h-7  text-sm border text-center dark:text-black border-gray-300 rounded"
               value={`${currentPage + 1} of ${allPages}`}
             />
             <button

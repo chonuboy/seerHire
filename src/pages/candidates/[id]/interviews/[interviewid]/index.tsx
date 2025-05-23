@@ -15,34 +15,42 @@ import InterviewForm from "@/components/Forms/jobs/updateInterview";
 import AddRound from "@/components/Forms/jobs/addInterview";
 import { Candidate } from "@/lib/definitions";
 import { fetchCandidate } from "@/api/candidates/candidates";
-import { fetchContactInterview, fetchInterviewsByContact } from "@/api/candidates/interviews";
-import { fetchInterviewRoundsByContact, fetchInterviewRoundsByContactAndJob } from "@/api/interviews/InterviewRounds";
+import {
+  fetchContactInterview,
+  fetchInterviewsByContact,
+} from "@/api/candidates/interviews";
+import {
+  fetchInterviewRoundsByContact,
+  fetchInterviewRoundsByContactAndJob,
+} from "@/api/interviews/InterviewRounds";
 import { fetchInterviewRound } from "@/api/interviews/InterviewRounds";
 import { Interview } from "@/lib/models/candidate";
 import { fetchAllContactTechnologies } from "@/api/candidates/candidateTech";
 import { fetchAllTechnologies } from "@/api/master/masterTech";
+import { fetchJob } from "@/api/client/clientJob";
 
 export default function CandidateInterviews() {
   const router = useRouter();
-  const {contactInterViewId} = router.query; 
+  const { contactInterViewId } = router.query;
   const candidateId = Number(router.query.id);
   const [addRoundEnabled, setAddRoundEnabled] = useState(false);
   const [updateRoundEnabled, setUpdateRoundEnabled] = useState(false);
   const [currentCandidate, setCurrentCandidate] = useState<Candidate | null>(
     null
   );
-  const [currentJobData, setCurrentJobData] = useState<Interview[] | null>(null);
+  const [currentJobData, setCurrentJobData] = useState<Interview[] | null>(
+    null
+  );
   const [allRounds, setAllRounds] = useState<Round[] | null>(null);
   const [selectedRound, setSelectedRound] = useState<Round | null>(null); // Track the selected round
-  const [masterTech,setMasterTech] = useState<any[] | null>(null);
+  const [masterTech, setMasterTech] = useState<any[] | null>(null);
+  const [job, setJob] = useState<any | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
       const Id = Number(router.query.interviewid);
-      if(router.query.id){
-        
-      }
       const candidateId = Number(router.query.id);
+      console.log(router.query);
       fetchCandidate(candidateId)
         .then((data) => {
           setCurrentCandidate(data);
@@ -51,7 +59,12 @@ export default function CandidateInterviews() {
           console.log(err);
         });
 
-      fetchInterviewRoundsByContactAndJob(candidateId,Id).then((data) => {
+      fetchJob(Id).then((data) => {
+        setJob(data);
+        console.log(data);
+      });
+
+      fetchInterviewRoundsByContactAndJob(candidateId, Id).then((data) => {
         setAllRounds(data);
       });
 
@@ -61,10 +74,15 @@ export default function CandidateInterviews() {
 
       fetchAllTechnologies().then((data) => {
         setMasterTech(data);
-        console.log(data);
       });
     }
-  }, [candidateId, contactInterViewId, updateRoundEnabled, addRoundEnabled, router.isReady]);
+  }, [
+    candidateId,
+    contactInterViewId,
+    updateRoundEnabled,
+    addRoundEnabled,
+    router.isReady,
+  ]);
 
   const handleUpdateRound = (round: Round) => {
     console.log(round);
@@ -82,10 +100,10 @@ export default function CandidateInterviews() {
         </section>
 
         {/* Job Info Section */}
-        {/* <section className="space-y-4">
+        <section className="space-y-4">
           <h3 className="text-xl font-semibold">Job Info</h3>
-          <JobCard jobData={currentJobData?.clientJob ?? null} isClient={false} />
-        </section> */}
+          {job && <JobCard job={job} isClient />}
+        </section>
 
         {/* Interviews Section */}
         <section className="space-y-8">
@@ -118,7 +136,9 @@ export default function CandidateInterviews() {
                       <div className="flex items-center gap-12">
                         <div>
                           <div className="font-semibold text-lg flex items-center gap-2">
-                            <span className="text-green-500">{round.interview?.clientJob?.jobTitle}</span>
+                            <span className="text-green-500">
+                              {round.interview?.clientJob?.jobTitle}
+                            </span>
                           </div>
                           <p className="text-sm text-gray-500 dark:text-gray-300">
                             {round.roundDate}
@@ -132,7 +152,9 @@ export default function CandidateInterviews() {
                             ? "success"
                             : round.interviewStatus === "On-Hold"
                             ? "secondary"
-                            : round.interviewStatus === "Pending" ? "default" : "rejected"
+                            : round.interviewStatus === "Pending"
+                            ? "default"
+                            : "rejected"
                         }
                       >
                         {round.interviewStatus}
@@ -196,26 +218,25 @@ export default function CandidateInterviews() {
           {updateRoundEnabled && selectedRound && (
             <Popup onClose={() => setUpdateRoundEnabled(false)}>
               <InterviewForm
+                masterTechnologies={masterTech}
                 initialValues={selectedRound} // Pass the selected round
                 id={selectedRound.roundId ?? 0}
                 autoClose={() => setUpdateRoundEnabled(false)}
               />
             </Popup>
           )}
-
-          
         </section>
 
         {/* Render the Add Round Popup */}
         {addRoundEnabled && currentJobData && (
           <Popup onClose={() => setAddRoundEnabled(false)}>
             <AddRound
-                  className="mt-10 rounded-md bg-white m-8"
-                  interviewId={contactInterViewId}
-                  onclose={() => setAddRoundEnabled(false)}
-                  roundNumber={allRounds?.[allRounds?.length - 1]?.roundNumber ?? 0}
-                  masterTechnologies={masterTech}
-                />
+              className="mt-10 rounded-md bg-white m-8"
+              interviewId={contactInterViewId}
+              onclose={() => setAddRoundEnabled(false)}
+              roundNumber={allRounds?.[allRounds?.length - 1]?.roundNumber ?? 0}
+              masterTechnologies={masterTech}
+            />
           </Popup>
         )}
       </div>

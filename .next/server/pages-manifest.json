@@ -1,8 +1,16 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/candidates/[id]": "pages/candidates/[id].js",
-  "/_error": "pages/_error.js",
+  "/": "pages/index.js",
+  "/login": "pages/login.js",
+  "/clients": "pages/clients.js",
   "/candidates": "pages/candidates.js",
-  "/": "pages/index.js"
+  "/candidates/[id]": "pages/candidates/[id].js",
+  "/candidates/[id]/interviews/[interviewid]": "pages/candidates/[id]/interviews/[interviewid].js",
+  "/clients/[id]": "pages/clients/[id].js",
+  "/search": "pages/search.js",
+  "/search/results": "pages/search/results.js",
+  "/jobs/[id]/alljobs": "pages/jobs/[id]/alljobs.js",
+  "/jobs/[id]": "pages/jobs/[id].js",
+  "/_error": "pages/_error.js"
 }

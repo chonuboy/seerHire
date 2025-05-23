@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
-import { jobFormSchema } from "@/lib/models/client";
+import { jobFormSchema, jobUpdateSchema } from "@/lib/models/client";
 import { updateJob } from "@/api/client/clientJob";
 import { Save, X } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -17,9 +17,6 @@ export default function JobInfoUpdateForm({
   id: number;
   autoClose: () => void;
 }) {
-  // Helper function to get updated fields
-  
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [jd, setJobDescription] = useState<string | null>(null);
   const getUpdatedFields = (initialValues: any, values: any) => {
@@ -33,20 +30,27 @@ export default function JobInfoUpdateForm({
 
   const formik = useFormik({
     initialValues: currentJob,
-    // validationSchema: jobFormSchema,
+    validationSchema: jobUpdateSchema,
     onSubmit: (values) => {
-      console.log(values);
       try {
         const updatedFields = getUpdatedFields(currentJob, values);
         console.log("Updating job with:", id, updatedFields);
 
         // Add await here to properly handle the promise
         updateJob(id, updatedFields).then((data) => {
-          console.log(data);
+          if(data.status === 200){
+            console.log(data);
+            toast.success("Job updated successfully", {
+              position: "top-right",
+            })
+            autoClose();
+          }
+          else if(data.message){
+            toast.error(data.message, {
+              position: "top-right",
+            })
+          }
         });
-
-        toast.success("Job updated successfully", { position: "top-right" });
-        autoClose();
       } catch (error: any) {
         console.error("Update error:", error);
         toast.error(error.message || "An error occurred during update.", {
@@ -234,10 +238,12 @@ export default function JobInfoUpdateForm({
 
           {/* Job Description */}
           <div className="space-y-2 mt-4">
-            <label className="font-semibold text-gray-600">
+            <label htmlFor="jobDescription" className="font-semibold text-gray-600">
               Job Description
             </label>
             <JoditEditor
+            name="jobDescription"
+            id="jobDescription"
               value={formik.values.jobDescription || ""}
               config={{
                 height: 300,
@@ -265,48 +271,48 @@ export default function JobInfoUpdateForm({
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  Update
-                </button>
-                <button
-                  type="button"
-                  onClick={autoClose}
-                  className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Cancel
-                </button>
-              </div>
+            <button
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Update
+            </button>
+            <button
+              type="button"
+              onClick={autoClose}
+              className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
