@@ -171,23 +171,27 @@ export const clientFormSchema = yup.object().shape({
       "Invalid email format"
     ),
   gstnumber: yup
-    .string().matches(
-      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i,"Invalid GST format"
-    )
+    .string()
+    // .matches(
+    //   /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i,"Invalid GST format"
+    // )
     .nullable()
     .min(3, "GST must be at least 3 characters")
     .max(15, "Must be 15 characters or less"),
   cinnumber: yup
     .string()
-    .nullable().matches(
-      /^\d{6,15}$/i,"Invalid CIN format"
-    )
+    .nullable()
+    //.
+    // matches(
+    //   /^\d{6,15}$/i,"Invalid CIN format"
+    // )
     .min(3, "CIN must be at least 3 Numbers")
     .max(15, "Must be 15 Numbers or less"),
   pannumber: yup
-    .string().matches(
-      /^\d{6,15}$/i,"Invalid PAN format"
-    )
+    .string()
+    // .matches(
+    //   /^\d{6,15}$/i,"Invalid PAN format"
+    // )
     .nullable()
     .min(3, "PAN must be at least 3 characters")
     .max(15, "Must be 15 characters or less"),

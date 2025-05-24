@@ -875,7 +875,7 @@ const ProfileUpdateForm = ({
         {/* Current Salary */}
         <div className="space-y-2">
           <label htmlFor="currentSalary" className="text-gray-400 font-medium">
-            Current Salary
+            Current Salary (LPA)
           </label>
           <input
             id="currentSalary"
@@ -897,7 +897,7 @@ const ProfileUpdateForm = ({
         {/* Expected Salary */}
         <div className="space-y-2">
           <label htmlFor="expectedSalary" className="text-gray-400 font-medium">
-            Expected Salary
+            Expected Salary (LPA)
           </label>
           <input
             id="expectedSalary"

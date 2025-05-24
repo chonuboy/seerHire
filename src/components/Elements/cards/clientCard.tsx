@@ -1,20 +1,24 @@
-"use client";
-
 import type { ClientInfo } from "@/lib/models/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Popup } from "./popup";
 import { fetchClient } from "@/api/master/clients";
 import ClientInfoUpdateForm from "@/components/Forms/clients/updateClientInfo";
+import { fetchAllLocations } from "@/api/master/masterLocation";
+import { Location } from "@/lib/definitions";
 
 export default function ClientCard({ id }: { id: number }) {
   const router = useRouter();
   const [currentClient, setCurrentClient] = useState<ClientInfo | null>(null);
   const [isclientUpdated, setIsClientUpdated] = useState(false);
+  const [masterLocations, setMasterLocations] = useState<Location[]>([]);
 
   useEffect(() => {
     fetchClient(id).then((res) => {
       setCurrentClient(res);
+    });
+    fetchAllLocations().then((data) => {
+      setMasterLocations(data);
     });
   }, [isclientUpdated]);
 
@@ -144,6 +148,7 @@ export default function ClientCard({ id }: { id: number }) {
             currentClient={currentClient}
             id={id}
             autoClose={() => setIsClientUpdated(false)}
+            locations = {masterLocations}
           />
         </Popup>
       )}

@@ -117,7 +117,7 @@ const AddClientLocation = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="h-auto space-y-4 rounded-lg">
+            <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="state" className="flex">
                 <span className="font-semibold text-gray-600">State</span>
                 <span className="px-1 font-bold text-red-500">*</span>
