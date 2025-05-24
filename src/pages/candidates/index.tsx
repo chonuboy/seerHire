@@ -76,7 +76,7 @@ export default function Candidates() {
             <input
               type="text"
               className="text-sm py-3 border bg-gray-50 w-full rounded-md font-sans dark:text-black px-2"
-              placeholder="Search Candidates By Name or Email or Phone"
+              placeholder="Search Candidates By Name or Email or Phone or Company or Designation or Tech Role"
               onChange={(e) => setSearchKeyword(e.target.value)}
               value={searchKeyword}
               onKeyDown={(e) => {

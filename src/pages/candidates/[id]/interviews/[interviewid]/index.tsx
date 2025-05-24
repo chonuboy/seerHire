@@ -50,7 +50,6 @@ export default function CandidateInterviews() {
     if (router.isReady) {
       const Id = Number(router.query.interviewid);
       const candidateId = Number(router.query.id);
-      console.log(router.query);
       fetchCandidate(candidateId)
         .then((data) => {
           setCurrentCandidate(data);
@@ -60,7 +59,6 @@ export default function CandidateInterviews() {
         });
 
       fetchJob(Id).then((data) => {
-        setJob(data);
         console.log(data);
       });
 
@@ -109,6 +107,7 @@ export default function CandidateInterviews() {
         {/* Interviews Section */}
         <section className="space-y-8">
           <h2 className="text-xl font-semibold">Interviews</h2>
+          <span>{}</span>
           <div className="flex justify-end">
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
