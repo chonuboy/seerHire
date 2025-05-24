@@ -289,11 +289,16 @@ export default function Candidates() {
         });
         return;
       }
+      if(selectedSkill.length > 30){
+        toast.error("Please select a skill with less than 30 characters", {
+          position: "top-center",
+        })
+      }
 
       // Check if if the selected skill exist in the candidate's technologies array
       if (
         technologies?.some(
-          (tech) => tech.technology.technology === selectedSkill
+          (tech) => tech.technology.technology.toLowerCase() === selectedSkill.toLowerCase()
         )
       ) {
         toast.error("Skill already added", {
@@ -305,19 +310,17 @@ export default function Candidates() {
         return;
       }
 
-      // Normalize the selected skill for comparison
-      const normalizedSelectedSkill = selectedSkill.toLowerCase();
 
       // Check if the skill exists in masterTech
       const skillExists = masterTech?.some(
-        (tech) => tech.technology.toLowerCase() === normalizedSelectedSkill
+        (tech) => tech.technology.toLowerCase() === selectedSkill.toLowerCase()
       );
 
       let tempId;
       if (skillExists) {
         // If the skill exists, find its ID
         tempId = masterTech?.find(
-          (tech) => tech.technology.toLowerCase() === normalizedSelectedSkill
+          (tech) => tech.technology.toLowerCase() === selectedSkill.toLowerCase()
         );
       } else {
         // If the skill doesn't exist, create it
@@ -417,7 +420,7 @@ export default function Candidates() {
       // Check if if the selected domain exist in the candidate's domain array
       if (
         candidateDomains?.some(
-          (domain) => domain.domain.domainDetails === selectedDomain
+          (domain) => domain.domain.domainDetails.toLowerCase() === selectedDomain.toLowerCase()
         )
       ) {
         toast.error("Domain already added", {
@@ -506,7 +509,7 @@ export default function Candidates() {
       // Check if if the selected company exist in the candidate's company array
       if (
         candidateCompanies?.some(
-          (company) => company.company.companyName === selectedCompany
+          (company) => company.company.companyName.toLowerCase() === selectedCompany.toLowerCase()
         )
       ) {
         toast.error("Company already added", {
@@ -578,7 +581,7 @@ export default function Candidates() {
       if (candidateCertificates && candidateCertificates?.length > 0) {
         hasExistingCert = candidateCertificates?.some(
           (cert) =>
-            cert.certification?.certificationName === selectedCertificate
+            cert.certification?.certificationName.toLowerCase() === selectedCertificate.toLowerCase()
         );
       }
 
