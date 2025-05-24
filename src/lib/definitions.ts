@@ -27,7 +27,7 @@ export type Candidate = {
 	currentLocation: Location;
 	differentlyAbled: boolean;
 	isDifferentlyAbled: string;
-	address: string|null;
+	address1: string|null;
 	addressLocality: string|null;
 	differentlyAbledType: string|null;
 	preferredJobType?: string;

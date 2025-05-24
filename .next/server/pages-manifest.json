@@ -1,11 +1,9 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
+  "/jobs/[id]": "pages/jobs/[id].js",
   "/clients/[id]": "pages/clients/[id].js",
+  "/clients": "pages/clients.js",
   "/candidates": "pages/candidates.js",
-  "/candidates/[id]": "pages/candidates/[id].js",
-  "/_error": "pages/_error.js",
-  "/candidates/[id]/interviews/[interviewid]": "pages/candidates/[id]/interviews/[interviewid].js",
-  "/clients": "pages/clients.js"
+  "/candidates/[id]": "pages/candidates/[id].js"
 }

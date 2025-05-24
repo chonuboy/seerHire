@@ -212,7 +212,7 @@ const PdfViewer = ({
   }
 
   return (
-    <div className="h-screen m-auto w-9/12 text-xs md:text-base dark:bg-white p-2">
+    <div className="h-screen m-auto w-full sm:w-9/12  text-xs md:text-base dark:bg-white p-2">
       {!isJd && isEdit && (
         <div className="flex justify-end my-4">
           <button

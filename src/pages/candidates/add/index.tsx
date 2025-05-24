@@ -247,7 +247,7 @@ export default function Candidates() {
           formik.values.totalExperience = data.ExperienceInYears;
           formik.values.gender = data.Gender;
           formik.values.designation = data.CurrentDesignation;
-          formik.values.address = data.Address;
+          formik.values.address1 = data.Address;
           formik.values.addressLocality = data.AddressLocality;
           formik.values.currentLocation.locationDetails = data.Location;
         })
@@ -636,12 +636,12 @@ export default function Candidates() {
                 placeholder="Enter address"
                 rows={4}
                 cols={50}
-                value={formik.values.address ? formik.values.address : ""}
+                value={formik.values.address1 ? formik.values.address1 : ""}
                 onChange={formik.handleChange}
               ></textarea>
-              {formik.errors.address ? (
+              {formik.errors.address1 ? (
                 <div className="text-red-500 text-sm border-red-500">
-                  {formik.errors.address}
+                  {formik.errors.address1}
                 </div>
               ) : null}
             </div>

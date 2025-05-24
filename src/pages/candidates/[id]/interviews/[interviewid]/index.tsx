@@ -45,11 +45,13 @@ export default function CandidateInterviews() {
   const [selectedRound, setSelectedRound] = useState<Round | null>(null); // Track the selected round
   const [masterTech, setMasterTech] = useState<any[] | null>(null);
   const [job, setJob] = useState<any | null>(null);
+  const [overAllStatus,setOverAllStatus] = useState<string | null>(null);
 
   useEffect(() => {
     if (router.isReady) {
       const Id = Number(router.query.interviewid);
       const candidateId = Number(router.query.id);
+      const interViewId = Number(contactInterViewId);
       fetchCandidate(candidateId)
         .then((data) => {
           setCurrentCandidate(data);
@@ -68,7 +70,11 @@ export default function CandidateInterviews() {
 
       fetchInterviewsByContact(candidateId).then((data) => {
         setCurrentJobData(data);
+      });
+
+      fetchContactInterview(interViewId).then((data) => {
         console.log(data);
+        setOverAllStatus(data.interviewStatus);
       });
 
       fetchAllTechnologies().then((data) => {
@@ -107,7 +113,20 @@ export default function CandidateInterviews() {
         {/* Interviews Section */}
         <section className="space-y-8">
           <h2 className="text-xl font-semibold">Interviews</h2>
-          <span>{}</span>
+          Status :  
+          <Badge
+                        variant={
+                          overAllStatus === "Passed"
+                            ? "success"
+                            : overAllStatus === "On-Hold"
+                            ? "secondary"
+                            : overAllStatus === "Pending"
+                            ? "default"
+                            : "default"
+                        }
+                      >
+                        {overAllStatus}
+                      </Badge>
           <div className="flex justify-end">
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"

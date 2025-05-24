@@ -1018,17 +1018,22 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Current Address
+                  Address Locality
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.addressLocality === null || undefined
                     ? "-"
-                    : currentCandidate?.addressLocality +
-                        ", " +
-                        currentCandidate?.address ===
-                        null || undefined
-                    ? "-"
                     : currentCandidate?.addressLocality}
+                </p>
+              </div>
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Current Address
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate?.address1 === null || undefined
+                    ? "-"
+                    : currentCandidate?.address1}
                 </p>
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">

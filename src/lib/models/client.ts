@@ -234,7 +234,7 @@ export const clientLocationSchema = yup.object().shape({
     .required("Pincode is required")
     .matches(/^\d+$/, "Pincode must be numeric")
     .min(6, "Must be at least 6 characters")
-    .max(8, "Must be 8 characters or less"),
+    .max(10, "Must be 10 characters or less"),
   address1: yup.string().required("Address is required"),
   hrContactPerson: yup
     .string()

@@ -455,6 +455,8 @@ const ProfileUpdateForm = ({
         ? false
         : initialValues.isExpectedCtcNegotiable,
     preferredJobModes: initialValues.preferredJobModes,
+    address1: initialValues.address1,
+    linkedin:initialValues.linkedin
   };
 
   const [isDifferentlyAbleEnabled, setIsDifferentlyAbleEnabled] =
@@ -468,6 +470,7 @@ const ProfileUpdateForm = ({
       const updatedFields = getUpdatedFields(initialValues, values);
       try {
         updateCandidate(updatedFields, id).then((data) => {
+          console.log(data);
           if (data.status === 200) {
             toast.success("Profile updated successfully", {
               position: "top-right",
@@ -715,8 +718,8 @@ const ProfileUpdateForm = ({
             Tech Role
           </label>
           <input
-            id="techrole"
-            name="techrole"
+            id="techRole"
+            name="techRole"
             type="text"
             placeholder="e.g. Software Engineer"
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:text-black"
@@ -1141,8 +1144,8 @@ const ProfileUpdateForm = ({
             onBlur={formik.handleBlur}
             value={formik.values.maritalStatus}
           >
-            <option value="single">Single</option>
-            <option value="married">Married</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
           </select>
           {formik.touched.maritalStatus && formik.errors.maritalStatus ? (
             <div className="text-red-500 text-sm">
