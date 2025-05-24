@@ -241,14 +241,14 @@ export const clientLocationSchema = yup.object().shape({
     .required("HR Contact Person is required")
     .min(3, "Must be at least 3 characters")
     .max(30, "Must be 50 characters or less")
-    .matches(/^[a-zA-Z ]+$/),
+    .matches(/^[a-zA-Z ]+$/,"Only alphabets are allowed"),
 
   technicalPerson: yup
     .string()
     .required("Technical Person is required")
     .min(3, "Must be at least 3 characters")
     .max(30, "Must be 50 characters or less")
-    .matches(/^[a-zA-Z ]+$/),
+    .matches(/^[a-zA-Z ]+$/,"Only alphabets are allowed"),
   hrMobileNumber: yup
     .string()
     .required("HR Mobile Number is required")

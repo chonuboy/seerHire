@@ -70,6 +70,7 @@ export default function CandidateInterviews() {
 
       fetchInterviewsByContact(candidateId).then((data) => {
         setCurrentJobData(data);
+        console.log(data);
       });
 
       fetchAllTechnologies().then((data) => {

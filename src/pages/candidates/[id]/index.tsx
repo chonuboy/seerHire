@@ -217,6 +217,7 @@ export default function Candidates() {
 
       fetchInterviewsByContact(Number(id)).then((data) => {
         setCandidateInterviews(data);
+        console.log(data);
       });
 
       getContactPreferredJobTypeByContact(Number(id)).then((data) => {

@@ -152,6 +152,22 @@ export default function Client() {
                             <p>{city.hrMobileNumber}</p>
                           </div>
                           <div className="space-y-2">
+                            <p className="text-sm">HR Contact Person</p>
+                            <p>
+                              {city.hrContactPerson
+                                ? city.hrContactPerson
+                                : "-"}
+                            </p>
+                          </div>
+                          <div className="space-y-2">
+                            <p className="text-sm">Technical Contact Person</p>
+                            <p>
+                              {city.technicalPerson
+                                ? city.technicalPerson
+                                : "-"}
+                            </p>
+                          </div>
+                          <div className="space-y-2">
                             <p className="text-sm">HR Email</p>
                             <p>
                               {city.hrContactPersonEmail

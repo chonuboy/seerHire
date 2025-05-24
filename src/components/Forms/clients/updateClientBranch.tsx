@@ -37,9 +37,6 @@ const UpdateClientLocation = ({
       console.log(values)
       console.log(locationId)
       const updatedFields = getUpdatedFields(currentClientLocation, values);
-      delete updatedFields.client;
-      delete updatedFields.cityId;
-      delete updatedFields.state;
       console.log(updatedFields);
         try {
           updateClientLocation(locationId, updatedFields).then((data)=>{
@@ -78,7 +75,7 @@ const UpdateClientLocation = ({
   };
 
   const onChangeCity = (location: locations) => {
-    formik.setFieldValue("cityId", { locationId: location.locationId });
+    formik.setFieldValue("cityId", { locationId: location.locationId,locationDetails: location.locationDetails });
   };
 
   const UpdateNewCity = async (location: locations) => {
