@@ -86,7 +86,7 @@ export default function Candidates() {
 
             <div className="flex justify-between">
               <button
-                className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
+                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
                 onClick={handleSearch}
               >
                 Search

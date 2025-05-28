@@ -119,7 +119,7 @@ export default function ClientCard({ id }: { id: number }) {
         {/* Update Button */}
         <div className="flex justify-end">
           <button
-            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white py-2 px-4 rounded-md text-sm font-medium shadow-sm"
+            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border flex items-center gap-2"
             onClick={() => setIsClientUpdated(true)}
           >
             <svg

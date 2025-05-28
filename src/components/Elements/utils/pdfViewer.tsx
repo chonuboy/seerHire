@@ -68,8 +68,7 @@ const PdfViewer = ({
           console.log(data);
           setTimeout(() => {
             setIsResumeUploaded(false);
-          },2000);
-          
+          }, 2000);
         })
         .catch((err) => {
           toast.error(err.message, {
@@ -135,13 +134,13 @@ const PdfViewer = ({
     //     URL.revokeObjectURL(objectUrl);
     //   }
     // };
-  }, [candidateId, setUpdatedFileName, isResumeuploaded ]);
+  }, [candidateId, setUpdatedFileName, isResumeuploaded]);
 
-  if (error  || !pdfUrl) {
+  if (error || !pdfUrl) {
     return (
       <div>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
           onClick={() => {
             setIsResumeUploaded(true);
           }}
@@ -214,34 +213,50 @@ const PdfViewer = ({
   return (
     <div className="h-screen m-auto w-full sm:w-9/12  text-xs md:text-base dark:bg-white p-2">
       {!isJd && isEdit && (
-        <div className="flex justify-end my-4">
+        <div className="flex justify-end gap-4 my-4">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-0.5 px-4 rounded"
+            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border flex items-center gap-2"
             onClick={() => {
               setIsResumeUploaded(true);
             }}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              />
+            </svg>
             Update
           </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded ml-2"
-            onClick={() => {
-              // Use the original pdfData (ArrayBuffer/Uint8Array) not the pdfUrl
-              const blob = new Blob([pdfData], {
-                type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = "resume.docx"; // or use a dynamic filename
-              document.body.appendChild(a); // Required for Firefox
-              a.click();
-              document.body.removeChild(a); // Clean up
-              setTimeout(() => URL.revokeObjectURL(url), 100); // Revoke after download
-            }}
-          >
-            Download
-          </button>
+          {!resume.includes("pdf") && (
+            <button
+              className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
+              onClick={() => {
+                // Use the original pdfData (ArrayBuffer/Uint8Array) not the pdfUrl
+                const blob = new Blob([pdfData], {
+                  type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "resume.docx"; // or use a dynamic filename
+                document.body.appendChild(a); // Required for Firefox
+                a.click();
+                document.body.removeChild(a); // Clean up
+                setTimeout(() => URL.revokeObjectURL(url), 100); // Revoke after download
+              }}
+            >
+              Download
+            </button>
+          )}
         </div>
       )}
 
@@ -309,7 +324,12 @@ const PdfViewer = ({
         src={pdfUrl}
         width="100%"
         height="93%"
-        style={{ border: "none",overflow: "hidden" ,scrollbarWidth: "none",msOverflowStyle: "none" }}
+        style={{
+          border: "none",
+          overflow: "hidden",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
         title="Candidate Resume"
       />
     </div>

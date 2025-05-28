@@ -3,6 +3,7 @@ import MainLayout from "@/components/Layouts/layout";
 import { Popup } from "@/components/Elements/cards/popup";
 import ProfileUpdateForm from "@/components/Forms/candidates/updateProfile";
 import PdfViewer from "@/components/Elements/utils/pdfViewer";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 // Next.js and React Imports
 import { useRouter } from "next/router";
@@ -289,16 +290,18 @@ export default function Candidates() {
         });
         return;
       }
-      if(selectedSkill.length > 30){
+      if (selectedSkill.length > 30) {
         toast.error("Please select a skill with less than 30 characters", {
           position: "top-center",
-        })
+        });
       }
 
       // Check if if the selected skill exist in the candidate's technologies array
       if (
         technologies?.some(
-          (tech) => tech.technology.technology.toLowerCase() === selectedSkill.toLowerCase()
+          (tech) =>
+            tech.technology.technology.toLowerCase() ===
+            selectedSkill.toLowerCase()
         )
       ) {
         toast.error("Skill already added", {
@@ -310,7 +313,6 @@ export default function Candidates() {
         return;
       }
 
-
       // Check if the skill exists in masterTech
       const skillExists = masterTech?.some(
         (tech) => tech.technology.toLowerCase() === selectedSkill.toLowerCase()
@@ -320,7 +322,8 @@ export default function Candidates() {
       if (skillExists) {
         // If the skill exists, find its ID
         tempId = masterTech?.find(
-          (tech) => tech.technology.toLowerCase() === selectedSkill.toLowerCase()
+          (tech) =>
+            tech.technology.toLowerCase() === selectedSkill.toLowerCase()
         );
       } else {
         // If the skill doesn't exist, create it
@@ -420,7 +423,9 @@ export default function Candidates() {
       // Check if if the selected domain exist in the candidate's domain array
       if (
         candidateDomains?.some(
-          (domain) => domain.domain.domainDetails.toLowerCase() === selectedDomain.toLowerCase()
+          (domain) =>
+            domain.domain.domainDetails.toLowerCase() ===
+            selectedDomain.toLowerCase()
         )
       ) {
         toast.error("Domain already added", {
@@ -509,7 +514,9 @@ export default function Candidates() {
       // Check if if the selected company exist in the candidate's company array
       if (
         candidateCompanies?.some(
-          (company) => company.company.companyName.toLowerCase() === selectedCompany.toLowerCase()
+          (company) =>
+            company.company.companyName.toLowerCase() ===
+            selectedCompany.toLowerCase()
         )
       ) {
         toast.error("Company already added", {
@@ -581,7 +588,8 @@ export default function Candidates() {
       if (candidateCertificates && candidateCertificates?.length > 0) {
         hasExistingCert = candidateCertificates?.some(
           (cert) =>
-            cert.certification?.certificationName.toLowerCase() === selectedCertificate.toLowerCase()
+            cert.certification?.certificationName.toLowerCase() ===
+            selectedCertificate.toLowerCase()
         );
       }
 
@@ -679,6 +687,13 @@ export default function Candidates() {
     }
   };
 
+  const formatPhoneNumber = (phoneNumber: string) => {
+    if (!phoneNumber) return "-";
+
+    const phone = parsePhoneNumberFromString(phoneNumber);
+    return phone?.formatInternational() || phoneNumber;
+  };
+
   const handleUpdateContactTechnology = async (event: React.MouseEvent) => {
     event.preventDefault();
     // Check if selectedTech and originalTech are defined
@@ -752,7 +767,7 @@ export default function Candidates() {
         >
           <div className="space-y-2">
             <div className="flex gap-2">
-              <h3 className="font-medium relative text-blue-500 text-2xl">
+              <h3 className="font-medium relative text-2xl">
                 {currentCandidate?.firstName} {currentCandidate?.lastName}
                 {currentCandidate?.isActive === true ? (
                   <span className="absolute top-0 -right-5 w-3 h-3 bg-green-500 rounded-full"></span>
@@ -762,9 +777,9 @@ export default function Candidates() {
               </h3>
             </div>
 
-            <h4 className="font-semibold text-lg">
+            <h4 className="text-md">
               {currentCandidate?.designation} at{" "}
-              <span className="text-blue-500">
+              <span className="text-blue-500 font-semibold font-sans ml-4">
                 {currentCandidate?.companyName}
               </span>
             </h4>
@@ -789,11 +804,25 @@ export default function Candidates() {
             <h3 className="md:text-xl text-sm font-semibold">Personal Info</h3>
             {isEdit ? (
               <button
-                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
+                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border flex items-center gap-2"
                 onClick={() => {
                   setIsFormVisible(true);
                 }}
               >
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
                 Update
               </button>
             ) : (
@@ -817,19 +846,18 @@ export default function Candidates() {
                   Yrs
                 </p>
               </div>
-              {currentCandidate?.differentlyAbled === true && (
-                <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
-                  <p className="text-gray-500 break-words dark:text-white">
-                    Differently Abled Type
-                  </p>
-                  <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                    {currentCandidate.differentlyAbledType === null ||
-                    currentCandidate.differentlyAbledType === ""
-                      ? "-"
-                      : currentCandidate.differentlyAbledType}
-                  </p>
-                </div>
-              )}
+
+              <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
+                <p className="text-gray-500 break-words dark:text-white">
+                  Differently Abled Type
+                </p>
+                <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
+                  {currentCandidate.differentlyAbledType === null ||
+                  currentCandidate.differentlyAbledType === ""
+                    ? "-"
+                    : currentCandidate.differentlyAbledType}
+                </p>
+              </div>
 
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
@@ -884,7 +912,7 @@ export default function Candidates() {
 
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Qualification
+                  Highest Qualification
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.highestEducation === null || undefined
@@ -907,9 +935,9 @@ export default function Candidates() {
                   Mobile Number
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
-                  {currentCandidate?.primaryNumber === null || undefined
+                  {!currentCandidate?.primaryNumber
                     ? "-"
-                    : currentCandidate?.primaryNumber}
+                    : formatPhoneNumber(currentCandidate.primaryNumber)}
                 </p>
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
@@ -934,7 +962,7 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Current Salary
+                  Current Salary (LPA)
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.currentSalary === null || undefined
@@ -945,7 +973,7 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Expected Salary
+                  Expected Salary (LPA)
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.expectedSalary === null || undefined
@@ -989,7 +1017,7 @@ export default function Candidates() {
               </div>
               <div className="space-y-2 rounded-lg p-2 shadow-md shadow-stone-200 bg-white dark:bg-black dark:text-white">
                 <p className="text-gray-500 break-words dark:text-white">
-                  Notice Period
+                  Notice Period (Days)
                 </p>
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.noticePeriod === null || undefined
@@ -1053,6 +1081,7 @@ export default function Candidates() {
                 <p className="text-gray-500 break-words dark:text-white">
                   Linkedin URL
                 </p>
+
                 <p className="text-blue-600 break-words text-wrap font-semibold text-xs md:text-base">
                   {currentCandidate?.linkedin === null || undefined ? (
                     "-"
@@ -1138,7 +1167,7 @@ export default function Candidates() {
                             query: { contactInterViewId: item?.interviewId },
                           }}
                         >
-                          <button className="bg-blue-500 text-white text-xs md:text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition-all duration-200 flex items-center">
+                          <button className="text-xs md:text-sm font-medium transition-all duration-200 flex items-center bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg box-border">
                             View Results
                             <svg
                               className="w-4 h-4 ml-1"
@@ -1187,9 +1216,9 @@ export default function Candidates() {
 
         {/* Skills Section */}
         <div id="skills" className="p-2 rounded-lg shadow-sm space-y-6">
+          <h2 className="md:text-xl text-sm font-semibold">Skills</h2>
           {isEdit ? (
             <div className="space-y-2 border-b pb-4 border-gray-200">
-              <h2 className="md:text-xl text-sm font-semibold">Skills</h2>
               <div className="flex md:flex-row flex-wrap flex-col gap-4 md:items-center">
                 <div>
                   <input
@@ -1675,10 +1704,7 @@ export default function Candidates() {
         </section>
 
         {/* Resume Section */}
-        <section
-          id="resume"
-          className="p-2 rounded-lg shadow-sm space-y-6"
-        >
+        <section id="resume" className="p-2 rounded-lg shadow-sm space-y-6">
           <h3 className="font-semibold text-sm  md:text-xl">Resume</h3>
           <PdfViewer
             isEdit={isEdit}

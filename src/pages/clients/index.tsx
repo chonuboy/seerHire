@@ -203,13 +203,13 @@ export default function Clients() {
         />
         <div className="flex justify-between items-center">
           <button
-            className="px-4 py-0.5 bg-blue-600 text-white rounded-md"
+            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
             onClick={handleSearch}
           >
             Search
           </button>
           <button
-            className="md:px-4 px-2 py-0.5 bg-blue-600 text-white rounded-md"
+            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
             onClick={() => setIsClientAdded(true)}
           >
             Add New Client

@@ -99,7 +99,6 @@ const UpdateClientLocation = ({
             <div className="h-auto space-y-4 rounded-lg">
               <label htmlFor="state" className="flex">
                 <span className="font-semibold text-gray-600">State</span>
-                <span className="px-1 font-bold text-red-500">*</span>
               </label>
 
               <LocationAutocomplete
@@ -115,7 +114,6 @@ const UpdateClientLocation = ({
             <div className="h-auto space-y-3 rounded-lg">
               <label htmlFor="city" className="flex">
                 <span className="font-semibold text-gray-600">City</span>
-                <span className="px-1 font-bold text-red-500">*</span>
               </label>
 
               <LocationAutocomplete
@@ -129,8 +127,29 @@ const UpdateClientLocation = ({
             </div>
 
             <div className="space-y-3">
+              <label htmlFor="address1" className="font-semibold text-gray-600">
+                Address
+              </label>
+              <input
+                id="address1"
+                name="address1"
+                type="text"
+                placeholder="Enter Address"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.address1}
+                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+              />
+              {formik.touched.address1 && formik.errors.address1 && (
+                <p className="mt-1 text-sm text-red-600">
+                  {formik.errors.address1}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-3">
               <label htmlFor="pincode" className="font-semibold text-gray-600">
-                Pincode <span className="font-bold text-red-500">*</span>
+                Pincode
               </label>
               <input
                 id="pincode"
@@ -157,8 +176,7 @@ const UpdateClientLocation = ({
                 htmlFor="hrContactPerson"
                 className="font-semibold text-gray-600"
               >
-                HR Contact Person{" "}
-                <span className="font-bold text-red-500">*</span>
+                HR Contact Person
               </label>
               <input
                 id="hrContactPerson"
@@ -183,8 +201,7 @@ const UpdateClientLocation = ({
                 htmlFor="technicalPerson"
                 className="font-semibold text-gray-600"
               >
-                Technical Person{" "}
-                <span className="font-bold text-red-500">*</span>
+                Technical Person
               </label>
               <input
                 id="technicalPerson"
@@ -209,8 +226,7 @@ const UpdateClientLocation = ({
                 htmlFor="hrMobileNumber"
                 className="font-semibold text-gray-600"
               >
-                HR Mobile Number{" "}
-                <span className="font-bold text-red-500">*</span>
+                HR Mobile Number
               </label>
               <input
                 id="hrMobileNumber"
@@ -235,8 +251,7 @@ const UpdateClientLocation = ({
                 htmlFor="companyLandline"
                 className="font-semibold text-gray-600"
               >
-                Company Landline{" "}
-                <span className="font-bold text-red-500">*</span>
+                Company Landline
               </label>
               <input
                 id="companyLandline"
@@ -261,8 +276,7 @@ const UpdateClientLocation = ({
                 htmlFor="hrContactPersonEmail"
                 className="font-semibold text-gray-600"
               >
-                HR Contact Email{" "}
-                <span className="font-bold text-red-500">*</span>
+                HR Contact Email
               </label>
               <input
                 id="hrContactPersonEmail"

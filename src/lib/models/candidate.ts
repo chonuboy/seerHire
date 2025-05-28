@@ -94,9 +94,8 @@ export const CandidateSchema = yup.object({
     .max(30, "Must be 50 characters or less")
     .required("Highest education is required"),
   gender: yup.string().required("Select gender"),
-  // hiringType: yup.string(),
   pinCode: yup
-    .number()
+    .string()
     .nullable()
     .min(6, "Must be at least 6 characters")
     .max(8, "Must be 8 characters or less"),
@@ -309,7 +308,7 @@ export const profileUpdateSchema = yup.object().shape({
     .string()
     .nullable()
     .min(3, "Must be at least 3 characters")
-    .max(100, "Must be 100 characters or less"), // Added techRole which was missing
+    .max(50, "Must be 50 characters or less"), // Added techRole which was missing
   totalExperience: yup
     .number()
     .typeError("Total Experience must be a number")
@@ -318,7 +317,7 @@ export const profileUpdateSchema = yup.object().shape({
   highestEducation: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .max(30, "Must be 50 characters or less")
+    .max(30, "Must be 30 characters or less")
     .matches(/^[a-zA-Z. ]+$/, "Only alphabets are allowed")
     .nullable(),
   primaryNumber: yup
@@ -355,10 +354,8 @@ export const profileUpdateSchema = yup.object().shape({
   address1: yup.string().nullable(),
   addressLocality: yup.string().nullable(),
   pinCode: yup
-    .number()
-    .typeError("Pincode must be a number")
-    .min(6, "Pincode must be 6 digits")
-    .positive("Pincode must be a positive number")
+    .string()
+    .typeError("Pincode must be a number").matches(/^[A-Za-z0-9\s-]{3,10}$/,"Invalid pincode format")
     .nullable(),
   companyName: yup
     .string()
@@ -428,7 +425,7 @@ export const interviewRoundSchema = yup.object().shape({
     .string()
     .required("Interviewer name is required")
     .min(3, "Interviewer name must be at least 3 characters")
-    .max(30, "Must be 30 characters or less"),
+    .max(50, "Must be 50 characters or less"),
   interviewStatus: yup
     .string()
     .required("Interview status is required")
@@ -457,5 +454,5 @@ export const interviewRoundSchema = yup.object().shape({
     .nullable()
     .required("Remarks are required")
     .min(3, "Must be at least 3 characters")
-    .max(500, "Must be 500 characters or less"),
+    .max(900, "Must be 900 characters or less"),
 });

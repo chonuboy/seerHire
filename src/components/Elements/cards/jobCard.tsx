@@ -15,6 +15,7 @@ import { fetchJobDescription } from "@/api/client/clientJob";
 import mammoth from "mammoth";
 import { fetchCandidateResume } from "@/api/candidates/candidates";
 import JobDescriptionUploader from "@/components/Forms/jobs/jdUploader";
+import { JobDescription } from "./jobDescription";
 
 interface JobData {
   createdOn: string;
@@ -45,6 +46,8 @@ export default function JobCard({
   const [pdfData, setPdfData] = useState<any>(null);
   const [pdfUrl, setPdfUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isJdUpdated, setJdUpdated] = useState(false);
+  const [isJdopen, setIsJdopen] = useState(false);
   const router = useRouter();
 
   const loadPdf = async (jd: any, jobId: any) => {
@@ -184,7 +187,7 @@ export default function JobCard({
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 space-x-4">
           <button
             onClick={() => {
               loadPdf(job.jd, job.jobId);
@@ -192,18 +195,79 @@ export default function JobCard({
             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium dark:bg-black dark:text-white text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:hover:text-black"
           >
             <FileText className="h-4 w-4 mr-2" />
-            View Job Description
+            View JD Document
           </button>
+          {!isClient && (
+            <button
+              onClick={() => setIsJdopen(true)}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium dark:bg-black dark:text-white text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:hover:text-black"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              View Job Description
+            </button>
+          )}
+
+          {isJdopen && !isClient && (
+            <Popup onClose={() => setIsJdopen(false)} styleMod="-left-3.5">
+              <div className="mt-20 mr-4">
+                <JobDescription currentJob={job} />
+              </div>
+            </Popup>
+          )}
         </div>
-        {!isClient && (
+        <div className="flex items-center gap-2 justify-end">
           <div className="flex justify-end">
             <button
-              className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4"
+              className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border flex items-center gap-2"
               onClick={() => setIsJobUpdated(true)}
             >
-              Update
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+              Update Job
             </button>
           </div>
+          {isClient && (
+            <div className="flex justify-end">
+              <button
+                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border flex items-center gap-4"
+                onClick={() => setJdUpdated(true)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+                Update JD
+              </button>
+            </div>
+          )}
+        </div>
+
+        {isJdUpdated && (
+          <Popup onClose={() => setJdUpdated(false)}>
+            <JobDescriptionUploader jobId={Number(router.query.id)} />
+          </Popup>
         )}
 
         {isJobUpdated && (

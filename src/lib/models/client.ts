@@ -119,7 +119,7 @@ export const RecruitmentColumn = [
 ];
 
 export const jobFormSchema = yup.object().shape({
-  jobCode: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  jobCode: yup.string().min(3, "Must be at least 3 characters").nullable().max(30,"Must be 30 characters or less"),
   jobTitle: yup
     .string()
     .min(3, "Must be at least 3 characters")
@@ -140,7 +140,7 @@ export const jobFormSchema = yup.object().shape({
   insertedBy: yup
     .string()
     .min(3, "Must be at least 3 characters")
-    .required("Inserted by is required"),
+    .required("Inserted by is required").max(50,"Must be 50 characters or less"),
   client: yup.object().shape({
     clientId: yup.number(),
   }),
@@ -172,29 +172,30 @@ export const clientFormSchema = yup.object().shape({
     ),
   gstnumber: yup
     .string()
-    // .matches(
-    //   /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i,"Invalid GST format"
-    // )
     .nullable()
-    .min(3, "GST must be at least 3 characters")
-    .max(15, "Must be 15 characters or less"),
+    .matches(
+      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/i,
+      "Invalid GST format Example Format : 22AAAAA0000A1Z5"
+    )
+    .length(15, "GST must be exactly 15 characters"),
+
   cinnumber: yup
     .string()
     .nullable()
-    //.
-    // matches(
-    //   /^\d{6,15}$/i,"Invalid CIN format"
-    // )
-    .min(3, "CIN must be at least 3 Numbers")
-    .max(15, "Must be 15 Numbers or less"),
+    .matches(
+      /^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$/i,
+      "Invalid CIN format  Example Format : U99999MH2023PTC401289"
+    )
+    .length(21, "CIN must be exactly 21 characters"),
+
   pannumber: yup
     .string()
-    // .matches(
-    //   /^\d{6,15}$/i,"Invalid PAN format"
-    // )
     .nullable()
-    .min(3, "PAN must be at least 3 characters")
-    .max(15, "Must be 15 characters or less"),
+    .matches(
+      /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i,
+      "Invalid PAN format  Example Format : abcde1234f"
+    )
+    .length(10, "PAN must be exactly 10 characters"),
 });
 
 export const clientValidationSchema = yup.object().shape({
@@ -239,7 +240,7 @@ export const clientLocationSchema = yup.object().shape({
     .matches(/^\d+$/, "Pincode must be numeric")
     .min(6, "Must be at least 6 characters")
     .max(10, "Must be 10 characters or less"),
-  address1: yup.string().required("Address is required"),
+  address1: yup.string().required("Address is required").min(3,"Must be at least 3 characters").max(250,"Must be 250 characters or less"),
   hrContactPerson: yup
     .string()
     .required("HR Contact Person is required")
@@ -295,7 +296,7 @@ export const clientLocationSchema = yup.object().shape({
 });
 
 export const jobUpdateSchema = yup.object().shape({
-  jobCode: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  jobCode: yup.string().min(3, "Must be at least 3 characters").max(30,"Must be 30 characters or less").nullable(),
   jobTitle: yup
     .string()
     .min(3, "Must be at least 3 characters")
@@ -309,7 +310,7 @@ export const jobUpdateSchema = yup.object().shape({
   experience: yup.string().nullable(),
   isJobActive: yup.string().nullable(),
   jobPostType: yup.string().min(3, "Must be at least 3 characters").nullable(),
-  insertedBy: yup.string().min(3, "Must be at least 3 characters").nullable(),
+  insertedBy: yup.string().min(3, "Must be at least 3 characters").max(30,"Must be 30 characters or less").nullable(),
   client: yup.object().shape({
     clientId: yup.number(),
   }),

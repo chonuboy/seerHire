@@ -235,6 +235,11 @@ export default function JobInfoUpdateForm({
               />
             </div>
           </div>
+          {formik.errors.insertedBy && (
+              <p className="mt-2 text-sm text-red-600">
+                {formik.errors.insertedBy?.toString()}
+              </p>
+            )}
 
           {/* Job Description */}
           <div className="space-y-2 mt-4">

@@ -47,7 +47,7 @@ export default function JobDescriptionUploader({ jobId,autoClose }: { jobId: num
   };
 
   return (
-    <div className="mx-auto p-6 bg-white rounded-xl shadow-lg border mt-8 border-gray-200 transition-all duration-300 hover:shadow-xl">
+    <div className="mx-auto p-6 bg-white rounded-xl shadow-lg border mt-16 border-gray-200 transition-all duration-300 hover:shadow-xl">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-1">Upload Document</h3>

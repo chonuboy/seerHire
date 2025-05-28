@@ -1,6 +1,6 @@
 import { Client } from "@/lib/models/client";
 import React from "react";
-export const JobDescription = ({ currentJob }:{currentJob:Client|null}) => {
+export const JobDescription = ({ currentJob }:{currentJob:Client|null |any}) => {
     // Function to modify the HTML string
     const modifyHTML = (html: string) => {
       // Create a temporary DOM element to parse the HTML string
@@ -28,12 +28,16 @@ export const JobDescription = ({ currentJob }:{currentJob:Client|null}) => {
     };
   
     // Modify the HTML string before rendering
-    const modifiedHTML = modifyHTML(currentJob?.jobDescription || "");
+    const modifiedHTML = modifyHTML(currentJob?.jobDescription || "No Job Description");
   
     return (
-      <div
-        className="w-full space-y-4 text-lg"
+      <div  className="bg-white p-2">
+        <span className="text-lg font-semibold">Job Description</span>
+        <div
+        className="bg-white overflow-hidden p-2"
         dangerouslySetInnerHTML={{ __html: modifiedHTML }}
       />
+      </div>
+      
     );
   };

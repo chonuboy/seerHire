@@ -124,12 +124,12 @@ const ProfileUpdateForm = ({
         });
       }
       // When Flexible is checked, uncheck all others
-      if (!e.target.checked) {
-        const matchingtypeId = preferredJobModes
-          .flat()
-          .find((item: { jobType: string }) => item.jobType === "Flexible");
-        deleteContactPreferredJobType(matchingtypeId.typeId).then((res) => {});
-      }
+      // if (!e.target.checked) {
+      //   const matchingtypeId = preferredJobModes
+      //     .flat()
+      //     .find((item: { jobType: string }) => item.jobType === "Flexible");
+      //   deleteContactPreferredJobType(matchingtypeId.typeId).then((res) => {});
+      // }
     } else {
       // When any other option is checked, uncheck Flexible
       setIsFlexible(false);
@@ -275,14 +275,14 @@ const ProfileUpdateForm = ({
         });
       }
       // When Flexible is checked, uncheck all others
-      if (!e.target.checked) {
-        const matchingtypeId = hiringTypes
-          .flat()
-          .find(
-            (item: { hiringType: string }) => item.hiringType === "Flexible"
-          );
-        deleteContactHiringType(matchingtypeId.typeId).then((res) => {});
-      }
+      // if (!e.target.checked) {
+      //   const matchingtypeId = hiringTypes
+      //     .flat()
+      //     .find(
+      //       (item: { hiringType: string }) => item.hiringType === "Flexible"
+      //     );
+      //   deleteContactHiringType(matchingtypeId.typeId).then((res) => {});
+      // }
     } else {
       // When any other option is checked, uncheck Flexible
       setIsFlexibleHiring(false);
@@ -983,7 +983,7 @@ const ProfileUpdateForm = ({
               onChange={(e) => {
                 handleJobTypeBoxCheck(e, "Flexible");
               }}
-              checked={isFlexible}
+              checked={isFlexible || (isHybrid && isRemote && isOnsite)}
             />
             <label
               htmlFor="preferredJobType_Flexible"
@@ -1073,7 +1073,7 @@ const ProfileUpdateForm = ({
                 onChange={(e) => {
                   handleHiringTypeBoxCheck(e, "Flexible");
                 }}
-                checked={isFlexibleHiring}
+                checked={isFlexibleHiring || (isContract && isFullTime && isPartTime)}
               />
               <label
                 htmlFor="preferredHiringType_Flexible"
@@ -1146,6 +1146,9 @@ const ProfileUpdateForm = ({
           >
             <option value="Single">Single</option>
             <option value="Married">Married</option>
+            <option value="Widowed">Widowed</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Other">Other</option>
           </select>
           {formik.touched.maritalStatus && formik.errors.maritalStatus ? (
             <div className="text-red-500 text-sm">
@@ -1324,7 +1327,7 @@ const ProfileUpdateForm = ({
         </div>
 
         {/* Differently Abled Type */}
-        {isDifferentlyAbleEnabled && (
+        {(isDifferentlyAbleEnabled || formik.values.differentlyAbled)  && (
           <div className="space-y-2">
             <label htmlFor="differentlyAbledType" className="flex">
               <span className="font-medium text-gray-400 dark:text-white">
@@ -1339,7 +1342,7 @@ const ProfileUpdateForm = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
-              <option value="">None</option>
+              <option value={formik.values.differentlyAbledType || ""}>{formik.values.differentlyAbledType ? formik.values.differentlyAbledType : "Select Differently Abled Type"}</option>
               <option value="Physical (e.g., mobility impairments, limb differences)">
                 Physical
               </option>

@@ -140,51 +140,92 @@ export default function Client() {
                       <div className="p-6 bg-muted bg-gray-200 dark:bg-white dark:text-black space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <p className="text-sm">State</p>
-                            <p>{city.state.locationDetails}</p>
+                            <p className="text-sm text-gray-600 font-light">
+                              State
+                            </p>
+                            <p className="text-blue-600">
+                              {city.state.locationDetails}
+                            </p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">Pin Code</p>
-                            <p>{city.pincode}</p>
+                            <p className="text-sm text-gray-600 font-light">
+                              Pin Code
+                            </p>
+                            <p className="text-blue-600">{city.pincode}</p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">HR Contact No</p>
-                            <p>{city.hrMobileNumber}</p>
+                            <p className="text-sm text-gray-600 font-light">
+                              HR Contact No
+                            </p>
+                            <p className="text-blue-600">
+                              {city.hrMobileNumber}
+                            </p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">HR Contact Person</p>
-                            <p>
+                            <p className="text-sm text-gray-600 font-light">
+                              HR Contact Person
+                            </p>
+                            <p className="text-blue-600">
                               {city.hrContactPerson
                                 ? city.hrContactPerson
                                 : "-"}
                             </p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">Technical Contact Person</p>
-                            <p>
+                            <p className="text-sm text-gray-600 font-light">
+                              Technical Contact Person
+                            </p>
+                            <p className="text-blue-600">
                               {city.technicalPerson
                                 ? city.technicalPerson
                                 : "-"}
                             </p>
                           </div>
                           <div className="space-y-2">
-                            <p className="text-sm">HR Email</p>
-                            <p>
+                            <p className="text-sm text-gray-600 font-light">
+                              HR Email
+                            </p>
+                            <p className="text-blue-600">
                               {city.hrContactPersonEmail
                                 ? city.hrContactPersonEmail
                                 : "-"}
                             </p>
                           </div>
+                          <div className="space-y-2">
+                            <p className="text-sm text-gray-600 font-light">
+                              Address
+                            </p>
+                            <p className="text-blue-600">{city.address1}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <p className="text-sm text-gray-600 font-light">
+                              Company Land Line
+                            </p>
+                            <p className="text-blue-600">
+                              {city.companyLandline}
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-2">
-                          <p className="text-sm">Company Land Line</p>
-                          <p>{city.companyLandline}</p>
-                        </div>
+
                         <div className="flex justify-end">
                           <button
                             onClick={() => setIsBranchUpdated(true)}
-                            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border flex items-center gap-2"
                           >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                              />
+                            </svg>
                             Update
                           </button>
                           {isBranchUpdated && (
@@ -239,11 +280,7 @@ export default function Client() {
           >
             {allJobs?.length > 0 ? (
               allJobs.map((job, index) => (
-                <JobCard
-                  onUpdate={fetchJobs}
-                  job={job}
-                  key={index}
-                />
+                <JobCard onUpdate={fetchJobs} job={job} key={index} />
               ))
             ) : (
               <div>

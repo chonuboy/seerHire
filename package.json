@@ -28,6 +28,7 @@
     "html2canvas": "^1.4.1",
     "jodit-react": "^5.2.15",
     "jspdf": "^3.0.1",
+    "libphonenumber-js": "^1.12.8",
     "lucide-react": "^0.474.0",
     "mammoth": "^1.9.0",
     "next": "15.1.4",
