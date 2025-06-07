@@ -278,7 +278,7 @@ export default function Client() {
                 : "py-2"
             }
           >
-            {allJobs?.length > 0 ? (
+            {(allJobs && allJobs?.length > 0) ? (
               allJobs.map((job, index) => (
                 <JobCard onUpdate={fetchJobs} job={job} key={index} />
               ))

@@ -3,6 +3,7 @@ import authReducer from './auth/authSlice';
 import persistedReducer from './auth/credentialSlice';
 import { persistStore } from 'redux-persist';
 import searchslicereducer from './candidateSearchSlice';
+import recruitSearchSlicereducer from './recruitmentCandidateSearchSlice';
 
 import { apiSlice } from './apiSlice';
 
@@ -12,6 +13,7 @@ export const store = configureStore({
         auth: authReducer,
         credentials: persistedReducer,
         search:searchslicereducer,
+        recruitSearch:recruitSearchSlicereducer,
         [apiSlice.reducerPath]: apiSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>

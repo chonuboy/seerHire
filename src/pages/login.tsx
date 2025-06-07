@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [remember,setRemember] = useState(true);
+  const [remember, setRemember] = useState(true);
   const dispatch = useDispatch();
   const router = useRouter();
   const seerTechLogo = imgHelper.seertech;
@@ -26,9 +26,9 @@ const LoginPage = () => {
     username: string;
     password: string;
   }) {
-    if(username === "" || password === "") {
+    if (username === "" || password === "") {
       setError("Please Enter Username and Password");
-      return
+      return;
     }
     try {
       const response = await axios.get(API_URL + "users/login", {
@@ -42,7 +42,7 @@ const LoginPage = () => {
       });
       if (response.request.status == 200) {
         console.log(response.data.message);
-        if(response.data.message === "Login Successful!") {
+        if (response.data.message === "Login Successful!") {
           setMessage(response.data.message);
         }
         dispatch(setEmail(username));
@@ -71,8 +71,8 @@ const LoginPage = () => {
       <header className="bg-slate-50 text-white py-2">
         <img src={seerTechLogo} className="object-cover md:h-16 h-10" />
       </header>
-      <div className="flex justify-center items-center p-8 bg-gray-50 dark:bg-black pb-28 w-full h-full">
-        <div className="bg-white border border-gray-300 dark:bg-black md:p-8 p-4 rounded-lg shadow-lg w-max md:w-1/4 space-y-6 mt-10 m-10 md:m-0">
+      <div className="flex justify-center items-center dark:bg-black w-full h-auto mt-10">
+        <div className="bg-white border border-gray-300 dark:bg-black md:p-8 p-4 rounded-lg shadow-lg w-max md:w-1/4 space-y-12 m-10 md:m-0">
           <h1 className="md:text-xl text-lg font-bold text-center dark:text-white text-gray-800 mb-6">
             Login
           </h1>
@@ -121,7 +121,9 @@ const LoginPage = () => {
           <div className="mb-6 flex items-center">
             <input
               type="checkbox"
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded" checked = {remember} onChange={(e) => setRemember(e.target.checked)}
+              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
             />
             <label className="ml-2 text-sm text-gray-700">Remember me</label>
           </div>
@@ -134,20 +136,26 @@ const LoginPage = () => {
             Login
           </button>
 
+          <span className="text-blue-500 cursor-pointer text-center my-6" onClick={() => router.push("/forgetPassword")}>Forget Password ?</span>
+
+          
+
           {/* Divider */}
-          <div className="flex items-center my-6">
+          {/* <div className="flex items-center my-6">
             <div className="flex-grow border-t border-gray-300"></div>
             <span className="mx-4 text-sm text-gray-500">OR</span>
             <div className="flex-grow border-t border-gray-300"></div>
-          </div>
+          </div> */}
 
           {/* Sign in with Google Button */}
-          <GoogleButton />
+          {/* <GoogleButton /> */}
         </div>
+        
       </div>
       <footer className="bg-blue-500 py-2 px-2 w-full text-white fixed bottom-0 z-10">
         <p className="text-center">
-          &copy; Copyright {new Date().getFullYear()} SeerTech Systems. All rights reserved.
+          &copy; Copyright {new Date().getFullYear()} SeerTech Systems. All
+          rights reserved.
         </p>
       </footer>
     </main>

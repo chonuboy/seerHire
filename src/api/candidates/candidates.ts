@@ -137,11 +137,10 @@ export const searchCandidates = async (query: any, page: number) => {
   }
 };
 
-export const contactSearchByKeyword = async (keyword: string) => {
+export const contactSearchByKeyword = async (keyword: string, page: number) => {
   try {
-    const response = await axios.get(`${API_URL}contacts/searchByKeyword`, {
+    const response = await axios.get(`${API_URL}contacts/searchByKeyword?keyword=${keyword}&page=${page}&size=10`, {
       method: "GET",
-      params: { keyword },
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",

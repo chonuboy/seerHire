@@ -208,7 +208,7 @@ export default function JobCard({
           )}
 
           {isJdopen && !isClient && (
-            <Popup onClose={() => setIsJdopen(false)} styleMod="-left-3.5">
+            <Popup onClose={() => setIsJdopen(false)} styleMod="-left-4">
               <div className="mt-20 mr-4">
                 <JobDescription currentJob={job} />
               </div>

@@ -22,7 +22,7 @@ export default function InterviewCandidates() {
   }, []);
   return (
     <MainLayout>
-      <ContentHeader title="Applied Candidates" />
+      <ContentHeader title="Shortlisted Candidates" />
       {interviews && interviews.length > 0 ? (
         <div>
           <div className="flex justify-end">

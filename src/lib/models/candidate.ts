@@ -249,7 +249,7 @@ export interface SearchQueries {
   highestEducation?: string | null;
   preferredLocation?: string[] | null;
   domain?: string[] | null;
-  contactHiringType: string[] | null | undefined;
+  contactHiringType?: string[] | null | undefined;
   mustHaveTechnologies?: string[] | null;
   goodToHaveTechnologies?: string[] | null;
   companies?: string[] | null;

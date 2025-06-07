@@ -13,12 +13,10 @@ export default function SearchResults() {
 
   useEffect(() => {
     const currentQueries = store.getState().search;
-    console.log(currentQueries);
     try {
       searchCandidates(currentQueries, pageNo)
         .then((data) => {
           setResults(data.content);
-          console.log(data);
           setAllPages(data.totalPages);
           setCurrentPage(data.pageNumber);
         })

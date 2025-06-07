@@ -53,6 +53,7 @@ export const Table: React.FC<TableProps> = ({
       contactDetails: {
         contactId: candidateId,
       },
+      interviewDate: new Date().toISOString().split('T')[0],
     }).then((data) => {
       if (
         data.message ===
@@ -62,7 +63,9 @@ export const Table: React.FC<TableProps> = ({
           position: "top-right",
         });
       } else {
-        console.log(data);
+        toast.success("Interview scheduled successfully", {
+          position: "top-right",
+        })
         router.push(
           `candidates/${candidateId}/interviews/${jobId}?contactInterViewId=${data.interviewId}`
         );

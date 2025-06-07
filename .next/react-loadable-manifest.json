@@ -1,18 +1,1 @@
-{
-  "src/components/Forms/jobs/addJob.tsx -> jodit-react": {
-    "id": "src/components/Forms/jobs/addJob.tsx -> jodit-react",
-    "files": [
-      "static/chunks/node_modules_jodit-react_build_jodit-react_63c642.js",
-      "static/chunks/node_modules_787fdc._.js",
-      "static/chunks/node_modules_jodit-react_build_jodit-react_bd64ad.js"
-    ]
-  },
-  "src/components/Forms/jobs/updateJobInfo.tsx -> jodit-react": {
-    "id": "src/components/Forms/jobs/updateJobInfo.tsx -> jodit-react",
-    "files": [
-      "static/chunks/node_modules_jodit-react_build_jodit-react_63c642.js",
-      "static/chunks/node_modules_787fdc._.js",
-      "static/chunks/node_modules_jodit-react_build_jodit-react_bd64ad.js"
-    ]
-  }
-}
+{}

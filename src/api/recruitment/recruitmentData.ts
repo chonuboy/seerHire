@@ -80,12 +80,11 @@ export const uploadRecruitmentData = async (file: File) => {
   }
 };
 
-
 // POST /api/recruitment-data/search
-export const searchRecruitmentData = async (query: any) => {
+export const searchRecruitmentData = async (query: any, page: number) => {
   try {
     const response = await axios.post(
-      `${API_URL}api/recruitment-data/search`,
+      `${API_URL}api/recruitment-data/search?page=${page}&size=10`,
       query,
       {
         method: "POST",
@@ -123,15 +122,16 @@ export const saveRecruitmentDataFromSources = async (reqData: any) => {
 };
 
 // GET /api/recruitment-data/resume/{id}
-export const fetchRecruitmentResume = async (id: string) => {
+export const fetchRecruitmentResume = async (id: Number) => {
   try {
     const response = await axios.get(
       `${API_URL}api/recruitment-data/resume/${id}`,
       {
-        method: "GET",
+        responseType: "arraybuffer", // This is crucial for PDF files
         headers: {
+          Accept: "application/pdf",
+          "X-Requested-With": "XMLHttpRequest",
           Authorization: "Basic " + btoa(`${Email}:${Password}`),
-          "Content-Type": "application/json",
         },
       }
     );
@@ -142,7 +142,7 @@ export const fetchRecruitmentResume = async (id: string) => {
 };
 
 // POST /api/recruitment-data/resume/{id}
-export const uploadRecruitmentResume = async (id: string, file: File) => {
+export const uploadRecruitmentResume = async (id: Number, file: any) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
@@ -199,6 +199,27 @@ export const fetchAllRecruitmentData = async (
         "Content-Type": "application/json",
       },
     });
+    return response.data;
+  } catch (err: any) {
+    return err.response ? err.response.data : err.message;
+  }
+};
+
+export const uploadRecruitmentCandidateResume = async (file: any) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await axios.post(
+      `${API_URL}api/recruitment-data/resume`,
+      file,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Basic " + btoa(`${Email}:${Password}`),
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return response.data;
   } catch (err: any) {
     return err.response ? err.response.data : err.message;

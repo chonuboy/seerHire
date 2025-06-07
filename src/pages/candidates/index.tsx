@@ -12,18 +12,15 @@ import { Popup } from "@/components/Elements/cards/popup";
 
 export default function Candidates() {
   const [allCandidates, setAllCandidates] = useState();
-  const [candidateFound, setCandidateFound] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
   const router = useRouter();
   const [query, setQuery] = useState<any>(null);
   const [jobId, setJobId] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearchMode, setIsSearchMode] = useState(false); // Track search mode
 
   useEffect(() => {
-    fetchCandidates(currentPage - 1, 10).then((data: any) => {
-      setAllCandidates(data);
-    });
     if (router.isReady) {
       if (router.query.jobId && router.query.assignInterview) {
         setJobId(router.query.jobId);
@@ -35,36 +32,67 @@ export default function Candidates() {
         localStorage.setItem("jobId", JSON.stringify(router.query.jobId));
       }
     }
-  }, [currentPage, searchKeyword, router.isReady]);
+
+    // Only fetch all candidates if not in search mode
+    if (!isSearchMode) {
+      fetchCandidates(currentPage - 1, 10).then((data: any) => {
+        setAllCandidates(data);
+      });
+    }
+  }, [currentPage, router.isReady, isSearchMode]);
 
   const handleSearch = () => {
-    if (!searchKeyword) {
+    if (!searchKeyword.trim()) {
       toast.error("Please Enter a Keyword", {
         position: "top-center",
       });
       return;
     }
-    contactSearchByKeyword(searchKeyword).then((data) => {
+
+    setIsLoading(true);
+    setIsSearchMode(true); // Enter search mode
+    setCurrentPage(1); // Reset to first page when performing new search
+
+    contactSearchByKeyword(searchKeyword, currentPage - 1).then((data) => {
+      setIsLoading(false);
       if (data.status === "NOT_FOUND") {
-        setCandidateFound(true);
-        toast.error(`Candidate Not Found for this keyword : ${searchKeyword}`, {
+        toast.error(`Candidate Not Found for this keyword: ${searchKeyword}`, {
           position: "top-center",
         });
-        setIsLoading(false);
-        return;
+        setIsSearchMode(false); // Exit search mode if no results
       } else {
-        setIsLoading(true);
-        setTimeout(() => {
-          setCandidateFound(false);
-          setIsLoading(false);
-          setAllCandidates(data);
-        }, 2000);
+        setAllCandidates(data);
       }
     });
   };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+
+    // If in search mode, perform search with new page
+    if (isSearchMode && searchKeyword.trim()) {
+      setIsLoading(true);
+      contactSearchByKeyword(searchKeyword, newPage - 1).then((data) => {
+        setIsLoading(false);
+        if (data.status === "NOT_FOUND") {
+          toast.error("No more candidates found", {
+            position: "top-center",
+          });
+        } else {
+          setAllCandidates(data);
+        }
+      });
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchKeyword("");
+    setIsSearchMode(false);
+    setCurrentPage(1);
+    // Fetch all candidates again
+    fetchCandidates(0, 10).then((data: any) => {
+      setAllCandidates(data);
+    });
   };
 
   return (
@@ -85,27 +113,36 @@ export default function Candidates() {
             />
 
             <div className="flex justify-between">
-              <button
-                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
-                onClick={handleSearch}
-              >
-                Search
-              </button>
+              <div>
+                <button
+                  className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border mr-2"
+                  onClick={handleSearch}
+                >
+                  Search
+                </button>
+                {isSearchMode && (
+                  <button
+                    className="bg-gray-500 text-white px-4 py-1 rounded-md border-2 border-gray-500 hover:bg-white hover:text-gray-500 hover:shadow-lg transition duration-200 box-border"
+                    onClick={clearSearch}
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
               <AddButton title="Add New Candidate" url="add" />
             </div>
           </div>
         </div>
+
         {isLoading && (
-          <div>
-            <Popup onClose={() => setIsLoading(false)}>
-              <div className="flex mx-auto items-center justify-center flex-col my-80">
-                <div>
-                  <div className="ml-4 w-10 h-10 rounded-full border-white border-4 border-t-blue-600 animate-spin" />
-                  <span className="text-white">Searching</span>
-                </div>
+          <Popup onClose={() => setIsLoading(false)}>
+            <div className="flex mx-auto items-center justify-center flex-col my-80">
+              <div>
+                <div className="ml-4 w-10 h-10 rounded-full border-white border-4 border-t-blue-600 animate-spin" />
+                <span className="text-white">Searching</span>
               </div>
-            </Popup>
-          </div>
+            </div>
+          </Popup>
         )}
 
         <div>

@@ -29,17 +29,46 @@ export default function Clients() {
   const [displayedFinanceNumber, setDisplayedFinanceNumber] = useState("");
   const [locations, setLocations] = useState<Location[]>([]);
   const [locationAdded, setLocationAdded] = useState(false);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+
   useEffect(() => {
-    fetchAllClients(currentPage - 1, 10).then((data: any) => {
-      setClients(data);
-    });
+    if (!isSearchMode) {
+      fetchAllClients(currentPage - 1, 10).then((data: any) => {
+        setClients(data);
+      });
+    }
     fetchAllLocations().then((data: any) => {
       setLocations(data);
     });
-  }, [currentPage, searchKeyword, locationAdded]);
+  }, [currentPage, searchKeyword, locationAdded, isSearchMode]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+
+    // If in search mode, perform search with new page
+    if (isSearchMode && searchKeyword.trim()) {
+      setIsLoading(true);
+      searchClient(searchKeyword, newPage - 1).then((data) => {
+        setIsLoading(false);
+        if (data.status === "NOT_FOUND") {
+          toast.error("No more clients found", {
+            position: "top-center",
+          });
+        } else {
+          setClients(data);
+        }
+      });
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchKeyword("");
+    setIsSearchMode(false);
+    setCurrentPage(1);
+    // Fetch all clients again
+    fetchAllClients(0, 10).then((data: any) => {
+      setClients(data);
+    });
   };
 
   const onChangeHeadLocation = (location: Location) => {
@@ -72,29 +101,32 @@ export default function Clients() {
   };
 
   const handleSearch = () => {
-    if (!searchKeyword) {
-      toast.error("Please Enter a Keyword", {
+  if (!searchKeyword.trim()) {
+    toast.error("Please Enter a Keyword", {
+      position: "top-center",
+    });
+    return;
+  }
+
+  setIsLoading(true);
+  setIsSearchMode(true); // Enter search mode
+  setCurrentPage(1); // Reset to first page when performing new search
+
+  searchClient(searchKeyword, currentPage - 1).then((data) => {
+    setIsLoading(false);
+    if (data.status === "NOT_FOUND") {
+      toast.error(data.message, {
         position: "top-center",
       });
-      return;
+      setIsSearchMode(false); // Exit search mode if no results
+    } else {
+      setClientFound(false);
+      setClients(data);
     }
-    searchClient(searchKeyword).then((data) => {
-      if (data.status === "NOT_FOUND") {
-        setClientFound(true);
-        toast.error(data.message, {
-          position: "top-center",
-        });
-        return;
-      } else {
-        setIsLoading(true);
-        setTimeout(() => {
-          setIsLoading(false);
-          setClientFound(false);
-          setClients(data);
-        }, 2000);
-      }
-    });
-  };
+  });
+};
+
+
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const country =
       countryCodes.find((c) => c.code === e.target.value) || countryCodes[0];
@@ -193,27 +225,39 @@ export default function Clients() {
     <MainLayout>
       <ContentHeader title="Clients" />
       <div className="space-y-4 mb-4">
-        <input
-          type="text"
-          className="text-sm py-3 border bg-gray-50 w-full rounded-md font-sans dark:text-black px-2"
-          placeholder="Search Clients By Name or Email or Phone"
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          value={searchKeyword}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        />
-        <div className="flex justify-between items-center">
-          <button
-            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
-            onClick={handleSearch}
-          >
-            Search
-          </button>
-          <button
-            className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
-            onClick={() => setIsClientAdded(true)}
-          >
-            Add New Client
-          </button>
+        <div className="space-y-4 mb-4">
+          <input
+            type="text"
+            className="text-sm py-3 border bg-gray-50 w-full rounded-md font-sans dark:text-black px-2"
+            placeholder="Search Clients By Name or Email or Phone"
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            value={searchKeyword}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          />
+          <div className="flex justify-between items-center">
+            <div>
+              <button
+                className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border mr-2"
+                onClick={handleSearch}
+              >
+                Search
+              </button>
+              {isSearchMode && (
+                <button
+                  className="bg-gray-500 text-white px-4 py-1 rounded-md border-2 border-gray-500 hover:bg-white hover:text-gray-500 hover:shadow-lg transition duration-200 box-border"
+                  onClick={clearSearch}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+            <button
+              className="bg-blue-500 text-white px-4 py-1 rounded-md border-2 border-blue-500 hover:bg-white hover:text-blue-500 hover:shadow-lg transition duration-200 box-border"
+              onClick={() => setIsClientAdded(true)}
+            >
+              Add New Client
+            </button>
+          </div>
         </div>
 
         {isLoading && (
@@ -553,6 +597,7 @@ export default function Clients() {
           clientTableData={allClients}
           clientTableColumns={ClientTableColumn}
           onPageChange={handlePageChange}
+          currentPage={currentPage}
         />
       ) : (
         <p className="p-2">Loading Clients...</p>

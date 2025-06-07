@@ -39,10 +39,10 @@ export const searchCandidates = async (query: any) => {
   }
 };
 
-export const searchClient = async (query: any) => {
+export const searchClient = async (query: any, page: number) => {
   try {
     const response = await axios.get(
-      `${API_URL}api/clients/search?keyword=${query}`,
+      `${API_URL}api/clients/search?keyword=${query}&page=${page}&size=10`,
       {
         method: "GET",
         headers: {

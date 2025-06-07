@@ -10,10 +10,9 @@ export const resetPassword = async (reqData: any) => {
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
-          Authorization: "Basic " + btoa(`${Email}:${Password}`),
         },
       });
-      return response.data;
+      return response;
     } catch (err: any) {
       return err.response ? err.response.data : err.message;
     }
@@ -22,15 +21,14 @@ export const resetPassword = async (reqData: any) => {
   // POST /auth/forgot-password
   export const forgotPassword = async (reqData: any) => {
     try {
-      const response = await axios.post(`${API_URL}auth/forgot-password`, reqData, {
+      const response = await axios.post(`${API_URL}auth/forgot-password?emailOrUserName=${reqData.email}`, reqData, {
         method:"POST",
         headers: {
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
-          Authorization: "Basic " + btoa(`${Email}:${Password}`),
         },
       });
-      return response.data;
+      return response;
     } catch (err: any) {
       return err.response ? err.response.data : err.message;
     }
