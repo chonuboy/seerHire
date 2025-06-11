@@ -48,10 +48,10 @@ export default function InterviewForm({
               position: "top-right",
             });
             autoClose();
-          }else{
+          } else {
             toast.error(data.message, {
               position: "top-right",
-            })
+            });
           }
         });
       } catch (error) {
@@ -60,10 +60,11 @@ export default function InterviewForm({
     },
   });
   return (
-    <div className="mt-4 mb-4 w-full max-w-2xl mx-auto sm:px-2 lg:p-4">
-      <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg dark:text-black">
-        <div className="p-6 sm:p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+    <div className="min-h-screen py-8 px-4 mt-8">
+      <div className="bg-white shadow-lg rounded-2xl mx-auto max-w-4xl">
+        {/* Header */}
+        <div className="px-8 py-6 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center">
             <svg
               className="w-6 h-6 mr-2 text-blue-600"
               fill="none"
@@ -80,16 +81,22 @@ export default function InterviewForm({
             </svg>
             Update Round
           </h1>
+        </div>
 
-          <form onSubmit={formik.handleSubmit} className="space-y-6">
-            <div className="space-y-6">
-              {/* Interview Date */}
-              <div className="flex flex-col space-y-2">
+        <form className="p-8" onSubmit={formik.handleSubmit}>
+          {/* Interview Date */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-cyan-500 mb-8">
+              Interview Details
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
+              <div>
                 <label
                   htmlFor="roundDate"
-                  className="block text-sm font-medium dark:text-black"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
                 >
-                  Interview Date <span className="text-red-500">*</span>
+                  Interview Date
                 </label>
                 <DatePicker
                   id="roundDate"
@@ -101,7 +108,6 @@ export default function InterviewForm({
                   }
                   onChange={(date: Date | null) => {
                     if (date) {
-                      // Store in ISO format
                       formik.setFieldValue(
                         "roundDate",
                         format(date, "yyyy-MM-dd")
@@ -112,70 +118,72 @@ export default function InterviewForm({
                   }}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="dd/mm/yyyy"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black focus:border-blue-500 transition-all duration-300"
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
                   maxDate={new Date()}
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
                 />
                 {formik.touched.roundDate && formik.errors.roundDate ? (
-                  <div className="text-red-500 text-sm">
+                  <div className="text-red-500 text-sm mt-1">
                     {formik.errors.roundDate.toString()}
                   </div>
                 ) : null}
               </div>
 
               {/* Interviewer Name */}
-              <div className="space-y-2 transition-all duration-200">
+              <div>
                 <label
                   htmlFor="interviewerName"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
                 >
                   Interviewer Name
                 </label>
                 <input
+                  type="text"
                   id="interviewerName"
                   name="interviewerName"
-                  type="text"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ${
-                    formik.touched.interviewerName &&
-                    formik.errors.interviewerName
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
+                  value={formik.values.interviewerName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.interviewerName}
+                  placeholder="Enter Interviewer Name"
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
                 />
                 {formik.touched.interviewerName &&
-                formik.errors.interviewerName ? (
-                  <div className="text-red-500 text-sm mt-1 animate-fadeIn">
-                    {formik.errors.interviewerName.toString()}
-                  </div>
-                ) : null}
+                  formik.errors.interviewerName && (
+                    <div className="text-red-500 text-sm mt-1">
+                      {formik.errors.interviewerName.toString()}
+                    </div>
+                  )}
               </div>
+            </div>
+          </div>
 
-              {/* Interview Status */}
-              <div className="space-y-2 transition-all duration-200">
-                <label className="block text-sm font-medium text-gray-700">
+          {/* Interview Status */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-cyan-500 mb-8">
+              Evaluation
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
+              <div>
+                <span className="block text-sm font-semibold text-gray-700 mb-2">
                   Interview Status
-                </label>
-                <div className="flex flex-wrap gap-4">
+                </span>
+                <div className="flex gap-4 mt-3">
                   {["Passed", "Rejected", "On-Hold", "Pending"].map(
                     (status) => (
-                      <label
-                        key={status}
-                        className="inline-flex items-center cursor-pointer"
-                      >
+                      <label key={status} className="inline-flex items-center">
                         <input
                           type="radio"
                           name="interviewStatus"
                           value={status}
                           checked={formik.values.interviewStatus === status}
                           onChange={formik.handleChange}
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 transition duration-150 ease-in-out"
+                          onBlur={formik.handleBlur}
+                          className="form-radio text-blue-500 focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm text-gray-700">
+                        <span className="ml-2 text-gray-700 text-sm">
                           {status}
                         </span>
                       </label>
@@ -183,186 +191,160 @@ export default function InterviewForm({
                   )}
                 </div>
                 {formik.touched.interviewStatus &&
-                formik.errors.interviewStatus ? (
-                  <div className="text-red-500 text-sm mt-1 animate-fadeIn">
-                    {formik.errors.interviewStatus.toString()}
-                  </div>
-                ) : null}
+                  formik.errors.interviewStatus && (
+                    <div className="text-red-500 text-sm mt-1">
+                      {formik.errors.interviewStatus.toString()}
+                    </div>
+                  )}
               </div>
 
-              {/* Remarks */}
-              <div className="space-y-2 transition-all duration-200">
+              {/* Technology Interviewed */}
+              <div>
                 <label
-                  htmlFor="remarks"
-                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="technologyInterviewed"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
                 >
-                  Remarks
+                  Technology Interviewed 
                 </label>
-                <textarea
-                  id="remarks"
-                  name="remarks"
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 min-h-[100px] ${
-                    formik.touched.remarks && formik.errors.remarks
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.remarks}
-                />
-                {formik.touched.remarks && formik.errors.remarks ? (
-                  <div className="text-red-500 text-sm mt-1 animate-fadeIn">
-                    {formik.errors.remarks.toString()}
-                  </div>
-                ) : null}
+                <select
+                  name="technologyInterviewed"
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      "technologyInterviewed",
+                      e.target.value
+                    )
+                  }
+                  value={formik.values.technologyInterviewed}
+                >
+                  <option value="">Select a Skill</option>
+                  {masterTechnologies?.map((skill: any, index: number) => (
+                    <option key={index} value={skill.technology}>
+                      {skill.technology}
+                    </option>
+                  ))}
+                </select>
+                {formik.touched.technologyInterviewed &&
+                  formik.errors.technologyInterviewed && (
+                    <div className="text-red-500 text-sm mt-1">
+                      {formik.errors.technologyInterviewed.toString()}
+                    </div>
+                  )}
               </div>
+            </div>
+          </div>
 
+          {/* Ratings and Remarks */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-cyan-500 mb-8">
+              Ratings
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
               {/* Tech Rating */}
               {initialValues.techRating !== undefined && (
-                <div className="space-y-2 transition-all duration-200">
+                <div>
                   <label
                     htmlFor="techRating"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
                   >
-                    Tech Rating
-                    <span className="ml-1 text-xs text-gray-500">(1-10)</span>
+                    Tech Rating{" "}
+                    <span className="text-xs text-gray-500">(1-10)</span>
                   </label>
                   <input
+                    type="number"
                     id="techRating"
                     name="techRating"
-                    type="number"
-                    min="1"
-                    max="10"
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ${
-                      formik.touched.techRating && formik.errors.techRating
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    value={formik.values.techRating || ""}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.techRating}
+                    placeholder="Enter Rating from 1 to 10"
+                    min="1"
+                    max="10"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
                   />
-                  {formik.touched.techRating && formik.errors.techRating ? (
-                    <div className="text-red-500 text-sm mt-1 animate-fadeIn">
+                  {formik.touched.techRating && formik.errors.techRating && (
+                    <div className="text-red-500 text-sm mt-1">
                       {formik.errors.techRating.toString()}
                     </div>
-                  ) : null}
+                  )}
                 </div>
               )}
 
               {/* Soft Skills Rating */}
               {initialValues.softskillsRating !== undefined && (
-                <div className="space-y-2 transition-all duration-200">
+                <div>
                   <label
                     htmlFor="softskillsRating"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
                   >
-                    Soft Skills Rating
-                    <span className="ml-1 text-xs text-gray-500">(1-10)</span>
+                    Soft Skill Rating{" "}
+                    <span className="text-xs text-gray-500">(1-10)</span>
                   </label>
                   <input
+                    type="number"
                     id="softskillsRating"
                     name="softskillsRating"
-                    type="number"
-                    min="1"
-                    max="10"
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ${
-                      formik.touched.softskillsRating &&
-                      formik.errors.softskillsRating
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    value={formik.values.softskillsRating || ""}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.softskillsRating}
+                    placeholder="Enter Rating from 1 to 10"
+                    min="1"
+                    max="10"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
                   />
                   {formik.touched.softskillsRating &&
-                  formik.errors.softskillsRating ? (
-                    <div className="text-red-500 text-sm mt-1 animate-fadeIn">
-                      {formik.errors.softskillsRating.toString()}
-                    </div>
-                  ) : null}
+                    formik.errors.softskillsRating && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.softskillsRating.toString()}
+                      </div>
+                    )}
                 </div>
               )}
+            </div>
 
-              {/* Technologies Interviewed */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="technologyInterviewed"
-                  className="block text-sm font-medium dark:text-black"
-                >
-                  Technology Interviewed<span className="text-red-500">*</span>
-                </label>
-                <div className="flex gap-2">
-                  <select
-                    name=""
-                    id=""
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "technologyInterviewed",
-                        e.target.value
-                      )
-                    }
-                    value={formik.values.technologyInterviewed}
-                  >
-                    <option value="">Select a Skill</option>
-                    {masterTechnologies?.map((skill: any, index: number) => (
-                      <option key={index} value={skill.technology}>
-                        {skill.technology}
-                      </option>
-                    ))}
-                  </select>
+            {/* Remarks */}
+            <div>
+              <label
+                htmlFor="remarks"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Remarks
+              </label>
+              <textarea
+                id="remarks"
+                name="remarks"
+                value={formik.values.remarks}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Enter Remarks"
+                className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none min-h-[100px]"
+              />
+              {formik.touched.remarks && formik.errors.remarks && (
+                <div className="text-red-500 text-sm mt-1">
+                  {formik.errors.remarks.toString()}
                 </div>
-              </div>
+              )}
             </div>
+          </div>
 
-            {/* Submit and Cancel Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button
-                type="submit"
-                className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Update
-              </button>
-              <button
-                type="button"
-                onClick={autoClose}
-                className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-end">
+            <button
+              type="button"
+              onClick={autoClose}
+              className="flex-1 sm:flex-none sm:px-8 py-2 border-2 border-cyan-500 text-cyan-500 rounded-lg hover:bg-cyan-50 transition-colors duration-200 font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 sm:flex-none sm:px-8 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors duration-200 font-medium"
+            >
+              Update
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

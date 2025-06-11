@@ -12,7 +12,6 @@ import { createContactHiringType } from "@/api/candidates/hiringType";
 import { Technology } from "@/lib/models/candidate";
 import { toast } from "react-toastify";
 import { createContactDomain } from "@/api/candidates/domains";
-import { create } from "domain";
 
 // This would be provided by the parent component
 type ProfessionalFormProps = {

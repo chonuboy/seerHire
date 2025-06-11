@@ -30,35 +30,35 @@ const UpdateClientLocation = ({
   const formik = useFormik<clientLocationFormValues>({
     initialValues: currentClientLocation,
     validationSchema: clientLocationSchema,
-    validateOnChange:true,
+    validateOnChange: true,
     validateOnBlur: true,
 
     onSubmit: async (values) => {
-      console.log(values)
-      console.log(locationId)
+      console.log(values);
+      console.log(locationId);
       const updatedFields = getUpdatedFields(currentClientLocation, values);
       console.log(updatedFields);
-        try {
-          updateClientLocation(locationId, updatedFields).then((data)=>{
-            console.log(data);
-            // toast.success("Branch updated successfully", {
-            //   position: "top-right",
-            // })
-            // autoClose();
-            if(data.status === 200){
-              toast.success("Branch updated successfully", {
-                position: "top-right",
-              })
-              autoClose();
-            }else{
-              toast.error(data.message, {
-                position: "top-right",
-              })
-            }
-          })
-        } catch (error) {
-          console.error("Form submission error", error);
-        }
+      try {
+        updateClientLocation(locationId, updatedFields).then((data) => {
+          console.log(data);
+          // toast.success("Branch updated successfully", {
+          //   position: "top-right",
+          // })
+          // autoClose();
+          if (data.status === 200) {
+            toast.success("Branch updated successfully", {
+              position: "top-right",
+            });
+            autoClose();
+          } else {
+            toast.error(data.message, {
+              position: "top-right",
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Form submission error", error);
+      }
     },
   });
   const onChangeState = (location: locations) => {
@@ -75,7 +75,10 @@ const UpdateClientLocation = ({
   };
 
   const onChangeCity = (location: locations) => {
-    formik.setFieldValue("cityId", { locationId: location.locationId,locationDetails: location.locationDetails });
+    formik.setFieldValue("cityId", {
+      locationId: location.locationId,
+      locationDetails: location.locationDetails,
+    });
   };
 
   const UpdateNewCity = async (location: locations) => {
@@ -89,262 +92,285 @@ const UpdateClientLocation = ({
 
   return (
     <Popup onClose={() => autoClose()}>
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-16">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Branch Information
-        </h2>
-
-        <form onSubmit={formik.handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="h-auto space-y-4 rounded-lg">
-              <label htmlFor="state" className="flex">
-                <span className="font-semibold text-gray-600">State</span>
-              </label>
-
-              <LocationAutocomplete
-                name="state"
-                placeholder="Select State"
-                value={formik.values.state.locationDetails ?? ""}
-                onChange={onChangeState}
-                options={masterLocations}
-                onAdd={UpdateNewState}
-              ></LocationAutocomplete>
-            </div>
-
-            <div className="h-auto space-y-3 rounded-lg">
-              <label htmlFor="city" className="flex">
-                <span className="font-semibold text-gray-600">City</span>
-              </label>
-
-              <LocationAutocomplete
-                name="city"
-                placeholder="Select City"
-                value={formik.values.cityId.locationDetails ?? ""}
-                onChange={onChangeCity}
-                options={masterLocations}
-                onAdd={UpdateNewCity}
-              ></LocationAutocomplete>
-            </div>
-
-            <div className="space-y-3">
-              <label htmlFor="address1" className="font-semibold text-gray-600">
-                Address
-              </label>
-              <input
-                id="address1"
-                name="address1"
-                type="text"
-                placeholder="Enter Address"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.address1}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
+      <div className="min-h-screen py-8 px-4 mt-8">
+        <div className="bg-white shadow-lg rounded-2xl mx-auto max-w-4xl">
+          {/* Header */}
+          <div className="px-8 py-6 border-b border-gray-200 flex items-center gap-2">
+            <svg
+              className="w-6 h-6 text-cyan-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
               />
-              {formik.touched.address1 && formik.errors.address1 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {formik.errors.address1}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <label htmlFor="pincode" className="font-semibold text-gray-600">
-                Pincode
-              </label>
-              <input
-                id="pincode"
-                name="pincode"
-                type="text"
-                placeholder="Enter Pincode"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.pincode}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-              />
-              {formik.touched.pincode && formik.errors.pincode && (
-                <p className="mt-1 text-sm text-red-600">
-                  {formik.errors.pincode}
-                </p>
-              )}
-            </div>
+            </svg>
+            <h1 className="text-2xl font-bold text-gray-900">Update Branch</h1>
           </div>
 
-          {/* Contact Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <label
-                htmlFor="hrContactPerson"
-                className="font-semibold text-gray-600"
-              >
-                HR Contact Person
-              </label>
-              <input
-                id="hrContactPerson"
-                name="hrContactPerson"
-                type="text"
-                placeholder="Enter HR Contact Person Name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.hrContactPerson}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-              />
-              {formik.touched.hrContactPerson &&
-                formik.errors.hrContactPerson && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {formik.errors.hrContactPerson}
-                  </p>
-                )}
-            </div>
+          <form className="p-8" onSubmit={formik.handleSubmit}>
+            {/* Address Section */}
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-cyan-500 mb-8">
+                Address Details
+              </h2>
 
-            <div className="space-y-3">
-              <label
-                htmlFor="technicalPerson"
-                className="font-semibold text-gray-600"
-              >
-                Technical Person
-              </label>
-              <input
-                id="technicalPerson"
-                name="technicalPerson"
-                type="text"
-                placeholder="Enter Technical Person Name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.technicalPerson}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-              />
-              {formik.touched.technicalPerson &&
-                formik.errors.technicalPerson && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {formik.errors.technicalPerson}
-                  </p>
-                )}
-            </div>
-
-            <div className="space-y-3">
-              <label
-                htmlFor="hrMobileNumber"
-                className="font-semibold text-gray-600"
-              >
-                HR Mobile Number
-              </label>
-              <input
-                id="hrMobileNumber"
-                name="hrMobileNumber"
-                type="text"
-                placeholder="Enter HR Mobile Number"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.hrMobileNumber}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-              />
-              {formik.touched.hrMobileNumber &&
-                formik.errors.hrMobileNumber && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {formik.errors.hrMobileNumber}
-                  </p>
-                )}
-            </div>
-
-            <div className="space-y-3">
-              <label
-                htmlFor="companyLandline"
-                className="font-semibold text-gray-600"
-              >
-                Company Landline
-              </label>
-              <input
-                id="companyLandline"
-                name="companyLandline"
-                type="text"
-                placeholder="Enter Company Landline"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.companyLandline}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-              />
-              {formik.touched.companyLandline &&
-                formik.errors.companyLandline && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {formik.errors.companyLandline}
-                  </p>
-                )}
-            </div>
-
-            <div className="space-y-3">
-              <label
-                htmlFor="hrContactPersonEmail"
-                className="font-semibold text-gray-600"
-              >
-                HR Contact Email
-              </label>
-              <input
-                id="hrContactPersonEmail"
-                name="hrContactPersonEmail"
-                type="email"
-                placeholder="Enter HR Contact Email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.hrContactPersonEmail}
-                className="py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)]"
-              />
-              {formik.touched.hrContactPersonEmail &&
-                formik.errors.hrContactPersonEmail && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {formik.errors.hrContactPersonEmail}
-                  </p>
-                )}
-            </div>
-          </div>
-
-          {/* Form Actions */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
+                {/* State */}
+                <div>
+                  <label
+                    htmlFor="state"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  Update
-                </button>
-                <button
-                  type="button"
-                  onClick={()=>{
-                    formik.resetForm();
-                    autoClose();
-                  }}
-                  className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                    State
+                  </label>
+                  <LocationAutocomplete
+                    name="state"
+                    placeholder="Select State"
+                    styleMod="w-full px-0 py-1 border-0 border-b border-gray-300 focus:ring-0 text-sm placeholder-gray-400 rounded-none"
+                    value={formik.values.state.locationDetails ?? ""}
+                    onChange={onChangeState}
+                    options={masterLocations}
+                    onAdd={UpdateNewState}
+                  />
+                </div>
+
+                {/* City */}
+                <div>
+                  <label
+                    htmlFor="city"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Cancel
-                </button>
+                    City
+                  </label>
+                  <LocationAutocomplete
+                    name="city"
+                    placeholder="Select City"
+                    styleMod="w-full px-0 py-1 border-0 border-b border-gray-300 focus:ring-0 text-sm placeholder-gray-400 rounded-none"
+                    value={formik.values.cityId.locationDetails ?? ""}
+                    onChange={onChangeCity}
+                    options={masterLocations}
+                    onAdd={UpdateNewCity}
+                  />
+                </div>
+
+                {/* Address */}
+                <div>
+                  <label
+                    htmlFor="address1"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Address
+                  </label>
+                  <input
+                    id="address1"
+                    name="address1"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter Address"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.address1}
+                  />
+                  {formik.touched.address1 && formik.errors.address1 && (
+                    <div className="text-red-500 text-sm mt-1">
+                      {formik.errors.address1}
+                    </div>
+                  )}
+                </div>
+
+                {/* Pincode */}
+                <div>
+                  <label
+                    htmlFor="pincode"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Pincode
+                  </label>
+                  <input
+                    id="pincode"
+                    name="pincode"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter Pincode"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.pincode}
+                  />
+                  {formik.touched.pincode && formik.errors.pincode && (
+                    <div className="text-red-500 text-sm mt-1">
+                      {formik.errors.pincode}
+                    </div>
+                  )}
+                </div>
               </div>
-        </form>
+            </div>
+
+            {/* Contact Section */}
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-cyan-500 mb-8">
+                Contact Details
+              </h2>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                {/* HR Contact Person */}
+                <div>
+                  <label
+                    htmlFor="hrContactPerson"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    HR Contact Person
+                  </label>
+                  <input
+                    id="hrContactPerson"
+                    name="hrContactPerson"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter HR Contact Person Name"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.hrContactPerson}
+                  />
+                  {formik.touched.hrContactPerson &&
+                    formik.errors.hrContactPerson && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.hrContactPerson}
+                      </div>
+                    )}
+                </div>
+
+                {/* Technical Person */}
+                <div>
+                  <label
+                    htmlFor="technicalPerson"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Technical Person
+                  </label>
+                  <input
+                    id="technicalPerson"
+                    name="technicalPerson"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter Technical Person Name"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.technicalPerson}
+                  />
+                  {formik.touched.technicalPerson &&
+                    formik.errors.technicalPerson && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.technicalPerson}
+                      </div>
+                    )}
+                </div>
+
+                {/* HR Mobile Number */}
+                <div>
+                  <label
+                    htmlFor="hrMobileNumber"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    HR Mobile Number
+                  </label>
+                  <input
+                    id="hrMobileNumber"
+                    name="hrMobileNumber"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter HR Mobile Number"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.hrMobileNumber}
+                  />
+                  {formik.touched.hrMobileNumber &&
+                    formik.errors.hrMobileNumber && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.hrMobileNumber}
+                      </div>
+                    )}
+                </div>
+
+                {/* Company Landline */}
+                <div>
+                  <label
+                    htmlFor="companyLandline"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Company Landline
+                  </label>
+                  <input
+                    id="companyLandline"
+                    name="companyLandline"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter Company Landline"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.companyLandline}
+                  />
+                  {formik.touched.companyLandline &&
+                    formik.errors.companyLandline && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.companyLandline}
+                      </div>
+                    )}
+                </div>
+
+                {/* HR Contact Email */}
+                <div>
+                  <label
+                    htmlFor="hrContactPersonEmail"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    HR Contact Email
+                  </label>
+                  <input
+                    id="hrContactPersonEmail"
+                    name="hrContactPersonEmail"
+                    type="email"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="Enter HR Contact Email"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.hrContactPersonEmail}
+                  />
+                  {formik.touched.hrContactPersonEmail &&
+                    formik.errors.hrContactPersonEmail && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.hrContactPersonEmail}
+                      </div>
+                    )}
+                </div>
+              </div>
+            </div>
+
+            {/* Form Actions */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  formik.resetForm();
+                  autoClose();
+                }}
+                className="flex-1 sm:flex-none sm:px-8 py-2 border-2 border-cyan-500 text-cyan-500 rounded-lg hover:bg-cyan-50 transition-colors duration-200 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 sm:flex-none sm:px-8 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors duration-200 font-medium"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </Popup>
   );

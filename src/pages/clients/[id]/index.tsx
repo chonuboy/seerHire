@@ -45,6 +45,7 @@ export default function Client() {
 
       fetchClient(id).then((data) => {
         setCurrentClient(data);
+        console.log(data);
       });
 
       fetchAllClientLocations().then((data) => {
