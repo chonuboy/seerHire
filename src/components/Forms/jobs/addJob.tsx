@@ -97,10 +97,10 @@ export const AddJob = ({
                 position: "top-right",
               });
               autoClose();
-            }else{
+            } else {
               toast.error(data.message, {
                 position: "top-right",
-              })
+              });
             }
           });
         }
@@ -137,18 +137,21 @@ export const AddJob = ({
   };
 
   return (
-    <div className="bg-white mt-12 rounded-lg shadow-md overflow-hidden">
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-gray-800">Add New Job</h2>
+    <div className="bg-white shadow-lg rounded-2xl mx-auto max-w-4xl mt-14">
+      {/* Header */}
+      <div className="px-8 py-6 border-b border-gray-200">
+        <h1 className="text-2xl font-bold text-gray-900">
+          Add New Job
+        </h1>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={formik.handleSubmit} className="p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-6">
           {/* Job Title */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="jobTitle"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Job Title <span className="text-red-500">*</span>
             </label>
@@ -157,7 +160,7 @@ export const AddJob = ({
               name="jobTitle"
               type="text"
               placeholder="Enter job title"
-              className={`w-full px-3 py-2 border  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.jobTitle || ""}
@@ -170,10 +173,10 @@ export const AddJob = ({
           </div>
 
           {/* Job Code */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="jobCode"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Job Code
             </label>
@@ -182,7 +185,7 @@ export const AddJob = ({
               name="jobCode"
               type="text"
               placeholder="Enter job code"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.jobCode || ""}
@@ -195,10 +198,10 @@ export const AddJob = ({
           </div>
 
           {/* Salary */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="salaryInCtc"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Salary (In CTC) <span className="text-red-500">*</span>
             </label>
@@ -207,7 +210,7 @@ export const AddJob = ({
               name="salaryInCtc"
               type="number"
               placeholder="Enter salary"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.salaryInCtc || ""}
@@ -220,10 +223,10 @@ export const AddJob = ({
           </div>
 
           {/* Experience */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="experience"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Experience (In Years) <span className="text-red-500">*</span>
             </label>
@@ -232,7 +235,7 @@ export const AddJob = ({
               name="experience"
               type="number"
               placeholder="Enter experience"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.experience || ""}
@@ -245,17 +248,17 @@ export const AddJob = ({
           </div>
 
           {/* Job Status */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="isJobActive"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Job Status <span className="text-red-500">*</span>
             </label>
             <select
               id="isJobActive"
               name="isJobActive"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.isJobActive || ""}
@@ -273,17 +276,17 @@ export const AddJob = ({
           </div>
 
           {/* Job Post Type */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="jobPostType"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Job Post Type <span className="text-red-500">*</span>
             </label>
             <select
               id="jobPostType"
               name="jobPostType"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.jobPostType || ""}
@@ -301,10 +304,10 @@ export const AddJob = ({
           </div>
 
           {/* Inserted By */}
-          <div className="space-y-2">
+          <div>
             <label
               htmlFor="insertedBy"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Inserted By
             </label>
@@ -313,7 +316,7 @@ export const AddJob = ({
               name="insertedBy"
               type="text"
               placeholder="Enter name"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-black"
+              className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.insertedBy || ""}
@@ -326,8 +329,8 @@ export const AddJob = ({
           </div>
 
           {/* JD File Upload */}
-          <div className="space-y-2 md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Upload JD File <span className="text-red-500">*</span>
             </label>
             <div className="mt-1 flex items-center">
@@ -368,7 +371,7 @@ export const AddJob = ({
                     </>
                   ) : (
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <FileText className="h-8 w-8 text-green-500 mr-2" />
                         <div className="text-left">
                           <p className="text-sm font-medium text-gray-900">
@@ -377,63 +380,67 @@ export const AddJob = ({
                           <p className="text-xs text-gray-500">
                             {(uploadedFile.size / 1024).toFixed(2)} KB
                           </p>
+                          <button
+                            type="button"
+                            onClick={clearFile}
+                            className="ml-2 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 absolute -top-3 -right-7"
+                          >
+                            <span className="sr-only">Remove file</span>
+                            <X className="h-4 w-4" />
+                          </button>
                         </div>
                       </div>
                       <button
-                        className="bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600"
+                        className="px-4 py-1 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors duration-200 font-medium"
                         onClick={() => uploadJobDescription(uploadedFile)}
                       >
                         Upload
-                      </button>
-                      <button
-                        type="button"
-                        onClick={clearFile}
-                        className="ml-2 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                      >
-                        <span className="sr-only">Remove file</span>
-                        <X className="h-5 w-5" />
                       </button>
                     </div>
                   )}
                 </div>
               </div>
             </div>
+            {formik.errors.jd && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.jd?.toString()}
+              </p>
+            )}
           </div>
-          {formik.errors.jd && (
-            <p className="mt-1 text-sm text-red-600">
-              {formik.errors.jd?.toString()}
-            </p>
-          )}
         </div>
 
         {/* Job Description (Editor) */}
-        <div className="space-y-2 mt-4">
-          <label className="font-semibold text-gray-600">Job Description</label>
-          <JoditEditor
-            value={jd || ""}
-            config={{
-              height: 300,
-              placeholder: "Type job description here...",
-              readonly: false,
-              showCharsCounter: false,
-              showWordsCounter: false,
-              showXPathInStatusbar: false,
-              buttons:
-                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-              buttonsMD:
-                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-              buttonsSM:
-                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-              buttonsXS:
-                "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-            }}
-            onBlur={(content) => {
-              setJobDescription(content);
-            }}
-            onChange={(content) => {
-              formik.values.jobDescription = content;
-            }}
-          />
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-cyan-500 mb-2">
+            Job Description
+          </h2>
+          <div className="border border-gray-300 rounded-lg p-2">
+            <JoditEditor
+              value={jd || ""}
+              config={{
+                height: 300,
+                placeholder: "Type job description here...",
+                readonly: false,
+                showCharsCounter: false,
+                showWordsCounter: false,
+                showXPathInStatusbar: false,
+                buttons:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                buttonsMD:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                buttonsSM:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                buttonsXS:
+                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+              }}
+              onBlur={(content) => {
+                setJobDescription(content);
+              }}
+              onChange={(content) => {
+                formik.values.jobDescription = content;
+              }}
+            />
+          </div>
           {formik.touched.jobDescription && formik.errors.jobDescription && (
             <div className="text-red-500 text-sm mt-1">
               {formik.errors.jobDescription}
@@ -442,47 +449,19 @@ export const AddJob = ({
         </div>
 
         {/* Form Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 pt-4">
-          <button
-            type="submit"
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            Add
-          </button>
+        <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-end">
           <button
             type="button"
             onClick={autoClose}
-            className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
+            className="flex-1 sm:flex-none sm:px-8 py-2 border-2 border-cyan-500 text-cyan-500 rounded-lg hover:bg-cyan-50 transition-colors duration-200 font-medium"
           >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
             Cancel
+          </button>
+          <button
+            type="submit"
+            className="flex-1 sm:flex-none sm:px-8 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors duration-200 font-medium"
+          >
+            Add Job
           </button>
         </div>
       </form>

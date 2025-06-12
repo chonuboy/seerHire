@@ -168,7 +168,7 @@ export default function Home() {
               />
             </Popup>
           )}
-          <div className="flex gap-4 justify-end pr-20">
+          <div className="flex gap-4 justify-end pr-4">
             {((currentCandidate?.resumeLink &&
               currentCandidate?.resumeLink.includes("pdf")) ||
               (currentCandidate?.resumeLink &&

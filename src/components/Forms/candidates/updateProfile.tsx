@@ -497,7 +497,7 @@ const ProfileUpdateForm = ({
         {/* Header */}
         <div className="px-8 py-6 border-b flex items-center gap-1 border-gray-200">
           <svg
-            className="w-6 h-6 mr-2 text-blue-600"
+            className="w-6 h-6 mr-2 text-cyan-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -1033,7 +1033,7 @@ const ProfileUpdateForm = ({
                       checked={formik.values.isExpectedCtcNegotiable === true}
                       className="text-cyan-500 focus:ring-cyan-500"
                     />
-                    <label htmlFor="salary_negotiable">Yes</label>
+                    <label htmlFor="salary_negotiable">Negotiable</label>
                   </div>
                   <div className="flex items-center gap-2">
                     <input
@@ -1046,7 +1046,7 @@ const ProfileUpdateForm = ({
                       checked={formik.values.isExpectedCtcNegotiable === false}
                       className="text-cyan-500 focus:ring-cyan-500"
                     />
-                    <label htmlFor="salary_innegotiable">No</label>
+                    <label htmlFor="salary_innegotiable">Not Negotiable</label>
                   </div>
                 </div>
               </div>
@@ -1065,6 +1065,7 @@ const ProfileUpdateForm = ({
                       type="checkbox"
                       value={"Onsite"}
                       name="preferredJobType_Onsite"
+                      id="preferredJobType_Onsite"
                       onChange={(e) => handleJobTypeBoxCheck(e, "Onsite")}
                       checked={
                         isOnsite ||
@@ -1080,6 +1081,7 @@ const ProfileUpdateForm = ({
                       type="checkbox"
                       value={"Remote"}
                       name="preferredJobType_Remote"
+                      id="preferredJobType_Remote"
                       onChange={(e) => handleJobTypeBoxCheck(e, "Remote")}
                       checked={
                         isRemote ||
@@ -1095,6 +1097,7 @@ const ProfileUpdateForm = ({
                       type="checkbox"
                       value={"Hybrid"}
                       name="preferredJobType_Hybrid"
+                      id="preferredJobType_Hybrid"
                       onChange={(e) => handleJobTypeBoxCheck(e, "Hybrid")}
                       checked={
                         isHybrid ||
@@ -1133,6 +1136,7 @@ const ProfileUpdateForm = ({
                       type="checkbox"
                       value="Full Time"
                       name="preferredHiringType_FullTime"
+                      id="preferredHiringType_FullTime"
                       onChange={(e) => handleHiringTypeBoxCheck(e, "Full Time")}
                       checked={
                         isFullTime ||
@@ -1149,6 +1153,7 @@ const ProfileUpdateForm = ({
                     <input
                       type="checkbox"
                       value="Part Time"
+                      id="preferredHiringType_PartTime"
                       name="preferredHiringType_PartTime"
                       onChange={(e) => handleHiringTypeBoxCheck(e, "Part Time")}
                       checked={
@@ -1166,6 +1171,7 @@ const ProfileUpdateForm = ({
                     <input
                       type="checkbox"
                       value="Contract"
+                      id="HiringType_Contract"
                       name="HiringType_Contract"
                       onChange={(e) => handleHiringTypeBoxCheck(e, "Contract")}
                       checked={

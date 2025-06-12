@@ -98,463 +98,477 @@ export default function RecruitmentCandidateCard({
 
         {isProfileUpdated && (
           <Popup onClose={() => setIsProfileUpdated(false)}>
-            <form
-              className="space-y-6 sm:space-y-8 bg-white p-6 mt-14 rounded-md"
-              onSubmit={formik.handleSubmit}
-            >
-              {/* Basic Information */}
-              <div className="border-b border-gray-200 pb-6 sm:pb-8">
-                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">
-                  Basic Information
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="recruiterName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Recruiter Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={candidate.recruiterName}
-                      onChange={formik.handleChange}
-                      name="recruiterName"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="portal"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Portal <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      name="portal"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base bg-white"
-                      value={candidate.portal}
-                      onChange={formik.handleChange}
-                    >
-                      <option value="LinkedIn">LinkedIn</option>
-                      <option value="Naukri">Naukri</option>
-                      <option value="Indeed">Indeed</option>
-                      <option value="Referral">Referral</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="candidateName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Candidate Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={candidate.candidateName}
-                      onChange={formik.handleChange}
-                      name="candidateName"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="role"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Role <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      value={candidate.role}
-                      onChange={formik.handleChange}
-                      type="text"
-                      name="role"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="qualification"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Qualification <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      value={candidate.qualification}
-                      onChange={formik.handleChange}
-                      type="text"
-                      name="qualification"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-                </div>
+            <div className="bg-white shadow-lg rounded-2xl mx-auto max-w-4xl mt-14">
+              {/* Header */}
+              <div className="px-8 py-6 border-b border-gray-200">
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Update Profile
+                </h1>
               </div>
 
-              {/* Skills & Experience */}
-              <div className="border-b border-gray-200 pb-6 sm:pb-8">
-                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">
-                  Skills & Experience
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="primarySkill"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Primary Skill <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={candidate.primarySkill}
-                      onChange={formik.handleChange}
-                      name="primarySkill"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+              <form onSubmit={formik.handleSubmit} className="p-8">
+                {/* Basic Information */}
+                <div className="space-y-8 pb-6 mb-6">
+                  <h3 className="text-lg font-semibold text-cyan-500 mb-4">
+                    Basic Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label
+                        htmlFor="recruiterName"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Recruiter Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={candidate.recruiterName}
+                        onChange={formik.handleChange}
+                        name="recruiterName"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="secondarySkill"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Secondary Skill <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={candidate.secondarySkill}
-                      onChange={formik.handleChange}
-                      name="secondarySkill"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="portal"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Portal <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="portal"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none bg-white"
+                        value={candidate.portal}
+                        onChange={formik.handleChange}
+                      >
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Naukri">Naukri</option>
+                        <option value="Indeed">Indeed</option>
+                        <option value="Referral">Referral</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="totalExperience"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Total Experience (Years){" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="totalExperience"
-                      value={candidate.totalExperience}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="candidateName"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Candidate Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={candidate.candidateName}
+                        onChange={formik.handleChange}
+                        name="candidateName"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="relevantExperience"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Relevant Experience (Years){" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="relevantExperience"
-                      value={candidate.relevantExperience}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="role"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Role <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        value={candidate.role}
+                        onChange={formik.handleChange}
+                        type="text"
+                        name="role"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="communicationSkillsRating"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Communication Skills (1-5){" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="communicationSkillsRating"
-                      value={candidate.communicationSkillsRating}
-                      onChange={formik.handleChange}
-                      min={0}
-                      max={5}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="technicalSkillsRating"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Technical Skills (1-5){" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="technicalSkillsRating"
-                      min={0}
-                      max={5}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                      value={candidate.technicalSkillsRating}
-                      onChange={formik.handleChange}
-                    />
+                    <div>
+                      <label
+                        htmlFor="qualification"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Qualification <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        value={candidate.qualification}
+                        onChange={formik.handleChange}
+                        type="text"
+                        name="qualification"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Contact Information */}
-              <div className="border-b border-gray-200 pb-6 sm:pb-8">
-                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">
-                  Contact Information
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="contactNumber"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Contact Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      name="contactNumber"
-                      value={candidate.contactNumber}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                {/* Skills & Experience */}
+                <div className="space-y-8 pb-6 mb-6">
+                  <h3 className="text-lg font-semibold text-cyan-500 mb-4">
+                    Skills & Experience
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label
+                        htmlFor="primarySkill"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Primary Skill <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={candidate.primarySkill}
+                        onChange={formik.handleChange}
+                        name="primarySkill"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="emailID"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email ID <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      name="emailID"
-                      id="emailID"
-                      value={candidate.emailId}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="secondarySkill"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Secondary Skill <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={candidate.secondarySkill}
+                        onChange={formik.handleChange}
+                        name="secondarySkill"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="currentLocation"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Current Location <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="currentLocation"
-                      value={candidate.currentLocation}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="totalExperience"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Total Experience (Years){" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="totalExperience"
+                        value={candidate.totalExperience}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="preferredLocation"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Preferred Location <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="preferredLocation"
-                      value={candidate.preferredLocation}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-                </div>
-              </div>
+                    <div>
+                      <label
+                        htmlFor="relevantExperience"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Relevant Experience (Years){" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="relevantExperience"
+                        value={candidate.relevantExperience}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-              {/* Compensation & Notice Period */}
-              <div className="border-b border-gray-200 pb-6 sm:pb-8">
-                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">
-                  Compensation & Availability
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="currentCTC"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Current CTC (₹) LPA{" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="currentCTC"
-                      min="0"
-                      value={candidate.currentCTC}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="communicationSkillsRating"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Communication Skills (1-5){" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="communicationSkillsRating"
+                        value={candidate.communicationSkillsRating}
+                        onChange={formik.handleChange}
+                        min={0}
+                        max={5}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="expectedCTC"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Expected CTC (₹) LPA{" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="expectedCTC"
-                      min="0"
-                      value={candidate.expectedCTC}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="noticePeriod"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Notice Period (Days){" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="noticePeriod"
-                      min="0"
-                      value={candidate.noticePeriod}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    />
+                    <div>
+                      <label
+                        htmlFor="technicalSkillsRating"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Technical Skills (1-5){" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="technicalSkillsRating"
+                        min={0}
+                        max={5}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                        value={candidate.technicalSkillsRating}
+                        onChange={formik.handleChange}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Preferred Roles */}
-              <div className="border-b border-gray-200 pb-6 sm:pb-8">
-                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">
-                  Preferred Roles
-                </h3>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="preferredRoles"
-                    value={currentPreferredRole}
-                    id="preferredRoles"
-                    placeholder="Enter preferred roles"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base"
-                    onChange={(e) => {
-                      setCurrentPreferredRole(e.target.value);
-                    }}
-                  />
-                  <button
-                    className="absolute -top-1 right-0 mt-2 mr-2 px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200"
-                    type="button"
-                    onClick={() => {
-                      const updatedRoles = [
-                        ...candidate.preferredRoles,
-                        currentPreferredRole,
-                      ];
-                      candidate.preferredRoles = updatedRoles;
-                      formik.setFieldValue("preferredRoles", updatedRoles);
-                      setCurrentPreferredRole("");
-                    }}
-                  >
-                    Add
-                  </button>
-                  <div className="flex items-center gap-4">
-                    {candidate.preferredRoles.length > 0 &&
-                      candidate.preferredRoles.map((role, index) => (
-                        <div key={index} className="mt-6">
-                          <span className="relative bg-blue-500 text-white px-4 py-2 rounded-md">
-                            {role}
-                            <X
-                              onClick={() => {
-                                const updatedRoles =
-                                  candidate.preferredRoles.filter(
-                                    (_, i) => i !== index
+                {/* Contact Information */}
+                <div className="space-y-8 pb-6 mb-6">
+                  <h3 className="text-lg font-semibold text-cyan-500 mb-4">
+                    Contact Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label
+                        htmlFor="contactNumber"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Contact Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        name="contactNumber"
+                        value={candidate.contactNumber}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="emailID"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Email ID <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        name="emailID"
+                        id="emailID"
+                        value={candidate.emailId}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="currentLocation"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Current Location <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="currentLocation"
+                        value={candidate.currentLocation}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="preferredLocation"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Preferred Location{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="preferredLocation"
+                        value={candidate.preferredLocation}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Compensation & Notice Period */}
+                <div className="pb-6 mb-6 space-y-8">
+                  <h3 className="text-lg font-semibold text-cyan-500 mb-4">
+                    Compensation & Availability
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label
+                        htmlFor="currentCTC"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Current CTC (₹) LPA{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="currentCTC"
+                        min="0"
+                        value={candidate.currentCTC}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="expectedCTC"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Expected CTC (₹) LPA{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="expectedCTC"
+                        min="0"
+                        value={candidate.expectedCTC}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="noticePeriod"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Notice Period (Days){" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        name="noticePeriod"
+                        min="0"
+                        value={candidate.noticePeriod}
+                        onChange={formik.handleChange}
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preferred Roles */}
+                <div className="pb-6 mb-6 space-y-8">
+                  <h3 className="text-lg font-semibold text-cyan-500 mb-4">
+                    Preferred Roles
+                  </h3>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="preferredRoles"
+                      value={currentPreferredRole}
+                      id="preferredRoles"
+                      placeholder="Enter preferred roles"
+                      className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                      onChange={(e) => {
+                        setCurrentPreferredRole(e.target.value);
+                      }}
+                    />
+                    <button
+                      className="absolute right-0 top-0 px-4 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 font-medium text-sm"
+                      type="button"
+                      onClick={() => {
+                        const updatedRoles = [
+                          ...candidate.preferredRoles,
+                          currentPreferredRole,
+                        ];
+                        candidate.preferredRoles = updatedRoles;
+                        formik.setFieldValue("preferredRoles", updatedRoles);
+                        setCurrentPreferredRole("");
+                      }}
+                    >
+                      Add
+                    </button>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {candidate.preferredRoles.length > 0 &&
+                        candidate.preferredRoles.map((role, index) => (
+                          <div key={index} className="relative">
+                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                              {role}
+                              <X
+                                onClick={() => {
+                                  const updatedRoles =
+                                    candidate.preferredRoles.filter(
+                                      (_, i) => i !== index
+                                    );
+                                  formik.setFieldValue(
+                                    "preferredRoles",
+                                    updatedRoles
                                   );
-                                formik.setFieldValue(
-                                  "preferredRoles",
-                                  updatedRoles
-                                );
-                                candidate.preferredRoles = updatedRoles;
-                              }}
-                              className="absolute cursor-pointer -top-2 -right-2 w-4 h-4 bg-red-500 text-white rounded-full"
-                            ></X>
-                          </span>
-                        </div>
-                      ))}
+                                  candidate.preferredRoles = updatedRoles;
+                                }}
+                                className="inline-block ml-1 w-3 h-3 cursor-pointer text-blue-800 hover:text-red-500"
+                              />
+                            </span>
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Additional Information */}
-              <div className="border-b border-gray-200 pb-6 sm:pb-8">
-                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">
-                  Additional Information
-                </h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="sourcingStatus"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Sourcing Status <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      name="sourcingStatus"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base bg-white"
-                      onChange={formik.handleChange}
-                      value={candidate.sourcingStatus}
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Passive">Inactive</option>
-                      <option value="On Hold">On Hold</option>
-                      <option value="Hired">Hired</option>
-                    </select>
-                  </div>
+                {/* Additional Information */}
+                <div className="pb-6 mb-6 space-y-8">
+                  <h3 className="text-lg font-semibold text-cyan-500 mb-4">
+                    Additional Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <label
+                        htmlFor="sourcingStatus"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Sourcing Status <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="sourcingStatus"
+                        className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none bg-white"
+                        onChange={formik.handleChange}
+                        value={candidate.sourcingStatus}
+                      >
+                        <option value="Active">Active</option>
+                        <option value="Passive">Inactive</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Hired">Hired</option>
+                      </select>
+                    </div>
 
-                  <div className="lg:col-span-2 space-y-2">
-                    <label
-                      htmlFor="remarks"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Remarks <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      name="remarks"
-                      rows={4}
-                      value={candidate.remarks}
-                      onChange={formik.handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base resize-vertical"
-                    />
+                    <div className="md:col-span-2">
+                      <label
+                        htmlFor="remarks"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Remarks <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        name="remarks"
+                        rows={4}
+                        value={candidate.remarks}
+                        onChange={formik.handleChange}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Submit Button */}
-              <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto px-6 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium shadow-sm transition-colors duration-200 text-sm sm:text-base"
-                >
-                  Update
-                </button>
-              </div>
-            </form>
+                {/* Form Actions */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-end">
+                  <button
+                    type="button"
+                    onClick={()=>setIsProfileUpdated(false)}
+                    className="flex-1 sm:flex-none sm:px-8 py-2 border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors duration-200 font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 sm:flex-none sm:px-8 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 font-medium"
+                  >
+                    Update
+                  </button>
+                </div>
+              </form>
+            </div>
           </Popup>
         )}
 

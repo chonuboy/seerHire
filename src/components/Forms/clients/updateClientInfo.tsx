@@ -88,7 +88,7 @@ export default function ClientInfoUpdateForm({
         {/* Header */}
         <div className="px-8 py-6 border-b border-gray-200 flex items-center gap-2">
           <svg
-            className="w-6 h-6 mr-2 text-blue-600"
+            className="w-6 h-6 mr-2 text-cyan-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

@@ -38,17 +38,16 @@ export default function JobInfoUpdateForm({
 
         // Add await here to properly handle the promise
         updateJob(id, updatedFields).then((data) => {
-          if(data.status === 200){
+          if (data.status === 200) {
             console.log(data);
             toast.success("Job updated successfully", {
               position: "top-right",
-            })
+            });
             autoClose();
-          }
-          else if(data.message){
+          } else if (data.message) {
             toast.error(data.message, {
               position: "top-right",
-            })
+            });
           }
         });
       } catch (error: any) {
@@ -61,261 +60,251 @@ export default function JobInfoUpdateForm({
   });
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border mt-14 border-gray-200">
-      <div className="p-6 space-y-6">
-        <h2 className="text-xl font-bold text-gray-800">
-          {currentJob.jobId ? "Update Job" : "Create New Job"}
-        </h2>
+    <div className="min-h-screen py-8 px-4 mt-8">
+      <div className="bg-white shadow-lg rounded-2xl mx-auto max-w-4xl">
+        {/* Header */}
+        <div className="px-8 py-6 border-b border-gray-200 flex items-center gap-2">
+          {currentJob.jobId ? (
+            <svg
+            className="w-6 h-6 mr-2 text-cyan-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
+          ):""}
+          
+          <h1 className="text-2xl font-bold text-gray-900">
+            {currentJob.jobId ? "Update Job" : "Create New Job"}
+          </h1>
+        </div>
 
-        <form onSubmit={formik.handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Job Title */}
-            <div>
-              <label
-                htmlFor="jobTitle"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Job Title
-              </label>
-              <input
-                type="text"
-                name="jobTitle"
-                id="jobTitle"
-                value={formik.values.jobTitle || ""}
-                onChange={formik.handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formik.errors.jobTitle ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
-              />
-              {formik.errors.jobTitle && (
-                <p className="mt-1 text-sm text-red-600">
-                  {formik.errors.jobTitle.toString()}
-                </p>
-              )}
-            </div>
+        <form className="p-8" onSubmit={formik.handleSubmit}>
+          {/* Basic Job Details */}
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-cyan-500 mb-8">
+              Job Details
+            </h2>
 
-            {/* Job Code */}
-            <div>
-              <label
-                htmlFor="jobCode"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Job Code
-              </label>
-              <input
-                type="text"
-                name="jobCode"
-                id="jobCode"
-                value={formik.values.jobCode || ""}
-                onChange={formik.handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formik.errors.jobCode ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
-              />
-              {formik.errors.jobCode && (
-                <p className="mt-1 text-sm text-red-600">
-                  {formik.errors.jobCode.toString()}
-                </p>
-              )}
-            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
+              {/* Job Title */}
+              <div>
+                <label
+                  htmlFor="jobTitle"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Job Title
+                </label>
+                <input
+                  type="text"
+                  name="jobTitle"
+                  id="jobTitle"
+                  value={formik.values.jobTitle || ""}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                />
+                {formik.errors.jobTitle && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.jobTitle.toString()}
+                  </div>
+                )}
+              </div>
 
-            {/* Experience */}
-            <div>
-              <label
-                htmlFor="experience"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Experience (Years)
-              </label>
-              <input
-                type="number"
-                name="experience"
-                id="experience"
-                min="0"
-                value={formik.values.experience || 0}
-                onChange={formik.handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formik.errors.experience
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
-              />
-              {formik.errors.experience && (
-                <p className="mt-1 text-sm text-red-600">
-                  {formik.errors.experience?.toString()}
-                </p>
-              )}
-            </div>
+              {/* Job Code */}
+              <div>
+                <label
+                  htmlFor="jobCode"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Job Code
+                </label>
+                <input
+                  type="text"
+                  name="jobCode"
+                  id="jobCode"
+                  value={formik.values.jobCode || ""}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                />
+                {formik.errors.jobCode && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.jobCode.toString()}
+                  </div>
+                )}
+              </div>
 
-            {/* Salary */}
-            <div>
-              <label
-                htmlFor="salaryInCtc"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Salary (LPA)
-              </label>
-              <input
-                type="number"
-                name="salaryInCtc"
-                id="salaryInCtc"
-                min="0"
-                value={formik.values.salaryInCtc || 0}
-                onChange={formik.handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formik.errors.salaryInCtc
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black`}
-              />
-              {formik.errors.salaryInCtc && (
-                <p className="mt-1 text-sm text-red-600">
-                  {formik.errors.salaryInCtc?.toString()}
-                </p>
-              )}
-            </div>
+              {/* Experience */}
+              <div>
+                <label
+                  htmlFor="experience"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Experience (Years)
+                </label>
+                <input
+                  type="number"
+                  name="experience"
+                  id="experience"
+                  min="0"
+                  value={formik.values.experience || 0}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                />
+                {formik.errors.experience && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.experience?.toString()}
+                  </div>
+                )}
+              </div>
 
-            {/* Job Status */}
-            <div>
-              <label
-                htmlFor="isJobActive"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Job Status
-              </label>
-              <select
-                name="isJobActive"
-                id="isJobActive"
-                value={formik.values.isJobActive || "OnHold"}
-                onChange={formik.handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
-              >
-                <option value="Active">Active</option>
-                <option value="OnHold">On Hold</option>
-                <option value="Closed">Closed</option>
-              </select>
-            </div>
+              {/* Salary */}
+              <div>
+                <label
+                  htmlFor="salaryInCtc"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Salary (LPA)
+                </label>
+                <input
+                  type="number"
+                  name="salaryInCtc"
+                  id="salaryInCtc"
+                  min="0"
+                  value={formik.values.salaryInCtc || 0}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                />
+                {formik.errors.salaryInCtc && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.salaryInCtc?.toString()}
+                  </div>
+                )}
+              </div>
 
-            {/* Job Post Type */}
-            <div>
-              <label
-                htmlFor="jobPostType"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Job Post Type
-              </label>
-              <select
-                name="jobPostType"
-                id="jobPostType"
-                value={formik.values.jobPostType || "Replacement"}
-                onChange={formik.handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
-              >
-                <option value="New">New</option>
-                <option value="Replacement">Replacement</option>
-                <option value="Temporary">Temporary</option>
-              </select>
-            </div>
+              {/* Job Status */}
+              <div>
+                <label
+                  htmlFor="isJobActive"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Job Status
+                </label>
+                <select
+                  name="isJobActive"
+                  id="isJobActive"
+                  value={formik.values.isJobActive || "OnHold"}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                >
+                  <option value="Active">Active</option>
+                  <option value="OnHold">On Hold</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
 
-            {/* Inserted By */}
-            <div>
-              <label
-                htmlFor="insertedBy"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Posted By
-              </label>
-              <input
-                type="text"
-                name="insertedBy"
-                id="insertedBy"
-                value={formik.values.insertedBy || ""}
-                onChange={formik.handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-black"
-              />
+              {/* Job Post Type */}
+              <div>
+                <label
+                  htmlFor="jobPostType"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Job Post Type
+                </label>
+                <select
+                  name="jobPostType"
+                  id="jobPostType"
+                  value={formik.values.jobPostType || "Replacement"}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                >
+                  <option value="New">New</option>
+                  <option value="Replacement">Replacement</option>
+                  <option value="Temporary">Temporary</option>
+                </select>
+              </div>
+
+              {/* Inserted By */}
+              <div>
+                <label
+                  htmlFor="insertedBy"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Posted By
+                </label>
+                <input
+                  type="text"
+                  name="insertedBy"
+                  id="insertedBy"
+                  value={formik.values.insertedBy || ""}
+                  onChange={formik.handleChange}
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                />
+                {formik.errors.insertedBy && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.insertedBy?.toString()}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          {formik.errors.insertedBy && (
-              <p className="mt-2 text-sm text-red-600">
-                {formik.errors.insertedBy?.toString()}
-              </p>
-            )}
 
           {/* Job Description */}
-          <div className="space-y-2 mt-4">
-            <label htmlFor="jobDescription" className="font-semibold text-gray-600">
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold text-cyan-500 mb-8">
               Job Description
-            </label>
-            <JoditEditor
-            name="jobDescription"
-            id="jobDescription"
-              value={formik.values.jobDescription || ""}
-              config={{
-                height: 300,
-                placeholder: "Type job description here...",
-                readonly: false,
-                showCharsCounter: false,
-                showWordsCounter: false,
-                showXPathInStatusbar: false,
-                buttons:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-                buttonsMD:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-                buttonsSM:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-                buttonsXS:
-                  "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
-              }}
-              onBlur={(content) => {
-                setJobDescription(content);
-              }}
-              onChange={(content) => {
-                formik.values.jobDescription = content;
-              }}
-            />
+            </h2>
+            <div className="border border-gray-300 rounded-lg p-2">
+              <JoditEditor
+                name="jobDescription"
+                id="jobDescription"
+                value={formik.values.jobDescription || ""}
+                config={{
+                  height: 300,
+                  placeholder: "Type job description here...",
+                  readonly: false,
+                  showCharsCounter: false,
+                  showWordsCounter: false,
+                  showXPathInStatusbar: false,
+                  buttons:
+                    "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                  buttonsMD:
+                    "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                  buttonsSM:
+                    "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                  buttonsXS:
+                    "bold,italic,underline,strikethrough,ul,ol,fontsize,superscript,subscript,spellcheck,speechRecognize,paste,hr,indent,preview",
+                }}
+                onBlur={(content) => {
+                  setJobDescription(content);
+                }}
+                onChange={(content) => {
+                  formik.values.jobDescription = content;
+                }}
+              />
+            </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <button
-              type="submit"
-              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center"
-            >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              Update
-            </button>
+          {/* Form Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-end">
             <button
               type="button"
               onClick={autoClose}
-              className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
+              className="flex-1 sm:flex-none sm:px-8 py-2 border-2 border-cyan-500 text-cyan-500 rounded-lg hover:bg-cyan-50 transition-colors duration-200 font-medium"
             >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
               Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 sm:flex-none sm:px-8 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors duration-200 font-medium"
+            >
+              {currentJob.jobId ? "Update" : "Create"}
             </button>
           </div>
         </form>
