@@ -227,7 +227,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.relevantExperience}
+              value={formik.values.relevantExperience ?? formik.values.relevantExperience ?? ""}
             />
             {formik.touched.relevantExperience &&
             formik.errors.relevantExperience ? (
