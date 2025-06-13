@@ -523,7 +523,7 @@ export default function Candidates() {
                 name="secondaryNumber"
                 placeholder="Enter 10 digit mobile number"
                 className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
-                value={formik.values.secondaryNumber}
+                value={formik.values.secondaryNumber ?? ""}
                 onChange={formik.handleChange}
               />
               {formik.errors.secondaryNumber ? (
@@ -704,7 +704,7 @@ export default function Candidates() {
                 name="pinCode"
                 placeholder="Enter Pincode"
                 className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
-                value={formik.values.pinCode}
+                value={formik.values.pinCode ?? ""}
                 onChange={formik.handleChange}
               />
               {formik.errors.pinCode ? (
@@ -855,7 +855,7 @@ export default function Candidates() {
                 name="totalExperience"
                 placeholder="Enter Minimum Work Experience"
                 className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
-                value={formik.values.totalExperience}
+                value={formik.values.totalExperience ?? ""}
                 onChange={formik.handleChange}
               />
               {formik.errors.totalExperience ? (
@@ -876,7 +876,7 @@ export default function Candidates() {
                 name="currentSalary"
                 placeholder="Enter Minimum to Maximum Salary"
                 className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
-                value={formik.values.currentSalary}
+                value={formik.values.currentSalary ?? ""}
                 onChange={formik.handleChange}
               />
               {formik.errors.currentSalary ? (
@@ -1006,7 +1006,7 @@ export default function Candidates() {
                 name="noticePeriod"
                 placeholder="Enter Minimum days"
                 className="py-2 px-1 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white"
-                value={formik.values.noticePeriod}
+                value={formik.values.noticePeriod ?? ""}
                 onChange={formik.handleChange}
               />
               {formik.errors.noticePeriod ? (
