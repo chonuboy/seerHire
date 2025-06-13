@@ -36,7 +36,7 @@ jobs:
         rm: true
 
     - name: Install dependencies and manage PM2 process
-      uses: appleboy/ssh-action@v1.0.7
+      uses: appleboy/ssh-action@v1
       with:
          host: ${{ secrets.GCP_VM_IP }}
          username: ${{ secrets.GCP_VM_USERNAME }}
