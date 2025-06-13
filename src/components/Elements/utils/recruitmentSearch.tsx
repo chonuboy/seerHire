@@ -254,7 +254,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.communicationSkillsRating}
+              value={formik.values.communicationSkillsRating ?? formik.values.communicationSkillsRating ?? ""}
             />
             {formik.touched.communicationSkillsRating &&
             formik.errors.communicationSkillsRating ? (
@@ -281,7 +281,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.technicalSkillsRating}
+              value={formik.values.technicalSkillsRating ?? formik.values.technicalSkillsRating ?? ""}
             />
             {formik.touched.technicalSkillsRating &&
             formik.errors.technicalSkillsRating ? (
@@ -304,7 +304,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.noticePeriod}
+              value={formik.values.noticePeriod ?? formik.values.noticePeriod ?? ""}
             />
             {formik.touched.noticePeriod && formik.errors.noticePeriod ? (
               <div className="text-red-500 text-sm">
@@ -326,7 +326,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.currentCTC}
+              value={formik.values.currentCTC ?? formik.values.currentCTC ?? ""}
             />
             {formik.touched.currentCTC && formik.errors.currentCTC ? (
               <div className="text-red-500 text-sm">
@@ -348,7 +348,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.expectedCTC}
+              value={formik.values.expectedCTC ?? formik.values.expectedCTC ?? ""}
             />
             {formik.touched.expectedCTC && formik.errors.expectedCTC ? (
               <div className="text-red-500 text-sm">
