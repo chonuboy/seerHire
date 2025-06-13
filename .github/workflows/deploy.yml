@@ -30,9 +30,9 @@ jobs:
     - name: Deploy to GCP VM
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: ${{ 34.0.4.159 }}
-        username: ${{ seertksys }}
-        key: ${{ ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCCvqp0DNtQpYVLHW/rVMdKKNbLN3O0yriPG6W2dLouOWSbsKrat961K6Bja+gf/HMCs9brV8F+g3whAT+Wj9a0= google-ssh {"userName":"seertksys@gmail.com","expireOn":"2025-06-13T22:01:48+0000"} }}
+        host: ${{ "34.0.4.159" }}
+        username: ${{ "seertksys" }}
+        key: ${{ "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCCvqp0DNtQpYVLHW/rVMdKKNbLN3O0yriPG6W2dLouOWSbsKrat961K6Bja+gf/HMCs9brV8F+g3whAT+Wj9a0= google-ssh {"userName":"seertksys@gmail.com","expireOn":"2025-06-13T22:01:48+0000"}" }}
         source: ".next/*"
         target: "/var/www/SeerHive"
         rm: true
