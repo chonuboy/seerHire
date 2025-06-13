@@ -201,7 +201,7 @@ export default function RecruitmentDataSearch({autoClose}:{autoClose:()=>void}) 
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.totalExperience}
+              value={formik.values?.totalExperience ?? formik.values.totalExperience}
             />
             {formik.touched.totalExperience && formik.errors.totalExperience ? (
               <div className="text-red-500 text-sm">
