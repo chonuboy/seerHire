@@ -18,6 +18,37 @@ jobs:
     
     - name: Install dependencies
       run: npm install
+
+    - name: Test the application
+      run: npm run test
     
     - name: Build application
       run: npm run build
+
+    - name: Deploy to GCP VM
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.GCP_VM_IP }}
+        username: ${{ secrets.GCP_VM_USERNAME }}
+        key: ${{ secrets.GCP_VM_SSH_KEY }}
+        source: "build/"
+        target: "/var/www/SeerHive"
+        rm: true
+
+    - name: Install dependencies and manage PM2 process
+      uses: appleboy/ssh-action@v1.0.7
+      with:
+         host: ${{ secrets.GCP_VM_IP }}
+         username: ${{ secrets.GCP_VM_USERNAME }}
+         key: ${{ secrets.GCP_VM_SSH_KEY }}
+         script: |
+           cd /var/www/SeerHive
+           npm install --production
+           if pm2 list | grep -q seerHive; then
+           echo "Restarting existing seerHive process..."
+           pm2 restart seerHive --update-env
+           else
+           echo "Starting new seerHive process..."
+           pm2 start npm --name "seerHive" -- start
+           fi
+           pm2 save
