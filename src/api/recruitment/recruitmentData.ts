@@ -81,7 +81,7 @@ export const uploadRecruitmentData = async (file: File) => {
 };
 
 // POST /api/recruitment-data/search
-export const searchRecruitmentData = async (query: any, page: number) => {
+export const searchRecruitmentData = async (query: any, page?: number) => {
   try {
     const response = await axios.post(
       `${API_URL}api/recruitment-data/search?page=${page}&size=10`,

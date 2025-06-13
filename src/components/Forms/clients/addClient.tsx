@@ -1,29 +1,21 @@
-import { useFormik } from "formik";
-import { clientFormSchema } from "@/lib/models/client";
-import { updateClient } from "@/api/master/clients";
-import { toast } from "react-toastify";
 import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
 import { Location } from "@/lib/definitions";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { countryCodes } from "@/api/countryCodes";
 
-export default function ClientInfoUpdateForm({
-  currentClient,
-  id,
-  autoClose,
+const AddClient = ({
+  formik,
   locations,
+  autoClose,
 }: {
-  currentClient: any;
-  id: number;
+  formik: any;
+  locations: any;
   autoClose: () => void;
-  locations?: any;
-}) {
-  const getUpdatedFields = (initialValues: any, values: any) => {
-    return Object.keys(values).reduce((acc: Record<string, any>, key) => {
-      if (values[key] !== initialValues[key]) {
-        acc[key] = values[key];
-      }
-      return acc;
-    }, {});
-  };
+}) => {
+  const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
+  const [showGSTField, setShowGSTField] = useState(countryCodes[0].hasGST);
+  const [displayedFinanceNumber, setDisplayedFinanceNumber] = useState("");
 
   const onChangeHeadLocation = (location: Location) => {
     formik.setFieldValue("clientHeadQuarterCountry", {
@@ -54,72 +46,70 @@ export default function ClientInfoUpdateForm({
     formik.setFieldValue("clientHeadQuarterState", location);
   };
 
-  const formik = useFormik({
-    initialValues: currentClient,
-    validationSchema: clientFormSchema,
-    onSubmit: (values) => {
-      const updatedFields = getUpdatedFields(currentClient, values);
-      console.log(updatedFields);
-      try {
-        updateClient(id, updatedFields).then((data) => {
-          console.log(data);
-          if (data.status === 200) {
-            toast.success("Client updated successfully", {
-              position: "top-right",
-            });
-            autoClose();
-          } else {
-            toast.error(data.message, {
-              position: "top-right",
-            });
-          }
-        });
-      } catch (error: any) {
-        console.log(error);
-      }
-    },
-  });
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const country =
+      countryCodes.find((c) => c.code === e.target.value) || countryCodes[0];
+    setSelectedCountry(country);
+    setShowGSTField(country.hasGST);
 
+    // If country doesn't have GST, clear the GST field
+    if (!country.hasGST) {
+      formik.setFieldValue("gstnumber", "");
+    }
+  };
   return (
-    <div className="min-h-screen py-8 px-4 mt-8">
+    <div className="min-h-screen py-8 px-4 mt-4">
       <div className="bg-white shadow-lg rounded-2xl mx-auto max-w-4xl">
         {/* Header */}
-        <div className="px-8 py-6 border-b border-gray-200 flex items-center gap-2">
-          <svg
-            className="w-6 h-6 mr-2 text-cyan-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
-          </svg>
-          <h1 className="text-2xl font-bold text-gray-900">Update Client</h1>
+        <div className="px-8 py-6 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-900">Add New Client</h1>
         </div>
 
         <form className="p-8" onSubmit={formik.handleSubmit}>
           {/* Basic Details Section */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-cyan-500 mb-8">
-              Location Details
+              Basic Details
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
+              {/* Client Name */}
+              <div className="lg:col-span-2">
+                <label
+                  htmlFor="clientName"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Client Name
+                  {/* <span className="text-red-500">*</span> */}
+                </label>
+                <input
+                  id="clientName"
+                  name="clientName"
+                  type="text"
+                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                  placeholder="Enter client name"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.clientName}
+                />
+                {formik.touched.clientName && formik.errors.clientName ? (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.clientName}
+                  </div>
+                ) : null}
+              </div>
+
               {/* Country (Headquarter) */}
               <div>
                 <label
                   htmlFor="clientHeadQuarterCountry"
                   className="block text-sm font-semibold text-gray-700 mb-2"
                 >
-                  Country (Headquarter)
+                  Country (Headquarter) <span className="text-red-500">*</span>
                 </label>
                 <LocationAutocomplete
                   name="clientHeadQuarterCountry"
+                  id="clientHeadQuarterCountry"
                   placeholder="Select country"
                   styleMod="w-full px-0 py-1 border-0 border-b border-gray-300 focus:ring-0 text-sm placeholder-gray-400 rounded-none"
                   value={
@@ -137,7 +127,7 @@ export default function ClientInfoUpdateForm({
                   htmlFor="clientHeadQuarterState"
                   className="block text-sm font-semibold text-gray-700 mb-2"
                 >
-                  State (Headquarter)
+                  State (Headquarter) <span className="text-red-500">*</span>
                 </label>
                 <LocationAutocomplete
                   name="clientHeadQuarterState"
@@ -148,6 +138,11 @@ export default function ClientInfoUpdateForm({
                   options={locations}
                   onAdd={addNewStateLocation}
                 />
+                {formik.errors.clientHeadQuarterState?.locationDetails ? (
+                  <div className="text-red-500 text-sm mt-1">
+                    {formik.errors.clientHeadQuarterState.locationDetails}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -160,12 +155,12 @@ export default function ClientInfoUpdateForm({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Finance Person Name */}
-              <div>
+              <div className="lg:col-span-2">
                 <label
                   htmlFor="financePocName"
                   className="block text-sm font-semibold text-gray-700 mb-2"
                 >
-                  Finance Person Name
+                  Finance Person Name{" "}
                 </label>
                 <input
                   id="financePocName"
@@ -180,7 +175,7 @@ export default function ClientInfoUpdateForm({
                 {formik.touched.financePocName &&
                 formik.errors.financePocName ? (
                   <div className="text-red-500 text-sm mt-1">
-                    {formik.errors.financePocName.toString()}
+                    {formik.errors.financePocName}
                   </div>
                 ) : null}
               </div>
@@ -205,7 +200,7 @@ export default function ClientInfoUpdateForm({
                 />
                 {formik.touched.financeEmail && formik.errors.financeEmail ? (
                   <div className="text-red-500 text-sm mt-1">
-                    {formik.errors.financeEmail.toString()}
+                    {formik.errors.financeEmail}
                   </div>
                 ) : null}
               </div>
@@ -218,19 +213,43 @@ export default function ClientInfoUpdateForm({
                 >
                   Contact Number
                 </label>
-                <input
-                  id="financeNumber"
-                  name="financeNumber"
-                  type="text"
-                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
-                  placeholder="9876543340"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.financeNumber}
-                />
+                <div className="flex">
+                  <select
+                    id="country"
+                    name="country"
+                    className="w-16 px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none text-gray-700"
+                    value={selectedCountry.code}
+                    onChange={handleCountryChange}
+                  >
+                    {countryCodes.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.dial_code}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    id="financeNumber"
+                    name="financeNumber"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="9876543340"
+                    value={displayedFinanceNumber
+                      .replace(selectedCountry.dial_code, "")
+                      .trim()}
+                    onChange={(e) => {
+                      const mobilenumberWithoutCode = e.target.value;
+                      setDisplayedFinanceNumber(`${mobilenumberWithoutCode}`);
+                      formik.setFieldValue(
+                        "financeNumber",
+                        `${selectedCountry.dial_code}${mobilenumberWithoutCode}`
+                      );
+                    }}
+                    onBlur={formik.handleBlur}
+                  />
+                </div>
                 {formik.touched.financeNumber && formik.errors.financeNumber ? (
                   <div className="text-red-500 text-sm mt-1">
-                    {formik.errors.financeNumber.toString()}
+                    {formik.errors.financeNumber}
                   </div>
                 ) : null}
               </div>
@@ -264,7 +283,7 @@ export default function ClientInfoUpdateForm({
                 />
                 {formik.touched.cinnumber && formik.errors.cinnumber ? (
                   <div className="text-red-500 text-sm mt-1">
-                    {formik.errors.cinnumber.toString()}
+                    {formik.errors.cinnumber}
                   </div>
                 ) : null}
               </div>
@@ -289,35 +308,37 @@ export default function ClientInfoUpdateForm({
                 />
                 {formik.touched.pannumber && formik.errors.pannumber ? (
                   <div className="text-red-500 text-sm mt-1">
-                    {formik.errors.pannumber.toString()}
+                    {formik.errors.pannumber}
                   </div>
                 ) : null}
               </div>
 
               {/* GST Number */}
-              <div>
-                <label
-                  htmlFor="gstnumber"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  GST Number
-                </label>
-                <input
-                  id="gstnumber"
-                  name="gstnumber"
-                  type="text"
-                  className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
-                  placeholder="1234-XXX-XXX-XX56"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.gstnumber}
-                />
-                {formik.touched.gstnumber && formik.errors.gstnumber ? (
-                  <div className="text-red-500 text-sm mt-1">
-                    {formik.errors.gstnumber.toString()}
-                  </div>
-                ) : null}
-              </div>
+              {showGSTField && (
+                <div>
+                  <label
+                    htmlFor="gstnumber"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    GST Number
+                  </label>
+                  <input
+                    id="gstnumber"
+                    name="gstnumber"
+                    type="text"
+                    className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
+                    placeholder="1234-XXX-XXX-XX56"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.gstnumber}
+                  />
+                  {formik.touched.gstnumber && formik.errors.gstnumber ? (
+                    <div className="text-red-500 text-sm mt-1">
+                      {formik.errors.gstnumber}
+                    </div>
+                  ) : null}
+                </div>
+              )}
             </div>
           </div>
 
@@ -325,7 +346,10 @@ export default function ClientInfoUpdateForm({
           <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-end">
             <button
               type="button"
-              onClick={autoClose}
+              onClick={() => {
+                autoClose();
+                formik.resetForm();
+              }}
               className="flex-1 sm:flex-none sm:px-8 py-2 border-2 border-cyan-500 text-cyan-500 rounded-lg hover:bg-cyan-50 transition-colors duration-200 font-medium"
             >
               Cancel
@@ -342,3 +366,5 @@ export default function ClientInfoUpdateForm({
     </div>
   );
 }
+
+export default AddClient;

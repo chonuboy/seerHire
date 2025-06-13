@@ -14,6 +14,7 @@ import { fetchAllLocations, createLocation } from "@/api/master/masterLocation";
 import { countryCodes } from "@/api/countryCodes";
 import { Location } from "@/lib/definitions";
 import LocationAutocomplete from "@/components/Elements/utils/location-autocomplete";
+import AddClient from "@/components/Forms/clients/addClient";
 
 export default function Clients() {
   const [allClients, setClients] = useState();
@@ -597,6 +598,7 @@ export default function Clients() {
                 </form>
               </div>
             </div>
+            <AddClient autoClose={()=>setIsClientAdded(false)} formik={formik} locations={locations} ></AddClient>
           </Popup>
         )}
       </div>

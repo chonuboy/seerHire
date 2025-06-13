@@ -156,11 +156,13 @@ const AddClientLocation = ({
                 <div>
                   <label
                     htmlFor="state"
+                    aria-labelledby="state"
                     className="block text-sm font-semibold text-gray-700 mb-2"
                   >
                     State <span className="text-red-500">*</span>
                   </label>
                   <LocationAutocomplete
+                    id="state"
                     name="state"
                     placeholder="Select State"
                     styleMod="w-full px-0 py-1 border-0 border-b border-gray-300 focus:ring-0 text-sm placeholder-gray-400 rounded-none"
@@ -187,6 +189,7 @@ const AddClientLocation = ({
                   </label>
                   <LocationAutocomplete
                     name="city"
+                    id="city"
                     placeholder="Select City"
                     styleMod="w-full px-0 py-1 border-0 border-b border-gray-300 focus:ring-0 text-sm placeholder-gray-400 rounded-none"
                     value={formik.values.cityId.locationDetails ?? ""}
@@ -359,7 +362,7 @@ const AddClientLocation = ({
                 type="submit"
                 className="flex-1 sm:flex-none sm:px-8 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors duration-200 font-medium"
               >
-                Add
+                Submit
               </button>
             </div>
           </form>

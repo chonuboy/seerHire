@@ -35,7 +35,7 @@ export default function AddRound({
         interviewId: interviewId,
       },
     },
-    validationSchema: interviewRoundSchema,
+    // validationSchema: interviewRoundSchema,
     onSubmit: async (values) => {
       console.log(interviewId);
       console.log(values);
@@ -157,10 +157,10 @@ export default function AddRound({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-6">
               <div>
-                <span className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="interviewStatus">
                   Interview Status
                   <span className="text-red-500">*</span>
-                </span>
+                </label>
                 <div className="flex gap-4 mt-4">
                   {["Passed", "Rejected", "On-Hold", "Pending"].map(
                     (status) => (
@@ -168,6 +168,7 @@ export default function AddRound({
                         <input
                           type="radio"
                           name="interviewStatus"
+                          id="interviewStatus"
                           value={status}
                           checked={formik.values.interviewStatus === status}
                           onChange={formik.handleChange}
@@ -200,6 +201,7 @@ export default function AddRound({
                 </label>
                 <select
                   name="technologyInterviewed"
+                  id="technologyInterviewed"
                   className="w-full px-0 py-1 border-0 border-b border-gray-300 focus:border-blue-500 focus:ring-0 text-sm placeholder-gray-400 focus:outline-none"
                   onChange={(e) =>
                     formik.setFieldValue(

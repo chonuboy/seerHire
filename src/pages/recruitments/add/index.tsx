@@ -27,7 +27,7 @@ export default function CandidateForm() {
     primarySkill: "",
     secondarySkill: "",
     contactNumber: "",
-    emailID: "",
+    emailId: "",
     totalExperience: 0,
     relevantExperience: 0,
     currentCTC: 0,
@@ -526,14 +526,14 @@ export default function CandidateForm() {
                       <input
                         type="email"
                         name="emailID"
-                        value={formik.values.emailID}
+                        value={formik.values.emailId}
                         onChange={formik.handleChange}
                         placeholder="candidate@example.com"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-base placeholder-gray-400"
                       />
-                      {formik.errors.emailID && formik.touched.emailID && (
+                      {formik.errors.emailId && formik.touched.emailId && (
                         <div className="text-red-500 text-sm mt-1">
-                          {formik.errors.emailID}
+                          {formik.errors.emailId}
                         </div>
                       )}
                     </div>

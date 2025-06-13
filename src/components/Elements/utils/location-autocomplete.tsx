@@ -10,9 +10,10 @@ interface LocationAutocompleteProps {
 	options: Location[];
 	onChange: any;
 	onAdd: any;
-	styleMod?:string
+	styleMod?:string,
+	id?:string
 }
-function LocationAutocomplete({ name, placeholder, value, options, onChange, onAdd,styleMod }: LocationAutocompleteProps) {
+function LocationAutocomplete({ name, placeholder, value, options, onChange, onAdd,styleMod,id }: LocationAutocompleteProps) {
 
 	const [inputValue, setInputValue] = useState<string>(value);
 	const [suggestions, setSuggestions] = useState<Location[]>([]);
@@ -72,6 +73,7 @@ function LocationAutocomplete({ name, placeholder, value, options, onChange, onA
 				className={`py-2 px-2 w-full border rounded-lg focus:outline-[var(--theme-background)] dark:bg-black dark:text-white ${styleMod}`}
 				type="text"
 				name={name}
+				id={id}
 				placeholder={placeholder}
 				value={inputValue}
 				onChange={handleInputChange}
