@@ -7,58 +7,46 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
-    
+
     - name: Install dependencies
       run: npm install
 
     - name: Test the application
       run: npm run test
-    
+
     - name: Build application
       run: |
         npm run build
         ls -la .next/
 
-    # Option 1: Authenticate with Service Account (recommended for gcloud commands)
-    - name: Set up Google Cloud CLI
+    # Authenticate with GCP using Service Account JSON
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up gcloud CLI
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: turing-agent-462018-i5
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
 
-    # Option 2: Direct SSH deployment (using existing SSH key)
-    - name: Deploy via SCP
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.GCP_VM_IP }}
-        username: ${{ secrets.GCP_VM_USERNAME }}
-        key: ${{ secrets.GCP_VM_SSH_KEY }}
-        source: ".next/*"
-        target: "/var/www/SeerHive"
-        rm: true
-        overwrite: true
+    - name: Copy files to VM using gcloud
+      run: |
+        gcloud compute scp --recurse .next/* ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_NAME }}:/var/www/SeerHive \
+          --zone=${{ secrets.GCP_VM_ZONE }} \
+          --quiet
 
-    - name: Restart application via SSH
-      uses: appleboy/ssh-action@v1
-      with:
-        host: ${{ secrets.GCP_VM_IP }}
-        username: ${{ secrets.GCP_VM_USERNAME }}
-        key: ${{ secrets.GCP_VM_SSH_KEY }}
-        script: |
-          cd /var/www/SeerHive
-          npm install
-          if pm2 list | grep -q seerHive; then
-            pm2 restart seerHive --update-env
-          else
-            pm2 start npm --name "seerHive" -- start
-          fi
-          pm2 save
+    - name: SSH and deploy using gcloud
+      run: |
+        gcloud compute ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_NAME }} \
+          --zone=${{ secrets.GCP_VM_ZONE }} \
+          --command="cd /var/www/SeerHive && npm install && \
+            (pm2 list | grep -q seerHive && pm2 restart seerHive --update-env || pm2 start npm --name 'seerHive' -- start) && pm2 save"
