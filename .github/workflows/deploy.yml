@@ -36,18 +36,6 @@ jobs:
 
     - name: Deploy to GCP VM
       run: |
-        ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} << 'EOF'
-          set -e
-          cd ${{ secrets.GCP_VM_PATH }}
-          pm2 stop ${{ secrets.GCP_VM_APP_NAME }} || true
-          rm -rf .next node_modules
-        EOF
-
-        scp -r .next public package.json ecosystem.config.js \
-          ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:${{ secrets.GCP_VM_PATH }}
-
-        ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} << 'EOF'
-          cd ${{ secrets.GCP_VM_PATH }}
-          npm install
-          pm2 start ecosystem.config.js --name "${{ secrets.GCP_VM_APP_NAME }}"
-        EOF
+        ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}
+        pm2 list
+        pm2 stop ${{ secrets.GCP_VM_APP_NAME }}
