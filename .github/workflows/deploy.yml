@@ -38,14 +38,6 @@ jobs:
       with:
         project_id: turing-agent-462018-i5
 
-    - name: Ensure target directory exists on VM
-      run: |
-        gcloud compute ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_NAME }} \
-        --zone=${{ secrets.GCP_VM_ZONE }} \
-        --command="sudo mkdir -p /var/www/SeerHive && sudo chown -R $USER:$USER /var/www/SeerHive"
-      env:
-        CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ steps.auth.outputs.credentials_file_path }}
-
 
     - name: Copy files to GCP VM using gcloud
       run: |
