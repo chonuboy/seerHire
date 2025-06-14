@@ -27,31 +27,32 @@ jobs:
         npm run build
         ls -la .next/
 
-    - name: Deploy to GCP VM
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.GCP_VM_IP }}
-        username: ${{ secrets.GCP_VM_USERNAME }}
-        key: ${{ secrets.GCP_VM_SSH_KEY }}
-        source: ".next/*"
-        target: "/var/www/SeerHive"
-        rm: true
-        overwrite: true
+    - name: Authenticate with Google Cloud
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      run: |
+        echo "$GCP_SA_KEY" > key.json
+        gcloud auth activate-service-account --key-file=key.json
+        gcloud config set project turing-agent-462018-i5
+        rm -f key.json
 
-    - name: Install dependencies and manage PM2 process
-      uses: appleboy/ssh-action@v1
-      with:
-         host: ${{ secrets.GCP_VM_IP }}
-         username: ${{ secrets.GCP_VM_USERNAME }}
-         key: ${{ secrets.GCP_VM_SSH_KEY }}
-         script: |
-           cd /var/www/SeerHive
-           npm install
-           if pm2 list | grep -q seerHive; then
-           echo "Restarting existing seerHive process..."
-           pm2 restart seerHive --update-env
-           else
-           echo "Starting new seerHive process..."
-           pm2 start npm --name "seerHive" -- start
-           fi
-           pm2 save
+    - name: Install gcloud CLI (if needed)
+      run: |
+        if ! command -v gcloud &> /dev/null; then
+          echo "Installing gcloud CLI..."
+          sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates gnupg
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+          sudo apt-get update && sudo apt-get install -y google-cloud-sdk
+        fi
+
+    - name: Deploy files to GCP VM
+      run: |
+        gcloud compute scp --recurse .next/* ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/var/www/SeerHive \
+          --zone=asia-south2-a  # Replace with your VM's zone
+
+    - name: Restart application on VM
+      run: |
+        gcloud compute ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} \
+          --zone=asia-south2-a \  # Replace with your VM's zone
+          --command="cd /var/www/SeerHive && npm install && if pm2 list | grep -q seerHive; then pm2 restart seerHive --update-env; else pm2 start npm --name \"seerHive\" -- start; fi && pm2 save"
