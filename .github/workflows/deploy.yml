@@ -40,9 +40,10 @@ jobs:
 
     - name: Copy files to VM using gcloud
       run: |
-        gcloud compute scp --recurse .next ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_NAME }}:/var/www/SeerHive \
-          --zone=${{ secrets.GCP_VM_ZONE }} \
-          --quiet
+        gcloud compute scp --recurse .next "${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_NAME }}:/var/www/SeerHive" \
+        --zone=${{ secrets.GCP_VM_ZONE }} \
+        --quiet
+
 
 
     - name: SSH and deploy using gcloud
