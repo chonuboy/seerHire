@@ -38,11 +38,14 @@ jobs:
       with:
         project_id: turing-agent-462018-i5
 
-    - name: Copy files to VM using gcloud
+    - name: Copy files to GCP VM using gcloud
       run: |
-        gcloud compute scp --recurse .next "${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_NAME }}:/var/www/SeerHive" \
+        gcloud compute scp --recurse .next "${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_INSTANCE_NAME }}:/var/www/SeerHive" \
         --zone=${{ secrets.GCP_VM_ZONE }} \
         --quiet
+      env:
+        CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ steps.auth.outputs.credentials_file_path }}
+
 
 
 
