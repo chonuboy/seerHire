@@ -34,3 +34,19 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
 
+      - name: Git clone and start app in VM
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} << 'EOF'
+            cd ~
+            rm -rf seerHive-Devops
+            
+            git clone -b devops https://github.com/${{ github.repository }}.git seerHive-Devops
+
+            cd seerHive-Devops
+
+            npm install
+
+            pm2 delete "next-app-seerHive" || true
+
+            pm2 start npm --name "next-app-seerHive" -- run dev
+          EOF
