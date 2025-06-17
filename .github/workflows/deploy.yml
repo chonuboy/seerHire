@@ -27,15 +27,19 @@ jobs:
     - name: Build the project
       run: npm run build
 
-    - name: Add SSH Key
+    - name: Setup SSH key for GCP VM
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.GCP_VM_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GCP_VM_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
 
     - name: Deploy to GCP VM
       run: |
-        ssh ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}
-        pm2 list
-        pm2 stop ${{ secrets.GCP_VM_APP_NAME }}
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} << 'EOF'
+            cd /var/www/SeerHive
+            git pull origin devops
+            npm install
+            npm run build
+            pm2 restart ${{ secrets.GCP_VM_APP_NAME }}
+          EOF
