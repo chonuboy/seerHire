@@ -361,7 +361,7 @@ export default function SearchRecruitmentData() {
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.totalExperience}
+                            value={formik.values.totalExperience ?? ""}
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span className="text-gray-400 text-xs">years</span>
@@ -394,7 +394,7 @@ export default function SearchRecruitmentData() {
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.relevantExperience}
+                            value={formik.values.relevantExperience ?? ""}
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span className="text-gray-400 text-xs">years</span>
@@ -427,7 +427,7 @@ export default function SearchRecruitmentData() {
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.communicationSkillsRating}
+                            value={formik.values.communicationSkillsRating ?? ""}
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span className="text-gray-400 text-xs">/5</span>
@@ -460,7 +460,7 @@ export default function SearchRecruitmentData() {
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.technicalSkillsRating}
+                            value={formik.values.technicalSkillsRating ?? ""}
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span className="text-gray-400 text-xs">/5</span>
@@ -500,7 +500,7 @@ export default function SearchRecruitmentData() {
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.noticePeriod}
+                            value={formik.values.noticePeriod ?? ""}
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <span className="text-gray-400 text-xs">days</span>
@@ -535,7 +535,7 @@ export default function SearchRecruitmentData() {
                             className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.currentCTC}
+                            value={formik.values.currentCTC ?? ""}
                           />
                         </div>
                         {formik.touched.currentCTC &&
@@ -567,7 +567,7 @@ export default function SearchRecruitmentData() {
                             className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base placeholder-gray-400 bg-gray-50 focus:bg-white dark:bg-black dark:text-white dark:focus:bg-black"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.expectedCTC}
+                            value={formik.values.expectedCTC ?? ""}
                           />
                         </div>
                         {formik.touched.expectedCTC &&

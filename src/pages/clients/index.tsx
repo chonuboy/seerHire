@@ -309,7 +309,7 @@ export default function Clients() {
                           placeholder="Enter client name"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.clientName}
+                          value={formik.values.clientName ?? ""}
                         />
                         {formik.touched.clientName &&
                         formik.errors.clientName ? (
@@ -399,7 +399,7 @@ export default function Clients() {
                           placeholder="Enter full name"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.financePocName}
+                          value={formik.values.financePocName ?? ""}
                         />
                         {formik.touched.financePocName &&
                         formik.errors.financePocName ? (
@@ -425,7 +425,7 @@ export default function Clients() {
                           placeholder="abc@acme.com"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.financeEmail}
+                          value={formik.values.financeEmail ?? ""}
                         />
                         {formik.touched.financeEmail &&
                         formik.errors.financeEmail ? (
@@ -512,7 +512,7 @@ export default function Clients() {
                           placeholder="56P-XXX-XXXX"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.cinnumber}
+                          value={formik.values.cinnumber ?? ""}
                         />
                         {formik.touched.cinnumber && formik.errors.cinnumber ? (
                           <div className="text-red-500 text-sm mt-1">
@@ -537,7 +537,7 @@ export default function Clients() {
                           placeholder="AQYXXX9O"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.pannumber}
+                          value={formik.values.pannumber ?? ""}
                         />
                         {formik.touched.pannumber && formik.errors.pannumber ? (
                           <div className="text-red-500 text-sm mt-1">
@@ -563,7 +563,7 @@ export default function Clients() {
                             placeholder="1234-XXX-XXX-XX56"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.gstnumber}
+                            value={formik.values.gstnumber ?? ""}
                           />
                           {formik.touched.gstnumber &&
                           formik.errors.gstnumber ? (
