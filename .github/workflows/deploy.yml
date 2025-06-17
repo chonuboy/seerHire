@@ -33,3 +33,9 @@ jobs:
           echo "${{ secrets.GCP_VM_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
+
+      - name: Copy build to VM
+        run: |
+          scp -r .next ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/var/www/SeerHive/
+          scp -r public ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/var/www/SeerHive/
+          scp package.json ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/var/www/SeerHive/
