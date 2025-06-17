@@ -36,9 +36,10 @@ jobs:
 
       - name: Copy build files to GCP VM
         run: |
-          scp -r .next ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:~/seerHive-Devops/
-          scp -r public ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:~/seerHive-Devops/
-          scp package.json ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:~/seerHive-Devops/
+          scp -r .next ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/seertksys/seerHive-Devops/
+          scp -r public ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/seertksys/seerHive-Devops/
+          scp package.json ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/seertksys/seerHive-Devops/
+
 
       - name: SSH into VM and restart app
         run: |
