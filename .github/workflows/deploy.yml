@@ -34,18 +34,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
 
-      - name: Copy build files to GCP VM
+      - name: Deploy with rsync
         run: |
-          scp -r .next ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/seertksys/seerHive-Devops/
-          scp -r public ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/seertksys/seerHive-Devops/
-          scp package.json ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/seertksys/seerHive-Devops/
-
-
-      - name: SSH into VM and restart app
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} << 'EOF'
-            cd ~/seerHive-Devops
-            npm install
-            pm2 start npm --name "${{ secrets.GCP_VM_APP_NAME }}" -- start
-          EOF
+          ssh -i ~/.ssh/id_ed25519 ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }} \
+          "mkdir -p /home/${{ secrets.GCP_VM_USERNAME }}/seerHive-Devops"
+    
+          rsync -avz -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
+          --exclude='node_modules' \
+          --exclude='.git' \
+          .next/ \
+          public/ \
+          package.json \
+          ${{ secrets.GCP_VM_USERNAME }}@${{ secrets.GCP_VM_IP }}:/home/${{ secrets.GCP_VM_USERNAME }}/seerHive-Devops/
 
